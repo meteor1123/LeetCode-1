@@ -12,11 +12,11 @@
            if right bracket, get the peek element of stack, compare the type of these two bracket,
            like () {} [] is correct(using switch statment),otherwise unmatch return false;
 
-    tag:    Stack, String
+    tag:    Stack, String.
     running time : O(n)
 */
 
-    
+
     public boolean isValid(String s) {
         //Using stack to store the string
         Stack<Character> stack = new Stack<Character>();
