@@ -28,7 +28,7 @@
 		2. Sort the original Array in advance;
 		3. Using two pointers: low and high to traverse the array
 		
-	time complicity: O(n2)
+	time complexity: O(n2)
 */
 
 public class Solution {
@@ -38,6 +38,7 @@ public class Solution {
 		//corner case
 		if (num.length < 3 || num == null)
 			return res;
+		//avoid duplication
 		HashSet<ArrayList<Integer>> hs = new HashSet<ArrayList<Integer>>();
 		Arrays.sort(num);
 
