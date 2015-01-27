@@ -15,7 +15,6 @@
     tag:    Stack, String
     running time : O(n)
 */
-    
     public boolean isValid(String s) {
         //Using stack to store the string
         Stack<Character> stack = new Stack<Character>();
