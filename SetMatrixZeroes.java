@@ -17,8 +17,8 @@
 			  if matrix[i][j] = 0,we set the matrix[i][0] and matrix[0][j] = 0, 
 
 			  step1: check the first row and col whether has zero and set true
-			  step2: heck every matrix value, if has zero, set matrix[i][0] == 0 and matrix[0][j] == 0
-			  step3: set the matrix to zere,base on the first row and col
+			  step2: check every matrix value, if has zero, set matrix[i][0] == 0 and matrix[0][j] == 0
+			  step3: set the matrix to zer0,base on the first row and col
 			  step4: check the hasZero state and reset the first row and first col
 	running time: O(n*m)
 	extra space: constant	
