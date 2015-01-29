@@ -14,7 +14,7 @@
 */
 
 /*
-    Solution: 1.We divide this problem to three part,which can easily solve.
+    Solution: 1.We divide this problem to two part,which can easily solve.
         
         part1: old and new element are non-overlapping:
                 [          ]  [         ]   or [         ]  [         ]
