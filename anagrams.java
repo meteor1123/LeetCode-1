@@ -24,7 +24,7 @@ public class Solution {
 				hm.get(tempStr).add(s);
 				result.add(s);
 			} else {
-				ArrayList<String> tempList = new ArrayList<String>()l
+				ArrayList<String> tempList = new ArrayList<String>()；
 				tempList.add(s);
 				hm.put(tempStr, tempList);
 			}
