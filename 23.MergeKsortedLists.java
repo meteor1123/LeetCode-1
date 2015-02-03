@@ -22,7 +22,7 @@ public class Solution {
     
     //算法的关键部分；
  	public ListNode MSort(ArrayList<ListNode> lists, int low, int high) {
- 	    //将K个链表的头结点存入一个ArrayList中，方便
+ 	    //将K个链表的头结点存入一个ArrayList中
  		if (low >= high)
  			return lists.get(low);//递归终止条件
  		int mid = (low + high) / 2;//递归逼近语句
