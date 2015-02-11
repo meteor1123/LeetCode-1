@@ -31,7 +31,7 @@ public class Solution {
     		return ;
     	}
 
-    	int num = digits.charAt(index) - '0';//取出字符串里的第index位数字
+    	int num = digits.charAt(index) - '0';              //取出字符串里的第index位数字,正好数字对应该数字所表示的字符数组的下标，2 == board[2] (a, b, c)
     	for (int i = 0; i < keyboard[num].length(); i++) { //在keyboard字符串数组里，23 的2 就代表在keyboard[2]里的字符
     		item.append(keyboard[num].charAt(i));
     		backtracking_helper(digits, index + 1, item, keyboard, res);

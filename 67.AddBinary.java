@@ -9,30 +9,27 @@
 */
 
 public class Solution {
-	public String addBinary(String a, String b) {
-		int m = s.length();
-		int n = b.length();
-		int carry = 0;
-		String res = "";
-		int maxLen = Math.max(m, n);
-		for (int i = 0; i < maxLen; i++) {
-			int p = 0;
-			int q = 0;
-			if (i < m) {
-				p = a.charAt(m - i - 1) - '0';
-			}
-			else 
-				p = 0;
-
-			if (i < n) {
-				q = a.charAt(n - i - 1) - '0';
-			}
-			else q = 0;
-
-			int temp = p + q + carry;
-			carry = temp / 2;
-			res = temp % 2 + res;
-		}
-		return (carry == 0) ? res : "1" + res;	
-	}
+	 public  String addBinary(String a, String b) {
+        int aLen = a.length();
+        int bLen = b.length();
+        int maxLen = Math.max(aLen, bLen);
+        int carry = 0;
+        String res = "";
+        for (int i = 0; i < maxLen; i++) {
+            int valA = 0;
+            int valB = 0;
+            if (i < aLen) 
+                valA = a.charAt(aLen - i - 1) - '0';
+            else 
+                valA = 0;
+            if (i < bLen)
+                valB = b.charAt(bLen - i - 1) - '0';
+            else 
+                valB = 0;
+            int sum = valA + valB + carry;
+            carry = sum / 2;
+            res = sum % 2 + res;
+        }
+        return (carry == 0) ? res : "1" + res;
+    }
 }

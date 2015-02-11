@@ -38,20 +38,27 @@ public class Solution {
      * Reverse a link list between pre and next exclusively
      * an example:
      * a linked list:
-     * 0->1->2->3->4->5->6
-     * |           |   
-     * pre        next
-     * after call pre = reverse(pre, next)
+     * 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6
+     * |    |    |         |   
+     * pre last cur       next
      * 
-     * 0->3->2->1->4->5->6
-     *          |  |
-     *          pre next
+     * 
+     * 0 -> 3 -> 1 -> 2 -> 4 -> 5 -> 6
+     * |         |    |    | 
+     * pre     last  cur  next
+     *
+     * 0 -> 3 -> 2 -> 1 -> 4 -> 5 -> 6
+     * |         	  |    | 
+     * pre    		 last  next(cur)
+	 *	last 一直指向要交换的原先K个节点的首节点，不断移动cur，将cur.next到pre.next，
+	 *	所以总体上看 只有cur在动
      * @param pre 
      * @param next
      * @return the reversed list's last node, which is the precedence of parameter next
      */
 
      //方法代表reverse所有在pre和next之间的结点，不包括pre和next
+     //每一次while循环，last就指向交换后的 K个结点的 头一个
 	 private static ListNode reverse(ListNode pre, ListNode next) {
 	 	ListNode last = pre.next;
 	 	ListNode cur = last.next;

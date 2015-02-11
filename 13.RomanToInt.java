@@ -11,6 +11,8 @@ public class Solution {
     */
     public static int romanToInt(String s) {
         int res = 0;
+
+        //从字符数字的右边开始遍历
         for (int i = s.length() - 1; i >= 0; i--) {
             char c = s.charAt(i);
             if (c == 'I') {

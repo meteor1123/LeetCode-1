@@ -18,12 +18,25 @@
  * }
  */
 
+
+//为什么这里要用cur.next指向head，这样可以规避corner case， 
+//假如直接cur = head,不仅需要判断cur.next是否为空 还需要判断cur.next.nxet是否为空，
+//并且 即便cur.next.next为空，也是能交换的，所以不便
  public class Solution {
  	public ListNode swapPairs(ListNode head) {
  		LinkedList newhead = new LinkedList(0);//使用fakehead指向头结点保存指针头
  		newhead.next = head;
  		LinkedList cur = newhead;//用cur进行遍历
  		
+ 		/*
+ 		初始状态： 	newhead -> 1 -> 2 -> 3 -> 4 -> 5 -> 6
+ 					 |         |    |
+ 					cur  cur.next   cur.next.next
+ 		one time while loop：
+ 					newhead -> 2 -> 1 -> 3 -> 4 -> 5 -> 6
+ 									|
+ 								    cur	 
+ 		*/			
  		while (cur.next != null && cur.next.next != null) {
  			cur.next = swap(cur.next, cur.next.next);
  			cur = cur.next.next;

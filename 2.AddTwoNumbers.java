@@ -44,7 +44,9 @@
     			l2 = l2.next;
     		}
 
-    		l3.next = new ListNode(flag % 10);
+            //除10的余数，小于10的和取啥就是啥，大于10一律1，个位数相加不可能余数大于=2的情况
+    		l3.next = new ListNode(flag % 10);//每次需new一个node
+            //表示进位，最大只能为1
     		flag = flag / 10;
     		l3 = l3.next;
     	}

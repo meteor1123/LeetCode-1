@@ -38,7 +38,8 @@ public class Solution {
 		//corner case
 		if (num.length < 3 || num == null)
 			return res;
-		//avoid duplication
+
+		//avoid duplication,key point
 		HashSet<ArrayList<Integer>> hs = new HashSet<ArrayList<Integer>>();
 		Arrays.sort(num);
 
@@ -47,6 +48,8 @@ public class Solution {
 			int high = num.length - 1;
 			while (low < high) {
 				int sum = num[i] + num[low] + num[high];
+				
+				//matched res
 				if (sum == 0) {
 					ArrayList<Integer> item = new ArrayList<Integer>();
 					item.add(num[i]);

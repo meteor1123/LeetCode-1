@@ -20,6 +20,7 @@ public class Solution {
 		ArrayList<Integer> item = new ArrayList<Integer>();
 		if (num.length == 0 || num == null)
 			return res;
+		//为了不重复，visited数组是关键
 		boolean[] visited = new boolean[num.length];
 		backtracking(num, item, res, visited);
 		return res;
