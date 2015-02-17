@@ -43,7 +43,7 @@ public class Solution {
      * pre last cur       next
      * 
      * 
-     * 0 -> 3 -> 1 -> 2 -> 4 -> 5 -> 6
+     * 0 -> 2 -> 1 -> 3 -> 4 -> 5 -> 6
      * |         |    |    | 
      * pre     last  cur  next
      *

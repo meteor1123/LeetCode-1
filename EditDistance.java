@@ -4,7 +4,7 @@
 
 	You have the following 3 operations permitted on a word:
 
-	a) Insert a character
+	a) Insert a character 
 	b) Delete a character
 	c) Replace a character
 */
@@ -12,10 +12,6 @@
 
 /*
 	dp[i][j] 表示从word1的前i个字符到word2的前j个字符所需要的最少的转变步数
-
-	a)insert: dp[i][j] = dp[i][j-1] + 1;
-	b)delete: dp[i][j] = dp[i]-1[j] + 1; 
-	c)replace: dp[i][j] = dp[i-1][j-1] + 1;
 
  // 动态数组dp[word1.length+1][word2.length+1]
     // dp[i][j]表示从word1前i个字符转换到word2前j个字符最少的步骤数。
