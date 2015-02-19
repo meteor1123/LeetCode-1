@@ -13,7 +13,7 @@ public class Solution {
 		long res = 0;
 
 		/*			 tmp	
-                 {   |   } 
+                 {    |   } 
 			21 - 3 * 2^0 = 18  <-- (a - tmp) //res = 2^0
 			|    |    |
 			a    b   base

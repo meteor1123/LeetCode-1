@@ -22,8 +22,9 @@ public class Solution {
 		ArrayList<Integer> item = new ArrayList<Integer>();
 		if (candidates.length == 0 || candidates == null)
 			return res;
-		Arrays.sort(candidates, target, 0, item, res);
-		dfs();
+		Arrays.sort(candidates);
+		dfs(candidates, target, 0, item, res);
+		return res;
 	}
 
 	private void dfs(int[] candidates, int target, int start, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res) {

@@ -19,13 +19,14 @@ public class solution {
 			return false;
 		int div = 1;
 		while (x / div >= 10) 
-			div = div * 10;//取出首位后面接0
+			div = div * 10;// x / div得到首位数字 
 		while (x != 0) {
 			int left = x / div; //除以div，得到首位数字
 			int right = x % 10; //% 10得到最后一位数字。
 			if (left != right) 
 				return false;
 			x = (x % div) / 10; // x % div 得到去掉头的数字，除以10得到去掉尾的数字
+
 			div = div / 100; div//因为x已经减少2位，所以div也要减少2位就是/100
 		}
 		return true;

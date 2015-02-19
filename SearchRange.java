@@ -42,10 +42,11 @@ public int[] searchRange(int[] A, int target) {
 			high = mid - 1;
 		else if (A[mid] < target)
 			low = mid + 1;
-		else 
+		else {
 			res[0] = pos;
 			res[1] = pos;
 			break;
+		}
 	}
 
 	if (A[pos] != target)
