@@ -39,6 +39,7 @@
  		return head;
  	}
 
+ 	//solution2
  	public ListNode deleteDuplicates(ListNode head) {
  		ListNode pre = head;
  		ListNode cur = head.next;
