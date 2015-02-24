@@ -7,7 +7,7 @@
 public class Solution {
 	public TreeNode sortedListToBST(ListNode head) {
 		if (head == null)
-			return headl
+			return head；
 		ListNode cur = head;
 		int count = 0;
 		while (cur != null) {

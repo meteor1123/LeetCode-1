@@ -32,14 +32,14 @@ public class Solution {
 	public int sumNumbers(TreeNode root) {
 		return dfs(root, 0);
 	}
-	public int dfs (TreeNode root, int levelBas1e) {
+	public int dfs (TreeNode root, int levelBase) {
 		if (root == null)
 			return 0;
 		if (root.left == null && root.right == null)
 			return levelBase + root.val;
 		int nextLevelBase = (levelBase + root.val) * 10;
-		int leftSubTreeSum = root(root.left, nextLevelBase);
-		int rightSubTreeSum = root(root.right, nextLevelBase);
+		int leftSubTreeSum = dfs(root.left, nextLevelBase);
+		int rightSubTreeSum = dfs(root.right, nextLevelBase);
 
 		return leftSubTreeSum + rightSubTreeSum;
 	}
