@@ -5,9 +5,11 @@
 */
 
 public class Solution {
+	//static ListNode head;
 	public TreeNode sortedListToBST(ListNode head) {
 		if (head == null)
 			return head；
+		//this.head = head;
 		ListNode cur = head;
 		int count = 0;
 		while (cur != null) {
@@ -27,7 +29,7 @@ public class Solution {
 		TreeNode left = dfs(list, start, mid - 1);
 		TreeNode root = new TreeNode(list.get(0).val);
 		root.left = left;
-		list.set(0, list.get(0).next);
+		list.set(0, list.get(0).next);//head = head.next;
 		root.right = dfs(list, mid + 1, end);
 		return root;
 	}
