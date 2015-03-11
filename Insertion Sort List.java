@@ -58,12 +58,20 @@ public class Solution {
 			return head;
 		ListNode newhead = new ListNode(0);
 		ListNode cur = head;
+		//cur代表当前要排序的店
 		while (cur != null) {
+			//next是cur的下一结点，先保存，后面交换后 cur 要往前走
 			ListNode next = cur.next;
+			//每次循环都将pre设为头结点，每次从头开始遍历比较
 			ListNode pre = newhead;
 
+			//每次pre从第一个结点开始比较，只要pre.next 非空 并且 pre.next的值小于cur就一直往前走
+			//注意这里比较的是pre.next和cur的值
 			while (pre.next != null && pre.next.val < cur.val)
 				pre = pre.next;
+			
+			//跳出while循环意味着，1.要不pre.next为空，或者 2.pre.next的val值 大于等于cur,应将cur插到pre后面，
+			//因此需要重新将pre.next指向新的比较结点cur
 			cur.next = pre.next;
 			pre.next = cur;
 			cur = next;

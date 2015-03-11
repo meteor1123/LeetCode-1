@@ -13,6 +13,8 @@
 		[7] 
 		[2, 2, 3] 
 	Tags:Array Backtracking
+
+	和II的 区别在于数组里的数可以无限的试探使用
 */
 
 

@@ -51,7 +51,10 @@ public class Solution {
      * |         	  |    | 
      * pre    		 last  next(cur)
 	 *	last 一直指向要交换的原先K个节点的首节点，不断移动cur，将cur.next到pre.next，
-	 *	所以总体上看 只有cur在动
+	 *	pre.next始终是指向要交换的链表的头结点，
+	 *  last初始时是第一个结点，最后会变成最后一个结点
+	 *  cur不停往前移动
+	 *	 总体上看 只有cur在动
      * @param pre 
      * @param next
      * @return the reversed list's last node, which is the precedence of parameter next
@@ -68,6 +71,6 @@ public class Solution {
 	 		pre.next = cur;
 	 		cur = last.next;
 	 	}
-	 	return last
+	 	return last //返回last给下次调用时的 pre， pre = last ， cur = next;
 	 }
 }
