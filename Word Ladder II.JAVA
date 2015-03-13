@@ -96,10 +96,15 @@ public class Solution {
                             end  :   "cog"
 
                             from end to start:
-                                  cog -> dog -> dot -> hot -> hit
+                                    cog -> dog -> dot -> hot -> hit
+
+                            from start to end:
+                                    hit -> hot -> dot -> dog -> cog
                         */
                         //if curStr = cog , we make newStr = dog, 
-                        //因此从start 到 end 来看， dog 就是cog的前驱结点
+                        //从end 到start来看，      cog是dog的前驱结点
+                        //因此从start 到 end 来看， cog是dog的后继结点
+                        //前驱结点易求，后继难求
                         nextMap.get(newStr).add(curStr);
                         if (newStr.equals(start)) {
                             found = true;

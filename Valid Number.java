@@ -65,7 +65,7 @@ public class Solution {
                 dot = i;
             else if (ee == -1 && s.charAt(i) == 'e') {//find the position of '.'
                 ee = i;
-                //the symbol of '-' or '+',after decimal point
+                //the symbol of '-' or '+',after symbol 'e'
                 if (i + 1 < s.length() && (s.charAt(i + 1) == '-' || s.charAt(i + 1) == '+'))
                     i++;
             }
@@ -79,6 +79,7 @@ public class Solution {
         }
 
         //xxx.xxexx
+        //根据 startStr midStr 和lastStr来判断
         String startStr; //.号前面的数
         String midStr;  //.号或者e号
         String lastStr;//mid后面的数字
@@ -97,23 +98,26 @@ public class Solution {
             if (startStr.length() < 1 && midStr.length() < 1)
                 return false;
                 
-        //case3: xxxeyyy --- 100e2    
-        } else if (dot == -1 && ee != -1) {  
-            //xxxezz
-            startStr = s.substring(0, ee);  
+        //case3: xxxeyyy --- 100e2
+        } else if (dot == -1 && ee != -1) {
+            //xxxezz,判断前面的字符
+            startStr = s.substring(0, ee);
             if (startStr.length() < 1)
                 return false;
                 
-            //xxxe-zz,e后面跟着-号或者+号的情况 100e(-2)
+            //xxxe-zz,e后面跟着-号或者+号的情况 100e(-2)，判断后面的字符
+            //如果e后面跟着 - 或者 +,则后面的字符位置为ee + 2开始
             if (ee + 1 < s.length() && (s.charAt(ee + 1) == '-' || s.charAt(ee + 1) == '+')) 
                 lastStr = s.substring(ee + 2);
-            else 
+            else //e后面没跟着 - 或则 + 则后面的字符位置为ee + 1 开始
                 lastStr = s.substring(ee + 1);
+
             if (lastStr.length() < 1)
                 return false;
                 
-        //case4: xxx.yyezz 100.12 e 2   
-        } else {     
+        //case4: xxx.yyezz 100.12 e 2
+        } else {
+            //dot位置比ee还后面 必错
             if (dot > ee)
                 return false;
             startStr = s.substring(0, dot);     //xxx
@@ -122,7 +126,7 @@ public class Solution {
                 return false;
             if (ee + 1 < s.length() && (s.charAt(ee + 1) == '-' || s.charAt(ee + 1) == '+')) 
                 lastStr = s.substring(ee + 2);
-            else 
+            else
                 lastStr = s.substring(ee + 1);
 
             if (lastStr.length() < 1)
