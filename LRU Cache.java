@@ -38,78 +38,81 @@
 */
 
 public class LRUCache {
-    private HashMap<Integer, DoubleLinkedListNode> map = new HashMap<Integer, DoubleLinkedListNode>();
+    private HashMap<Integer, DoubleLinkedListNode> map = new HashMap<Integer, DoubleLinkedListNode>();//hashmap的作用在于，根据某一key（Integer）值去检索该结点是否存在
     private DoubleLinkedListNode head;//头结点
     private DoubleLinkedListNode end;//尾结点
-    private int capacity;//LRU的容量
-    private int len;//LRU里的元素个数
+    private int capacity; //LRU的容量
+    private int len; //
+    
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        len = 0;
+        this.len = 0;
     }
-    
     public int get(int key) {
         if (map.containsKey(key)) {
-            DoubleLinkedListNode latest = map.get(key);
-            removeNode(latest);
-            setHead(latest);
+            DoubleLinkedListNode latest = map.get(key);//从map中根据key拿到该节点
+            removeNode(latest);//去除该节点
+            setHead(latest);//将该节点设为头结点（最近使用）
             return latest.val;
         } else 
             return -1;
     }
-    
     public void set(int key, int value) {
-        if (map.containsKey(key)) {
-            //假如存在key，则替换该key里的v的值
+        if (map.containsKey(key)) {//假如已经有了
             DoubleLinkedListNode oldNode = map.get(key);
             oldNode.val = value;
             removeNode(oldNode);
             setHead(oldNode);
-        } else {
-            //不存在则新建一个 DoubleLinkedListNode
+        } else {//假如没有，分两种情况，是否已满
             DoubleLinkedListNode newNode = new DoubleLinkedListNode(key, value);
             if (len < capacity) {
+                //没满，设置为头结点，并放入hashmap
                 setHead(newNode);
                 map.put(key, newNode);
                 len++;
             } else {
-                //容量不够，删除尾结点，因为尾结点是最久未使用
                 map.remove(end.key);
-                //将尾结点赋值给 尾结点之前的节点
                 end = end.pre;
-                //假如尾结点非空，则设为空
-                if (end != null) 
+                if (end != null)
                     end.next = null;
-                //新节点设为头结点
                 setHead(newNode);
                 map.put(key, newNode);
             }
         }
     }
-    
     public void removeNode(DoubleLinkedListNode node) {
         DoubleLinkedListNode cur = node;
         DoubleLinkedListNode pre = cur.pre;
         DoubleLinkedListNode post = cur.next;
-        //考虑node的前后节点文i
-        if (pre != null) {
-            pre.next = post;
-        } else {
+        //考虑node的前后结点
+        if (pre != null)
+            pre.next = post;//假如post为null，则直接指向null，
+                            //意味着pre已经是尾结点
+        else 
             head = post;
-        }
-        
-        if (post != null) {
+        if (post != null) //假如pre为null,则直接为头结点了 
             post.pre = pre;
-        } else {
+        else 
             end = pre;
-        }
     }
-    
     public void setHead(DoubleLinkedListNode node) {
         node.next = head;
         node.pre = null;
-        if (head != null) {
+        if (head != null)
             head.pre = node;
-        }
         head = node;
-        if (end == null
+        if (end == null)
+            end = node;
+    }
+}
+
+class DoubleLinkedListNode {
+    public int val;
+    public int key;
+    public DoubleLinkedListNode pre;
+    public DoubleLinkedListNode next;
+    public DoubleLinkedListNode(int key, int value) {
+        val = value;
+        this.key = key;
+    }
+}

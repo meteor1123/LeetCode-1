@@ -15,8 +15,7 @@
 	直接存String 容易内存exceed
 */
 public class Solution {
-    public 
-    List<String> findRepeatedDnaSequences(String s) {
+    public List<String> findRepeatedDnaSequences(String s) {
         List<String> res = new ArrayList<String>();
         if (s.length() < 11 || s == null)
             return res;
