@@ -16,6 +16,7 @@
 		step5: 构造string ans，将list里的字符串按照顺序加入
 */
 public class Solution {
+    //Solution1
     public String reverseWords(String s) {
         if (s == null || s.length() == 0)
             return s;
@@ -36,4 +37,46 @@ public class Solution {
         ans += list.get(list.size() - 1);
         return ans;
     }
+
+    //solution2
+    public String reverseWords(String s) {
+        if (s == null) {
+            return null;
+        }
+        s = s.trim();
+        if (s.length() == 0) {
+            return "";
+        }
+        StringBuilder res = new StringBuilder);
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (i != s.length() - 1 && s.charAt(i) == ' ' && s.charAt(i) == s.charAt(i + 1)) {
+                continue;
+            }
+            res.append(s.charAt(i));
+        }
+        int left = 0;
+        int right = 0;
+        while (right < res.length()) {
+            while (right < res.length() && res.charAt(right) != ' ') {
+                right++;
+            }
+            int next = right + 1;
+            right--;
+            while (left < right) {
+                char temp = res.charAt(left);
+                res.setCharAt(left++, res.charAt(right));
+                res.setCharAt(right--, temp);
+            }
+            left = next;
+            right = next;
+        }
+        return res.toString();
+    }
 }
+
+
+
+
+
+
+

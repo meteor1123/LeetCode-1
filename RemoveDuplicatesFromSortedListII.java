@@ -21,6 +21,7 @@
 
 
  public class Solution {
+ 	//Solution1
  	public ListNode deleteDuplicates(ListNode head) {
  		if (head == null || head.next == null)
  			return head;
@@ -50,4 +51,27 @@
  		}
  		return fakehead.next;
  	}
+
+ 	//Solution2
+ 	public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        head = dummy;//关键步骤
+
+        //链表少于2个数就结束循环
+        while (head.next != null && head.next.next != null) {
+            if (head.next.val == head.next.next.val) {
+                int val = head.next.val;
+                while (head.next != null && head.next.val == val) {
+                    head.next = head.next.next;
+                }
+            } else {
+                head = head.next;
+            }
+        }
+        return dummy.next;
+    }
  }

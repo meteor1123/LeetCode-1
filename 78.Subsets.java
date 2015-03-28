@@ -40,6 +40,8 @@
 只需要在combination的外面加个循环即可。
 */
 public class Solution {
+
+  //Solution1: combination 加个循环
 	public ArrayList<ArrayList<Integer>> subsets(int[] S) {
         ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> item = new ArrayList<Integer>();
@@ -63,6 +65,53 @@ public class Solution {
             item.add(S[i]);
             dfs(S, i + 1, len, res, item);
             item.remove(item.size() - 1);
+        }
+    }
+
+    //Solution2: from 小莹子
+        public ArrayList<ArrayList<Integer>> subsets(int[] S) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        if (S == null || S.length == 0)
+            return res;
+        ArrayList<Integer> item = new ArrayList<Integer>();
+        Arrays.sort(S);
+        dfs(res, item, S, 0);
+        res.add(new ArrayList<Integer>());//空集
+        return res;
+    }
+    
+    public void dfs ( ArrayList<ArrayList<Integer>> res, ArrayList<Integer> item, int[] S, int pos) {
+        for (int i = pos; i < S.length; i++) {
+            item.add(S[i]);
+            res.add(new ArrayList<Integer>(item));
+            dfs(res, item, S, i + 1);
+            item.remove(item.size() -1);
+        }
+    }
+
+    //Solution: Chapter 9
+    public ArrayList<ArrayList<Integer>> subsets(int[] num) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(num == null || num.length == 0) {
+            return result;
+        }
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        Arrays.sort(num);  
+        subsetsHelper(result, list, num, 0);
+
+        return result;
+    }
+
+
+    private void subsetsHelper(ArrayList<ArrayList<Integer>> result,
+        ArrayList<Integer> list, int[] num, int pos) {
+
+        result.add(new ArrayList<Integer>(list));
+
+        for (int i = pos; i < num.length; i++) {
+            list.add(num[i]);
+            subsetsHelper(result, list, num, i + 1);
+            list.remove(list.size() - 1);
         }
     }
 }
