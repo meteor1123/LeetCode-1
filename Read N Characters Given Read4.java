@@ -38,7 +38,9 @@ byte = Math.min(n-readbytes, size);
 */
 public class Solution extends Reader4 {
 	public int read(char[] buf, int n) {
+		//to store 4 char to buf 
 		char[] buffer = new char[4];
+		//indicate the size of buffer is less than 4 or
 		boolean lessthan4 = false;
 		int Readbyte = 0;
 		int bytes = 0;
@@ -58,3 +60,10 @@ public class Solution extends Reader4 {
 		return Readbyte;
 	}
 }
+
+
+
+
+
+
+

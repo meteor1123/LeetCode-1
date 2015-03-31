@@ -13,7 +13,7 @@ public class Solution {
         if(strs == null || strs.length == 0)
             return result;
         HashMap<String, ArrayList<String>> hm = new HashMap<String, ArrayList<String>>();
-        for (String s:strs) {
+        for (String s: strs) {
             char[] temp = s.toCharArray();
             Arrays.sort(temp);//排序该字符数组，keypoint
             String tempStr = new String(temp);
