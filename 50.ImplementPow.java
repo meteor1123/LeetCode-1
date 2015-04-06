@@ -5,6 +5,7 @@
 */
 
 public class Solution {
+    //Help Method
 	public double power(double x, int n) {
         if (n == 0)
             return 1;
@@ -24,3 +25,25 @@ public class Solution {
             return power(x, n);
     }
 }
+
+
+
+    public double power(double x, int n) {
+        if (n > 0) {
+            return powHelper(x, n);
+        } else {
+            return 1 / powHelper(x, -n);
+        }
+    }
+    public double powHelper(double x, int n) {
+        if (n == 0) {
+            return 1;
+        }
+        double res = powHelper(x, n / 2);
+        if (n % 2 == 0) {
+            return res * res;
+        } else {
+            return res * res * x;
+        }
+        
+    }

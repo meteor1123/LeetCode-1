@@ -33,4 +33,75 @@ public class Solution {
 		root.right = dfs(list, mid + 1, end);
 		return root;
 	}
+
+	//Chapter 9
+	private ListNode cur;
+	private int getListLength(ListNode head) {
+		int size = 0;
+		while (head != null) {
+			size++;
+			head = head.next;
+		}
+		return size;
+	}
+
+	public TreeNode sortedListToBST(ListNode head) {
+		int size;
+		cur = head;
+		size = getListLength(head);
+		return sortedListToBSTHelper(size);
+	}
+
+	public TreeNode sortedListToBSTHelper(int size) {
+		if (size <= 0) {
+			return null;
+		}
+		TreeNode left = sortedListToBSTHelper(size / 2);
+		TreeNode root = new TreeNode(cur.val);
+		cur = cur.next;
+		TreeNode right = sortedListToBSTHelper(size - 1 - size / 2);
+		root.left = left;
+		root.right = right;
+		return root;
+	}
+
+	//solution3 小丸子，最容易理解
+	static ListNode h;
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        int size = 0;
+        h = head;
+        ListNode cur = head;
+        //caculate the size of ListNode
+        while (cur != null) {
+            cur = cur.next;
+            size++;
+        }
+        return sortedListToBSTHelper(0, size - 1);
+    }
+    
+    //divide and Conquer
+    public TreeNode sortedListToBSTHelper(int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        int mid = (start + end) / 2;
+        //recursive the most left node,
+        TreeNode left = sortedListToBSTHelper(start, mid - 1);
+        TreeNode root = new TreeNode(h.val);
+        h = h.next;
+        TreeNode right = sortedListToBSTHelper(mid + 1, end);
+        root.left = left;
+        root.right = right;
+        return root;
+    }
 }
+
+
+
+
+
+
+

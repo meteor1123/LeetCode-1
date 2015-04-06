@@ -19,6 +19,8 @@
 
 
 public class Solution {
+
+	//递归
 	public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
 		ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> item = new ArrayList<Integer>();
@@ -50,4 +52,30 @@ public class Solution {
 			item.remove(item.size() - 1);
 		}
 	}
+
+	//非递归
+	public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<List<Integer>>> dp = new ArrayList<List<List<Integer>>>();
+        for (int i = 1; i <= target; i++) {
+            List<List<Integer>> list_i = new ArrayList<List<Integer>>();
+            for (int j = 0; j < candidates.length && candidates[j] <= i; j++) {
+                if (i == candidates[j])
+                    list_i.add(Arrays.asList(candidates[j]));
+                else {
+                    for (List<Integer> l : dp.get(i - 1 - candidates[j])) {
+                        if (candidates[j] <= l.get(0)) {
+                            List<Integer> tmp = new ArrayList<Integer>();
+                            tmp.add(candidates[j]);
+                            tmp.addAll(l);
+                            if (!list_i.contains(tmp))
+                                list_i.add(tmp);
+                        }
+                    }
+                }  
+            }
+            dp.add(list_i);
+        }
+        return dp.get(target - 1);
+    }
 }

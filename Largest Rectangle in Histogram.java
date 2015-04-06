@@ -14,21 +14,36 @@
 	return 10.
 */
 
+/*
+    Best Solution:
+        http://www.cnblogs.com/lichen782/p/leetcode_Largest_Rectangle_in_Histogram.html
+*/
+
 public class Solution {
     public int largestRectangleArea(int[] height) {
+        //the stack only store the index of height,not the value
     	Stack<Integer> stack = new Stack<Integer>();
     	int i = 0 ;
     	int maxArea = 0;
+        //We need to copy the array[] height,and generate a new array h[],the length is large more than 1 
     	int[] h = new int[height.length + 1];//h[height.length]存放的是人为假尾结点0，使其可以终止
     	h = Arrays.copyOf(height, height.length + 1);
     	// 假如是递增序列，则持续进栈，一遇到小于栈顶元素的数就一直出栈到栈顶元素小于等于 h[i],然后持续递增进栈，或者递减出栈重新算
+        //when the stack is empty or the top element is not bigger than h[i] ,push to the stack
+        //which means the element store in the stack with a ascending sequence.
     	while (i < h.length) {
     		if (stack.isEmpty() || h[stack.peek()] <= h[i]) {
-    			stack.push(i++);
+    			stack.push(i);
+                i++
     		} else {
 
     			int top = stack.pop();//一遇到小的数就栈顶元素出栈
-    			maxArea = Math.max(maxArea, h[top] * (stack.isEmpty() ? i: i - stack.peek() - 1));
+    			maxArea = Math.max(maxArea, h[top] * (stack.isEmpty() ? i: i - stack.peek() - 1)); //peek()是已经出栈之后的前一个数的position
+                // top is the largest number's position , 
+                // h[top] is the largest number's value;
+                // h[top] * i ,only when the stack is empty
+                // along with the continuly pop(), i - stack.peek() - 1 will be increase(this is the width)
+
                 //假如栈顶元素非空，则宽度等于 i - stack.peek() - 1
     		}
     	}

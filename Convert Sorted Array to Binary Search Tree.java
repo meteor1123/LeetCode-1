@@ -13,15 +13,20 @@ public class Solution {
     */
         
     public TreeNode sortedArrayToBST(int[] num) {
+    	//Corner case
     	if (num == null || num.length <= 0)
     		return null; 
+    	//use a dfs helper to  generate the bst
     	return dfs(num, 0, num.length - 1);
 	}
+	//as we know,  using inorder traverse the bst ,we will get a ascending array,
 	public TreeNode dfs(int[] num, int start, int end) {
-		if (start > end)
+		//this is the termination condition.
+		if (start > end) //mean we reach the null node
 			return null;
-		int mid = (start + end) / 2;
-		TreeNode root = new TreeNode(num[mid]);
+		int mid = (start + end) / 2; //every time we let mid = start + end / 2
+		TreeNode root = new TreeNode(num[mid]);//generate a root node
+		//and recursive genarate the left tree and right tree.
 		root.left = dfs(num, start, mid - 1);
 		root.right = dfs(num, mid + 1, end);
 		return root; 

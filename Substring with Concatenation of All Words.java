@@ -16,7 +16,7 @@
 	Solution: 
 		1. 设置两个HashMap， 一个map用来存放字典L 以及L 中单词的个数，一个curMap 来存放每次循环时的单词的情况
 		2. 两层for loop， 外层按照一个单词的长度进行遍历，每次+1，内层遍历S字符串，每次按照wordLen的长度进行遍历。
-		   这样可以遍历所有清空
+		   这样可以遍历所有情况
 		3. 设置一个count，计算匹配到的单词个数，如果等于字典的size，则匹配成功。
 		   设置窗口坐起点left 
 		4. 内层循环中，
@@ -49,6 +49,17 @@
                 map.put(L[i], 1);
         }
         
+
+        /*
+            for example:
+            abc def ghi:
+                S的length等于9， 假如T里每个word的leng = 3， 有2个
+                则 loop1 : abc, def, ghi
+                   loop2 : bcd efg
+                   loop3 : cde fgh
+                cause every word's length is equal, so the outer loop only need to circulate once
+                c
+        */
         for (int i = 0; i < wordLen; i++) {
 
         	//curMap用来保存一次内层循环中，匹配到的单词，以及单词出现次数，和map进行比对
@@ -93,7 +104,7 @@
                     	//将起点位置添加至结果
                         res.add(left);
 
-                        //将窗口右移一个wordLen长度，为下一次匹配准备
+                        //将窗口左移一个wordLen长度，为下一次匹配准备
                         String temp = S.substring(left, left + wordLen);
                         if (curMap.containsKey(temp))
                             curMap.put(temp, curMap.get(temp) - 1);

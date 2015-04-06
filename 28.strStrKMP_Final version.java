@@ -62,17 +62,21 @@
     running time:O(n*m)
                 
 */
-    // public int strStr(String haystack, String needle) {
-    //     if (haystack == null)
-    //         return -1;
-    //     if (needle.length() == 0)
-    //         return 0;
-    //     int length1 = haystack.length();
-    //     int length2 = needle.length();
-        
-    //     for (int i = 0; i < length1 - length2 + 1; i++) {
-    //         if (haystack.substring(i, i + length2).equals(needle))//in the end, from length1 - length2 to length1
-    //             return i;
-    //     }
-    //     return -1;
-    // }
+    public int strStr(String haystack, String needle) {
+        if (haystack == null)
+            return -1;
+        if (needle.length() == 0)
+            return 0;
+        int i, j;
+        for (i = 0; i < haystack.length() - needle.length ()+ 1; i++) {
+            for (j = 0; j < needle.length(); j++) {
+                if (haystack.charAt(i + j) != needle.charAt(j)) {
+                    break;
+                }
+                if (j == needle.length()) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }

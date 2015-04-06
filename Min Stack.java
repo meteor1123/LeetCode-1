@@ -12,6 +12,8 @@
 	Using  two stack,one stack for store normal element, the other store the min elements.
 */
 class MinStack {
+
+    //Code Ganker
     ArrayList<Integer> stack = new ArrayList<Integer>();
     ArrayList<Integer> minStack = new ArrayList<Integer>();
     public void push(int x) {
@@ -39,4 +41,8 @@ class MinStack {
             return minStack.get(minStack.size() - 1);
         return 0;
     }
+
+
+    //Clean book
+    
 }
