@@ -53,6 +53,7 @@ public class Solution {
 						      2 -> 3 -> NULL
 						     / \  / \
 						    4->5->6->7 -> NULL
+                            
 			case 2: Node has left, but the next point is not null, like point 2
 						         1 -> NULL
 						       /  \

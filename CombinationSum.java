@@ -42,8 +42,10 @@ public class Solution {
 		}
 
 		for (int i = start; i < candidates.length; i++) {
+			// The same repeated number may be chosen from C unlimited number of times.
 			if (i > 0 && candidates[i] == candidates[i - 1])//假如candidates[i]和 [i- 1]相同，则之前已经遍历过该数字的所有情况，因此跳出选下个数字
-				continue;
+				continue;//deal with dupicate
+				
 			item.add(candidates[i]);
 			int newTarget = target - candidates[i];//关键
 			dfs(candidates, newTarget, i, item, res);

@@ -29,11 +29,13 @@
 public class Solution {
 	//solution1  维护一个局部最大，和全局最大值，局部最大值每次 用 local 和 local + A[i]相比
 	public int maxSubArray(int[] A) {
+		// use a local to store a local maximum,
+		// and use a global to store a global maximum.
 		int local = A[0];
 		int global = A[0]
 		for (int i = 1; i < A.length; i++) {
 			local = Math.max(local, A[i] + local);
-			max = Math.max(local, max);
+			global = Math.max(local, global);
 		}
 		return max;
 	}

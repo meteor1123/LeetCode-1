@@ -41,6 +41,31 @@
 */
 public class Solution {
 
+    //concise solution
+    public ArrayList<ArrayList<Integer>> subsets(int[] S) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        if (S == null || S.length == 0) {
+            return res;
+        }
+        ArrayList<Integer> item = new ArrayList<Integer>();
+        Arrays.sort(S);
+        res.add(new ArrayList<Integer>());
+        subsetsHelper(0, item, res, S);
+        return res;
+    }
+    
+    public void subsetsHelper(int start, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res, int[] S) {
+        for (int i = start; i < S.length; i++) {
+            //
+            item.add(S[i]);
+            res.add(new ArrayList<Integer>(item));
+            subsetsHelper(i + 1, item, res, S);
+            item.remove(item.size() - 1);
+        }
+    }
+
+
+
   //Solution1: combination 加个循环
 	public ArrayList<ArrayList<Integer>> subsets(int[] S) {
         ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
