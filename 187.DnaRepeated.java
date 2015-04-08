@@ -35,6 +35,7 @@ public class Solution {
                 hash = (hash << 2) + map.get(c);
                 hash &= (1 << 20) - 1;//对10个数 用掩码取值
                 // 1 << 20位代表 1后面跟着20个0，2进制，再-1，表示从 1 0000 0000 0000 0000 0000 --> 1111 1111 1111 1111 1111
+                // 为什么要用20位掩码取值？因为我们只需要 0 - 19 位 总共20位的数，而每次循环 hash都会左移 + 新的字符，所以需要规避无效位数的干扰
                 if (set.contains(hash) && !unique.contains(hash)) {
                     res.add(s.substring(i - 9, i + 1));
                     unique.add(hash);
