@@ -57,12 +57,17 @@ public class Solution {
 
 	//非递归
 	public List<List<Integer>> combinationSum(int[] candidates, int target) {
+		 // sort candidates to try them in asc order
         Arrays.sort(candidates);
         List<List<List<Integer>>> dp = new ArrayList<List<List<Integer>>>();
-        for (int i = 1; i <= target; i++) {
+
+        for (int i = 1; i <= target; i++) {// run through all targets from 1 to t
             List<List<Integer>> list_i = new ArrayList<List<Integer>>();
+            // run through all candidates <= i
             for (int j = 0; j < candidates.length && candidates[j] <= i; j++) {
+            	// special case when curr target is equal to curr candidate
                 if (i == candidates[j])
+                	// if current candidate is less than the target use prev results
                     list_i.add(Arrays.asList(candidates[j]));
                 else {
                     for (List<Integer> l : dp.get(i - 1 - candidates[j])) {
@@ -79,5 +84,39 @@ public class Solution {
             dp.add(list_i);
         }
         return dp.get(target - 1);
+    }
+
+    //stack solution
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        int i=0, size = candidates.length, sum=0;
+        Stack<Integer> combi = new Stack<>();
+        Stack<Integer> indices = new Stack<>();
+        List<List<Integer>> result = new ArrayList<>();
+        while (i < size) {
+            if (sum + candidates[i]>= target) {
+                if (sum + candidates[i] == target) {
+                    combi.push(candidates[i]);
+                    result.add(new ArrayList<>(combi));
+                    combi.pop();
+            }
+            // indices stack and combination stack should have the same size all the time
+            if (!indices.empty()){
+                sum -= combi.pop();
+                i = indices.pop();
+                while (i == size-1 && !indices.empty()) {
+                    i = indices.pop();
+                    sum -= combi.pop();
+
+                }
+            }
+            i++;
+        } else {
+            combi.push(candidates[i]);
+            sum +=candidates[i];
+            indices.push(i);
+        }
+    }
+    return result;
     }
 }
