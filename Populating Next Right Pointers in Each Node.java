@@ -33,6 +33,18 @@
     4->5->6->7 -> NULL
 */
 
+
+/*
+    this tree is perfect tree
+    Property: A binary tree with all leaf nodes at the same depth. 
+              All internal nodes have degree 2.
+    Solution:
+                1. check the left tree, if not null assign the root.left.next pointer
+                2. check the right tree, if not null, check the next pointer is null or not
+                    and assign the root.right.next;
+
+
+*/
 public class Solution {
 	//dfs
     public void connect(TreeLinkNode root) {
@@ -88,6 +100,8 @@ public class Solution {
     	}
     	TreeLinkNode cur = root;
     	while (cur != null && cur.left != null) {
+            //traversal by level ,
+            //在cur位置的时候 就要把cur的左右孩子的next指针设好，所以到叶子节点就跳出循环
     		cur.left.next = cur.right;
     		if (cur.next != null) {
     			cur.right.next = cur.next.left;

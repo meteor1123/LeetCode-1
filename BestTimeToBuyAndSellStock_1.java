@@ -18,6 +18,7 @@
 	   所以，只许一次遍历数组，维护一个最小买价，和一个最大利润(保证了买在卖前面）即可。
 */
 public class Solution {
+    //
     public int maxProfit(int[] prices) {
         if (prices.length <= 0)
             return 0;
@@ -31,5 +32,18 @@ public class Solution {
     			maxProfit = prices[i] - minBuyPrice;
     	}
     	return maxProfit;
+    }
+    //Math solution
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length <= 1) {
+            return 0;
+        }
+        int maxProfit = 0;
+        int minPrice = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            minPrice = Math.min(minPrice, prices[i]);
+            maxProfit = Math.max(prices[i] - minPrice, maxProfit);
+        }
+        return maxProfit;
     }
 }

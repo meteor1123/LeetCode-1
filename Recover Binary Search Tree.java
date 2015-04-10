@@ -41,6 +41,12 @@ Really, what we are comparing is the current node and its previous node in the "
 Let us define three variables, firstElement, secondElement, and prevElement. Now we just need to build the "do some business" logic as finding the two elements. See the code below:
 */
 public class Solution {
+
+    /*
+        since a inorder array of BST is a ascending sequence
+        if two node are in wrong way, must be like  1 2 3 4 5 6 --> 1 5 3  4 2 6
+        pre > root and 
+    */
     private TreeNode firstElement = null;
     private TreeNode secondElement = null;
     private TreeNode preElement = new TreeNode(Integer.MIN_VALUE);
@@ -57,6 +63,7 @@ public class Solution {
         if (root == null) {
             return;
         }
+        //inorder traverse
         traverse(root.left);
         if (firstElement == null && preElement.val > root.val) {
             firstElement = preElement;
