@@ -15,7 +15,7 @@
 */
 
 
-    //BFS
+    //BFS 
     public ArrayList<Integer> rightSideView(TreeNode root) {
         ArrayList<Integer> res = new ArrayList<Integer>();
         if (root == null) {
@@ -70,5 +70,38 @@
         }
         rightSideViewHelper(res, root.right, curLevel + 1);
         rightSideViewHelper(res, root.left, curLevel + 1 );
+    }
+
+    //BFS left side view
+    public ArrayList<Integer> rightSideView(TreeNode root) {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if (root == null) {
+            return res;
+        }
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        int curNum = 1;
+        int nextNum = 0;
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode curNode = queue.poll();
+            curNum--;
+            if (nextNum == 0) {//only different with the right side
+                res.add(curNode.val);
+            }
+            if (curNode.left != null) {
+                queue.offer(curNode.left);
+                nextNum++;
+            }
+            if (curNode.right != null) {
+                queue.offer(curNode.right);
+                nextNum++;
+            }
+            
+            if (curNum == 0) {
+                curNum = nextNum;
+                nextNum = 0;
+            }
+        }
+        return res;
     }
 

@@ -10,6 +10,8 @@
 
 
 public class Solution {
+
+    //Divide and Conquer
     public int majorityElement(int[] num) {
         return majorityHelper(num, 0, num.length - 1);
     }
@@ -40,5 +42,22 @@ public class Solution {
             return rightMajority;
         }
         return 0;
+    }
+
+    //O(n), O(1) inplace
+    public int majorityElement(int[] num) {
+        int count = 1;
+        int major = num[0];
+        for (int i = 1; i < num.length; i++) {
+            if (count == 0) {
+                count++;
+                major = num[i];
+            } else if (major == num[i]) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+        return major;
     }
 }
