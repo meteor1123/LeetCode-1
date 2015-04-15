@@ -8,6 +8,7 @@
 */
 
 public class Solution {
+    //有很多peek， 任意返回一个即可
     public int findPeakElement(int[] num) {
     	int left = 0;
         int right = num.length - 1;  

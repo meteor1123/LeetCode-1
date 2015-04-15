@@ -14,7 +14,8 @@
  *     }
  * }
  */
-public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+public class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     
         //res.next store the head pointer of the sorted ListNode
         ListNode res = new ListNode(0);
@@ -37,3 +38,4 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
             head.next = l2;
         return res.next;
     }
+}

@@ -54,22 +54,21 @@
 
  	//Solution2
  	public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) {
+        if (head == null || head.next == null) {
             return head;
         }
+        //create a dummy node to avoid the coener case
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        head = dummy;//关键步骤
-
-        //链表少于2个数就结束循环
-        while (head.next != null && head.next.next != null) {
-            if (head.next.val == head.next.next.val) {
-                int val = head.next.val;
-                while (head.next != null && head.next.val == val) {
-                    head.next = head.next.next;
+        ListNode cur = dummy;
+        while (cur.next != null && cur.next.next != null) {
+            if (cur.next.val == cur.next.next.val) {
+                int val = cur.next.val;
+                while (cur.next != null && cur.next.val == val) {
+                    cur.next = cur.next.next;
                 }
             } else {
-                head = head.next;
+                cur = cur.next;
             }
         }
         return dummy.next;

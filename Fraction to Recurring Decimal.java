@@ -35,7 +35,7 @@ public class Solution {
         //假如结果为负数
         if (((numerator < 0) && (denominator > 0)) || ((numerator > 0) && (denominator < 0)) ) //按位异或
             ans += "-";
-        //把两个数转为正数，为避免移除，int转为long
+        //把两个数转为正数，为避免溢出，int转为long
         long num = numerator;
         long den = denominator;
         num = Math.abs(num);
