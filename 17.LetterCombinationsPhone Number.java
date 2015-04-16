@@ -14,6 +14,7 @@
 
 
 public class Solution {
+    //Recursive
 	public List<String> letterCombinations(String digits) {
         //new a ArrayList to store the result 
     	ArrayList<String> res = new ArrayList<String>();
@@ -47,5 +48,26 @@ public class Solution {
     		item.deleteCharAt(item.length() - 1);
     	}
 
+    }
+
+    //iteration
+    public ArrayList<String> letterCombinations(String digits) {
+        ArrayList<String> res = new ArrayList<String>();
+        if (digits.length() == 0 || digits == null) {
+            return res;
+        }
+        res.add("");
+        String[] keyboard = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        for (int i = 0; i < digits.length(); i++) {
+            String letters = keyboard[digits.charAt(i) - '0'];
+            ArrayList<String> newRes = new ArrayList<String>();
+            for (int j = 0; j < res.size(); j++) {
+                for (int k = 0; k < letters.length(); k++) {
+                    newRes.add(res.get(j) + Character.toString(letters.charAt(k)));
+                }
+            }
+            res = newRes;
+        }
+        return res;
     }
 }

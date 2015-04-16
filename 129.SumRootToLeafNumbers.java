@@ -63,7 +63,7 @@ public class Solution {
         if (root.left == null && root.right == null) {
             return sum;
         }
-            return sumNumbersHelper(root.left, sum) + sumNumbersHelper(root.right, sum);
+        return sumNumbersHelper(root.left, sum) + sumNumbersHelper(root.right, sum);
     }
 
     //BFS:

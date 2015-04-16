@@ -39,6 +39,7 @@ public class Solution {
 	}
 
 	//twoSum 
+	//sorted array
 	public int[] twoSum(int[] numbers, int target) {
 	    int[] res = new int[2];
 	    if(numbers==null || numbers.length<2)
@@ -63,5 +64,24 @@ public class Solution {
 	        }
 	    }
 	    return null;
+	}
+	//brute force
+	public int[] twoSum(int[] numbers, int target) {
+		int[] res = new int[2];
+		if (number == null || numbers.length < 2) {
+			return null;
+		}
+		for (int i = 0; i < numbers.length - 1; i++) {
+			for (int j = i + 1; j < numbers.length; j++) {
+				if (numbers[i] + numbers[j] == target) {
+					res[0] = i + 1;
+					res[1] = j + 1;
+					return res;
+				} 
+			}
+		}
+		res[0] = -1;
+		res[1] = -1;
+		return res;
 	}
 }

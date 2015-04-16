@@ -32,6 +32,7 @@
 */
 
 public class Solution {
+	//return all the result
 	public ArrayList<ArrayList<Integer>> threeSum(int[] num) {
 		ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
 
@@ -62,6 +63,36 @@ public class Solution {
 					//that's very important! dont forget!
 					low++;
 					high--;
+				} else if (sum > 0) {
+					high--;
+				} else {
+					low++;
+				}
+			}
+		}
+		return res;
+	}
+	//return only one result
+	public ArrayList<Integer> threeSum(int[] num) {
+		ArrayList<Integer> res = new ArrayList<Integer>();
+
+		//corner case
+		if (num.length < 3 || num == null)
+			return res;
+		Arrays.sort(num);
+
+		for (int i = 0; i <= num.length - 3; i++) {
+			int low = i + 1;
+			int high = num.length - 1;
+			while (low < high) {
+				int sum = num[i] + num[low] + num[high];
+				
+				//matched res
+				if (sum == 0) {
+					res.add(num[i]);
+					res.add(num[low]);
+					res.add(num[high]);
+					return res;
 				} else if (sum > 0) {
 					high--;
 				} else {

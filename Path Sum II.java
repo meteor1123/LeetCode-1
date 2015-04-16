@@ -37,8 +37,9 @@ public class Solution {
 		item.add(root.val);
 		sum = sum - root.val;
 		if (root.left == null && root.right == null) {
-			if (sum == 0)
+			if (sum == 0) {
 				res.add(new ArrayList<Integer>(item));
+			}
 		} else {
 			if (root.left != null) {
 				dfs(root.left, sum, res, item);
