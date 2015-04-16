@@ -15,6 +15,11 @@
 	Tags:Array Backtracking
 
 	和II的 区别在于数组里的数可以无限的试探使用
+
+    This algorithm has time complexity O((n+k)!) 
+        where n is the size of candidates, 
+        and k is the max repeated times for each candidates
+    Space complexity O(m) where m is the size of array for the solution.
 */
 
 

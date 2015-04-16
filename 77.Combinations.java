@@ -95,31 +95,6 @@
               (3,4) - (2,4) - (2,3) - (1,4) - (1,3) - (1,2) 
 
     */
-    // public List<List<Integer>> combine(int n, int k) {
-    //     Deque<List<Integer>> queue = new LinkedList<List<Integer>>();
-    //     List<List<Integer>> res = new LinkedList<List<Integer>>();
-    //     for (int i = 1; i <= n; i++) {
-    //         List<Integer> list = new LinkedList<Integer>();
-    //         list.add(i);
-    //         queue.add(list);
-    //     }
-        
-    //     while (!queue.isEmpty()) {
-    //         List<Integer> list = queue.pollFirst();
-    //         if (list.size() == k) {
-    //             res.add(list);
-    //         } else {
-    //             for (int i = list.get(list.size() - 1) + 1; i <= n; i++) {
-    //                 List<Integer> next_list = new LinkedList<Integer>();
-    //                 next_list.addAll(list);
-    //                 next_list.add(i);
-    //                 queue.addLast(next_list);
-    //             }
-    //         }
-    //     }
-    //     return res;
-    // }
-
 
     public LinkedList<LinkedList<Integer>> combine(int n, int k) {
         Deque<LinkedList<Integer>> queue = new LinkedList<LinkedList<Integer>>();
@@ -145,3 +120,27 @@
         }
         return res;
     }
+        // public List<List<Integer>> combine(int n, int k) {
+    //     Deque<List<Integer>> queue = new LinkedList<List<Integer>>();
+    //     List<List<Integer>> res = new LinkedList<List<Integer>>();
+    //     for (int i = 1; i <= n; i++) {
+    //         List<Integer> list = new LinkedList<Integer>();
+    //         list.add(i);
+    //         queue.add(list);
+    //     }
+        
+    //     while (!queue.isEmpty()) {
+    //         List<Integer> list = queue.pollFirst();
+    //         if (list.size() == k) {
+    //             res.add(list);
+    //         } else {
+    //             for (int i = list.get(list.size() - 1) + 1; i <= n; i++) {
+    //                 List<Integer> next_list = new LinkedList<Integer>();
+    //                 next_list.addAll(list);
+    //                 next_list.add(i);
+    //                 queue.addLast(next_list);
+    //             }
+    //         }
+    //     }
+    //     return res;
+    // }

@@ -22,6 +22,9 @@
 */
 
 public class Solution {
+    //We notice that, once we meet 4 or 40 or 400, they are difficult to solve,
+    //like IIII is not roman four, so we need to convert to IV,
+    //like VIIII is not roman nine, so we need to convert to IX
     //注意到，每逢4就不好处理，比如IIII不可行，需要转换成IV。9也不好处理VIIII所以要转成IX，以此类推
     //40 90 400 900 也应该预先初始化，方便遍历
     public String intToRoman(int num) {
@@ -32,8 +35,10 @@ public class Solution {
         String[] symbol = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V","IV", "I"};
         
         for (int i = 0; num != 0; i++) {
+            //while number is larger than the value[i], we minus the maximum number that we can minus
             while (num >= value[i]) {
                 num -= value[i];
+                //and add  the symbol[i] to the according symbol.
                 str += symbol[i];
             }
         }

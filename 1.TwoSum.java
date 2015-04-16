@@ -37,4 +37,31 @@ public class Solution {
 		}
 		return res;
 	}
+
+	//twoSum 
+	public int[] twoSum(int[] numbers, int target) {
+	    int[] res = new int[2];
+	    if(numbers==null || numbers.length<2)
+	        return null;
+	    int left = 0;
+	    int right = numbers.length-1;
+	    while(left < right)
+	    {
+	        if(numbers[left] + numbers[right] == target)
+	        {
+	            res[0] = number[left];
+	            res[1] = number[right];
+	            return res;
+	        }
+	        else if(numbers[left] + numbers[right] > target)
+	        {
+	            right--;
+	        }
+	        else
+	        {
+	            left++;
+	        }
+	    }
+	    return null;
+	}
 }

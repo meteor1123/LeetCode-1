@@ -11,8 +11,10 @@
 public class Solution {
     //My self
     public String addBinary(String a, String b) {
+        //add the number from the end to start
         int i = a.length() - 1;
         int j = b.length() - 1;
+        //use carry to store the sum of two string
         int carry = 0;
         StringBuilder res = new StringBuilder();
         while (i >= 0 || j >= 0) {

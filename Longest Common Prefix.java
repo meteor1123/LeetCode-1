@@ -1,6 +1,7 @@
 /*
 	Longest Common Prefix
 	Write a function to find the longest common prefix string amongst an array of strings.
+    Time complexity: O(m*n) 
 */
 
 
@@ -11,10 +12,10 @@ public class Solution {
             return "";
         }
         int minLen = Integer.MAX_VALUE;
-        //Find the minimum length of a string 
+        //Find the minimum  string length in the string array
         for (String s : strs) {
             if (s.length() < minLen) {
-                minLen = s.length();
+                minLen = s.length();//update the minimum len
             }
         }
         //use strs[0] to check the every character is match or not
