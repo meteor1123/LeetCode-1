@@ -23,6 +23,8 @@ public class Solution {
             if (s.charAt(i) == '(') {
                 stack.push(i);
             } else {
+                ////if stack is empty, it means that we already found a complete valid combo
+                //update the last index.
                 if (stack.isEmpty()) {
                     start = i + 1;
                 } else {

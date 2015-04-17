@@ -39,6 +39,12 @@
 么？
 只需要在combination的外面加个循环即可。
 */
+
+/*
+    Time complexity is O(2^n), 
+    where n is the cardinality of the set. 
+    Space complexity is O(n).
+*/
 public class Solution {
 
     //concise solution

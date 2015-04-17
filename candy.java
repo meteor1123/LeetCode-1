@@ -29,8 +29,12 @@ public class Solution {
         if(ratings==null || ratings.length==0)
               return 0;
         int len = ratings.length;
+        //means traverse from left ,the current children can get the numbers of sugar, which only depend on the left children
         int[] left = new int[len];
+         //means traverse from right , the current children can get the numbers of sugar, which only depend on the right children
         int[] right = new int[len];
+        
+        //initialize the left[0] equals
         left[0] = 1;
         for (int i = 1; i < len; i++) {
             if (ratings[i] > ratings[i - 1]) {
@@ -39,6 +43,7 @@ public class Solution {
                 left[i] = 1;
             }
         }
+
         right[len - 1] = left[len - 1];
         for (int i = len - 2; i >= 0; i--) {
             if (ratings[i] > ratings[i + 1]) {

@@ -12,6 +12,11 @@
 	Tags: Backtracking， String
 */
 
+/*
+    Time complexity: 
+    Assuming the average number of letters on every number is m,
+    and the length of digits string is n, then the complexity is O(m的n次方).
+*/
 
 public class Solution {
     //Recursive

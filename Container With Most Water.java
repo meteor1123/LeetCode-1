@@ -7,6 +7,8 @@
 */
 
 public class Solution {
+
+    //the input is Array
     public int maxArea(int[] height) {
         if (height.length == 0)
             return 0;
@@ -28,4 +30,27 @@ public class Solution {
         }
         return max;
     }
+
+    //the input is list
+    public int maxArea(List<Integer> height) {
+        if (height.size() == 0)
+            return 0;
+        if (height.size() == 1)
+            return 0;
+        int left = 0;
+        int right = height.size() - 1;
+        //initialize the maximum value,which equals the minimum
+        int max = Math.min(height.get(left), height.get(right)) * Math.abs(left - right);
+        while (left < right) {
+            max = Math.max(Math.min(height.get(left), height.get(right)) * Math.abs(left - right), max);
+            if (height.get(right) > height.get(left)){
+                left = left + 1;
+            }
+            else {
+                right = right - 1;
+            }
+        }
+        return max;
+    }
+}
 }
