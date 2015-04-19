@@ -104,24 +104,24 @@ public class Solution {
                     combi.push(candidates[i]);
                     result.add(new ArrayList<>(combi));
                     combi.pop();
-            }
-            // indices stack and combination stack should have the same size all the time
-            if (!indices.empty()){
-                sum -= combi.pop();
-                i = indices.pop();
-                while (i == size-1 && !indices.empty()) {
-                    i = indices.pop();
-                    sum -= combi.pop();
-
                 }
+                // indices stack and combination stack should have the same size all the time
+                if (!indices.empty()){
+                    sum -= combi.pop();
+                    i = indices.pop();
+                    while (i == size-1 && !indices.empty()) {
+                        i = indices.pop();
+                        sum -= combi.pop();
+
+                    }
+                }
+                i++;
+            } else {
+                combi.push(candidates[i]);
+                sum +=candidates[i];
+                indices.push(i);
             }
-            i++;
-        } else {
-            combi.push(candidates[i]);
-            sum +=candidates[i];
-            indices.push(i);
         }
-    }
-    return result;
+        return result;
     }
 }

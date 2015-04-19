@@ -51,11 +51,10 @@ public class Solution {
 	 				int insert = dp[i-1][j] + 1;
 	 				int delete = dp[i][j-1] + 1;
 	 				int replace = dp[i - 1][j - 1] + 1;
-	 				int min = Math.min(insert, delete);
-	 				dp[i][j] = Math.min(min, replace);
+	 				dp[i][j] = Math.min(replace, Math.min(insert, delete));
 	 			}
 	 		}
 	 	}
 	 	return dp[len1][len2];
-	 }
+	}
 }

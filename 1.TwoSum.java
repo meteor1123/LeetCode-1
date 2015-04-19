@@ -65,7 +65,7 @@ public class Solution {
 	    }
 	    return null;
 	}
-	//brute force
+	//brute force unsorted
 	public int[] twoSum(int[] numbers, int target) {
 		int[] res = new int[2];
 		if (number == null || numbers.length < 2) {

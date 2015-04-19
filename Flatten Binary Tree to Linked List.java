@@ -30,8 +30,11 @@
 		注意的是，因为右孩子会更新，所以为了递归右子树，要在更新之前提前保存右孩子。
 		整个程序需要维护一个全局变量，保存当前所遍历的节点。
 */
+
+//此题实际就是Tree 利用preorder 转 LinkedList, right 就是 next， left就是nul
 public class Solution {
-	//recursive
+
+	//using preorder traverse! recursive
 	TreeNode lastvisited = null;
 	public void flatten(TreeNode root) {
 		if (root == null) {
@@ -40,10 +43,12 @@ public class Solution {
 
 		//save the realright treenode
 		TreeNode realright = root.right;
+		//if last node isn't null , left the last node'e right point to the root,
 		if (lastvisited != null) {
 			lastvisited.left = null;
 			lastvisited.right = root;
 		}
+		
 		lastvisited = root;
 		flatten(root.left);
 		flatten(realright);
