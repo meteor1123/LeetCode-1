@@ -35,6 +35,7 @@ public class Solution {
 			return 0;
 		int min = 0;
 		int len = s.length();
+		//isPalindrome[i][j] means from the substring position i to position j, is palindrome or not
 		boolean[][] isPalindrome = new boolean[len][len];
 		//cuts[i] mean ths substring from i to lenghth ,the minimum cuts
 		int minCuts[] = new int[len + 1];

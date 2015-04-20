@@ -3,6 +3,8 @@
 	Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring.
 */
 
+//http://www.cnblogs.com/EdwardLiu/p/3792493.html
+//http://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-substring-java/
 
 public class Solution {
 	//Brute force1 by myself
@@ -38,8 +40,12 @@ public class Solution {
         return res;
     }
 
-    //Brute force by xiaoyingzi
+    //Brute force by xiaoyingzi, easy to finish
+    //time complexity 
     public String longestPalindrome(String s) {
+        if (s == null || s.length() <= 1) {
+            return s;
+        }
         int maxLen = 0;
         String res = null;
         int len = s.length();
@@ -66,6 +72,44 @@ public class Solution {
             }
         }
         return true;
+    }
+
+    /*
+        Let s be the input string, i and j are two indices of the string.
+
+        Define a 2-dimension array "table" and 
+        let table[i][j] denote whether substring from i to j is palindrome.
+
+        Start condition:
+        table[i][i] == true;
+        table[i][i+1] == true  => s.charAt(i) == s.charAt(i+1) 
+
+        Changing condition:
+        table[i][j] == true => table[i+1][j-1] == true && s.charAt(i) == s.charAt(j)
+    */
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        //isPalin[i][j], i and j are two indices of the string, 
+        //denote whether substring from i to j is palindrome;
+        //isPalin[i][i] is always palindrome, since s.charAt(i) == s.charAt(i)
+        boolean[][] isPalind = new boolean[s.length()][s.length()];
+        String res = "";
+        int maxLen = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            for (int j = i; j < s.length(); j++) {
+                // j - i <= 2 --> aba or aa 肯定palindrome
+                if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || isPalind[i + 1][j - 1])) {
+                    isPalind[i][j] = true;
+                    if (maxLen < j - i + 1) {
+                        maxLen = j - i + 1;
+                        res = s.substring(i, j + 1);
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     //中心回探法

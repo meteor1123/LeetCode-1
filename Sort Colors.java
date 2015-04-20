@@ -9,7 +9,35 @@
 */
 
 public class Solution {
-    //counting sort
+    //Counting sort1 easy to understand
+    public void sortColors(int[] A) {
+        if (A == null || A.length == 0) {
+            return;
+        }
+        int[] colornum = new int[3];
+        for (int elem : A) {
+            if (elem == 0) {
+                colornum[0]++;
+            } 
+            if (elem == 1) {
+                colornum[1]++;
+            }
+            if (elem == 2) {
+                colornum[2]++;
+            }
+        }
+        for (int i = 0; i < colornum[0]; i++) {
+            A[i] = 0;
+        }
+        for (int i = colornum[0]; i < colornum[0] + colornum[1]; i++) {
+            A[i] = 1;
+        }
+        for (int i = colornum[0] + colornum[1]; i < A.length; i++) {
+            A[i] = 2;
+        }
+    }
+
+    //counting sort2
     public void sortColors(int[] A) {
         if (A == null || A.length ==0) {
             return;
@@ -181,4 +209,6 @@ public class Solution {
     		}
     	}
     }
+
+
 }

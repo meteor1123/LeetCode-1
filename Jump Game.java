@@ -15,6 +15,18 @@
 
 */
 public class Solution {
+
+    //Solution by never
+    public boolean canJump(int[] A) {
+        if (A == null || A.length == 0) {
+            return false;
+        }
+        int global = 0;
+        for (int i = 0; i <= global && i < A.length; i++) {
+            global = Math.max(A[i] + i, global);
+        }
+        return global >= A.length - 1 ? true : false;
+    }
 	//DP
     public boolean canJump(int[] A) {
     	if (A == null || A.length == 0) {

@@ -16,7 +16,7 @@
 	Solution: 
 	 //题意：只可以用删除字符的方法从第一个字符串变换到第二个字符串，求出一共有多少种变换方法。
 	 (注意是S变换成T，并且变换后S是完全 匹配T)
-//     r a b b b i t（S.length,j）列     （T.length, i）行
+//     r a b b b i t（S.length 列     （T.length, i）行
 //   1 1 1 1 1 1 1 1
 // r 0 1 1 1 1 1 1 1
 // a 0 0 1 1 1 1 1 1
@@ -37,30 +37,6 @@
 
 */
 public class Solution {
-// public int numDistinct(String S, String T) {
-//         int[][] dp = new int[T.length() + 1][S.length() + 1];
-//         dp[0][0] = 1;
-//         //if String S is empty, all of the dp[i][0] is zero
-//         for(int i = 0; i <= T.length(); i++) {
-//             dp[i][0] = 0;
-//         }
-//         //if String T is empty, all of the dp[0][j] is 1, since we need to delete 
-//         //all the subsequnce with String S
-//         for(int j = 0; j <= S.length(); j++) {
-//             dp[0][j] = 1;
-//         }
-        
-//         for(int i = 1; i <= T.length(); i++) {
-//             for(int j = 1; j <=S.length(); j++) {
-//                 dp[i][j] = dp[i][j - 1];
-//                 if(T.charAt(i - 1) == S.charAt(j - 1)) {
-//                     dp[i][j] += dp[i - 1][j - 1];
-//                 }
-//             }
-//         }
-//         return dp[T.length()][S.length()];
-//     }
-// }
 
 /*
  首先设置动态规划数组dp[i][j]，表示S串中从开始位置到第i位置与T串从开始位置到底j位置匹配的子序列的个数。
@@ -83,18 +59,32 @@ dp[i][j]还要加上dp[i-1][j-1]
 */
 
 
- /*
-动态规划，定义dp[i][j]为字符串i变换到j的变换方法。
-如果S[i]==T[j]，那么dp[i][j] = dp[i-1][j-1] + dp[i-1][j]。
-意思是: 如果当前S[i]==T[j]，那么当前这个字母即可以保留也可以抛弃，means this character can be retained or drop
-       所以变换方法等于保留这个字母的变换方法加上不用这个字母的变换方法。
-       so the convert amount equals retain the character plus do not retain this character.
 
-如果S[i]!=T[i]，那么dp[i][j] = dp[i-1][j]，
-意思是: 如果当前字符不等，那么就只能抛弃当前这个字符。
-       递归公式中用到的dp[0][0] = 1，dp[i][0] = 0（把任意一个字符串变换为一个空串只有一个方法）
- */
+
+    /*  
+        这里我们维护res[i][j]，对应的值是S的前i个字符和T的前j个字符有多少个可行的序列（注意这道题是序列，不是子串，
+        也就是只要字符按照顺序出现即可，不需要连续出现）。
+        下面来看看递推式，假设我们现在拥有之前的历史信息，我们怎么在常量操作时间内得到res[i][j]。
+        假设S的第i个字符和T的第j个字符不相同，那么就意味着res[i][j]的值跟res[i-1][j]是一样的，
+        前面该是多少还是多少，而第i个字符的加入也不会多出来任何可行结果。如果S的第i个字符和T的第j个字符相同，
+        那么所有res[i-1][j-1]中满足的结果都会成为新的满足的序列，当然res[i-1][j]的也仍是可行结果，
+        所以res[i][j]=res[i-1][j-1]+res[i-1][j]。所以综合上面两种情况，
+        res[i][j]= (S[i] == T[j] ? res[i-1][j-1] : 0) + res[i-1][j]
+    */
+    //time complexity: O(m * n)
+
+    /*
+        At first, we set the dynamic programming array dp[i][j],
+        dp[i][j] means ,the String T start from 0 to index i position ,
+                    and the String S start from 0 to index j position.
+                    the matched subsequence amount.
+    */
+
+    // two-dimension dp 
     public int numDistinct(String S, String T) {
+        if (S == null || T == null || S.length() < T.length()) {
+            return 0;
+        }
         int[][] dp = new int[S.length() + 1][T.length() + 1];
         dp[0][0] = 1;//initial
         
@@ -106,11 +96,27 @@ dp[i][j]还要加上dp[i-1][j-1]
            
         for (int i = 1; i <= S.length(); i++) {
             for (int j = 1; j <= T.length(); j++) {
-                dp[i][j] = dp[i - 1][j];
-                if (S.charAt(i - 1) == T.charAt(j - 1)) 
-                    dp[i][j] += dp[i - 1][j - 1];
+                dp[i][j] = dp[i - 1][j];//no matter the char i and char j equals or not, at least has dp[i - 1][j]
+                if (S.charAt(i - 1) == T.charAt(j - 1)) //means this character can be retained or drop
+                    dp[i][j] += dp[i - 1][j - 1];//so the convert amount equals retain the character plus do not retain this character.
             }
         }
      
         return dp[S.length()][T.length()];
+    }
+
+    //one -dimension dp
+    public int numDistinct(String S, String T) {
+        if (S == null || T == null || S.length() < T.length()) {
+            return 0;
+        }
+        //res[i] means the in front of i substring (0, i) has how many dinstinct sequence with S.
+        int[] res = new int[T.length() + 1];
+        res[0] = 1;
+        for (int i = 1; i <= S.length(); i++) {
+            for (int j = T.length(); j > 0; j--) {
+                res[j] = S.charAt(i - 1) == T.charAt(j - 1) ? res[j - 1] + res[j] : res[j];
+            }
+        }
+        return res[T.length()];
     }

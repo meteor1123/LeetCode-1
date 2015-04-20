@@ -11,6 +11,7 @@
 		0.1 < 1.1 < 1.2 < 13.37
 */
 
+//solution1
 public class Solution {
     public int compareVersion(String version1, String version2) {
         String[] str1 = version1.split("\\.");
@@ -23,6 +24,28 @@ public class Solution {
         	int compare = v1.compareTo(v2);
         	if (compare != 0)
         		return compare;
+        }
+        return 0;
+    }
+}
+
+//solution2
+public class Solution {
+    public int compareVersion(String version1, String version2) {
+        String[] strs1 = version1.split("\\.");
+        String[] strs2 = version2.split("\\.");
+        int maxLen = Math.max(strs1.length, strs2.length);
+        int[] nums1 = new int[maxLen];
+        int[] nums2 = new int[maxLen];
+        for (int i = 0; i < strs1.length; i++) {
+            nums1[i] = Integer.parseInt(strs1[i]);
+        }
+        for (int i = 0; i < strs2.length; i++) {
+            nums2[i] = Integer.parseInt(strs2[i]);
+        }
+        for (int i = 0; i < maxLen; i++) {
+            if (nums1[i] > nums2[i]) return 1;
+            else if (nums1[i] < nums2[i]) return -1;
         }
         return 0;
     }

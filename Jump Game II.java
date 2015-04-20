@@ -20,7 +20,7 @@ public class Solution {
         for (int i = 1; i < A.length; i++) {
             steps[i] = Integer.MAX_VALUE;
             for (int j = 0; j < i; j++) {
-                if (steps[i] != Integer.MAX_VALUE && A[j] + j > A[i]) {
+                if (steps[i] != Integer.MAX_VALUE && A[j] + j > i) {
                     steps[i] = steps[j] + 1;
                     break;
                 }
