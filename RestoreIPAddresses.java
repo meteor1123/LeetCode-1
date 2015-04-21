@@ -15,6 +15,7 @@
 	注意开头如果是0的话要特殊处理，如果开头是0，判断整个串是不是0，不是的话该字符就是非法的。因为001，01都是不对的。
 */
 public class Solution {
+    //recursive
     public List<String> restoreIpAddresses(String s) {
     	ArrayList<String> res = new ArrayList<String>();
     	if (s == null || s.length() < 4 || s.length() > 12)
@@ -42,5 +43,45 @@ public class Solution {
     		return true;
     	else 
     		return false;
+    }
+
+    //Iterative
+    /*
+        3-loop divides the string s into 4 substring: s1, s2, s3, s4. 
+        Check if each substring is valid. 
+        In isValid, strings whose length greater than 3 or equals to 0 is not valid; 
+        or if the string's length is longer than 1 and the first letter is '0' then it's invalid;
+         or the string whose integer representation greater than 255 is invalid.
+
+
+    */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<String>();
+        int len = s.length();
+        //i means the first ip address block,
+        for (int i = 1; i < 4 && i < len - 2; i++) { 
+            //j is the second ip address block
+            for (int j = i + 1; j < i + 4 && j < len - 1; j++) {
+                //k is the 
+                for (int k = j + 1; k < j + 4 && k < len; k++) {
+                    String s1 = s.substring(0, i);
+                    String s2 = s.substring(i, j);
+                    String s3 = s.substring(j, k);
+                    String s4 = s.substring(k, len);
+                    if (isValid(s1) && isValid(s2) && isValid(s3) && isValid(s4)) {
+                        res.add(s1 + "." + s2 + "." + s3 + "." + s4);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+    
+    public boolean isValid(String s) {
+        if (s.length() > 3 || s.length() == 0 || (s.charAt(0) == '0' && s.length() > 1) 
+            ||Integer.parseInt(s) > 255) {
+                return false;
+        }
+        return true;
     }
 }

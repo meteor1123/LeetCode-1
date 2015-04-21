@@ -41,8 +41,10 @@ public class Solution {
 		int minCuts[] = new int[len + 1];
 
 		//initialize the cuts[i]
+		
+		//cut[i] means  from i position to the length of String s include how many cuts, that can make minimum palindrome partition
 		for (int i = 0; i < len; i++)
-			minCuts[i] = len - i;
+			minCuts[i] = len - i;//in the worst case, every character need to cut, 
 
 		//we need to update the state from len - 1 ~ len  to 0 ~ len
 		for (int i = len - 1; i >= 0; --i) {

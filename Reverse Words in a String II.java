@@ -11,6 +11,14 @@
 	2）follow-up问题：k-step reverse。也就是在第二部翻转的时候，把k个单词看作一个长单词，进行翻转。
 */
 public class Solution {
+
+	/*
+		I am good student: step1 : reverse all the array -> tneduts doog ma I
+						   step2 : reverse the single word when meet the  " "
+								    student doog ma I
+								    student good ma I
+
+	*/
 	public void reverseWords(char[] s) {
 		reverse(s, 0, s.length - 1);
 		//i is the every single word start position

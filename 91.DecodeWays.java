@@ -96,6 +96,6 @@ public class Solution {
             return false;
         }
         int code = Integer.parseInt(s);
-        return code>=1 && code<=26;
+        return code >= 1 && code <= 26;
     }
 }

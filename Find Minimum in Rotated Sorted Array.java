@@ -13,12 +13,14 @@ public class Solution {
         int mid;
         while (start + 1 < end) {
             mid = start + (end - start) / 2;
+            // the mid value large than end , means left side is sorted and rotated
             if (num[mid] >= num[end]) {
                 start = mid;
             } else {
                 end = mid;
             }
         }
+        //at last we just compare the num[]
         if (num[start] < num[end]) {
             return num[start];
         } else {

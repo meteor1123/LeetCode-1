@@ -61,17 +61,23 @@ public class Solution {
         if (digits.length() == 0 || digits == null) {
             return res;
         }
+        //at first we use empty string initialize the res list 
         res.add("");
+        //and new a keyboard String array
         String[] keyboard = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        //treave all the number of String digits
         for (int i = 0; i < digits.length(); i++) {
+            //base on the digits to selce the according letters in keyborad
             String letters = keyboard[digits.charAt(i) - '0'];
-            ArrayList<String> newRes = new ArrayList<String>();
+            //new a temp ArrayList to restore the temp resut
+            ArrayList<String> temp = new ArrayList<String>();
+            //traver the result ArrayList
             for (int j = 0; j < res.size(); j++) {
                 for (int k = 0; k < letters.length(); k++) {
-                    newRes.add(res.get(j) + Character.toString(letters.charAt(k)));
+                    temp.add(res.get(j) + Character.toString(letters.charAt(k)));
                 }
             }
-            res = newRes;
+            res = temp;
         }
         return res;
     }

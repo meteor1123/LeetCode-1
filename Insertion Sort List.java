@@ -56,25 +56,27 @@ public class Solution {
 	public ListNode insertionSortList(ListNode head) {
 		if (head == null || head.next == null)
 			return head;
-		ListNode newhead = new ListNode(0);
-		ListNode cur = head;
-		//cur代表当前要排序的店
+		ListNode newhead = new ListNode(0);//dummy head for the result sorted LinkedList
+		ListNode cur = head;//cur is current node, the node to be plugged in the sorted list
+
+		//cur代表当前要排序的点
 		while (cur != null) {
 			//next是cur的下一结点，先保存，后面交换后 cur 要往前走
-			ListNode next = cur.next;
+			ListNode next = cur.next;//keep a record of the current node's next
 			//每次循环都将pre设为头结点，每次从头开始遍历比较
-			ListNode pre = newhead;
+			ListNode pre = newhead;//after one search, put pre back to its original place
 
 			//每次pre从第一个结点开始比较，只要pre.next 非空 并且 pre.next的值小于cur就一直往前走
 			//注意这里比较的是pre.next和cur的值
+			// //use pre to traverse the sorted list to find the suitable place to plug in
 			while (pre.next != null && pre.next.val < cur.val)
 				pre = pre.next;
 			
 			//跳出while循环意味着，1.要不pre.next为空，或者 2.pre.next的val值 大于等于cur,应将cur插到pre后面，
 			//因此需要重新将pre.next指向新的比较结点cur
-			cur.next = pre.next;
+			cur.next = pre.next; // plug in current node to the right place
 			pre.next = cur;
-			cur = next;
+			cur = next;//go on to deal with the next node in the unsorted list
 		}
 		return newhead.next;
 	}

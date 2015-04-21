@@ -55,27 +55,88 @@ public class Solution {
 			}
 		}
 	}
+	/*
+		The basic idea is, to permute n numbers, we can add the nth number into the 
+		resulting List<List<Integer>> from the n-1 numbers, in every possible position.
+		For example, if the input num[] is {1,2,3}: First, add 1 into the initial List<List<Integer>> 
+		(let's call it "answer").
+		Then, 2 can be added in front or after 1. So we have to copy the List in answer (it's just {1}), 
+		add 2 in position 0 of {1}, then copy the original {1} again, and add 2 in position 1. 
+		Now we have an answer of {{2,1},{1,2}}. There are 2 lists in the current answer.
 
-	//iteration
+		Then we have to add 3. first copy {2,1} and {1,2}, add 3 in position 0; then copy {2,1} and {1,2}, 
+		and add 3 into position 1, then do the same thing for position 3.
+		 Finally we have 2*3=6 lists in answer, which is what we want.
+	*/
+	//iteration0
     public List<List<Integer>> permute(int[] num) {
-        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+    	List<List<Integer>> ans = new ArrayList<List<Integer>>();
+    	if (num.length == 0) {
+    		return ans;
+    	}
+    	List<Integer> l0 = new ArrayList<Integer>();
+    	l0.add(num[0]);
+    	ans.add(l0);
+    	/*	
+    		if nums[] = {1, 2, 3}
+    		at first , ans = { (1) }
+    					after second for loop : ans = { (2, 1), (1, 2)}
+    					
+    					finaly { (3,2,1) (3,1,2) (2,3,1) (1,3,2) (2,1,3) (1,2,3)}
+    	*/
+    	for (int i = 1; i < num.length; ++i) {
+    		List<List<Integer>> new_ans = new ArrayList<List<Integer>>();
+    		for (int j = 0; j <= i; ++j) {
+    			for (List<Integer> l : ans) {
+    				List<Integer> new_l = new ArrayList<Integer>(l);
+    				new_l.add(j, num[i]);
+    				new_ans.add(new_l);
+    			}
+    		}
+    		ans = new_ans;
+    	}
+    	return ans;
+    }
+
+	//iteration1
+	public List<List<Integer>> permute(int[] num) {
+    	LinkedList<List<Integer>> res = new LinkedList<List<Integer>>();
+    	res.add(new ArrayList<Integer>());
+	    for (int n : num) {
+	        int size = res.size();
+	        for (; size > 0; size--) {
+	            List<Integer> r = res.pollFirst();
+	            for (int i = 0; i <= r.size(); i++) {
+	                List<Integer> t = new ArrayList<Integer>(r);
+	                t.add(i, n);
+	                res.add(t);
+	            }
+	        }
+	    }
+    	return res;
+	}
+	//iteration2
+    public List<List<Integer>> permute(int[] num) {
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
         List<List<Integer>> preList = null;
         List<Integer> subList = new LinkedList<Integer>();
-        if(num.length == 0) return wrapList;
+        if(num.length == 0) {
+        	return res;
+        }
         subList.add(num[0]);
-        wrapList.add(subList);
-        preList = wrapList;
-        for(int i=1; i<num.length; i++) {
-            wrapList = new LinkedList<List<Integer>>();
-            for(int j=0; j<preList.size(); j++) {
-                for(int k=0; k<=preList.get(j).size(); k++) {
+        res.add(subList);
+        preList = res;
+        for(int i = 1; i < num.length; i++) {
+            res = new LinkedList<List<Integer>>();
+            for(int j = 0; j < preList.size(); j++) {
+                for(int k = 0; k <= preList.get(j).size(); k++) {
                     subList = new LinkedList<Integer>(preList.get(j));
                     subList.add(k, num[i]);
-                    wrapList.add(subList);
+                    res.add(subList);
                 }
             }
-            preList = wrapList;
+            preList = res;
         }
-        return wrapList;
+        return res;
     }
 }

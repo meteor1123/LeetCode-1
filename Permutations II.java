@@ -28,7 +28,7 @@ public class Solution {
         
         for (int i = 0; i < num.length; i++) {
             //if the num[i] equals num[i - 1] ,and the visited[i - 1] is true,
-    		// mean that we meet the duplicate situation, so we jump to this for loop, and to next number
+    		// mean that we meet the duplicate situation, so we skip this for loop, and to next number
             if (i > 0 && num[i - 1] == num[i] && !visited[i - 1]) {
                 continue;
             }

@@ -52,18 +52,25 @@ public class Solution {
 		int start = 0;
         int end = A.length - 1;
         int mid;
+
         while (start + 1 < end) {
             mid = start + (end - start) / 2;
+            //denote we find the target
             if (A[mid] == target) {
                 return mid;
             }
+            //A[start] < A[mid] means the array doesn't rotated, just search like the normal array
             if (A[start] < A[mid]) {
+            	//target in the front of mid
                 if (A[start] <= target && target <= A[mid]) {
                     end = mid;
+                //target in the back of mid 
                 } else {
                     start = mid;
                 }
+            //this situation means the array had already rotated
             } else {
+            	//so we need to check the target, if target large than A[mid] and less than A[end]
                 if (A[mid] <= target && target <= A[end]) {
                     start = mid;
                 } else {

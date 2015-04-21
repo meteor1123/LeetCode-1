@@ -21,7 +21,14 @@ public class Solution {
     //长的链表开始多走 （h1的数量 - h2的数量）步，然后和短链表同步往下走，遇到的第一个相同的节点就是最早的公共节点并返回
     //没有找到相同的，或者有一方走到null，则返回null.
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-    	int lenA = 0;
+    	/*
+            1.分别算出A 和 B链表的长度
+            2. 比较A 和B 哪个长，哪个长就走 长 - 短的 路程
+            3. 短的从开头开始走， 长的从长减短的位置开始走
+            4. 此时遇到的
+        */
+
+        int lenA = 0;
     	int lenB = 0;
     	ListNode h1 = headA;
     	ListNode h2 = headB;

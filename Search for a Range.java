@@ -104,6 +104,7 @@ public int[] searchRange(int[] A, int target) {
         end = A.length - 1;
         while (start + 1 < end) {
             mid = start + (end - start) / 2;
+            //if the A[mid] == target, we move the bound to left, so let end = mid;
             if (A[mid] == target) {
                 end = mid;
             } else if (A[mid] < target) {
@@ -113,6 +114,7 @@ public int[] searchRange(int[] A, int target) {
             }
         }
         
+        //check the start position and end position to set the left bound
         if (A[start] == target) {
             bound[0] = start;
         } else if (A[end] == target) {
@@ -127,6 +129,7 @@ public int[] searchRange(int[] A, int target) {
         end = A.length - 1;
         while (start + 1 < end) {
             mid = start + (end - start) / 2;
+            //if the A[mid] == target, we move the bound to right, so let start = mid;
             if (A[mid] == target) {
                 start = mid;
             } else if (A[mid] < target) {
@@ -135,6 +138,7 @@ public int[] searchRange(int[] A, int target) {
                 end = mid;
             }
         }
+        //check the start position and end position to set the right bound
         if (A[end] == target) {
             bound[1] = end;
         } else if (A[start] == target) {

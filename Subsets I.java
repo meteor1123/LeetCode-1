@@ -62,12 +62,47 @@ public class Solution {
     
     public void subsetsHelper(int start, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res, int[] S) {
         for (int i = start; i < S.length; i++) {
-            //
             item.add(S[i]);
             res.add(new ArrayList<Integer>(item));
             subsetsHelper(i + 1, item, res, S);
             item.remove(item.size() - 1);
         }
+    }
+
+    //Iterative
+    public ArrayList<ArrayList<Integer>> subsets(int[] S) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        //at first the res only has a null elment
+        res.add(new ArrayList<Integer>());
+        //and we sort the array S
+        Arrays.sort(S);
+        //get the number from sort S
+        for (int i : S) {
+            /*
+                like at first is res = { {} }
+                               res = { {} ,{1} }
+                                res = { {}, {1} } + {{2} ,{1, 2} } = {{}, {1}, {2}, {1, 2}};
+                                res = {{3}, {1,3}, {2, 3}, {1, 2, 3}} + {{}, {1}, {2}, {1, 2}}
+                                    = [
+                                          [3],
+                                          [1],
+                                          [2],
+                                          [1,2,3],
+                                          [1,3],
+                                          [2,3],
+                                          [1,2],
+                                          []
+                                        ]
+            */
+            List<List<Integer>> tmp = new ArrayList<>();
+            for (List<Integer> sub : res) {
+                List<Integer> a = new ArrayList<>(sub);
+                a.add(i);
+                tmp.add(a);
+            }
+            res.addAll(tmp);
+        }
+        return res;
     }
 
 
