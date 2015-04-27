@@ -61,6 +61,7 @@ public class Solution {
         int l = 0;
         int r = s.length() - 1;
         while (l < r) {
+            //we need to use isValid methond to check the character whether is valid alphbet or not
             if (!isValid(s.charAt(l))) {
                 l++;
                 continue;

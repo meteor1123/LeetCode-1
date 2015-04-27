@@ -30,7 +30,8 @@
 															   				  此时curMap将不停的将substring(left, left + wordLen) 的个数-1，直到，里面不在有冗余的单词为止
 
 
-*/
+*/  
+    //Solution1: code ganker 太长                                                                           
 	public ArrayList<Integer> findSubstring(String S, String[] L) {
         ArrayList<Integer> res = new ArrayList<Integer>();
         if (S == null || S.length() == 0 || L == null || L.length == 0)
@@ -120,4 +121,53 @@
             }
         }
         return res;
+    }
+
+
+    //concise！
+    public List<Integer> findSubstring(String S, String[] L) {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        //use a target to store the every single word's amount of String array
+        HashMap<String, Integer> target = new HashMap<String, Integer>();
+        //use real HashMap to find the matched word in String S
+        HashMap<String, Integer> real = new HashMap<String, Integer>();
+        
+        //store every word from L to hashmap, the value is appear amount
+        for (String str : L) {
+            if (target.containsKey(str)) {
+                int val = target.get(str);
+                target.put(str, val + 1);
+            } else {
+                target.put(str, 1);
+            }
+        }
+        
+        //wSize denote a word's length
+        int wSize = L[0].length();
+        //lSize denote the length of String array
+        int lSize = L.length;
+
+        //travese the String S 
+        for (int i = 0; i <= S.length() - wSize * lSize; i++) {
+            //int the second for loop, evertime just check wSize * lSize string, 
+            for (int j = i; j <= i + wSize * lSize - 1; j = j + wSize) {
+                
+                String temp = S.substring(j, j + wSize);
+                if (!target.containsKey(temp)) {
+                    break; 
+                } 
+                if (real.containsKey(temp)) {
+                    int value = real.get(temp);
+                    real.put(temp, value + 1);
+                } else {
+                    real.put(temp, 1);
+                }
+            }
+            if (real.equals(target)) {
+                res.add(i);
+            }
+            real.clear();
+        }
+        return res;
+        
     }

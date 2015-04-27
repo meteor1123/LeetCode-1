@@ -6,6 +6,8 @@ public class moveZero {
 	//swap and the part of non-zero is  ordered
 	public void moveZeroEnd (int[] arr) {
 		int len = arr.length;
+		//use two pointer,
+		//
 		for (int i = 0; int j = 0; j < len; j++) {
 			if (arr[j] != 0) {
 				if (i < j) {
@@ -28,6 +30,9 @@ public class moveZero {
 			return;
 		}
 		int count = 0;
+		//use a count to record the number of non-zero number
+		//every time when the number do not equal zero,
+		//we set the arr[i] value to the count index ,and add the count 
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] != 0) {
 				//count is used to record the amount of non-zero number

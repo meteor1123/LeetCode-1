@@ -7,38 +7,38 @@
 //http://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-substring-java/
 
 public class Solution {
-	//Brute force1 by myself
-    public String longestPalindrome(String s) {
-        String res = "";
-        if (s == null || s.length() == 0) {
-            return res;
-        }
-        int maxLen = 0;
-        for (int i = 0; i < s.length() - 1; i++) {
-            for (int j = s.length() - 1; j > i; j--) {
-                int left = i;
-                int right = j;
-                if (s.charAt(left) != s.charAt(right)) {
-                    continue;
-                }
-                while (left < right && s.charAt(left) == s.charAt(right)) {
-                    if (left + 1 == right) {
-                        if (j - i + 1 > maxLen) {
-                        	maxLen = j - 1 + 1;
-                            res = s.substring(i, j + 1);
-                        }
-                        // break;
-                    }           
-                    left++;
-                    right--;
-                    if (left > s.length() - 1 || right < 0) {
-                    	break;
-                    }
-                }
-            }
-        }
-        return res;
-    }
+	// //Brute force1 by myself
+ //    public String longestPalindrome(String s) {
+ //        String res = "";
+ //        if (s == null || s.length() == 0) {
+ //            return res;
+ //        }
+ //        int maxLen = 0;
+ //        for (int i = 0; i < s.length() - 1; i++) {
+ //            for (int j = s.length() - 1; j > i; j--) {
+ //                int left = i;
+ //                int right = j;
+ //                if (s.charAt(left) != s.charAt(right)) {
+ //                    continue;
+ //                }
+ //                while (left < right && s.charAt(left) == s.charAt(right)) {
+ //                    if (left + 1 == right) {
+ //                        if (j - i + 1 > maxLen) {
+ //                        	maxLen = j - 1 + 1;
+ //                            res = s.substring(i, j + 1);
+ //                        }
+ //                        // break;
+ //                    }           
+ //                    left++;
+ //                    right--;
+ //                    if (left > s.length() - 1 || right < 0) {
+ //                    	break;
+ //                    }
+ //                }
+ //            }
+ //        }
+ //        return res;
+ //    }
 
     //Brute force by xiaoyingzi, easy to finish
     //time complexity 

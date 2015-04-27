@@ -35,7 +35,7 @@ public class Solution {
         String[] symbol = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V","IV", "I"};
         
         for (int i = 0; num != 0; i++) {
-            //while number is larger than the value[i], we minus the maximum number that we can minus
+            //while number is larger than the value[i], we minus the maximum value that we can minus
             while (num >= value[i]) {
                 num -= value[i];
                 //and add  the symbol[i] to the according symbol.

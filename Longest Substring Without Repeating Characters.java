@@ -34,8 +34,9 @@ public class Solution {
                 }
                 left++;//因为上面的left 前进到和right相等的那个字符时就停止，也就是在right的左边，
                        //而下一次的查找left应该从right位置开始，所以这里要在外面left++
-            } else 
+            } else {
                 hs.add(s.charAt(right));
+            }
             right++;
         }
         max = Math.max(max, right - left);

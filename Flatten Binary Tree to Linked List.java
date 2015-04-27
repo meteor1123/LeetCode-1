@@ -43,7 +43,7 @@ public class Solution {
 
 		//save the realright treenode
 		TreeNode realright = root.right;
-		//if last node isn't null , left the last node'e right point to the root,
+		//if last node isn't null , let the last node'e right point to the root,
 		if (lastvisited != null) {
 			lastvisited.left = null;
 			lastvisited.right = root;
@@ -66,17 +66,21 @@ public class Solution {
 		Stack<TreeNode> stack = new Stack<TreeNode>();
 		TreeNode p = root;
 		while (p != null || !stack.empty()) {
+			//if p.right != null, then push to the stack
 			if (p.right != null) {
 				stack.push(p.right);
 			}
-
+			//if p.left != null then , make p.left point to the p.right, and set the left to null
 			if (p.left != null) {
 				p.right = p.left;
 				p.left = null;
+			//if the  left is null ,we need to check the stack,
+			//if stack isn't empty, we set the right children to the top elment of the stack.and pop()
 			} else if (!stack.isEmpty()) {
 				p.right = stack.pop();
 			}
 
+			//let p = p.right
 			p = p.right;
 		}
 	}

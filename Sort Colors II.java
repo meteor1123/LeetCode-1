@@ -9,27 +9,35 @@ class Solution {
      * @param k: An integer
      * @return: nothing
      */
+    //use k times  partition of quick sort, 
     public void sortColors2(int[] colors, int k) {
         // write your code here
-        if (colors == null || colors.length == 0 || k <= 1) 
+        if (colors == null || colors.length == 0 || k <= 1) {
             return;
-        int l = 0, r = colors.length-1;
-        int pivot = r;
-            while (true) {
-                while (l < r && colors[l] < colors[pivot]) {
-                    r--;
-                }
-                while (l < r && colors[l] == cnt) {
-                    l++;
-                }
-                if (l == r) break;
-                swap(colors, l, r);
-            }
-            l++;
-            r = colors.length-1;
-            if (l == r) break;
+        }
+        int r = colors.length - 1;
+        for (int i = 0; i < k - 1; ++i) {
+            r = partition(colors, 0, r, k - i - 1);
+        }
     }
     
+    public int partition(int[] colors, int l, int r, int pivot) {
+        int i = l, j = r;
+        while (i <= j) {
+            while (i < r && colors[i] <= pivot) {
+                ++i;
+            }
+            while (j > 0 && colors[j] > pivot) {
+                --j;
+            }
+            if (i <= j) {
+                swap(colors , i, j);
+                i++;
+                j--;
+            }
+        }
+        return i - 1;
+    }
     public void swap(int[] colors, int l, int r) {
         int temp = colors[l];
         colors[l] = colors[r];

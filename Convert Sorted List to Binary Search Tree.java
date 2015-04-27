@@ -97,6 +97,32 @@ public class Solution {
         root.right = right;
         return root;
     }
+
+    //use O(n) space
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) return null;
+        
+        ArrayList<Integer> listNode = new ArrayList<Integer>();
+        while(head != null){
+            listNode.add(head.val);
+            head = head.next;
+        }
+        int left = 0;
+        int right= listNode.size()-1;
+        return helper(listNode, left, right);
+    }
+    
+    public TreeNode helper(ArrayList<Integer> listNode, int left, int right){
+        if(left>right) return null;
+        
+        TreeNode node = new TreeNode(0);
+        int mid = (left+right)/2;
+        node.val = listNode.get(mid);
+        node.left = helper(listNode, left, mid-1);
+        node.right = helper(listNode, mid+1, right);            
+        return node;
+    }
+}
 }
 
 

@@ -16,15 +16,13 @@ public class Solution {
         Stack<Integer> stack = new Stack<Integer>();
         int start = 0;
         int maxLen = 0;
-        //dp means the length of String,which has how many valid parentheses 
-
-        
+        //use a stack to store the unvalid parentheses
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == '(') {
                 stack.push(i);
             } else {
-                ////if stack is empty, it means that we already found a complete valid combo
-                //update the last index.
+                ////if stack is empty, it means that we already found a complete valid combo and pop to the stack
+                // or since we meet a right parenthesesm so we need to update the last index. to store the unmatched  position
                 if (stack.isEmpty()) {
                     start = i + 1;
                 } else {

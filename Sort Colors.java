@@ -139,47 +139,47 @@ public class Solution {
     }
     
     //Merge Sort
-    // public void sortColors(int[] A) {
-    //     if (A == null || A.length <= 1) {
-    //         return;
-    //     }
-    //     sortColors(A, 0, A.length - 1);
-    // }
-    // public static int[] sortColors(int[] A, int low, int high) {
-    //     int mid = (low + high) / 2;
-    //     if (low < high) {
-    //         sortColors(A, low, mid);
-    //         sortColors(A, mid + 1, high);
-    //         merge(A, low, mid, high);
-    //     }
-    //     return A;
-    // }
+    public void sortColors(int[] A) {
+        if (A == null || A.length <= 1) {
+            return;
+        }
+        sortColors(A, 0, A.length - 1);
+    }
+    public static int[] sortColors(int[] A, int low, int high) {
+        int mid = (low + high) / 2;
+        if (low < high) {
+            sortColors(A, low, mid);
+            sortColors(A, mid + 1, high);
+            merge(A, low, mid, high);
+        }
+        return A;
+    }
     
-    // public static void merge(int[] A, int low, int mid, int high) {
-    //     int[] temp = new int[high - low + 1];
-    //     int i = low;
-    //     int j = mid + 1;
-    //     int k = 0;
+    public static void merge(int[] A, int low, int mid, int high) {
+        int[] temp = new int[high - low + 1];
+        int i = low;
+        int j = mid + 1;
+        int k = 0;
         
-    //     while (i <= mid && j <= high) {
-    //         if (A[i] < A[j]) {
-    //             temp[k++] = A[i++];
-    //         } else {
-    //             temp[k++] = A[j++];
-    //         }
-    //     }
+        while (i <= mid && j <= high) {
+            if (A[i] < A[j]) {
+                temp[k++] = A[i++];
+            } else {
+                temp[k++] = A[j++];
+            }
+        }
         
-    //     while (i <= mid) {
-    //         temp[k++] = A[i++];
-    //     }
-    //     while (j <= high) {
-    //         temp[k++] = A[j++];
-    //     }
+        while (i <= mid) {
+            temp[k++] = A[i++];
+        }
+        while (j <= high) {
+            temp[k++] = A[j++];
+        }
         
-    //     for (int l = 0; l < temp.length; l++) {
-    //         A[l + low] = temp[l];
-    //     }
-    // }
+        for (int l = 0; l < temp.length; l++) {
+            A[l + low] = temp[l];
+        }
+    }
 
     //double pointer
     public void sortColors(int[] A) {

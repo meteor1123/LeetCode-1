@@ -23,14 +23,26 @@
 
 public class Solution {
     public String countAndSay(int n) {
+        //When the n equals zero just return empty string
         if (n <= 0) {
             return "";
         }
+
+        //initialize the  res to "1"
         String curRes = "1";
+
+        //build the sequence from n = 1 
         int start = 1;
+        
         while (start < n) {
             StringBuilder res = new StringBuilder();
+
             int count = 1;
+            //check the res string ,and get the character from the left side,
+            //every time we check the first and second character are equals or not
+            //if equals,we just increase the count 
+            //if no equals we append the count and the second character to the res String
+            //and reset the count
             for (int j = 1; j < curRes.length(); j++) {
                 if (curRes.charAt(j) == curRes.charAt(j - 1)) {
                     count++;
