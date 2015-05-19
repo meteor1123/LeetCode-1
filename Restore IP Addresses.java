@@ -18,7 +18,9 @@
 
 */
 public class Solution {
-	 public ArrayList<String> restoreIpAddresses(String s) {
+    
+    //Solution1: backtracking
+	public ArrayList<String> restoreIpAddresses(String s) {
         ArrayList<String> res = new ArrayList<String>();
         String item = new String();
         if (s.length() < 4 || s.length() > 12) {
@@ -50,4 +52,37 @@ public class Solution {
         return val <= 255 && val >= 0;
         
     }
+
+    //Solution2: Iterative
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<String>();
+        int len = s.length();
+        //i means the first ip address block,
+        for (int i = 1; i < 4 && i < len - 2; i++) {
+            //j is the second ip address block
+            for (int j = i + 1; j < i + 4 && j < len - 1; j++) {
+                //k is the 
+                for (int k = j + 1; k < j + 4 && k < len; k++) {
+                    String s1 = s.substring(0, i);
+                    String s2 = s.substring(i, j);
+                    String s3 = s.substring(j, k);
+                    String s4 = s.substring(k, len);
+                    if (isValid(s1) && isValid(s2) && isValid(s3) && isValid(s4)) {
+                        res.add(s1 + "." + s2 + "." + s3 + "." + s4);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+    
+    public boolean isValid(String s) {
+        if (s.length() > 3 || s.length() == 0 || (s.charAt(0) == '0' && s.length() > 1) 
+            ||Integer.parseInt(s) > 255) {
+                return false;
+        }
+        return true;
+    }
 }
+
+

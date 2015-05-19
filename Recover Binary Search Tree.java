@@ -44,7 +44,7 @@ public class Solution {
 
     /*
         since a inorder array of BST is a ascending sequence
-        if two node are in wrong way, must be like  1 2 3 4 5 6 --> 1 5 3  4 2 6
+        if two node are in wrong way, must be like  1 2 3 4 5 6 --> 1 5 3 4 2 6
         pre > root and 
     */
     private TreeNode firstElement = null;

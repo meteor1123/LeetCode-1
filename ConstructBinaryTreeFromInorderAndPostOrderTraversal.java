@@ -33,12 +33,12 @@
 
 public class Solution {
      public TreeNode buildTree(int[] inorder, int[] postorder) {
-    	int inLen = inorder.length;
-    	int postLen = postorder.length;
-    	return buildTree(inorder, 0, inLen - 1, postorder, 0, postLen - 1);
+    	  int inLen = inorder.length;
+    	  int postLen = postorder.length;
+        return buildTree(postorder, 0, postLen - 1, inorder, 0, inLen - 1);
     }
 
-    public TreeNode buildTree(int[] in, int inStart, int inEnd, int[] post, int postStart, int postEnd) {
+    public TreeNode buildTree(int[] post, int postStart, int postEnd, int[] in, int inStart, int inEnd) {
     	if (inStart > inEnd || postStart > postEnd)
     		return null;
 
@@ -56,8 +56,8 @@ public class Solution {
     	TreeNode root = new TreeNode(rootVal);
     	// inStart到rootIndex - 1是 左边子树在中序遍历数组的范围
     	// 
-    	root.left = buildTree(in, inStart, rootIndex - 1, post, postStart, postStart + len - 1);
-    	root.right = buildTree(in, rootIndex + 1, inEnd, post, postStart + len, postEnd - 1);
+    	root.left = buildTree(post, postStart, postStart + len - 1, in, inStart, rootIndex - 1);
+    	root.right = buildTree(post, postStart + len, postEnd - 1, in, rootIndex + 1, inEnd);
     	return root;	
     }
 

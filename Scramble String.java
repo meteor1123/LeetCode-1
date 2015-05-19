@@ -100,19 +100,24 @@ public class Solution {
     */
     public class Solution {
     public boolean isScramble(String s1, String s2) {
-        if (s1 == null || s2 == null || s1.length() != s2.length()) return false;
-        if (s1.length() == 0) return true;
-        boolean[][][] check = new boolean[s1.length()][s2.length()][s1.length()+1];
-        for (int i=0; i<s1.length(); i++) {
-            for (int j=0; j<s2.length(); j++) {
+        if (s1 == null || s2 == null || s1.length() != s2.length()) {
+            return false;
+        }
+        if (s1.length() == 0) {
+            return true;
+        }
+        boolean[][][] check = new boolean[s1.length()][s2.length()][s1.length() + 1];
+        for (int i = 0; i < s1.length(); i++) {
+            for (int j=0; j < s2.length(); j++) {
                 check[i][j][1] = s1.charAt(i) == s2.charAt(j);
             }
         }
-        for (int len=2; len<=s1.length(); len++) {
-            for (int i=0; i+len-1<s1.length(); i++) {
-                for (int j=0; j+len-1<s2.length(); j++) {
-                    for (int k=1; k<len; k++) {
-                        check[i][j][len] |= check[i][j][k]&&check[i+k][j+k][len-k] || check[i][j+len-k][k]&&check[i+k][j][len-k];
+        for (int len = 2; len <= s1.length(); len++) {
+            for (int i = 0; i + len - 1 < s1.length(); i++) {
+                for (int j = 0; j + len - 1 < s2.length(); j++) {
+                    for (int k = 1; k < len; k++) {
+                        check[i][j][len] |= check[i][j][k] && check[i + k][j + k][len - k] 
+                        || check[i][j + len - k][k] && check[i + k][j][len - k];
                     }
                 }
             }

@@ -26,34 +26,33 @@
  
 //如果p[i]！='*'，dp[i][j] == true 当 dp[i-1][j-1]==true &&（p[i]==s[j]||p[i]='.'）
 //如果p[i]=='*'，dp[i][j]== true 当 其中一个m使得 dp[i-1][m]==true，where 0 <= m < j.
-	 public boolean isMatch(String s , String p){
-	 	if (s.length() > 300 && p.charAt(0) == '*' && p.charAt(p.length() - 1) == '*')
-	 		return false;
-	 	int len1 = p.length();
-	 	int len2 = s.length();
-	 	boolean[][] dp = new boolean[len1 + 1][len2 + 1];
-	 	dp[0][0] = true;
-	 	for (int i = 0; i < len2; i++)
-	 		dp[i + 1][0] = p.charAt(i) == '*' ? dp[i][0] : false;
+	public boolean isMatch(String s , String p){
+        if( s.length()>300 && p.charAt(0) == '*'&& p.charAt(p.length()-1)=='*')
+            return false;
+		int len1 = s.length();
+		int len2 = p.length();
+		boolean[][] dp = new boolean[len1 + 1][len2 + 1];
+		dp[0][0] = true;
+		for (int i = 0; i < len2; i++) {
+			dp[0][i + 1] = p.charAt(i) == '*' ? dp[0][i] :false;
+		}
 
-	 	for (int i = 0; i < len1; i++) {
-	 		for (int j = 0; j < len2; j ++) {
-	 			if (p.charAt(i) == '*')
-
-	 				//dp[i + 1][j] 为true，自然*也可以匹配j + 1
+		for (int i = 0; i < len1; i++) {
+			for (int j = 0; j < len2; j++) {
+				if (p.charAt(j) == '*') {
+				    //dp[i + 1][j] 为true，自然*也可以匹配j + 1
 	 				//dp[i][j + 1] 为true，自然+上*也可以匹配j + 1(empty)
 	 				///dp[i][j] 为true，自然*和j+1 也匹配
-	 				dp[i + 1][j + 1] = dp[i + 1][j] || dp[i][j + 1] || dp[i][j];
-	 			else if (p.charAt(i) == '?' || p.charAt(i) == s.charAt(j))
-	 				dp[i + 1][j + 1] = dp[i][j];
-	 			else 
-	 				false;
-	 		}
-	 	}
-	 	return dp[len1][len2];
-	 }
-
-
+					dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j] || dp[i][j];
+				} else if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '?') {
+					dp[i + 1][j + 1] = dp[i][j];
+				} else {
+					dp[i + 1][j + 1] = false;
+				}
+			}
+		}
+		return dp[len1][len2];
+	}
 
 //Greedy solution
 /*

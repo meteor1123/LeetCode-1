@@ -23,6 +23,8 @@
 
 /*
     和wordladderI 的不同之处在于，需要返回所有可能的结果
+    为什么搜索的时候保存前驱结点容易，而保存后继结点比较困难？
+    answer：因为当我们到达当前节点是，我们总是知道前驱的，但是后继却还不知道，因此后继结点的维护是比较有难度
 */
 public class Solution {
     
@@ -39,8 +41,11 @@ public class Solution {
         
         //用HashSet 存放没访问过的word
         HashSet<String> unvisitedSet = new HashSet<String>();
+        //put whole dictionary words
         unvisitedSet.addAll(dict);
+        //put the starting word
         unvisitedSet.add(start);
+        //put the ending word
         unvisitedSet.remove(end);
         
         //保存一个节点的所有前驱节点
@@ -82,7 +87,7 @@ public class Solution {
             for (int i = 0; i < curStr.length(); ++i) {
                 char originalChar = curStrCharArray[i];
                 //设环卫false
-                boolean foundCurCycle = false;
+                // boolean foundCurCycle = false;
                 //使用a-z遍历每一个字符，与字典和final word进行匹配
                 for (char c = 'a'; c <= 'z'; ++c) {
                     curStrCharArray[i] = c;
@@ -110,7 +115,7 @@ public class Solution {
                         if (newStr.equals(start)) {
                             found = true;
                             finalLevel = curLevel;
-                            foundCurCycle = true;
+                            // foundCurCycle = true;
                             break;
                         }
                         //newStr是变换一个char之后产生的，加入visitedCurLevel代表在cur层上已访问过此节点
@@ -119,15 +124,16 @@ public class Solution {
                             //新建带有level的节点，由于是变化一个字符后产生的，所以层数等于 curLevel + 1,也就是下一层的word
                             queue.add(new StringWithLevel(newStr, curLevel + 1));
                     }
-                    //假设有环，则break，对下一个字符的位置进行遍历查找
-                    if (foundCurCycle) 
-                        break;
+                    //假设有环，则break，对下一个字符的位置进行遍历查找(注释掉也能通过，因为根本进不来这里)
+                    // if (foundCurCycle) {
+                    //     break;
+                    // }
                     // 一个字符遍历a-z的其中一个玩了之后，都要赋值回原先的字符
                     curStrCharArray[i] = originalChar;
-                }
-            }
+                }//end of inner loop
+            }//end of outer loop
 
-        }
+        }//end of while loop 
         //假如找到从end - start 的一条路径，下面开始调用dfs，对含有level属性的结点进行 dfs遍历找出所有的满足路径
         if (found) {
             ArrayList<String> list = new ArrayList<String>();
@@ -138,21 +144,19 @@ public class Solution {
         return res;
     }
     
-    private void getPaths(String cur, String end, ArrayList<String> list, 
-                          int level, Map<String, List<String>> nextMap, 
+    private void getPaths(String cur, String end, ArrayList<String> list, int level, Map<String, List<String>> nextMap, 
                           ArrayList<ArrayList<String>> res) {
         //假如cur 等于end 这字典匹配成功，将该路径 list 加入res
-        if (cur.equals(end)) 
+        if (cur.equals(end)) {
             res.add(new ArrayList<String>(list));
-
-        else if (level > 0) {
+        } else if (level > 0) {
              /*
                 ["hit","hot","dot","dog","cog"],
                 ["hit","hot","lot","log","cog"]
 
                 hit是hot的parent，
             */
-            List<String> parentSet = nextMap.get(cur);
+            ArrayList<String> parentSet = nextMap.get(cur);
             for (String parent : parentSet) {
                 list.add(parent);
                 getPaths(parent, end, list, level - 1, nextMap, res);

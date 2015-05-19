@@ -33,6 +33,7 @@ column:   0   1   2   3   0   1   2   3   0   1    2    3
 */
 
 public class Solution {
+	//Solution1:
 	public boolean searchMatrix(int[][] matrix, int target) {
 		int rows = matrix.length;
 		int cols = matrix[0].length;
@@ -51,6 +52,7 @@ public class Solution {
 		return false;
 	}
 
+	//Solution2:
 	public boolean searchMatrix(int[][] matrix, int target) {
 		int row = matrix.length;
         int column = matrix[0].length;

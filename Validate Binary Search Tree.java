@@ -13,10 +13,10 @@
 public class Solution {
     //Recursive
     public boolean isValidBST(TreeNode root) {  
-        return isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        return isBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }  
       
-    public boolean isBST(TreeNode node, int low, int high){  
+    public boolean isBST(TreeNode node, long low, long high){  
         if(node == null)  
             return true;  
             
@@ -36,12 +36,12 @@ public class Solution {
                 stack.push(cur);
                 cur = cur.left;
             } else {
-                TreeNode p = stack.pop();
-                if (pre != null && p.val <= pre.val) {
+                TreeNode node = stack.pop();
+                if (pre != null && node.val <= pre.val) {
                     return false;
                 }
-                pre = p;
-                cur = p.right;
+                pre = node;
+                cur = node.right;
             }
         }
         return true;

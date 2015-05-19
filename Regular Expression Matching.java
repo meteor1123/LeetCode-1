@@ -9,7 +9,7 @@
 
 	The function prototype should be:
 	bool isMatch(const char *s, const char *p)
-
+    
 	Some examples:
 	isMatch("aa","a") → false
 	isMatch("aa","aa") → true
@@ -23,6 +23,7 @@
 public class Solution {
 
     //DP
+    ///http://www.cnblogs.com/EdwardLiu/p/4021407.html DP 图
     public boolean isMatch(String s, String p) {
         if (s == null && p == null) {
             return true;
@@ -44,12 +45,12 @@ public class Solution {
         }
 
         // 这里的字符串匹配必须完全匹配，不能多也不能少，要正好，a* 可以代表0-无限个a，自然也可以表示成0
-        for (int i = 1; i <= p.length(); i++) {
-            if (p.charAt(i - 1) == '*' && i > 1) {
+        for (int j = 1; j <= p.length(); j++) {
+            if (p.charAt(j - 1) == '*' && j > 1) {
                 //'*' Matches zero or more of the preceding element!!
-                dp[0][i] = dp[0][i - 2];
+                dp[0][j] = dp[0][j - 2];
             } else {
-                dp[0][i] = false;
+                dp[0][j] = false;
             }
         }
         
@@ -60,12 +61,13 @@ public class Solution {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else if (p.charAt(j - 1) == '*' && j > 1) {
                     
-                    if (p.charAt(j - 2) == s.charAt(i - 1) || p.charAt(j - 2) == '.') {
+                    if (s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') {
                         
                         dp[i][j] = dp[i - 1][j] || dp[i][j - 1] || dp[i][j - 2];
-                //dp[i-1][j]:abb vs ab*: depends on ab vs ab*，该情况下只要i - 1 和 i - 2的值相等
-                //dp[i][j-2] __a  vs ab*  depends on a vs a ,该情况下a为i, a为j - 2,只要匹配，后面的b* 可以等于0，所以能匹配
-                //dp[i][j-1] abb vs ab*: depends on ab vs ab 
+                //dp[i-1][j]:abb vs ab*:  depends on ab vs ab*，该情况下只要i - 1 和 i - 2的值相等
+                //dp[i][j-2] __a vs ab*:  depends on a vs a ,该情况下a为i, a为j - 2,只要匹配，后面的b* 可以等于0，所以能匹配
+                //                        * 前面的字符一次都不取
+                //dp[i][j-1] abb vs ab*:  depends on ab vs ab , * 只取前面的字符一次 
                     } else {
                         dp[i][j] = dp[i][j - 2];
                     }
@@ -119,5 +121,48 @@ public class Solution {
                 }
                 return isMatch(s, p.substring(2));
         }
+    }
+
+    //DP2
+    public boolean isMatch(String s, String p) {
+        if (s == null && p == null) {
+            return true;
+        }
+        if (s.length() == 0 && p.length() == 0) {
+            return true;
+        }
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            dp[i][0] = false;
+        }
+        for (int j = 1; j <= p.length(); j++) {
+            if (p.charAt(j - 1) == '*' && j > 1) {
+                dp[0][j] = dp[0][j - 2];
+            } else {
+                dp[0][j] = false;
+            }
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = 0; j < p.length(); j++) {
+
+                if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') {
+                    dp[i + 1][j + 1] = dp[i][j];
+
+                } else if (p.charAt(j) == '*' && j > 0) {
+                    
+                    if (s.charAt(i) == p.charAt(j - 1) || p.charAt(j - 1) == '.') {
+                        dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j] || dp[i + 1][j - 1];
+                    } else {
+                        dp[i + 1][j + 1] = dp[i + 1][j - 1];
+                    }
+
+                } else {
+                    dp[i + 1][j + 1] = false;
+                }
+            }
+        }
+        return dp[s.length()][p.length()];
     }
 }
