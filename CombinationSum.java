@@ -25,7 +25,34 @@
 
 public class Solution {
 
-	//递归
+    //DFS1
+    public ArrayList<ArrayList<Integer>> combinationSum(int[] scores, int total){
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        if (scores.length == 0 || scores == null) {
+            return res;
+        }
+        ArrayList<Integer> item = new ArrayList<Integer>();
+        Arrays.sort(scores);
+        dfs(scores, total, 0, item, res);
+        return res;
+    }
+    public void dfs(int[] scores, int total, int start, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res) {
+        if (total < 0) {
+            return;
+        }
+        if (total == 0) {
+            res.add(new ArrayList<Integer>(item));
+            return;
+        }
+        for (int i = start; i < scores.length; i++) {
+            item.add(scores[i]);
+            int newTotal = total - scores[i];
+            dfs(scores, newTotal, i, item, res);
+            item.remove(item.size() - 1);
+        }
+    }
+
+	//DFS2递归
 	public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
 		ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> item = new ArrayList<Integer>();

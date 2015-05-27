@@ -79,7 +79,7 @@ public class Solution {
 			while (l < r && arr[l] < arr[pivot]) {
 				l++;
 			}
-			while (l < r && arr[r] > arr[pivot]) {
+			while (l < r && arr[r] >= arr[pivot]) {
 				r--;
 			}
 			if (l == k) {

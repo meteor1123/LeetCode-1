@@ -26,12 +26,12 @@ public class Solution {
         //Constructing a Adjacency matrices
         //and base on the matrix, set the indegree of every vertices
         for (int i = 0; i < prerequisites.length; i++) {
-            int cur = prerequisites[i][0];
             int pre = prerequisites[i][1];
+            int cur = prerequisites[i][0];
             if (matrix[pre][cur] == 0) {
                 indegree[cur]++;
                 matrix[pre][cur] = 1;
-            }
+            } 
         }
         //compute how many vertex has been visited,
         int count = 0;
