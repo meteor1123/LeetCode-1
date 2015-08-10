@@ -13,6 +13,20 @@
 	Tags: Array
 */
 
+
+/*
+    For this problem, coding is not a big deal. Algorithm is!
+    Now let's pick a number, for example, 24387651.
+    what is the next permutation? 24513678.
+        
+    First step: find the first ascending digit from the back of the number. 
+    3 < 8 > 7 > 6 > 5 > 1. Then 3 is the digit. 
+    Second step: swap that digit with the next big digit in following digits. 
+    Which one is the next big digit in 87651? 5!
+    So swap them. Now the number becomes 24587631.
+    Third step: sort 87631 into 13678. The final answer is 24513678.
+
+*/
 /*
 	1. find the first one which make A[i] < A[i + 1] from the end to start of the array,
 	2. find the smallest one which make A[j] > A[i] , from the index i + 1 to A.length - 1;

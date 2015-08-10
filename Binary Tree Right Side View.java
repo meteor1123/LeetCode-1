@@ -68,6 +68,7 @@
         if (curLevel > res.size()) {
             res.add(root.val);
         }
+        
         rightSideViewHelper(res, root.right, curLevel + 1);
         rightSideViewHelper(res, root.left, curLevel + 1 );
     }

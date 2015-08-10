@@ -27,7 +27,7 @@ public class Solution {
 		if (root == null)
 			return res;
 		ArrayList<Integer> item = new ArrayList<Integer>();
-		dfs(root, sum, res);
+		dfs(root, sum, res, item);
 		return res;
 	}
 

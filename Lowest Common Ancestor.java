@@ -22,6 +22,7 @@
 */
 
 public class Solution {
+	//Solution1: recursive
 	public TreeNode lowestCommonAncester(TreeNode root, TreeNode A, TreeNode B) {
 		if (root == null) {
 			return root;
@@ -42,4 +43,17 @@ public class Solution {
 		//or none was found in any of the branches
 		return leftCh == null ? rightCh : leftCh;
 	}
+
+	//Solution2: iterative
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        while (true) {
+            if (root.val > p.val && root.val > q.val) {
+                root = root.left;
+            } else if (root.val < p.val && root.val < q.val) {
+                root = root.right;
+            } else {
+                return root;
+            }
+        }
+    }
 }

@@ -65,6 +65,7 @@ public class Solution {
         }
         //inorder traverse
         traverse(root.left);
+        //when firstElement is null , which means if we find the pre element large than root.val ,it must be the first lost elment.
         if (firstElement == null && preElement.val > root.val) {
             firstElement = preElement;
         }

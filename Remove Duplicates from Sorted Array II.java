@@ -11,6 +11,17 @@
 */
 
 public class Solution {
+    //1
+    public int removeDuplicates(int[] A) {
+        int i = 0;
+        for (int n : nums) {
+            if (i < 2 || n > nums[i - 2]) {
+                nums[i++] = n;
+            }
+        }
+        return i;
+    }
+    //2
     public int removeDuplicates(int[] A) {
         if (A == null || A.length == 0) {
         	return 0;

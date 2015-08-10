@@ -40,7 +40,27 @@ public class Solution {
         res.add(root.val);
     }
 
-    //Iterative
+    //Iterative1
+    //等于preorder 将root = root.left 变成 root = root.right ,最后再将结果 reverse
+    //将 preOrder 逆序
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        while (!stack.isEmpty() || root != null) {
+            if (root != null) {
+                stack.push(root);
+                res.add(root.val);
+                root = root.right;
+            } else {
+                root = stack.pop();
+                root = root.left;
+            }
+        }
+        Collections.reverse(res);
+        return res;
+    }
+
+    //Iterative2
     /*
 		后序遍历的情况就复杂多了。我们需要维护当前遍历的cur指针和前一个遍历的pre指针来追溯当前的情况
 		（注意这里是遍历的指针，并不是真正按后序访问顺序的结点）。具体分为几种情况：
