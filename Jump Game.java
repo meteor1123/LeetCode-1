@@ -28,12 +28,14 @@ public class Solution {
         return global >= A.length - 1 ? true : false;
     }
 	//DP
+
+    //dp[i] means  this index can jump to the end point or not.
     public boolean canJump(int[] A) {
     	if (A == null || A.length == 0) {
     		return false;
     	}
         int[] dp = new int[A.length];
-    	dp[0] = false;
+    	dp[0] = true;
     	for (int i = 1; i < A.length; i++) {
     		for (int j = 0; j < i; j++) {
     			if (dp[j] && A[j] + j >= i) {

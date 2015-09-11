@@ -40,7 +40,7 @@ public class Solution {
                 res.add(newInterval);
                 newInterval = old;
             //paert2 has overlapping
-            } else if (old.end >= newInterval.start || newInterval.end >= old.start) {
+            } else {
                 Interval insertval = new Interval();
                 insertval.start = Math.min(old.start, newInterval.start);
                 insertval.end = Math.max(old.end, newInterval.end);

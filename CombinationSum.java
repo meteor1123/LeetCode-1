@@ -121,7 +121,9 @@ public class Solution {
     //stack solution
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         Arrays.sort(candidates);
-        int i=0, size = candidates.length, sum=0;
+        int i=0, 
+            size = candidates.length, 
+            sum=0;
         Stack<Integer> combi = new Stack<>();
         Stack<Integer> indices = new Stack<>();
         List<List<Integer>> result = new ArrayList<>();

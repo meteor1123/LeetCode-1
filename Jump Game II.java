@@ -30,6 +30,13 @@ public class Solution {
     }
 
     //Greedy
+    /*
+        Steps: 目前为止的jump数
+        lastCover: 从A[0] 进行steps次jump后达到的最大范围
+        maxCover: 从0 ~ i 这i + 1 个元素中能达到的最大范围
+        when lastCover < i 说明steps次jump已经不足以覆盖当前第i个元素，因此需要增加一次
+        jump，使其达到纪录的maxCover；
+    */
     public int jump(int[] A) {
     	if (A == null || A.length == 0) {
     		return 0;
@@ -43,6 +50,7 @@ public class Solution {
     			lastCover = maxCover;
     		}
 
+            //maxCover = Math.max(maxCover, A[i] + i);
     		if (A[i] + i > maxCover) {
     			maxCover = A[i] + i;
     		}

@@ -6,6 +6,18 @@
 */
 
 public class Solution {
+    //Solution1
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0;i < nums.length; i++) {
+            if (i > k) set.remove(nums[i - k - 1]);//Because the distance between i and i - k - 1 is large than k, so just let the nums[n-k-1] out
+            if (!set.add(nums[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //Solution2
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         if (nums == null || nums.length <= 1) {
             return false;

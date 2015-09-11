@@ -53,37 +53,35 @@
 
 
 public class Solution {
-    public ArrayList<ArrayList<Integer>> combinationSum2(int[] num, int target) {
-        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
-        ArrayList<Integer> item = new ArrayList<Integer>();
-        boolean[] visited = new boolean[num.length];
-        if (num.length == 0 || num == null)
-        	return res;
+        public List<List<Integer>> combinationSum2(int[] num, int target) {
+        // write your code here
+        List<List<Integer>> res = new ArrayList<>();
+        if (num == null || num.length == 0) {
+            return res;
+        }
         Arrays.sort(num);
-        dfs(num, target, 0, visited, item, res);
+        boolean[] visited = new boolean[num.length];
+        List<Integer> item = new ArrayList<>();
+        helper(num, target, 0, item, res);
         return res;
     }
-
-    public void dfs(int[] num, int target, int start,boolean[] visited, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res) {
-        if (target < 0)
-            return ;
+    
+    public void helper(int[] num, int target, int start, List<Integer> item, List<List<Integer>> res) {
+        if (target < 0) {
+            return;
+        }
         if (target == 0) {
             res.add(new ArrayList<Integer>(item));
-            return ;
+            return;
         }
         
         for (int i = start; i < num.length; i++) {
-            if (!visited[i]) {
-                if (i > 0 && num[i] == num[i - 1] && visited[i - 1] == false)
-                    continue;
-            }//if num[i] == num[i -1] and  visited[i - 1] == false, means already use num[i] to recursive the result,
-             //
-
-            visited[i] = true;
+            if (i > start && num[i] == num[i - 1]) {
+                continue;
+            }
             item.add(num[i]);
-            dfs(num, target - num[i], i + 1, visited, item, res);
+            helper(num, target - num[i], i + 1, item, res);
             item.remove(item.size() - 1);
-            visited[i] = false;
         }
     }
 }

@@ -22,6 +22,106 @@
 	Tags: Backtracking, Trie
 */
 
+//Solution 1
+public List<String> findWords(char[][] board, String[] words) {
+         ArrayList<String> res = new ArrayList<String>();
+        if (board == null || board.length == 0 || board[0].length == 0 || words == null) {
+            return res;
+        }
+        // HashSet<String> set = new HashSet<>();
+        Trie root = new Trie();
+        for (int i = 0; i < words.length; i++) {
+            root.insert(words[i]);
+        }
+        int m = board.length;
+        int n = board[0].length;
+        boolean[][] visited = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                dfs(res, board, i, j, visited, root, "");
+            }
+        }
+        return res;
+     }
+     
+     public void dfs(ArrayList<String> res, char[][] board, int row, int col, boolean[][] visited, Trie root, String item) {
+         if (row < 0 || col < 0 || row > board.length - 1 || col > board[0].length - 1 || visited[row][col]) {
+             return ;
+         }
+         item = item + board[row][col];
+         if (root.startsWith(item)) {
+             visited[row][col] = true;
+             if (root.search(item) && !res.contains(item)) {
+                 res.add(item);
+             }
+             dfs(res, board, row + 1, col, visited, root, item);
+             dfs(res, board, row - 1, col, visited, root, item);
+             dfs(res, board, row, col + 1, visited, root, item);
+             dfs(res, board, row, col - 1, visited, root, item);
+             visited[row][col] = false;
+         }
+     }
+     
+     public class Trie {
+         class TrieNode {
+             public char val;
+             public boolean isWord;
+             public TrieNode[] children = new TrieNode[26];
+             public TrieNode() {}
+             TrieNode(char c) {
+                 TrieNode node = new TrieNode();
+                 node.val = ' ';
+             }
+         }
+         
+         private TrieNode root;
+         
+         public Trie() {
+             root = new TrieNode();
+             root.val = ' ';
+         }
+         
+         public void insert(String word) {
+             TrieNode node = root;
+             for (int i = 0; i < word.length(); i++) {
+                 char c = word.charAt(i);
+                 if (node.children[c - 'a'] == null) {
+                     node.children[c - 'a'] = new TrieNode(c);
+                 }
+                 node = node.children[c - 'a'];
+             }
+             node.isWord = true;
+         }
+         
+         public boolean search(String word) {
+             TrieNode node = root;
+             for (int i = 0; i < word.length(); i++) {
+                 char c = word.charAt(i);
+                 if (node.children[c - 'a'] == null) {
+                     return false;
+                 }
+                 node = node.children[c - 'a'];
+             }
+             return node.isWord;
+         }
+         
+         public boolean startsWith(String word) {
+             TrieNode node = root;
+             for (int i = 0; i < word.length(); i++) {
+                 char c = word.charAt(i);
+                 if (node.children[c -'a'] == null) {
+                     return false;
+                 }
+                 node = node.children[c - 'a'];
+             }
+             return true;
+         }
+     }
+ }
+
+
+
+//Solution2
 public class Solution {
     public List<String> findWords(char[][] board, String[] words) {
         ArrayList<String> res = new ArrayList<String>();
@@ -127,3 +227,5 @@ public class Solution {
        }
     }
 }
+
+

@@ -1,4 +1,4 @@
-/*
+	/*
 	Product of Array Except Self 
 	Given an array of n integers where n > 1, nums, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
 
@@ -11,6 +11,11 @@
 */
 
 public class Solution {
+
+	/*
+		Step1 : compute the total left product of every element and store to the res[i];
+		Step2 : use every element's left total product mutiply right element total produuct --> right
+	*/
 	public int[] productExceptSelf(int[] nums) {
 		int n = nums.length;
 		int[] res = new int[n];

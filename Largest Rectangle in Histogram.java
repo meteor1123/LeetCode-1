@@ -17,6 +17,13 @@
 /*
     Best Solution:
         http://www.cnblogs.com/lichen782/p/leetcode_Largest_Rectangle_in_Histogram.html
+    
+    Step1: Using a Stack to store the index of array height;
+    Step2: Copy the height array, and made the length equalse height.length + 1;
+    Step3: Using a while loop iterate the array
+    Step4: if stack is empty or h[stack.peek()] smaller than the h[i],push the index i to array
+    Step5: else pop the peek of stack, and continue while loop check the next number
+           so the h[top] is the smallest bottle neck height, and just mutiply the width i or i - stack.peek() - 1;
 */
 
 public class Solution {
@@ -34,7 +41,7 @@ public class Solution {
     	while (i < h.length) {
     		if (stack.isEmpty() || h[stack.peek()] <= h[i]) {
     			stack.push(i);
-                i++
+                i++;
     		} else {
 
     			int top = stack.pop();//一遇到小的数就栈顶元素出栈

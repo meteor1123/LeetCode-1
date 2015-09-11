@@ -44,7 +44,7 @@ public class Solution {
 	 	int r = n;
 	 	while (l <= r) {
 	 		int m = (l + r) / 2;
-	 		if (VersionControl.isBadVersion(m)) {
+	 		if (isBadVersion(m)) {
 	 			r = m - 1; 
 	 		} else {
 	 			l = m + 1;
