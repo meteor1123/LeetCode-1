@@ -31,17 +31,17 @@ public class Solution {
         //记录相等的数的个数
         int count = 0;
         for (int i = 0; i < A.length; i++) {
-        	if (i > 0 && A[i] == A[i - 1]) {
-        		//只要i>0 并且A[i] 和前一个 A[i - 1]相等，就加加
-        		count++;
-        		//重复数大于3，跳出，进行下一次计数
-        		if (count >= 3) {
-        			continue;
-        		}
-        	} else {
-        		//长度加加，假如之前有超过等于3的 就将新的不重复超过3的i赋值回去
-        		A[index++] = A[i];
-        	}
+            if (i > 0 && A[i] == A[i - 1]) {
+                count++;
+                if (count >= 3) {
+                    continue;
+                }
+            } else {
+                count = 1;
+            }
+
+            
+            A[index++] = A[i];
         }
         return index;
     }

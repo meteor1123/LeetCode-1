@@ -34,14 +34,13 @@ public class Solution {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode cur = head.next;
-        ListNode pre = head;
-        head.next = null;
-        while (cur != null) {
-            ListNode temp = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = temp;
+
+        ListNode pre = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
         }
         return pre;
     }

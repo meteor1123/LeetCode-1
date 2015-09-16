@@ -120,4 +120,44 @@ public class Solution {
         }
         return newhead;
     }
+
+
+    //standard name
+        public RandomListNode copyRandomList(RandomListNode head) {
+        // write your code here
+        if (head == null) {
+            return head;
+        }
+        
+        RandomListNode oldNode = head;
+        while (oldNode != null) {
+            RandomListNode copyNode = new RandomListNode(oldNode.label);
+            copyNode.next = oldNode.next;
+            oldNode.next = copyNode;
+            oldNode = copyNode.next;
+        }
+        
+        oldNode = head;
+        
+        while (oldNode != null && oldNode.next != null) {
+            if (oldNode.random != null) {
+                oldNode.next.random = oldNode.random.next;
+            }
+            oldNode = oldNode.next.next;
+        }
+        
+        oldNode = head;
+        RandomListNode newhead = head.next;
+        RandomListNode copyNode = head.next;
+        
+        while (oldNode != null && copyNode != null) {
+            oldNode.next = copyNode.next;
+            if (copyNode.next != null) {
+                copyNode.next = copyNode.next.next;
+            }
+            oldNode = oldNode.next;
+            copyNode = copyNode.next;
+        }
+        return newhead ;
+    }
 }

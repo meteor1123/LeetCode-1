@@ -46,22 +46,22 @@ public class WordDictionary {
         return match(word.toCharArray(), 0, root);
     }
     
-    private boolean match(char[] chs, int k, TrieNode node) {
-    	//match to the last character, so k == chs.length;
-        if (k == chs.length) {
+    private boolean match(char[] word, int k, TrieNode node) {
+    	//match to the last character, so k == word.length;
+        if (k == word.length) {
             return !node.item.equals("");//in here, we don't need to compare the node.item with word.
-            //since if k == chs.length, which mean has right matched, just check the node.item whether is not
+            //since if k == word.length, which mean has right matched, just check the node.item whether is not
         }
 
         //if isn't '.', just recursive check the next character of word.
-        if (chs[k] != '.') {
-            return node.children[chs[k] - 'a'] != null && match(chs, k + 1, node.children[chs[k] - 'a']);
+        if (word[k] != '.') {
+            return node.children[word[k] - 'a'] != null && match(word, k + 1, node.children[word[k] - 'a']);
         } else {
         	//if is '.',  check every children with the node, since '.' match every single character.
             for (int i = 0; i < node.children.length; i++) {
             	//
                 if (node.children[i] != null) {
-                    if (match(chs, k + 1, node.children[i])) {
+                    if (match(word, k + 1, node.children[i])) {
                         return true;
                     }
                 }

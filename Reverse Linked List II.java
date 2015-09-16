@@ -12,9 +12,55 @@
 	1 ≤ m ≤ n ≤ length of list.
 	Tags: LinkedList
 */
+/*
+    step1: new four ListNode, newhead, premNode, mNode, nNode,
+           newhead is a dummy node
+           premNode is the pre node of m Node;
+           mNode is the m node;
+           nNode is the n node;
+    
+    step2: for loop to traverse n
 
+    step3: when i < m - 1; just need to move the premNode
+    step4: if i equals m - 1, means we find the m th node, and we set nNode equals mNode.next
+    step5: use these three nodes to reverse the node from m to n;
+           we notice that the mNode doesn't change, always is the original m node;
+
+           mNode.next = nNode.next;
+           nNode.next = premNode.next;
+           premNode.next = nNode;
+           nNode = mNode.next;
+*/
 public class Solution {
 
+    //Solution 3
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        ListNode newhead = new ListNode(-1);
+        newhead.next = head;
+        
+        if (head == null || head.next == null) {
+            return newhead.next;
+        }
+        
+        ListNode premNode = newhead;
+        ListNode mNode = null;//需要reverse 到后面去的节点
+        ListNode nNode = null;//需要reverse 刀前面去的节点
+        
+        for (int i = 0; i < n; i++) {
+            if (i < m - 1) {
+                premNode = premNode.next; //找真正的startpoint
+            } else if (i == m - 1) { //开始第一轮
+                mNode = premNode.next;
+                nNode = mNode.next;
+            } else {
+                mNode.next = nNode.next; // mNode.next 指向nNode的下一个结点
+                nNode.next = premNode.next; //nNode交换到最开始
+                premNode.next = nNode;  //nNode作为新的店
+                nNode = mNode.next;     //nNode回归到mNode
+            }
+        }
+        return newhead.next;
+    }
 	//Solution1: Chapter9 
     public ListNode reverseBetween(ListNode head, int m, int n) {
         if (m >= n || head == null) {
@@ -86,34 +132,6 @@ public class Solution {
 	    return dummy.next;
     }
 
-    //Solution 3
-    public ListNode reverseBetween(ListNode head, int m, int n) {
-    	ListNode newhead = new ListNode(-1);
-        newhead.next = head;
-        
-        if (head == null || head.next == null) {
-            return newhead.next;
-        }
-        
-        ListNode premNode = newhead;
-        ListNode mNode = null;//需要reverse 到后面去的节点
-        ListNode nNode = null;//需要reverse 刀前面去的节点
-        
-        for (int i = 0; i < n; i++) {
-            if (i < m - 1) {
-                premNode = premNode.next; //找真正的startpoint
-            } else if (i == m - 1) { //开始第一轮
-                mNode = premNode.next;
-                nNode = mNode.next;
-            } else {
-                mNode.next = nNode.next; // mNode交换到nNode后面
-                nNode.next = premNode.next; //nNode交换到最开始
-                premNode.next = nNode;  //nNode作为新的店
-                nNode = mNode.next;     //nNode回归到mNode
-            }
-        }
-        return newhead.next;
-    }
 }
 
 

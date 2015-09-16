@@ -12,7 +12,6 @@
 	You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
 */
 
-
 class MyQueue {
     Stack<Integer> input = new Stack();
     Stack<Integer> output = new Stack();
@@ -39,6 +38,6 @@ class MyQueue {
 
     // Return whether the queue is empty.
     public boolean empty() {
-        return input.empty() && output.empty();
+        return input.isEmpty() && output.isEmpty();
     }
 }

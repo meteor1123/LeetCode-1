@@ -25,10 +25,10 @@ public class Solution {
 
         ListNode pre = null;
         while (head != null) {
-            ListNode nex = head.next;
+            ListNode next = head.next;
             head.next = pre;
             pre = head;
-            head = nex;
+            head = next;
         }
         return pre;
     }

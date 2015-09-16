@@ -42,20 +42,24 @@ public class Solution {
     //ArrayList method
     public ArrayList<Integer> mergeSortedArray(ArrayList<Integer> A, ArrayList<Integer> B) {
         // write your code here
-        if (A==null || A.size()==0) return B;
-        if (B==null || B.size()==0) return A;
+        if (A==null || A.size()==0) {
+            return B;
+        }
+        if (B==null || B.size()==0) {
+            return A;
+        }
         ArrayList<Integer> res = new ArrayList<Integer>();
-        int i=0, j=0;
-        for (int k=0; k<A.size()+B.size(); k++) {
-            if (i<A.size() && j<B.size() && A.get(i) < B.get(j)) {
+        int i = 0, j = 0;
+        for (int k = 0; k < A.size() + B.size(); k++) {
+            if (i < A.size() && j < B.size() && A.get(i) < B.get(j)) {
                 res.add(A.get(i));
                 i++;
             }
-            else if (i<A.size() && j<B.size() && A.get(i) >= B.get(j)){
+            else if (i < A.size() && j < B.size() && A.get(i) >= B.get(j)){
                 res.add(B.get(j));
                 j++;
             }
-            else if (i<A.size()) {
+            else if (i < A.size()) {
                 res.add(A.get(i));
                 i++;
             }

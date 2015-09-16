@@ -41,6 +41,7 @@
  			cur.next = swap(cur.next, cur.next.next);
  			cur = cur.next.next;
  		}
+ 		return newhead.next;
  	}
 
  	public ListNode swap(ListNode l1, ListNode l2) {
