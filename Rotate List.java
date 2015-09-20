@@ -46,7 +46,7 @@ public class Solution {
         } // fast指针作用是遍历到初始链表尾，取得链表长度
        
         //slow move n - k step, avoid the large number, use mod
-        for (count j = count - k % count; j > 0 ; j--){
+        for (int j = count - k % count; j > 0 ; j--){
             slow = slow.next;//slow指针作用是遍历到断点。并且 slow.next 等于头结点
         }
 

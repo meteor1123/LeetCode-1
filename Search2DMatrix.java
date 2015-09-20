@@ -35,6 +35,12 @@ row:      0   0   0   0   1   1   1   1   2   2    2    2
 column:   0   1   2   3   0   1   2   3   0   1    2    3 
 */
 
+/*
+	如果我们按S型遍历该二维数组，可以得到一个有序的一维数组，那么我们只需要用一次二分查找法，
+	而关键就在于坐标的转换，如何把二维坐标和一维坐标转换是关键点: 把一个长度为n的一维数组转化为m*n的二维数组(m*n = n)后，
+	那么原一维数组中下标为i的元素将出现在二维数组中的[i/n][i%n]的位置
+*/
+
 public class Solution {
 	//Solution1:
 	public boolean searchMatrix(int[][] matrix, int target) {
@@ -45,6 +51,8 @@ public class Solution {
 
 		while (low <= high) {
 			int mid = (low + high) / 2;
+			//  mid/cols 可以得到属于哪一行， mid%cols 可以得到属于某一列
+			
 			if (matrix[mid/cols][mid%cols] == target)
 				return true;
 			else if (matrix[mid/cols][mid%cols] > target)

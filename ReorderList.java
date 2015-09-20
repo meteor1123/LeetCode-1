@@ -49,19 +49,14 @@ public class Solution {
 		mergeTwoList(firsthalf, secondhalf);
     }
     public  ListNode reverseList(ListNode head) {
-    	if (head == null || head.next == null)
-    		return head;
-    	ListNode pre = head;
-    	ListNode cur = head.next;
-    	//逆序 从前面开始逆序
-    	while (cur != null) {
-    		ListNode tmp = cur.next;
-    		cur.next = pre;
-    		pre = cur; 
-    		cur = tmp;
-    	}
-    	head.next = null;
-    	return pre;
+        ListNode pre = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
+        }
+        return pre;
     }
     public void mergeTwoList(ListNode firsthalf, ListNode secondhalf) {
     	while (secondhalf != null) {

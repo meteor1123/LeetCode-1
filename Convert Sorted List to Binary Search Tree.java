@@ -5,10 +5,40 @@
 */
 
 public class Solution {
+	//solution3 小丸子，最容易理解
+	static ListNode h;
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        int size = 0;
+        h = head;
+        ListNode cur = head;
+        //caculate the size of ListNode
+        while (cur != null) {
+            cur = cur.next;
+            size++;
+        }
+        return sortedListToBSTHelper(0, size - 1);
+    }
+    
+    //divide and Conquer
+    public TreeNode sortedListToBSTHelper(int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        int mid = (start + end) / 2;
+        //recursive the most left node,
+        TreeNode left = sortedListToBSTHelper(start, mid - 1);
+        TreeNode root = new TreeNode(h.val);
+        h = h.next;
+        TreeNode right = sortedListToBSTHelper(mid + 1, end);
+        root.left = left;
+        root.right = right;
+        return root;
+    }
 	//static ListNode head;
 	public TreeNode sortedListToBST(ListNode head) {
-		if (head == null)
-			return head；
 		//this.head = head;
 		ListNode cur = head;
 		int count = 0;
@@ -65,38 +95,7 @@ public class Solution {
 		return root;
 	}
 
-	//solution3 小丸子，最容易理解
-	static ListNode h;
-    public TreeNode sortedListToBST(ListNode head) {
-        if (head == null) {
-            return null;
-        }
-        int size = 0;
-        h = head;
-        ListNode cur = head;
-        //caculate the size of ListNode
-        while (cur != null) {
-            cur = cur.next;
-            size++;
-        }
-        return sortedListToBSTHelper(0, size - 1);
-    }
-    
-    //divide and Conquer
-    public TreeNode sortedListToBSTHelper(int start, int end) {
-        if (start > end) {
-            return null;
-        }
-        int mid = (start + end) / 2;
-        //recursive the most left node,
-        TreeNode left = sortedListToBSTHelper(start, mid - 1);
-        TreeNode root = new TreeNode(h.val);
-        h = h.next;
-        TreeNode right = sortedListToBSTHelper(mid + 1, end);
-        root.left = left;
-        root.right = right;
-        return root;
-    }
+
 
     //use O(n) space
     public TreeNode sortedListToBST(ListNode head) {

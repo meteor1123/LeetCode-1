@@ -17,6 +17,43 @@
  * }
  */
 public class Solution {
+    //Solution1
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> res = new ArrayList<>();
+        if (intervals == null || intervals.size() == 0) {
+            return res;
+        }
+        
+        //Overrid the compare, and make a comparator
+        Collections.sort(intervals, new Comparator<Interval>(){
+           @Override
+           public int compare(Interval interval1, Interval interval2) {
+               return interval1.start - interval2.start;
+           }
+        });
+        
+        int start = intervals.get(0).start;
+        int end = intervals.get(0).end;
+        
+
+        //遍历intervals
+        //假如 interval.start <= end, 先不加入res, (start,  interval.start   Math.max(end, interval.end)), 取end最大值
+        //和下一个比，如果interval.start > end, 说明 和上一个interval没有重合区域，直接将上一个interval加入res
+        for (Interval interval : intervals) {
+            if (interval.start <= end) {
+                end = Math.max(end, interval.end);
+            } else {
+                res.add(new Interval(start, end));
+                start = interval.start;
+                end = interval.end;
+            }
+        }
+        
+        res.add(new Interval(start, end));
+        return res;
+    }
+
+    //Solution2
     public ArrayList<Interval> merge(ArrayList<Interval> intervals) {
         ArrayList<Interval> res = new ArrayList<Interval>();
         if (intervals == null || intervals.size() <= 1)

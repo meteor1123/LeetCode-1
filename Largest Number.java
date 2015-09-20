@@ -12,9 +12,51 @@
         // sorting the num
         // concate all the String 
         // sort by ascending
-        // 去掉数字开头的0，入输入[0,0]
+        // 去掉数字开头的0，如输入[0,0]
+*/
+
+/*
+    1. convert the int[] num to String[] numStringArr
+    2. set up a Comparator to sort the String[], the most important part is how to make the sort rule?
+            how to compare these two String number? if StrNum1 + StrNum2 > StrNum1 + StrNum2, which mean StrNum2 should be smaller than StrNum1
+    3. sort it by using new comparator
+    4. check the first string's first character, if equals 0, that must be a zero
+    5. append the string ,concate to a new string and return, that is the largest number.
 */
 public class Solution {
+        public String largestNumber(int[] num) {
+        // write your code here
+        if (num == null || num.length == 0) {
+            return "";
+        }
+        
+        String[] stringArr = new String[num.length];
+        
+        for (int i = 0; i < num.length; i++) {
+            stringArr[i] = num[i] + "";
+        }
+        
+        Comparator<String> comp = new Comparator<String>(){
+            @Override
+            public int compare(String str1, String str2) {
+                String s1 = str1 + str2;
+                String s2 = str2 + str1;
+                return s2.compareTo(s1);
+            }
+        };
+        
+        Arrays.sort(stringArr, comp);
+        if (stringArr[0].charAt(0) == '0') {
+            return "0";
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < stringArr.length; i++) {
+            sb.append(stringArr[i]);
+        }
+        return sb.toString();
+    }
     // public String largestNumber(int[] num) {
     // 	int n = num.length;
     // 	if (n < 1)
