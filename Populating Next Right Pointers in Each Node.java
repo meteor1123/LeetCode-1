@@ -74,12 +74,8 @@ public class Solution {
 						    4->5->6->7 -> NULL,
 
         */
-        if (root.right != null) {
-        	if (root.next != null) {
-        		root.right.next = root.next.left;
-        	} else {
-        		root.right.next = null;
-        	}
+        if (root.right != null && root.next != null) {
+            root.right.next = root.next.left;
         }
         connect(root.left);
         connect(root.right);

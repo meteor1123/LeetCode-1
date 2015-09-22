@@ -57,6 +57,10 @@
     问题至此划归为一维动态规划。
 
 */
+/*
+  https://leetcode.com/discuss/24282/dp-solution-in-6-lines-with-explanation-f-i-n-g-i-1-g-n-i
+  非常好的讲解！！！
+*/
 public class Solution {
     public int numTrees(int n) {
         if (n == 0 || n == 1) {

@@ -38,10 +38,10 @@ public class Solution {
         while (root != null || !stack.isEmpty()) {
             if (root != null) {
                 stack.push(root);//只要有左边的叶子节点就一直遍历入栈
-                res.add(root.val);
+                res.add(root.val);// 跟inorder遍历的唯一区别在于， inorder中res.add(root.val)放到  遍历完最left的时候才add， 正好如何 
                 root = root.left;
             } else {
-                root = stack.pop();//左边的遍历完了再出栈给root，将右节点的值                                       //加入结果
+                root = stack.pop();//左边的遍历完了再出栈给root，将右节点的值 //加入结果
                 root = root.right;
             }
         }

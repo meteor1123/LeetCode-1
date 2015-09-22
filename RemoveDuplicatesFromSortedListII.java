@@ -21,6 +21,29 @@
 
 
  public class Solution {
+
+
+    //Solution1
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        //create a dummy node to avoid the coener case
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode cur = dummy;
+        while (cur.next != null && cur.next.next != null) {
+            if (cur.next.val == cur.next.next.val) {
+                int val = cur.next.val;
+                while (cur.next != null && cur.next.val == val) {
+                    cur.next = cur.next.next;
+                }
+            } else {
+                cur = cur.next;
+            }
+        }
+        return dummy.next;
+    }
  	//Solution1
  	public ListNode deleteDuplicates(ListNode head) {
  		if (head == null || head.next == null)
@@ -52,25 +75,4 @@
  		return fakehead.next;
  	}
 
- 	//Solution2
- 	public ListNode deleteDuplicates(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        //create a dummy node to avoid the coener case
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode cur = dummy;
-        while (cur.next != null && cur.next.next != null) {
-            if (cur.next.val == cur.next.next.val) {
-                int val = cur.next.val;
-                while (cur.next != null && cur.next.val == val) {
-                    cur.next = cur.next.next;
-                }
-            } else {
-                cur = cur.next;
-            }
-        }
-        return dummy.next;
-    }
  }

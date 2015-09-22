@@ -25,9 +25,43 @@
 
 	1. If left subtree is a full tree, then right subtree must be a complete tree, and Lheight == Rheight
 	2. If left subtree is a complete tree, then right subtree must be a full tree, and Lheight - Rhight == 1
+    
+
 */
 
+/*
+    http://stackoverflow.com/questions/2603692/what-is-the-difference-between-tree-depth-and-height
+    the difference between height and depth
+
+    1) The depth of a node is the number of edges from the node to the tree's root node.
+       A root node will have a depth of 0;
+    2) The height of a node is the number of edges on the longest path from the node to leaf,
+       A leaf node will have a height of 0;
+*/
 public class Solution {
+    //Easy to understand solution prefer
+    public int countNodes(TreeNode root) {
+        int rootHeight = height(root);
+        if (rootHeight < 0) {
+            return 0;
+        } 
+        if (height(root.right) == rootHeight - 1) {
+            return (1 << rootHeight) + countNodes(root.right);// 2^h - 1 + count(root.right) + 1(root);
+        } else {
+            return (1 << rootHeight - 1) + countNodes(root.left) ;// 2^(h - 1) - 1 + cout(root.left) + 1(root);
+        }
+    }
+    
+    public int height(TreeNode root) {
+        if (root == null) {
+            return -1;
+        }
+        return 1 + height(root.left);
+    }
+
+
+
+
 	// solution1: 
 	public int height(TreeNode root) {
 		return root == null ? -1 : 1 + height(root.left);

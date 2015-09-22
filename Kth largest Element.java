@@ -101,4 +101,22 @@ public class Solution {
 		arr[l] = arr[r];
 		arr[r] = temp;
 	}
+
+
+	//1.Using heap
+	//  O(N lg K) running time + O(k) memory
+	public int findKthLargest(int[] nums, int k) {
+		//默认是最小堆，也就是适合找第k大
+		//最大堆适合找第k小
+		//优先队列中元素默认按自然顺序排列，也就是数字默认是小的在队列头，字符串则按字典序排列。
+		PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+		for (int val : nums) {
+			pq.offer(val);
+			if (pq.size() > k) {
+				pq.poll();
+			}
+		}
+		return pq.peek();
+	}
+
 }

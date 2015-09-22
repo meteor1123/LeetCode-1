@@ -10,22 +10,8 @@
 	因为那样会是0，我们只有在叶子节点才能判断深度，而在求最大深度的时候，因为一定会取大的那个，所以不会有这个问题
 */
 public class Solution {
-	//solution1 ：判断较多
-    public int minDepth(TreeNode root) {
-    	if (root == null)
-    		return 0;
-    	if (root.left == null && root.right == null)
-    		return 1;
-    	if (root.left == null && root.right != null)
-    		return minDepth(root.right) + 1;
-    	if (root.left != null && root.right == null)
-    		return minDepth(root.left) + 1;
-    	if (root.left != null && root.right != null)
-    		return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
-    	return 0;
-    }
 
-    //solution2:
+    //solution2: 一个节点如果只有左或者右子树的话 不能取小的那个作为深度，这样depth会为0；
     public int minDepth(TreeNode root) {
     	if (root == null)
     		return 0; 
@@ -34,7 +20,7 @@ public class Solution {
     	//如果有个节点只有一边孩子时，不能返回0，要返回另外一半边的depth。 
     	if (minLeft == 0 || minRight == 0)
     		return minLeft > minRight ? minLeft + 1 : minRight + 1;
-    	return Math.min(minLeft, minRight);
+    	return Math.min(minLeft, minRight) + 1;
     }
 
     //solution3:

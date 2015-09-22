@@ -5,44 +5,46 @@
 */
 
 public class Solution {
-	// public double findMedianSortedArrays(int A[], int B[]) {
-	// 	int m = A.length;
-	// 	int n = B.length;
-	// 	int total = m + n;
-	// 	if (total % 2 == 0) {
-	// 		return findKth(A, 0, m - 1, B, 0, n - 1, total / 2 + 1);
-	// 	} else {
-	// 		double x = findKth(A, 0, m - 1, B, 0, n - 1, total / 2);
-	// 		double y = findKth(A, 0, m - 1, B, 0, n - 1, total / 2 + 1);
-	// 		return (double) (x + y) / 2;
-	// 	}
-	// }
 
-	// public static int findKth(int[] A, int astart, int aend, int[] B, int bstart, int bend, int k) {
-	// 	int m = aend - astart + 1;
-	// 	int n = bend - bstart + 1;
+	//Solution1:
+	public double findMedianSortedArrays(int A[], int B[]) {
+		int m = A.length;
+		int n = B.length;
+		int total = m + n;
+		if (total % 2 != 0) {
+			return findKth(A, 0, m - 1, B, 0, n - 1, total / 2 + 1);
+		} else {
+			double x = findKth(A, 0, m - 1, B, 0, n - 1, total / 2);
+			double y = findKth(A, 0, m - 1, B, 0, n - 1, total / 2 + 1);
+			return (double) (x + y) / 2;
+		}
+	}
 
-	// 	if (m > n) {
-	// 		return findKth(B, bstart, bend, A, astart, aend, k);
-	// 	}
-	// 	if (m == 0) {
-	// 		return B[k - 1];
-	// 	}
-	// 	if (k == 1) {
-	// 		return Math.min(A[astart], B[bstart]);
-	// 	}
+	public static int findKth(int[] A, int astart, int aend, int[] B, int bstart, int bend, int k) {
+		int m = aend - astart + 1;
+		int n = bend - bstart + 1;
 
-	// 	int partA = Math.min(k / 2, m);
-	// 	int partB = k - partA;
+		if (m > n) {
+			return findKth(B, bstart, bend, A, astart, aend, k);
+		}
+		if (m == 0) {
+			return B[k - 1];
+		}
+		if (k == 1) {
+			return Math.min(A[astart], B[bstart]);
+		}
 
-	// 	if (A[astart + partA - 1] < B[bstart + partB - 1]) {
-	// 		return findKth(A, astart + partA, aend, B, bstart, bend, k - partA);
-	// 	} else if (A[astart + partA - 1] > B[bstart + partB - 1]) {
-	// 		return findKth(A, astart, aend, B, bstart + partB, bend, k - partB);
-	// 	} else {
-	// 		return A[start + partA - 1];
-	// 	}
-	// }
+		int partA = Math.min(k / 2, m);
+		int partB = k - partA;
+
+		if (A[astart + partA - 1] < B[bstart + partB - 1]) {
+			return findKth(A, astart + partA, aend, B, bstart, bend, k - partA);
+		} else if (A[astart + partA - 1] > B[bstart + partB - 1]) {
+			return findKth(A, astart, aend, B, bstart + partB, bend, k - partB);
+		} else {
+			return A[start + partA - 1];
+		}
+	}
 	public double findMedianSortedArrays(int A[], int B[]) {
         int len = A.length + B.length;
 

@@ -15,7 +15,7 @@
 
 //左 中 右， left -> val -> right
 public class Solution {
-	//Recursive version 1
+	//Recursive version 1 recommend!
 	public List<Integer> inorderTraversal(TreeNode root) {
         ArrayList<Integer> res = new ArrayList<Integer>();
         if (root == null)
@@ -24,6 +24,24 @@ public class Solution {
         return res;
     }
     
+    //Iterative version 1 recommend!
+    public List<Integer> inorderTraversal(TreeNode root) {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if (root == null)
+            return res;
+        LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
+        while (root != null || !stack.isEmpty()) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } else {
+                root = stack.pop();
+                res.add(root.val);
+                root = root.right;
+            }
+        }
+    }
+
     public void dfs(TreeNode root, ArrayList<Integer> res) {
         if (root == null)
             return ;
@@ -43,23 +61,7 @@ public class Solution {
         return treeVal;
     }
 
-    //Iterative version 1
-    public List<Integer> inorderTraversal(TreeNode root) {
-    	ArrayList<Integer> res = new ArrayList<Integer>();
-    	if (root == null)
-    		return res;
-    	LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
-    	while (root != null || !stack.isEmpty()) {
-    		if (root != null) {
-    			stack.push(root);
-    			root = root.left;
-    		} else {
-    			root = stack.pop();
-    			res.add(root.val);
-    			root = root.right;
-    		}
-    	}
-    }
+
 
     //Iterative version 2
     public List<Integer> inorderTraversal(TreeNode root) {

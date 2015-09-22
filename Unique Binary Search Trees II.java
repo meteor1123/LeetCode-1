@@ -29,7 +29,7 @@ public class Solution {
         return helper(1, n);
     }
     public List<TreeNode> helper (int left, int right) {
-    	List<TreeNode> res = new ArrayList<TreeNode>(TreeNode);
+    	List<TreeNode> res = new ArrayList<TreeNode>();
     	if (left > right) {
     		res.add(null);
     		return res;
