@@ -15,7 +15,7 @@
 
 	3. 对字符串l执行KMP算法，可以得到“部分匹配数组”p（也称“失败函数”）
 
-	4. 我们只关心p数组的最后一个值p[-1]，因为它表明了rev_s与s相互匹配的最大前缀长度。
+	4. 我们只关心p数组的最后一个值p[l.length*()-1]，因为它表明了rev_s与s相互匹配的最大前缀长度。
 
 	5. 最后只需要将rev_s的前k个字符与原始串s拼接即可，其中k是s的长度len(s)与p[-1]之差。
 */
@@ -34,6 +34,16 @@
 	4. where k is a difference between original string size and the prefix function
 	   for the last character of a constructed string.
 */
+
+
+/*
+	1. 这里要用到kmp算法的next数组，next数组可以求出一个字符串最大匹配的前后缀长度
+	2. 求一个字符串的palindrome，最简单的方法就是 combineStr = reverse(s) + s, 比如 abcd + dcba, aabb + bbaa
+	3. 这里的问题在于如何取到最短的palindrome，abcddcba = abcdcba, aabbbbaa = aabaa,皆为最短palindrome
+	4. 因此我们可以使用next数组求出combineStr的最长匹配前后缀，
+	   将这个匹配的最长前后缀截取丢掉，使用其余的部分reverse(s) + s,
+	  （注意要将s的最长匹配前后缀丢掉！之后reverse，再加上s，便是shortest palindrome!)
+*/
 public class Solution {
 	public String shortestPalindrome(String s) {
         if (s.length() <=1 ) {
@@ -51,5 +61,31 @@ public class Solution {
             }
         }
         return new StringBuilder(s.substring(next[cur.length() -1])).reverse().toString() + s;
+    }
+}
+
+
+//传统的 next数组求法，注意这里的next[i] 并不是在这个charAt(i)上的最大匹配长度，而是i之前的子串的最长匹配
+//因此在最后的时候，需要将next[i] + 1
+public class Solution {
+    public String shortestPalindrome(String s) {
+        if (s.length() <= 1) {
+            return s;
+        }
+        String cur = s + " " + new StringBuilder(s).reverse().toString();
+        int len = cur.length();
+        int[] next = new int[len];
+        int k = -1;
+        int j = 0;
+        next[0] = -1;
+        while (j < len - 1) {
+            if (k == -1 || cur.charAt(k) == cur.charAt(j)) {
+                next[++j] = ++k;
+            } else {
+                k = next[k];
+            }
+        }
+        
+        return new StringBuilder(s.substring(next[cur.length() - 1] + 1)).reverse().toString() + s;
     }
 }

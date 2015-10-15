@@ -43,15 +43,18 @@
 	method1:  Record the pre nodes of every node, then find out a node without pre node in each iteration and delete this node from unvisited set, add this node to result
 	http://www.cnblogs.com/EdwardLiu/p/4431722.html
 	在图论中，由一个有向无环图的顶点组成的序列，当且仅当满足下列条件时，称为该图的一个拓扑排序（英语：Topological sorting）。
-（1）每个顶点出现且只出现一次；
-（2）若A在序列中排在B的前面，则在图中不存在从B到A的路径。
-	 也可以定义为：拓扑排序是对有向无环图的顶点的一种排序，它使得如果存在一条从顶点A到顶点B的路径，那么在排序中B出现在A的后面。
+	（1）每个顶点出现且只出现一次；
+	（2）若A在序列中排在B的前面，则在图中不存在从B到A的路径。
+		 也可以定义为：拓扑排序是对有向无环图的顶点的一种排序，它使得如果存在一条从顶点A到顶点B的路径，那么在排序中B出现在A的后面。
 */
 
 public class Solution {
 	public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
 		ArrayList<DirectedGraphNode> result = new ArrayList<DirectedGraphNode>();
+		//用hashmap开确定一个点的邻接点数
 		HashMap<DirectedGraphNode, Integer> map = new HashMap();
+
+		//遍历每个node的邻接点，
 		for (DirectedGraphNode node : graph) {
 			for (DirectedGraphNode neighbor : node.neighbors) {
 				if (map.containsKey(neighbor)) {

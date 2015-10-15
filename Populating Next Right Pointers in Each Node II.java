@@ -61,7 +61,7 @@ public class Solution {
 	// 	}
 	// }
 
-	    public void connect(TreeLinkNode root) {
+	public void connect(TreeLinkNode root) {
 	    //tempChild 是每层的头结点（dummy node） tempChild.next是每层最左边的结点
         TreeLinkNode tempChild = new TreeLinkNode(0);
         while (root != null) {

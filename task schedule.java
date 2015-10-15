@@ -10,7 +10,7 @@ public int execTime(int[] task, int N) {
         if(!map.containsKey(task[i])) {
             map.put(task[i], i + res);
             i++;
-        }else {
+        } else {
             //get the task's time
             int index = map.get(task[i]);
             //check i + res whether is larger than N + index

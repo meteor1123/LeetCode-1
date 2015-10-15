@@ -16,8 +16,8 @@ class Solution {
             return;
         }
         int r = colors.length - 1;
-        for (int i = 0; i < k - 1; ++i) {
-            r = partition(colors, 0, r, k - i - 1);
+        for (int i = 0; i < k - 1; ++i) {//为什么是< k - 1 而不是< k?  因为K个数，至多只需要K-1次partition就能排好顺序
+            r = partition(colors, 0, r, k - i - 1);//pivot从k - 1 到  1
         }
     }
     

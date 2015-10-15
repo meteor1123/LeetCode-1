@@ -31,6 +31,12 @@
 	1. find the first one which make A[i] < A[i + 1] from the end to start of the array,
 	2. find the smallest one which make A[j] > A[i] , from the index i + 1 to A.length - 1;
 	3. swap them, and reverse the array from i + 1 to A.length - 1;
+
+    1. 从后往前找，找到第一个nums[i] < nums[i + 1], 返回i的位置
+    2. 判断i 是不是大于等于0， 如果i小于0， 这个数字一定是形如 321 这样的 逆序排列，下一个数字是 123， 因此只要直接reverse并返回。
+    3. 所以我们这里面的操作是基于 i >- 0, 从  j = i + 1这个位置开始，从前往后找到最小的使得nums[j] <= nums[i]，的j，返回j的位置
+       注意到，i + 1 之后是逆序，排列，所以最后大于nums[i]那个就是最小的j.
+    4. swao i和j， 并reverse i+1 到 nums.length - 1 位置的数.
 */
 public class Solution {
 	public void nextPermutation(int[] num) {

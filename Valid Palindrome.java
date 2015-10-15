@@ -94,3 +94,48 @@ public class Solution {
 
     }
 }
+
+//Solution myself no use toLowerCase()
+public class Solution {
+    public boolean isPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        
+        int start = 0;
+        int end = s.length() - 1;
+        while (start < end) {
+            char a = s.charAt(start);
+            char b = s.charAt(end);
+            if (isValid(a) && isValid(b)) {
+                if (!isSame(a, b)) {
+                    return false;
+                }
+                start++;
+                end--;
+            } else if (isValid(a)) {
+                end--;
+            } else {
+                start++;
+            }
+        }
+        return true;
+    }
+    
+    public boolean isValid(char c) {
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private boolean isSame(char c1, char c2) {
+        if (c1 >= 'A' && c1 <= 'Z')
+            c1 = (char) (c1 - 'A' + 'a');
+        if (c2 >= 'A' && c2 <= 'Z')
+            c2 = (char) (c2 - 'A' + 'a');
+        return c1 == c2;
+
+    }
+}

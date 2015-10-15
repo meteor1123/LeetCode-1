@@ -64,10 +64,16 @@ public class Solution {
                     if (s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') {
                         
                         dp[i][j] = dp[i - 1][j] || dp[i][j - 1] || dp[i][j - 2];
-                //dp[i-1][j]:abb vs ab*:  depends on ab vs ab*，该情况下只要i - 1 和 i - 2的值相等
+                                     
+
                 //dp[i][j-2] __a vs ab*:  depends on a vs a ,该情况下a为i, a为j - 2,只要匹配，后面的b* 可以等于0，所以能匹配
-                //                        * 前面的字符一次都不取
-                //dp[i][j-1] abb vs ab*:  depends on ab vs ab , * 只取前面的字符一次 
+                //                       '*' 和前面的字符都不取，合并为空
+                //dp[i][j-1] abb vs ab*:  depends on ab vs ab , 
+                //                       '*' 和前面的字符，合二为一
+                //dp[i-1][j] a  b  b  b  vs    a   b   *  :  depends on ab vs ab*，该情况下只要i - 1 和 i - 2的值相等
+                //             i-2 i-1            j-2  j-1
+                //                       '*' 取前面的字符1次， 因为 i - 1 和 j 已经匹配的话， i必须要和p的 一个字符再匹配，
+                //                           所以*这时添上+1前面的相同字符
                     } else {
                         dp[i][j] = dp[i][j - 2];
                     }
@@ -79,8 +85,45 @@ public class Solution {
         return dp[s.length()][p.length()];
     }
 
+        /*
+        (1)p[j+1]不是'*'。情况比较简单，只要判断当前s的i和p的j上的字符是否一样（如果有p在j上的字符是'.',也是相同），
+           如果不同，返回false，否则，递归下一层i+1，j+1; 
+        (2)p[j+1]是'*'。那么此时看从s[i]开始的子串，假设s[i],s[i+1],...s[i+k]都等于p[j]那么意味着这些都有可能是合适的匹配，
+           那么递归对于剩下的(i,j+2),(i+1,j+2),...,(i+k,j+2)都要尝试（j+2是因为跳过当前和下一个'*'字符）。 
+
+                   i  i+1
+         S:  b  a  a  a  a  a  a  a  a  b  c
+
+
+         p:  b  a  a  *  a  b  c
+                   j j+1
+    */
+    //Recursive2 prefer
+    public boolean isMatch(String s, String p) {
+        if (p.isEmpty()) {
+            return s.isEmpty();
+        }
+
+        if (p.length() == 1 || p.charAt(1) != '*') {
+            if (s.isEmpty() || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0))) {
+                return false;
+            } else {
+                return isMatch(s.substring(1), p.substring(1));
+            }
+        }
+
+        //P.length() >=2
+        while (!s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.')) {
+            if (isMatch(s, p.substring(2))) {
+                return true;
+            }
+            s = s.substring(1);
+        }
+        return isMatch(s, p.substring(2));
+    }
+
     //recursive
-      /*
+    /*
         (1)p[j+1]不是'*'。情况比较简单，只要判断当前s的i和p的j上的字符是否一样（如果有p在j上的字符是'.',也是相同），
            如果不同，返回false，否则，递归下一层i+1，j+1; 
         (2)p[j+1]是'*'。那么此时看从s[i]开始的子串，假设s[i],s[i+1],...s[i+k]都等于p[j]那么意味着这些都有可能是合适的匹配，
@@ -165,4 +208,5 @@ public class Solution {
         }
         return dp[s.length()][p.length()];
     }
+
 }
