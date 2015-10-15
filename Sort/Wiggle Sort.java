@@ -51,6 +51,13 @@
 
 	综上所示，每个点只需要处理邻居节点的关系，即可满足wiggle sort
 */
+
+/*
+	 我们注意到在数组index= 0, 和末尾的时候，A[index] 一定是大于A[-1]或者 A【length] 的，这两个地方可以看成负无穷
+	 求中间的数可以简化成下面的逻辑
+	 1） 当i为奇数时， nums[i] 要大于nums[i - 1]否则 swap
+	 2） 当i为偶数时， nums[i] 要小于nums[i - 1]否则swap
+*/
 public class Solution {
     public void wiggleSort(int[] nums) {
         for (int i = 1; i < nums.length; i++) {
@@ -60,5 +67,26 @@ public class Solution {
                nums[i] = a;
            }
         }
+    }
+}
+
+
+//prefer
+public class Solution {
+    public void wiggleSort(int[] nums) {
+        for (int i = 1; i < nums.length; i++) {
+            if (i % 2 == 1) {
+                if (nums[i - 1] > nums[i]) {
+                    swap(nums, i);
+                } 
+            } else if (i != 0 && nums[i - 1] < nums[i]) {
+                swap(nums, i);
+            }
+        }
+    }
+    public void swap(int[] nums, int i) {
+        int temp = nums[i];
+        nums[i] = nums[i - 1];
+        nums[i - 1] = temp;
     }
 }
