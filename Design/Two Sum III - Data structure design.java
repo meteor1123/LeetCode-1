@@ -1,4 +1,4 @@
-/*
+fr/*
 	Two Sum III - Data structure design
 	Design and implement a TwoSum class. It should support the following operations: add and find.
 
@@ -13,15 +13,6 @@
 	Tags: HashTable, Design
 */
 
-/*
-    注意题目要求！two sum! two sum! two sum!!! 只需要计算两个数字的sum，
-    因此这里可以使用hashtable，key就是加入的number，value是加入的number的次数，注意到我们只是two sum，因此不管同一个数字加多少次
-    我们都只保存最多两次的value.
-    find：
-        1) 遍历key值，看看有没有key == value - key, 
-        2) 如果有的话, 假如key 和value - key 不等，则只需要value - key出现一次既可以满足找到。
-        3) 假如key 和 value - key 相等，则需要key出现两次！
-*/
 /*
     注意题目要求！two sum! two sum! two sum!!! 只需要计算两个数字的sum，
     因此这里可以使用hashtable，key就是加入的number，value是加入的number的次数，注意到我们只是two sum，因此不管同一个数字加多少次

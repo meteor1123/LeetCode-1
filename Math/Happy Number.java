@@ -16,7 +16,40 @@
 */
 
 
+/*
+    The idea is to use one hash set to record sum of every digit square of every number occurred. 
+    Once the current sum cannot be added to set, return false; once the current sum equals 1, return true;
+*/
+
+
+/*
+    1. 题意是给一个数，求每一位数的平方的和，再将这个新数循环继续求平方和，当最后等于1时即是Happy Number
+    2. 用HashSet存储每一个新生成的n，因为一旦遇到重复的n则意味着这个是个无限循环，无法再生成1，所以返回false，这就是hashset的妙用
+*/
 public class Solution {
+
+    //Solution1 best prefer
+    public boolean isHappy(int n) {
+        Set<Integer> set = new HashSet<>();
+        int squareSum = 0;
+        int remain = 0;
+        while (set.add(n)) {
+            squareSum = 0;
+            while (n > 0) {
+                remain = n % 10;
+                squareSum += remain * remain;
+                n = n / 10;
+            }
+            if (squareSum == 1) {
+                return true;
+            } else {
+                n = squareSum;
+            }
+        }
+        return false;
+    }
+
+    //Solution2
     public boolean isHappy(int n) {
         if (n <= 0) {
             return false;
@@ -44,4 +77,34 @@ public class Solution {
         } 
         return false;
     }
+}
+
+//Solution3
+public class Solution {
+    public boolean isHappy(int n) {
+        int slow = n;
+        int fast = n;
+        do {
+            slow = digitSquareSum(slow);
+            fast = digitSquareSum(fast);
+            fast = digitSquareSum(fast);
+        } while (slow != fast);
+        if (slow == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public int digitSquareSum(int n) {
+        int sum = 0;
+        int temp;
+        while (n > 0) {
+            temp = n % 10;
+            sum += temp * temp;
+            n /= 10;
+        }
+        return sum;
+    }
+    
 }

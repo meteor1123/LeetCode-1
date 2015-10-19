@@ -22,6 +22,36 @@
 	Could you solve it in linear time?
 */
 
+//Solution2
+public class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int len = nums.length;
+        int[] res = new int[len - k + 1];
+        if (nums.length == 0) {
+            return new int[0];
+        }
+        //maxHeap
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer i1, Integer i2) {
+                return i2 - i1;
+            }
+        });
+        
+        for (int i = 0; i < k; i++) {
+            pq.add(nums[i]);
+        }
+        
+        res[0] = pq.peek();
+        for (int i = k; i < len; i++) {
+            pq.remove(nums[i - k]);
+            pq.add(nums[i]);
+            res[i - k + 1] = pq.peek();
+        }
+        return res;
+    }
+}
+//Solution1
 public class Solution {
 	public int[] maxSlidingWindow(int[] nums, int k) {
 		int n = nums.length;
@@ -50,3 +80,40 @@ public class Solution {
 		return res;
 	}
 }
+
+
+//Solution return use ArrayList
+public class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: The maximum number inside the window at each moving.
+     */
+    public ArrayList<Integer> maxSlidingWindow(int[] nums, int k) {
+        // write your code here
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if (nums.length == 0) {
+            return res;
+        }
+        
+        Queue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>(){
+            @Override
+            public int compare(Integer i1, Integer i2){
+                return Integer.compare(i2, i1);
+            }
+        });
+        
+        for (int i = 0; i < k; i++) {
+            pq.add(nums[i]);
+        }
+        
+        res.add(pq.peek());
+        for (int i = k; i < nums.length; i++) {
+            pq.remove(res.get(i - k));
+            pq.add(res.get(i));
+            res.add(pq.peek());
+        }
+        return res;
+    }
+}
+
+

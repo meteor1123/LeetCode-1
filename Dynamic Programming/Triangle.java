@@ -95,3 +95,23 @@
         
         return dp[0];
     }
+
+    //4 一维dp
+    public int minimumTotal(int[][] triangle) {
+        // write your code here
+        if (triangle.length == 1) {
+            return triangle[0][0];
+        }
+        int m = triangle.length;
+        int[] dp = new int[m];
+        for (int i = 0; i < triangle[m - 1].length; i++) {
+            dp[i] = triangle[m - 1][i];
+        }
+        
+        for (int i = m - 2; i >= 0; i--) {
+            for (int j = 0; j < triangle[i].length; j++) {
+                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j];
+            }
+        }
+        return dp[0];
+    }

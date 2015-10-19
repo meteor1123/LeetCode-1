@@ -13,6 +13,30 @@
 	O(n) time, O(1) space
 */
 
+
+/*
+
+	The default PriorityQueue is implemented with Min-Heap, that is the top element is the minimum one in the heap.
+	1.minHeap
+	public class MyComparator implements Comparator<Integer> {
+	    public int compare(Integer x, Integer y) {
+	        return x - y;
+	    }
+	}
+
+	2.maxHeap
+	In order to implement a max-heap, you can create your own Comparator:
+	public class MyComparator implements Comparator<Integer> {
+	    public int compare(Integer x, Integer y) {
+	        return y - x;
+	    }
+	}
+
+	So, you can create a min-heap and max-heap in the following way:
+
+	PriorityQueue minHeap = new PriorityQueue();
+	PriorityQueue maxHeap = new PriorityQueue(size, new MyComparator());
+*/
 public class Solution {
 	//param k : description of k
 	//param numbers : array of numbers
@@ -106,8 +130,10 @@ public class Solution {
 	//1.Using heap
 	//  O(N lg K) running time + O(k) memory
 	public int findKthLargest(int[] nums, int k) {
-		//默认是最小堆，也就是适合找第k大
-		//最大堆适合找第k小
+		//默认是最小堆，也就是适合找第k大,
+		//堆顶元素就是peek，堆顶元素是队列中最小的数字，维护一个size（） = k, 每次只要大于堆顶的元素，就将堆顶元素出列，堆顶元素变成当前队列最小
+		
+		//最大堆适合找第k小，堆顶元素是队列中最大的数字
 		//优先队列中元素默认按自然顺序排列，也就是数字默认是小的在队列头，字符串则按字典序排列。
 		PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
 		for (int val : nums) {

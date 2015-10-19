@@ -61,3 +61,23 @@ public class Solution {
     	return steps;
     }
 }
+
+//Solution3 greedy 
+public class Solution {
+    public int jump(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int maxCover = 0;
+        int steps = 0;
+        int lastCover = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if(i > lastCover) {
+                steps++;
+                lastCover = maxCover;
+            }
+            maxCover = Math.max(maxCover, nums[i] + i);
+        }
+        return steps;
+    }
+}

@@ -25,35 +25,27 @@
 	isUnique("make") -> true
 */
 public class ValidWordAbbr {
-    private HashMap<String, ArrayList<String>> map;
+    HashMap<String, String> map;
     public ValidWordAbbr(String[] dictionary) {
         map = new HashMap<>();
         for (String s : dictionary) {
-            String abb = generateAbb(s);
-            if (!map.containsKey(abb)) {
-                map.put(abb, new ArrayList<>());
+            String abbrev = generateAbb(s);
+            if (map.containsKey(abbrev)) {
+                map.put(abbrev, "");//如果这里出现重复的abbrev，则设置为空，因为不是unqiue
+            } else {
+                map.put(abbrev, s);
             }
-            map.get(abb).add(s);
         }
     }
+
     public boolean isUnique(String word) {
-        String abb = generateAbb(word);
-        if (!map.containsKey(abb)) {
-            return true;
-        } else if (map.get(abb).contains(word) && map.get(abb).size() <= 1) {
-            return true;
-        } else {
-            return false;
-        }
+        String key = generateAbb(word);
+        return !map.containsKey(key) || map.get(key).equals(word);
     }
+    
     public String generateAbb(String word) {
-        int len = word.length();
-        if (len <= 2) {
-            return word;
-        } else {
-            StringBuilder abbreviation = new StringBuilder().append(word.charAt(0)).append(len - 2).append(word.charAt(len - 1));
-            return abbreviation.toString();
-        }
+        String abb = word.charAt(0) + String.valueOf(word.length() - 2) + word.charAt(word.length() - 1);
+        return abb;
     }
 }
 

@@ -37,31 +37,25 @@ public class Solution {
 
 //Solution2: minimum swap time, unorder!
 public class Solution {
-	public void moveZeroes(int[] arr) {
-		int start = 0;
-		int end = arr.length - 1;
-
-    	while (start < end) {
-    		if (arr[start] == 0 && arr[end] != 0) {
-    			swap(arr, start, end);
-    			start++;
-    			end--;
-    		} else {
-    			if (arr[start] != 0) {
-    				start++;
-    			}
-    			if (arr[end] == 0) {
-    				end--;
-    			}
-    		}
-    	}
-	}
-
-	public void swap(int[] arr, int start, int end) {
-		int temp = arr[start];
-		arr[start] = arr[end];
-		arr[end] = temp;
-	}
+    public int moveZeroes(int[] nums) {
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end) {
+            if (nums[start] != 0) {
+                start++;
+            } else if (nums[end] == 0) {
+                end--;
+            } else {
+                swap(nums, start++, end--);
+            }
+        }
+        return start;
+    }
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }
 
 //Solution3: reduce the assign
@@ -77,7 +71,6 @@ public class Solution {
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] != 0) {
 				//count is used to record the amount of non-zero number
-			    
 				if (i == count) {
 				    count++;
 				    continue;

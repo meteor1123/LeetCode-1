@@ -53,3 +53,31 @@ public class Vector2D {
  * Vector2D i = new Vector2D(vec2d);
  * while (i.hasNext()) v[f()] = i.next();
  */
+
+
+public class Vector2D {
+	//分两个Iterator，一个用来遍历vec2d，一个用来遍历子 List<Integer>中的元素
+    private Iterator<List<Integer>> vec2d;
+    private Iterator<Integer> tempList;
+    public Vector2D(List<List<Integer>> vec2d) {
+        this.vec2d = vec2d.iterator();
+    }
+
+    public int next() {
+        hasNext();
+        return tempList.next();
+    }
+
+    public boolean hasNext() {
+        while ((tempList == null || !tempList.hasNext()) && vec2d.hasNext()) {
+            tempList = vec2d.next().iterator();
+        }
+        return tempList != null && tempList.hasNext();
+    }
+}
+
+/**
+ * Your Vector2D object will be instantiated and called as such:
+ * Vector2D i = new Vector2D(vec2d);
+ * while (i.hasNext()) v[f()] = i.next();
+ */

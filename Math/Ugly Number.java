@@ -10,8 +10,7 @@
 
 
 /*
-	Solution:  1.use 2 3 5  to divide the num, if can be divide  which mean 2,3,5 is the factor of this  number,
-			   2. 
+	根据丑数的定义，丑数只能被2、3和5整除。
 */
 public class Solution {
 	public boolean isUgly(int num) {

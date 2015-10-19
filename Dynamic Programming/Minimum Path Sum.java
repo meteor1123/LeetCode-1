@@ -50,4 +50,25 @@ public class Solution {
 	    }
 	    return res[grid[0].length - 1];
 	}
+
+
+	//Prefer one dimension
+	public int minPathSum(int[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
+        }
+        int m = grid.length;
+        int n = grid[0].length;
+        int[] dp = new int[n + 1];
+        for (int i = 0; i < n + 1; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+        dp[1] = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                dp[j + 1] = Math.min(dp[j + 1], dp[j]) + grid[i][j];
+            }
+        }
+        return dp[n];
+    }
 }

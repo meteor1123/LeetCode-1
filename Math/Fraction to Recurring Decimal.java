@@ -20,10 +20,72 @@
 			2. 按位异或,作用是判断是否是负数，负数的
 			3. 把两个数转为正数，为避免移除，int转为long
 			4. 先保存结果的整数部分
-			5. 结果的余数部分乘以10
+			5. 结果的余数部分乘以10, 再除以分母 就是下一个，比如:
+                2/7 = 0.(285714) 无限循环
+                整数位: 2/7  = 0 ;
+                十分位: 2 * 10  / 7 = 2;  20 % 7 = 6;
+                百分位: (6 * 10) / 7 = 8; 60 % 7 = 4;
+                千分位: (4 * 10) / 7 = 5; 40 % 7 = 5;
+                万分位: (5 * 10) / 7 = 7; 50 % 7 = 1;
+              十万分位: (1 * 10) / 7 = 1; 10 % 7 = 3;
+              百万分位: (3 * 10) / 7 = 4; 30 % 7 = 2;
+              千万分为: (2 * 10) / 7 = 2; 20 % 7 = 6;
 			6. 用hasmap保存结果的余数部分，记录位置，只要后面一出现相同的余数，就意味着开始循环 
 			7. 如果没出现则继续除
 */
+
+
+//Solution1
+public class Solution {
+    //numerator == 分子， denominator == 分母
+    public String fractionToDecimal(int numerator, int denominator) {
+        if (numerator == 0) {
+            return "0";
+        }
+        StringBuilder res = new StringBuilder();
+        
+
+        //判断正负
+        res.append(((numerator > 0) ^ (denominator > 0)) ? "-" : "");
+        long num = Math.abs((long)numerator);
+        long den = Math.abs((long)denominator);
+        
+        //integral part
+        res.append(num / den);
+
+        //整数部分
+        num = num % den;
+        if (num == 0) {
+            return res.toString();
+        }
+        
+        //fractional part 小数部分
+        res.append(".");
+        //用map来判断是否出现循环小数
+        HashMap<Long, Integer> map = new HashMap<Long, Integer>();
+        map.put(num, res.length());
+
+        while (num != 0) {
+            num = num * 10;
+            res.append(num / den);
+            num = num % den;
+            if (map.containsKey(num)) {
+                //获取第一次重复的数字的index，从该index处插入左括号(, 最后再添上右括号)
+                int index = map.get(num);
+                res.insert(index, "(");
+                res.append(")");
+                break;
+            } else {
+                //res.length()代表该数字的index
+                map.put(num, res.length());
+            }
+        }
+        return res.toString();
+    }
+}
+
+
+//Solution2
 public class Solution {
     public String fractionToDecimal(int numerator, int denominator) {
         if (numerator == 0)//分子

@@ -14,6 +14,9 @@
 	Tasg: Array
 */
 
+/*
+	很简单，只要设置两个pointer 一旦找到word1 或者word2 就更新index，只要标志这俩index的值都不为初始值-1，就计算距离并取最小
+*/
 public class Solution {
 	public int shortestDistance(String[] words, String word1, String word2) {
 		int index1 = -1;
@@ -31,4 +34,30 @@ public class Solution {
 		}
 		return minDist;
 	}
+}
+
+
+public class Solution {
+    public int shortestDistance(String[] words, String word1, String word2) {
+        if (words == null || words.length == 0) {
+            return 0;
+        }
+        int start = 0;
+        int minLen = words.length;
+        int indexOne = -1;
+        int indexTwo = -1;
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (word.equals(word1)) {
+                indexOne = i;
+            } else if (word.equals(word2)) {
+                indexTwo = i;
+            }
+            
+            if (indexOne != -1 && indexTwo != -1) {
+                minLen = Math.min(Math.abs(indexOne - indexTwo), minLen);
+            }
+        }
+        return minLen;
+    }
 }

@@ -50,6 +50,19 @@ public class Solution {
         }
         return len + 1;
     }
+
+    public void swap(int[] A, int i, int j) {
+        int temp = A[i];
+        A[i] = A[j];
+        A[j] = temp;
+    }
+
+
+
+
+
+
+    
     //Solution2: Using quick partition method, a little bit complicate
     public int firstMissingPositive(int[] A) {
         int n = A.length;

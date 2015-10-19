@@ -21,9 +21,32 @@
 */
 
 /*
-	
+
 */
 
+//Solution 0 best bits
+ public void gameOfLife(int[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int count = 0;
+                for (int I = Math.max(i - 1, 0); I < Math.min(i + 2, m); I++) {
+                    for (int J = Math.max(j - 1, 0); J < Math.min(j + 2, n); J++) {
+                        count += board[I][J] & 1;
+                    }
+                }
+                if (count == 3 || count - board[i][j] == 3) {
+                    board[i][j] |= 2;
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] >>= 1;
+            }
+        }
+    }
 //Solution1
 public class Solution {
 	int[][] dir ={{1,-1},{1,0},{1,1},{0,-1},{0,1},{-1,-1},{-1,0},{-1,1}};
@@ -96,6 +119,14 @@ public class Solution {
         return true;
     }
 
+/*
+    传统做法：
+    1. 新建一个数组newboard,用来保持board的next state
+    2. 遍历每一个board[i][j],检查它的邻近的8个邻居，注意边界条件
+    3. board[i][j] = 1 ，邻居小于2 大于3 赋值为0
+       board[i][j] = 0 ，邻居等于2，赋值为1
+    4. 用newboard更新board
+*/
 //Solution3
 public class Solution {
         public void gameOfLife(int[][] board) {

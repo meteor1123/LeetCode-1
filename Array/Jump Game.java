@@ -29,7 +29,7 @@ public class Solution {
     }
 	//DP
 
-    //dp[i] means  this index can jump to the end point or not.
+    //dp[i] means  from index 0 which can be jump to i or not
     public boolean canJump(int[] A) {
     	if (A == null || A.length == 0) {
     		return false;

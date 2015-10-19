@@ -10,31 +10,32 @@
 */
 
 //Solution1 HashMap solution
+public class Solution {
     public boolean isStrobogrammatic(String num) {
         HashMap<Character, Character> map = new HashMap<>();
         map.put('0', '0');
         map.put('1', '1');
-        map.put('6', '9');
-        map.put('9', '6');
         map.put('8', '8');
-        int left = 0;
-        int right = num.length() - 1;
-        while (left <= right) {
-            char leftChar = num.charAt(left);
-            char rightChar = num.charAt(right);
-            if (!map.containsKey(leftChar) || !map.containsKey(rightChar)) {
+        map.put('9', '6');
+        map.put('6', '9');
+        int start = 0;
+        int end = num.length() - 1;
+        while (start <= end) {
+            char c1 = num.charAt(start);
+            char c2 = num.charAt(end);
+            if (!map.containsKey(c1) || !map.containsKey(c2)) {
                 return false;
+            } else if (map.get(c1) == c2) {
+                start++;
+                end--;
             } else {
-                if (leftChar == map.get(rightChar)) {
-                    left++;
-                    right--;
-                } else {
-                    return false;
-                }
+                return false;
             }
         }
+        
         return true;
     }
+}
 
 
 //Solution2 my solution

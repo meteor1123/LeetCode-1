@@ -11,24 +11,25 @@
 */
 
 public class Solution {
-    //1
+    //1 StefanPochmann
     public int removeDuplicates(int[] A) {
-        int i = 0;
-        for (int n : nums) {
-            if (i < 2 || n > nums[i - 2]) {
-                nums[i++] = n;
+        int index = 0;
+        for (int num : nums) {
+            if (index < 2 || num > nums[index - 2]) {
+                nums[index++] = num;
             }
         }
-        return i;
+        return index;
     }
+
     //2
     public int removeDuplicates(int[] A) {
         if (A == null || A.length == 0) {
         	return 0;
         }
-        //index 指示当前的满足条件的 长度
+        //index 记录满足条件的数组长度
         int index = 0;
-        //记录相等的数的个数
+        //count 记录相等的数的个数
         int count = 0;
         for (int i = 0; i < A.length; i++) {
             if (i > 0 && A[i] == A[i - 1]) {

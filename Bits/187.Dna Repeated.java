@@ -34,7 +34,7 @@ public class Solution {
             else {
                 hash = (hash << 2) + map.get(c);
                 hash &= (1 << 20) - 1;//对10个数 用掩码取值
-                // 1 << 20位代表 1后面跟着20个0，2进制，再-1，表示从 1 0000 0000 0000 0000 0000 --> 1111 1111 1111 1111 1111
+                // 1 << 20位代表 1后面跟着20个0，2进制，再-1，表示从 0000 0000 0001 0000 0000 0000 0000 0000 --> 0000 0000 0000 1111 1111 1111 1111 1111
                 // 为什么要用20位掩码取值？因为我们只需要 0 - 19 位 总共20位的数，而每次循环 hash都会左移 + 新的字符，所以需要规避无效位数的干扰
                 if (set.contains(hash) && !unique.contains(hash)) {
                     res.add(s.substring(i - 9, i + 1));
@@ -51,4 +51,31 @@ public class Solution {
         }
         return res;
     }
+
+
+    //Solution2
+    public List<String> findRepeatedDnaSequences(String s) {
+        Set<Integer> unique = new HashSet<>();
+        Set<Integer> doubleWords = new HashSet<>();
+        List<String> res = new ArrayList<>();
+        char[] map = new char[26];
+        map['A' - 'A'] = 0;//可以省略
+        map['C' - 'A'] = 1;
+        map['G' - 'A'] = 2;
+        map['T' - 'A'] = 3;
+        
+        for (int i = 0 ; i < s.length() - 9; i++) {
+            int hash = 0;
+            for (int j = i; j < i + 10; j++) {
+                hash = hash << 2;
+                hash = hash | map[s.charAt(j) - 'A'];
+            }
+            if (!unique.add(hash) && doubleWords.add(hash)) {
+                res.add(s.substring(i, i + 10));
+            }
+        }
+        return res;
+    }
 }
+
+

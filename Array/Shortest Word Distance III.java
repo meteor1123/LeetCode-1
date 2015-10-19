@@ -39,29 +39,50 @@ public class Solution {
 //Solution2 by Myself
 public class Solution {
     public int shortestWordDistance(String[] words, String word1, String word2) {
+        if (words == null || words.length == 0) {
+            return 0;
+        }
         int index1 = -1;
         int index2 = -1;
-        int minDist = Integer.MAX_VALUE;
-        
+        int minLen = words.length;
         for (int i = 0; i < words.length; i++) {
-            if (word1.equals(word2)) {
-                if (words[i].equals(word1) && index1 == -1) {
+            String word = words[i];
+            if (!word1.equals(word2)) {
+                if (word.equals(word1)) {
                     index1 = i;
-                } else if (words[i].equals(word1) && index1 != -1) {
-                    minDist = Math.min(minDist, Math.abs(i - index1));
-                    index1 = i;
-                }
-            } else {
-                if (words[i].equals(word1)) {
-                    index1 = i;
-                } else if (words[i].equals(word2)) {
+                } else if (word.equals(word2)) {
                     index2 = i;
                 }
                 if (index1 != -1 && index2 != -1) {
-                    minDist = Math.min(minDist, Math.abs(index1 - index2));
+                    minLen = Math.min(Math.abs(index1 - index2), minLen);
+                }
+            } else {
+                if (word.equals(word1)) {
+                    if (index1 != -1) {
+                        minLen = Math.min(i - index1, minLen);
+                    }
+                    index1 = i;
                 }
             }
         }
-        return minDist;
+        return minLen;
     }
+}
+
+//Solution short solution
+public int shortestWordDistance(String[] words, String word1, String word2) {
+    long dist = Integer.MAX_VALUE;
+    long i1 = dist;
+    long i2 = -dist;
+    for (int i=0; i<words.length; i++) {
+        if (words[i].equals(word1))
+            i1 = i;
+        if (words[i].equals(word2)) {
+            if (word1.equals(word2))
+                i1 = i2;
+            i2 = i;
+        }
+        dist = Math.min(dist, Math.abs(i1 - i2));
+    }
+    return (int) dist;
 }

@@ -5,6 +5,30 @@
 	For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
 */
 
+//Concise best
+public class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> res = new ArrayList<>();
+        if (nums.length == 1) {
+            res.add(nums[0] + "");
+            return res;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            int number = nums[i];
+            while (i + 1 < nums.length && nums[i + 1] - nums[i] == 1) {
+                i++;
+            }
+            if (number != nums[i]) {
+                res.add(number + "->" + nums[i]);
+            } else {
+                res.add(number + "");
+            }
+        }
+        return res;
+    }
+}
+
+//My self
 public class Solution {
 	public List<String> summaryRanges(int[] nums) {
         List<String> res = new ArrayList<String>();

@@ -11,7 +11,19 @@
 	Tags: Array
 */
 
-
+/*
+    1. 遍历数组，找一个candidate， 
+        这里用这句是关键
+            if(!knows(i,candidate)) 
+                candidate = i
+            只要有个candidate，i不认识它，则i就被选为candidate，上一个candidate自然也可以去掉
+            为什么一次这样的遍历可以得到这个candidate值？
+            因为只要遍历到这个candidate：
+                1） 一定会有 这个（celebrity）不认识前面的candidate，确保进入!knows(i,candidate)判断语句，并赋值为candidate
+                2） 后面的i认识这个candidate，确保不会进入!knows(i,candidate)判断语句，因此candidate不会变
+            但是有可能会出现不存在candidate的情况也能找到这样的一个candidate：
+                i不认识前面的i - 1，后面的i + 1 认识i，但是i认识i - 2，这样就是错误的candidate，所以需要进入二层循环判断
+*/
 //Best Solution
 public class Solution extends Relation {
     public int findCelebrity(int n) {
@@ -19,12 +31,15 @@ public class Solution extends Relation {
             return n;
         }
         int candidate = 0;
+        //一次判断找出candidate
         for (int i = 1; i < n; i++) {
             if (!knows(i, candidate)) {
                 candidate = i;
             }
         }
         
+        //二次判断这个是不是正确的candidate
+        //有可能这个 1
         for (int j = 0; j < n; j++) {
             if (j == candidate) {
                 continue;

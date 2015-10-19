@@ -137,3 +137,38 @@ public class Solution {
         return res;
     }
 }
+
+/*
+    1. 两个指针从两端往中间扫， 在当前窗口中，如果哪一侧高度小，则从该侧开始扫描
+    2. 如果在扫描的过程中发现有比它还小的，就可以把leftHeight - curHeight 加入结果，为什么呢？因为另外一边的高度肯定大于左边开始的高度，
+       所以这个装水量一定会满足
+    3. 当左右窗口相遇结束
+*/
+public class Solution {
+    public int trap(int[] height) {
+        if (height == null || height.length == 0) {
+            return 0;
+        }
+        int left = 0;
+        int right = height.length - 1;
+        int res = 0;
+        
+        while (left < right) {
+            int minHeight = Math.min(height[left], height[right]);
+            if (height[left] == minHeight) {
+                left++;
+                while (left < right && height[left] < minHeight) {
+                    res += minHeight - height[left];
+                    left++;
+                }
+            } else {
+                right--;
+                while (left < right && height[right] < minHeight) {
+                    res += minHeight - height[right];
+                    right--;
+                }
+            }
+        }
+        return res;
+    }
+}

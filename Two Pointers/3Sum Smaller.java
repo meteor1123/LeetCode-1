@@ -16,22 +16,26 @@
 //Solution1:
 public class Solution {
     public int threeSumSmaller(int[] nums, int target) {
-        int count = 0;
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
         Arrays.sort(nums);
-        if len = nums.length;
-        
-        for (int i = 0; i < len - 2; i++) {
-            int left = i + 1;
+        int len = nums.length;
+        int count = 0;
+        for (int left = 0; left < len - 2; left++) {
+            int mid = left + 1;
             int right = len - 1;
-            while (left < right) {
-                if (nums[i] + nums[left] + nums[right] < target) {
-                    count += right - left;
-                    left++;
+            while (mid < right) {
+                int sum = nums[left] + nums[mid] + nums[right];
+                if (sum < target) {
+                    count += right - mid;
+                    mid++;
                 } else {
                     right--;
                 }
             }
         }
+        return count;
     }
 }
 

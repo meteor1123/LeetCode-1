@@ -11,6 +11,20 @@
 
 
 */
+
+//Solution1: bits prefer
+public class Solution {
+	//这里的数和index是对应的， 除了missing number，将所有的数与其对应的index进行xor操作
+    public int missingNumber(int[] nums) {
+        int xor = 0;
+        int i = 0;
+        for (; i < nums.length; i++) {
+            xor = xor ^ i ^ nums[i];
+        }
+        return xor ^ i;
+    }
+}
+
 public class Solution {
     public int missingNumber(int[] nums) {
         int sum = 0;

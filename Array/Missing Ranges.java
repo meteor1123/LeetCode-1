@@ -16,11 +16,18 @@
 public class Solution {
     public List<String> findMissingRanges(int[] nums, int lower, int upper) {
         List<String> res = new ArrayList<>();
+        //通过判断pre 和 after的关系，检查mssing的 rang
         int pre = lower - 1;
         for (int i = 0; i <= nums.length; i++) {
-            int after = i == nums.length ? upper + 1 : nums[i];
+            if (i == nums.length) {
+                int after = upper + 1;
+            } else {
+                int after = nums[i];
+            }
+            //pre + 1 = after, 则没有缺失， 如果 pre + 2 = after，则只缺失1个, pre + 1
             if (pre + 2 == after) {
                 res.add(String.valueOf(pre + 1));
+            //pre + 2 < after, 则缺失的范围大于1 pre  pre + 1->after - 1  after
             } else if (pre + 2 < after) {
                 res.add(String.valueOf(pre + 1) + "->" + String.valueOf(after - 1));
             }

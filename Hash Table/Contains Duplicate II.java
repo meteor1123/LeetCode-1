@@ -1,4 +1,4 @@
-/*
+fr/*
 	Contains Duplicate II 
 	Given an array of integers and an integer k, find out whether there there are two 
 	distinct indices i and j in the array such that 
@@ -17,7 +17,7 @@ public class Solution {
         }
         return false;
     }
-    //Solution2
+    //Solution2 by myself
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         if (nums == null || nums.length <= 1) {
             return false;
