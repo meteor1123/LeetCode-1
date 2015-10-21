@@ -34,10 +34,10 @@ public class Solution {
 		int local = A[0];
 		int global = A[0]
 		for (int i = 1; i < A.length; i++) {
-			local = Math.max(local, A[i] + local);
+			local = Math.max(A[i], A[i] + local);
 			global = Math.max(local, global);
 		}
-		return max;
+		return global;
 	}
 
 	//solution2 Kadane算法

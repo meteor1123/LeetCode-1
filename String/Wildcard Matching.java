@@ -59,34 +59,44 @@
 	  
         //主要是*的匹配问题。p每遇到一个*，就保留住当前*的坐标和s的坐标，然后s从前往后扫描，如果不成功，则s++,重新扫描。
         //1.*s==*p or *p == ? ：匹配，s++ p++。
-        //2. p=='*'：也是一个匹配，但可能有0个或者多个字符用于匹配，所以将'*'所在位置保存(star)，并且将s的位置也保存下来(ss)。
+        //2. p=='*'：也是一个匹配，但可能有0个或者多个字符用于匹配，
+        	 所以将'*'所在位置保存(star)，并且将s的位置也保存下来(ss)。
         //3. 如果不匹配，查看之前是否有'*'。没有则返回false，有则对ss的下一个位置和start之后的重新匹配。
 
 
 */
-	 public boolean isMatch(Stirng s , String p) {
-	 	int str = 0;
-	 	int match = 0; //保存 *号之后 s字符串依次匹配的位置
-	 	int starIdex = -1;
-	 	int pattern = 0;
-	 	while （str < s.length()) {
-			if ((s.charAt(str) == p.charAt(pattern) || p.charAt(patter) == '?') && (pattern < p.length())) {
-				pattern++;
-				str++;
-			} else if (p.charAt(pattern) == '*') {
-				starIdex = pattern;
-				match = str;
-				pattern++;
-			} else if (starIdex != -1) {
-				pattern = starIdex + 1;
-				match++;
-				str = match;
-			} else 
-				return false;
-		}
+	public boolean isMatch(String str, String pattern) {
+        int s = 0;
+        int p = 0;
+        int match = 0;
+        int starIdx = -1;
+        while (s < str.length()){
+            // advancing both pointers
+            if (p < pattern.length()  && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))){
+                s++;
+                p++;
+            }
+            // * found, only advancing pattern pointer
+            else if (p < pattern.length() && pattern.charAt(p) == '*'){
+                starIdx = p;
+                match = s;
+                p++;
+            }
+           // last pattern pointer was *, advancing string pointer
+            else if (starIdx != -1){
+                p = starIdx + 1;
+                match++;
+                s = match;
+            }
+           //current pattern pointer is not star, last patter pointer was not *
+          //characters do not match
+            else return false;
+        }
 
-		while (patter < p.length() && p.charAt(pattern) == '*')
-			pattern++;
-		return pattern == p.length();
-	 }
+        //check for remaining characters in pattern
+        while (p < pattern.length() && pattern.charAt(p) == '*')
+            p++;
+
+        return p == pattern.length();
+    }
 

@@ -91,9 +91,9 @@ public class Solution {
         int m = matrix.length;
         int n = matrix[0].length;
         
-        int[] left = new int[n];
-        int[] right = new int[n];
-        int[] height = new int[n];
+        int[] left = new int[n];//记录一行点的左边界，等于包含这个点的矩形的最左边的点的数组序号，
+        int[] right = new int[n];//记录一行点的右边界. 右边界等于最右边的点的数组序号+1，为什么+1？ 假如left = 2, right = 4, 4 - 2 = 2,但实际应该是3个跨度，所以令右边界+ 1
+        int[] height = new int[n];//记录每一行点的高度，和上一行相关
         
         for (int i = 0; i < right.length; i++) {
             right[i] = n;
@@ -103,6 +103,8 @@ public class Solution {
         
         for (int i = 0; i < m; i++) {
             int cur_left = 0, cur_right = n;
+
+            //设置高度
             for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == '1') {
                     height[j] += 1;
@@ -111,10 +113,12 @@ public class Solution {
                 }
             }
             
+            //等于本行最左边的点的以及上一行的最左点左边的最大值，
             for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == '1') {
                     left[j] = Math.max(left[j], cur_left);
                 } else {
+                    //如果点不等于1，则该处出现缺口，更新 cur_left
                     left[j] = 0;
                     cur_left = j + 1;
                 }
