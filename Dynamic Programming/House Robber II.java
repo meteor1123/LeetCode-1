@@ -45,6 +45,34 @@ public class Solution {
     }
 }
 
+
+//Solution3: prefer Space O(1)
+public class Solution {
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        return Math.max(rob(nums, 0, nums.length - 2), rob(nums, 1, nums.length - 1));
+    }
+    
+    public int rob(int[] nums, int low, int high) {
+       int preRob = 0;
+       int preNoRob = 0;
+       for (int i = low; i <= high; i++) {
+           int curRob = preNoRob + nums[i];
+           int curNoRob = Math.max(preRob, preNoRob);
+           
+           preRob = curRob;
+           preNoRob = curNoRob;
+       }
+       return Math.max(preRob, preNoRob);
+    }
+}
+
+
 //Solution2: Space O(1)
 public class Solution {
     public int rob(int[] nums) {

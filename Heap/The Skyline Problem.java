@@ -66,3 +66,62 @@ public class Solution {
         return res;
     }
 }
+
+
+//Solution2
+/*
+    1. 先按照左边界的x坐标进行排序，小的在前, x坐标相等y坐标小的在前。
+    2. 将边界存入heights数组，可以将左边界或者右边界的高设为负，方便确定边界，我们这里将左边界的高设为负
+    2. 设置一个priorityQueue, 最大堆， 堆顶每次都是最大高度
+    3. 遍历边界数组heights，
+        1）假如遇到该点的高为负，则将高度取正加入堆
+        2）假如遇到该点的高度为正，说明遇到右边界，这个范围已经遍历完，将该高度移出堆
+    4. 我们用pre和cur去验证之前的最高高度pre 和加入新点以后 现在正在遍历的点的高度是否一样，
+        如果不一样，有两种情况
+        1）遇到之前最高点的右边界，
+        2）遇到更高的店，
+*/
+public class Solution {
+    public List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> res = new ArrayList<>();
+        List<int[]> height = new ArrayList<>();
+        
+        //构建顶点列表
+        for (int[] b : buildings) {
+            height.add(new int[]{b[0], -b[2]});
+            height.add(new int[]{b[1], b[2]});
+        }
+        
+        Collections.sort(height, new Comparator<int[]>() {
+           @Override
+           public int compare(int[] a, int[] b) {
+               if (a[0] != b[0]) {
+                   return a[0] - b[0];
+               } else {
+                   return a[1] - b[1];
+               }
+           }
+        });
+        
+        Queue<Integer> pq = new PriorityQueue<Integer>(11, new Comparator<Integer>() {
+            public int compare(Integer i1, Integer i2) {
+                return i2 - i1;
+            }
+        });
+        pq.offer(0);
+        int pre = 0;
+        for (int[] h : height) {
+            if (h[1] < 0) {
+                pq.offer(-h[1]);
+            } else {
+                pq.remove(h[1]);
+            }
+            int cur = pq.peek();
+            if (pre != cur) {
+                res.add(new int[]{h[0], cur});
+                pre = cur;
+            }
+        }
+        return res;
+    }
+}

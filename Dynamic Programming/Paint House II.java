@@ -35,23 +35,23 @@ public class Solution {
         if (costs.length == 1 && costs[0].length == 1) {
             return costs[0][0];
         }
-        int n = costs.length;
-        int m = costs[0].length;
-        int[][] dp = new int[n + 1][m];
+        int m = costs.length;
+        int n = costs[0].length;
+        int[][] dp = new int[m + 1][n];
         //since the house amount is zero, so all the cost equals zero
-        for (int i = 0; i < m; i++) {
-            dp[0][i] = 0;
-        }
+        // for (int i = 0; i < m; i++) {
+        //     dp[0][i] = 0;
+        // }
         //initialize the minimum cost to MAX_VALUE
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j < m; j++) {
+        for (int i = 1; i <= m; i++) {
+            for (int j = 0; j < n; j++) {
                 dp[i][j] = Integer.MAX_VALUE;
             }
         }
         
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j < m; j++) {
-                for (int k = 0; k < m; k++) {
+        for (int i = 1; i <= m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
                     if (k != j) {
                     	//in the i - 1 house, we try all the colors k, and the color k do not equals j, to find the minimum cost
                         dp[i][j] = Math.min(dp[i][j], dp[i - 1][k] + costs[i - 1][j]);
@@ -60,8 +60,8 @@ public class Solution {
             }
         }
         int res = Integer.MAX_VALUE;
-        for (int i = 0; i < m; i++) {
-            res = Math.min(res, dp[n][i]);
+        for (int i = 0; i < n; i++) {
+            res = Math.min(res, dp[m][i]);
         }
         return res;
     }

@@ -34,7 +34,7 @@ public class Solution {
 }
 
 public class Solution {
-    //Solution1
+    //Solution1 prefer
     public int numSquares(int n) {
         int[] dp = new int[n + 1];
         dp[1] = 1;

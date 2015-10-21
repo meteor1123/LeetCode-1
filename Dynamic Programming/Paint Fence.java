@@ -25,13 +25,10 @@
 	If we use same color, there's only one option, and we can only do this when the last two have different colors (which is the diffColorCounts). 
 	There we have our induction step.
 
-	Here is an example, let's say we have 3 posts and 3 colors. The first two posts we have 9 ways to do them, (1,1), (1,2), (1,3), (2,1), (2,2), (2,3), (3,1), (3,2), (3,3). Now we know that
-
-	diffColorCounts = 6;
-	And
-
-	sameColorCounts = 3;
-Now for the third post, we can compute these two variables like this:
+	Here is an example, let's say we have 3 posts and 3 colors. 
+		The first two posts we have 9 ways to do them, (1,1), (1,2), (1,3), (2,1), (2,2), (2,3), (3,1), (3,2), (3,3). 
+		Now we know that diffColorCounts = 6, And sameColorCounts = 3;
+    Now for the third post, we can compute these two variables like this:
 	1) If we use different colors than the last one (the second one), these ways can be added into diffColorCounts, 
 	   so if the last one is 3, we can use 1 or 2, if it's 1, we can use 2 or 3, etc. 
 	   Apparently there are (diffColorCounts + sameColorCounts) * (k-1) possible ways.
@@ -53,13 +50,13 @@ public class Solution {
             return k;
         }
         
-        int diffColorCounts = k * (k - 1);
-        int sameColorCounts = k;
+        int diffColorCounts = k * (k - 1);// 前面有K种可能的颜色，后面就只能放除了前面的颜色的颜色，就是K - 1种可能, k * (k - 1)
+        int sameColorCounts = k; //前面有K种颜色，但是必须和前面的相同因此只有1种可选 k * 1
         
         for (int i = 2; i < n; i++) {
             int temp = diffColorCounts;
-            diffColorCounts = (diffColorCounts + sameColorCounts) * (k - 1);
-            sameColorCount = temp;
+            diffColorCounts = (diffColorCounts + sameColorCounts) * (k - 1);// k * (k - 1) * (k - 1) + k * 1 * (k - 1) 
+            sameColorCount = temp;//如何追朔连续俩相同， 只要将diffColor赋给sameColor，就意味着肯定不会出现连续3个重复的情况，因为之前的2种颜色都是diff
         }
         return diffColorCounts + sameColorCounts;
     }

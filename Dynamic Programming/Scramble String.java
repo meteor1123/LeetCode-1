@@ -76,18 +76,18 @@ public class Solution {
         }
         return false;
     }
-
-
+}
     //Dynamic Programming
     /*
-		 参考了一下Code Ganker的思路
+		参考了一下Code Ganker的思路
 		这其实是一道三维动态规划的题目，我们提出维护量res[i][j][n]，其中i是s1的起始字符，j是s2的起始字符，而n是当前的字符串长度，
 			res[i][j][len]表示的是以i和j分别为s1和s2起点的长度为len的字符串是不是互为scramble。
 
 		有了维护量我们接下来看看递推式，也就是怎么根据历史信息来得到res[i][j][len]。判断这个是不是满足，
 		其实我们首先是把当前s1[i...i+len-1]字符串劈一刀分成两部分，然后分两种情况：
-		第一种是左边和s2[j...j+len-1]左边部分是不是scramble，以及右边和s2[j...j+len-1]右边部分是不是scramble；
-		第二种情况是左边和s2[j...j+len-1]右边部分是不是scramble，以及右边和s2[j...j+len-1]左边部分是不是scramble。
+		  第一种是左边和s2[j...j+len-1]左边部分是不是scramble，以及右边和s2[j...j+len-1]右边部分是不是scramble；
+		  第二种情况是左边和s2[j...j+len-1]右边部分是不是scramble，以及右边和s2[j...j+len-1]左边部分是不是scramble。
+
 		如果以上两种情况有一种成立，说明s1[i...i+len-1]和s2[j...j+len-1]是scramble的。
 		而对于判断这些左右部分是不是scramble我们是有历史信息的，因为长度小于n的所有情况我们都在前面求解过了（也就是长度是最外层循环）。
 
@@ -98,7 +98,7 @@ public class Solution {
 		如此总时间复杂度因为是三维动态规划，需要三层循环，加上每一步需要线行时间求解递推式，所以是O(n^4)。
 		虽然已经比较高了，但是至少不是指数量级的，动态规划还是有很大有事的，空间复杂度是O(n^3)。代码如下：
     */
-    public class Solution {
+public class Solution {
     public boolean isScramble(String s1, String s2) {
         if (s1 == null || s2 == null || s1.length() != s2.length()) {
             return false;
@@ -108,7 +108,7 @@ public class Solution {
         }
         boolean[][][] check = new boolean[s1.length()][s2.length()][s1.length() + 1];
         for (int i = 0; i < s1.length(); i++) {
-            for (int j=0; j < s2.length(); j++) {
+            for (int j = 0; j < s2.length(); j++) {
                 check[i][j][1] = s1.charAt(i) == s2.charAt(j);
             }
         }
@@ -124,5 +124,4 @@ public class Solution {
         }
         return check[0][0][s1.length()];
     }
-}
 }
