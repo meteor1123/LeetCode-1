@@ -25,13 +25,6 @@ public class Solution {
     //DP
     ///http://www.cnblogs.com/EdwardLiu/p/4021407.html DP 图
     public boolean isMatch(String s, String p) {
-        if (s == null && p == null) {
-            return true;
-        }
-        if (s.length() == 0 && p.length() == 0) {
-            return true;
-        }
-
         //dp[i][j] means the length of string s is i, and the length of string p is j,
         //they are equals or not, S(0...i - 1) ,P(0...j - 1)
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
@@ -40,40 +33,37 @@ public class Solution {
         dp[0][0] = true; //初始化1，都为0，自然匹配
 
         //initialize the situation of p's length equals 0,all the value is false;
-        for (int i = 1; i <= s.length(); i++) {
-            dp[i][0] = false;
-        }
+        //默认就是false了 可以省略
+        // for (int i = 1; i <= s.length(); i++) {
+        //     dp[i][0] = false;
+        // }
 
         // 这里的字符串匹配必须完全匹配，不能多也不能少，要正好，a* 可以代表0-无限个a，自然也可以表示成0
         for (int j = 1; j <= p.length(); j++) {
             if (p.charAt(j - 1) == '*' && j > 1) {
                 //'*' Matches zero or more of the preceding element!!
                 dp[0][j] = dp[0][j - 2];
-            } else {
-                dp[0][j] = false;
-            }
+            } 
+            // else {
+            //     dp[0][j] = false;
+            // }
         }
-        
+
+        //dp[i][j-2] __a vs ab*:  depends on a vs a ,该情况下a为i, a为j - 2,只要匹配，后面的b* 可以等于0，所以能匹配
+        //                       '*' 和前面的字符都不取，合并为空
+        //dp[i][j-1] abb vs ab*:  depends on ab vs ab , 
+        //                       '*' 和前面的字符，合二为一
+        //dp[i-1][j] a  b  b  b  vs    a   b   *  :  depends on ab vs ab*，该情况下只要i - 1 和 i - 2的值相等
+        //             i-2 i-1            j-2  j-1
+        //                       '*' 取前面的字符1次， 因为 i - 1 和 j 已经匹配的话， i必须要和p的 一个字符再匹配，
+        //                           所以*这时添上+1前面的相同字符
         for (int i = 1; i <= s.length(); i++) {
             for (int j = 1; j <= p.length(); j++) {
-                //注意 charAt(j - 1)代表的是第j个字符
                 if (p.charAt(j - 1) == s.charAt(i - 1) || p.charAt(j - 1) == '.') {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else if (p.charAt(j - 1) == '*' && j > 1) {
-                    
                     if (s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') {
-                        
                         dp[i][j] = dp[i - 1][j] || dp[i][j - 1] || dp[i][j - 2];
-                                     
-
-                //dp[i][j-2] __a vs ab*:  depends on a vs a ,该情况下a为i, a为j - 2,只要匹配，后面的b* 可以等于0，所以能匹配
-                //                       '*' 和前面的字符都不取，合并为空
-                //dp[i][j-1] abb vs ab*:  depends on ab vs ab , 
-                //                       '*' 和前面的字符，合二为一
-                //dp[i-1][j] a  b  b  b  vs    a   b   *  :  depends on ab vs ab*，该情况下只要i - 1 和 i - 2的值相等
-                //             i-2 i-1            j-2  j-1
-                //                       '*' 取前面的字符1次， 因为 i - 1 和 j 已经匹配的话， i必须要和p的 一个字符再匹配，
-                //                           所以*这时添上+1前面的相同字符
                     } else {
                         dp[i][j] = dp[i][j - 2];
                     }

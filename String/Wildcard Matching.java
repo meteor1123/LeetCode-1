@@ -26,33 +26,57 @@
  
 //如果p[i]！='*'，dp[i][j] == true 当 dp[i-1][j-1]==true &&（p[i]==s[j]||p[i]='.'）
 //如果p[i]=='*'，dp[i][j]== true 当 其中一个m使得 dp[i-1][m]==true，where 0 <= m < j.
-	public boolean isMatch(String s , String p){
-        if( s.length()>300 && p.charAt(0) == '*'&& p.charAt(p.length()-1)=='*')
-            return false;
-		int len1 = s.length();
-		int len2 = p.length();
-		boolean[][] dp = new boolean[len1 + 1][len2 + 1];
-		dp[0][0] = true;
-		for (int i = 0; i < len2; i++) {
-			dp[0][i + 1] = p.charAt(i) == '*' ? dp[0][i] :false;
-		}
+	public boolean isMatch(String s, String p) {
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+        for (int i = 1; i <= p.length(); i++) {
+            if (p.charAt(i - 1) == '*') {
+                 dp[0][i] = dp[0][i - 1];
+            }
+        }
+	    //dp[i][j - 1] 为true，自然*也可以匹配j
+		//dp[i - 1][j] 为true，自然+上*也可以匹配j(empty)
+		///dp[i - 1][j - 1] 为true，自然*和j 也匹配
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 1; j <= p.length(); j++) {
+            	if (p.charAt(j - 1) == s.charAt(i - 1) || p.charAt(j - 1) == '?') {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else if (p.charAt(j - 1) == '*') {
+                    dp[i][j] = dp[i - 1][j] || dp[i][j - 1] || dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = false;
+                }
+            }
+        }
+        return dp[s.length()][p.length()];
+    }
+	// public boolean isMatch(String s , String p){
+ //        if( s.length()>300 && p.charAt(0) == '*'&& p.charAt(p.length()-1)=='*')
+ //            return false;
+	// 	int len1 = s.length();
+	// 	int len2 = p.length();
+	// 	boolean[][] dp = new boolean[len1 + 1][len2 + 1];
+	// 	dp[0][0] = true;
+	// 	for (int i = 0; i < len2; i++) {
+	// 		dp[0][i + 1] = p.charAt(i) == '*' ? dp[0][i] :false;
+	// 	}
 
-		for (int i = 0; i < len1; i++) {
-			for (int j = 0; j < len2; j++) {
-				if (p.charAt(j) == '*') {
-				    //dp[i + 1][j] 为true，自然*也可以匹配j + 1
-	 				//dp[i][j + 1] 为true，自然+上*也可以匹配j + 1(empty)
-	 				///dp[i][j] 为true，自然*和j+1 也匹配
-					dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j] || dp[i][j];
-				} else if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '?') {
-					dp[i + 1][j + 1] = dp[i][j];
-				} else {
-					dp[i + 1][j + 1] = false;
-				}
-			}
-		}
-		return dp[len1][len2];
-	}
+	// 	for (int i = 0; i < len1; i++) {
+	// 		for (int j = 0; j < len2; j++) {
+	// 			if (p.charAt(j) == '*') {
+	// 			    //dp[i + 1][j] 为true，自然*也可以匹配j + 1
+	//  				//dp[i][j + 1] 为true，自然+上*也可以匹配j + 1(empty)
+	//  				///dp[i][j] 为true，自然*和j+1 也匹配
+	// 				dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j] || dp[i][j];
+	// 			} else if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '?') {
+	// 				dp[i + 1][j + 1] = dp[i][j];
+	// 			} else {
+	// 				dp[i + 1][j + 1] = false;
+	// 			}
+	// 		}
+	// 	}
+	// 	return dp[len1][len2];
+	// }
 
 //Greedy solution
 /*
