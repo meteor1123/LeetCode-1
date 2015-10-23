@@ -15,6 +15,26 @@
 */
 
 public class Solution {
+	/*
+		char to int --> 
+			1.直接和int进行运算
+			2. c - '0' ,比如'9' - '0'
+		int to char --> 
+			1.(char)
+			2. + 'a' 就是对应的1 ： a 
+	*/
+	//1
+    public int titleToNumber(String s) {
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            res = 26 * res + c - 64;
+        }
+        return res;
+    }
+
+
+    //2
     public int titleToNumber(String s) {
     	//The ascii of A is 65
         char[] charArr = s.toCharArray();

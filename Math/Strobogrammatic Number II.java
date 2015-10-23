@@ -20,9 +20,15 @@ public class Solution {
     
     List<String> helper(int n, int m) {
         if (n == 0) {
+            // ArrayList<String> tempRes = new ArrayList<String>();
+            // tempRes.add("");
             return new ArrayList<String>(Arrays.asList(""));
         }
         if (n == 1) {
+            // ArrayList<String> tempRes = new ArrayList<String>();
+            // tempRes.add("0");
+            // tempRes.add("1");
+            // tempRes.add("8");
             return new ArrayList<String>(Arrays.asList("0", "1", "8"));//asList 的只能读，不能改
         }
         
@@ -30,7 +36,7 @@ public class Solution {
         List<String> res = new ArrayList<String>();
         for (int i = 0; i < list.size(); i++) {
             String s = list.get(i);
-            // n != m时，
+            // n == m, 就是最外层的时候，不能在最外围加上0， 会导致出现010这样的无效数字
             if (n != m) {
                 res.add("0" + s + "0");
             }

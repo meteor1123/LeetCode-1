@@ -7,3 +7,14 @@ public class Solution {
         return n > 0 && (n & (n - 1)) == 0;
     }
 }
+
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        for (long i = 1; i <= n; i = i << 1) {
+            if (i == n) {
+                return true;
+            }
+        }
+        return false;
+    }
+}

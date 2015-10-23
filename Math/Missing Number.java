@@ -20,7 +20,8 @@ public class Solution {
         int i = 0;
         for (; i < nums.length; i++) {
             xor = xor ^ i ^ nums[i];
-        }
+         //                    nums[0]=0 nums[1]=2  nums[2]=3    i=3
+        }// 形如 0 ，2 ， 3 = 0 ^ (0 ^ 0) ^ (1 ^ 2) ^ (2 ^ 3)   ^  3
         return xor ^ i;
     }
 }

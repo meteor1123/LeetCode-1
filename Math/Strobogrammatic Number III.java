@@ -11,6 +11,13 @@
 	Because the range might be a large number, the low and high numbers are represented as string.
 */
 
+
+/*
+    Solution：
+        1. 沿用strobrogrammaticII 的方法生成长度为n的所有 number
+        2. n由 low和high字符的length()确定， 比如low = “50" high = "150" length of n就是 from 2 to 3
+        3. 将生成的所有number判断是否小于num
+*/
 public class Solution {
     public int strobogrammaticInRange(String low, String high) {
         int count = 0;
@@ -20,10 +27,15 @@ public class Solution {
         }
         
         for (String num : res) {
-            if ((num.length() == low.length() && num.compareTo(low) < 0) || (num.length() == high.length() && num.compareTo(high) > 0)) {
-                continue;
+            // if ((num.length() == low.length() && num.compareTo(low) < 0) || (num.length() == high.length() && num.compareTo(high) > 0)) {
+            //     continue;
+            // }
+            // count++;
+            for (String num : res) {
+                if (Long.valueOf(num) >= Long.valueOf(low) && Long.valueOf(num) <= Long.valueOf(high)) {
+                    count++;
+                }//只要num大于等于low，小于等于high就是合法的数字，count++
             }
-            count++;
         }
         return count;
     }

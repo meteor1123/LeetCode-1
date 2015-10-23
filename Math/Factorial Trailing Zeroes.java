@@ -36,6 +36,9 @@
 	5^6 : 4617 ÷ 15625 = 0.295488, which is less than 1, so stop here.
 	Then 4617! has 923 + 184 + 36 + 7 + 1 = 1151 trailing zeroes.
 */
+/*
+	完全取决与 在阶乘中 含有5这个因子的数的个数！
+*/
 public class Solution {
     public int trailingZeroes(int n) {
         int res = 0;
