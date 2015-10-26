@@ -94,3 +94,77 @@ public class Solution {
     	}
     }
 }
+
+//Solution by my self prefer
+public class Solution {
+    public void solve(char[][] board) {
+        if (board == null || board.length == 0) {
+            return;
+        }
+        int m = board.length;
+        int n = board[0].length;
+        for (int i = 0; i < n; i++) {
+            fill(board, 0, i);
+            fill(board, m - 1, i);
+        }
+        
+        for (int i = 0; i < m; i++) {
+            fill(board, i, 0);
+            fill(board, i, n - 1);
+        }
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                } else if (board[i][j] == '*') {
+                    board[i][j] = 'O';
+                } 
+            }
+        }
+    }
+    
+    public void fill(char[][] board, int i, int j) {
+        if (board[i][j] == 'X') {
+            return ;
+        }
+        board[i][j] = '*';
+        Queue<Integer> queue = new LinkedList<>();
+        int m = board.length;
+        int n = board[0].length;
+        int index = i * n + j;
+        queue.offer(index);
+        while (!queue.isEmpty()) {
+            int code = queue.poll();
+            int x = code / n;
+            int y = code % n;
+            
+            if (isValid(board, x + 1, y) && board[x + 1][y] == 'O') {
+                board[x + 1][y] = '*';
+                queue.offer((x + 1) * n + y);
+            }
+            
+            if (isValid(board, x - 1, y) && board[x - 1][y] == 'O') {
+                board[x - 1][y] = '*';
+                queue.offer((x - 1) * n + y);
+            }
+            
+            if (isValid(board, x, y + 1) && board[x][y + 1] == 'O') {
+                board[x][y + 1] = '*';
+                queue.offer(x * n + y + 1);
+            }
+            
+            if (isValid(board, x, y - 1) && board[x][y - 1] == 'O') {
+                board[x][y - 1] = '*';
+                queue.offer(x * n + y - 1);
+            }
+        }
+    }
+    
+    public boolean isValid(char[][] board, int x, int y) {
+        if (x < 0 || y < 0 || x > board.length - 1 || y > board[0].length - 1) {
+            return false;
+        }
+        return true;
+    }
+}

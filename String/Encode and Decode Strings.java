@@ -52,7 +52,9 @@ public class Codec {
 		List<String> res = new ArrayList<>();
 		int i = 0;
 		while (i < s.length()) {
-			int slash = s.indexOf('/');//indexOf return the first occurence char in the string s
+			//Returns the index within this string of the first occurrence of the specified character, 
+			//starting the search at the specified index.
+			int slash = s.indexOf('/', i);//indexOf(int ch, int fromIndex)
 			int size = Integer.valueOf(s.substring(i, slash));
 			res.add(s.substring(slash + 1, slash + size + 1));
 			i = slash + size + 1;

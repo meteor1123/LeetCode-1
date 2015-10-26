@@ -26,6 +26,79 @@
     为什么搜索的时候保存前驱结点容易，而保存后继结点比较困难？
     answer：因为当我们到达当前节点是，我们总是知道前驱的，但是后继却还不知道，因此后继结点的维护是比较有难度
 */
+
+//Solution1  prefer!
+public class Solution {
+    public List<List<String>> findLadders(String beginWord, String endWord, Set<String> wordList) {
+        List<List<String>> res = new ArrayList<>();
+        List<String> item = new ArrayList<String>();
+        Map<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+        if (wordList.size() == 0) {
+            return res;
+        }
+        Queue<String> queue = new LinkedList<String>();
+        Set<String> unvisited = new HashSet<String>(wordList);//保存所有未访问过的结点
+        Set<String> visited = new HashSet<String>();//每一层上访问过的结点，每访问一层就清空
+        queue.add(beginWord);
+        unvisited.add(endWord);
+        unvisited.remove(beginWord);
+        int curNum = 1, nextNum = 0;
+        while (!queue.isEmpty()) {
+            String word = queue.poll();
+            curNum--;
+            for (int i = 0; i < word.length(); i++) {
+                StringBuilder sb = new StringBuilder(word);
+                for (char c = 'a'; c <= 'z'; c++) {
+                    sb.setCharAt(i, c);
+                    String newWord = sb.toString();
+                    if (unvisited.contains(newWord)) {
+                        //假如未访问过该结点，则该节点入队列
+                        if (visited.add(newWord)) {
+                            nextNum++;
+                            queue.add(newWord);
+                        }
+                        if (map.containsKey(newWord)) {
+                            map.get(newWord).add(word);
+                        } else {
+                            ArrayList<String> temp = new ArrayList<String>();
+                            temp.add(word);
+                            map.put(newWord, temp);
+                        }
+                    }
+                }
+            }
+            if (curNum == 0) {
+                curNum = nextNum;
+                nextNum = 0;
+                unvisited.removeAll(visited);//将所有一层上访问过的结点都从未访问结点中清空
+                visited.clear();
+            }
+        }
+        helper(endWord, beginWord, res, item, map);
+        return res;
+    }
+    //DFS 遍历hashmap，从尾部到头部开始构建最短path，from endWord -> startWord
+    public void helper(String word, String start, List<List<String>> res, List<String> item, Map<String, ArrayList<String>> map) {
+        //终止返回条件， word == start， 
+        if (word.equals(start)) {
+            item.add(0, start);
+            res.add(new ArrayList<String>(item));
+            item.remove(0);//回溯
+            return;
+        }
+        item.add(0, word);//每个单词都从头插入，因为HashMap中 Key是后继词， Value是前驱。 hit-->hot, hit就是前驱，hot是后继
+        if (map.get(word) != null) {//只要前驱不为空，递归遍历前驱的前驱的前驱。。。。
+            for (String s : map.get(word)) {
+                helper(s, start, res, item, map);
+            }
+        }
+        item.remove(0);//作用在于回溯
+    }
+}
+
+
+
+//Solution2 需要新建class
 public class Solution {
     
     public class StringWithLevel {

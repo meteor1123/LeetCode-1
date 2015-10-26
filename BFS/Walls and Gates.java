@@ -65,3 +65,51 @@ public class Solution {
        
     }
 }
+
+//Solution2
+public class Solution {
+    public void wallsAndGates(int[][] rooms) {
+        if (rooms == null || rooms.length == 0) {
+            return;
+        }
+        int m = rooms.length;
+        int n = rooms[0].length;
+        int INF = Integer.MAX_VALUE;
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rooms[i][j] == 0) {
+                    queue.offer(i * n + j);
+                }
+            }
+        }
+        while (!queue.isEmpty()) {
+            int code = queue.poll();
+            int x = code / n;
+            int y = code % n;
+            if (isValid(rooms, x + 1, y) && rooms[x + 1][y] == INF) {
+                rooms[x + 1][y] = rooms[x][y] + 1;
+                queue.offer((x + 1) * n + y);
+            }
+            if (isValid(rooms, x - 1, y) && rooms[x - 1][y] == INF) {
+                rooms[x - 1][y] = rooms[x][y] + 1;
+                queue.offer((x - 1) * n + y);
+            }
+            if (isValid(rooms, x, y + 1) && rooms[x][y + 1] == INF) {
+                rooms[x][y + 1] = rooms[x][y] + 1;
+                queue.offer(x * n + y + 1);
+            }
+            if (isValid(rooms, x, y - 1) && rooms[x][y - 1] == INF) {
+                rooms[x][y - 1] = rooms[x][y] + 1;
+                queue.offer(x * n + y - 1);
+            }
+        }
+    }
+    
+    public boolean isValid(int[][] rooms, int i, int j) {
+        if (i < 0 || j < 0 || i > rooms.length - 1 || j > rooms[0].length - 1) {
+            return false;
+        }
+        return true;
+    }
+}

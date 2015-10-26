@@ -1,4 +1,4 @@
-fr/*
+/*
 	Contains Duplicate II 
 	Given an array of integers and an integer k, find out whether there there are two 
 	distinct indices i and j in the array such that 

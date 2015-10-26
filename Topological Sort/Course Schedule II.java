@@ -22,6 +22,49 @@
 	Solution: in this problem, we can not use int[][] to represent the graph matrix,since that will be memory exceed
 			  instead of that, we use boolean[][] to represent the graph matrix!
 */
+
+//Solution1
+public class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] res = new int[numCourses];
+        ArrayList<Integer> item = new ArrayList<>();
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+        int[] indegree = new int[numCourses];
+        int count = 0;
+        Queue<Integer> queue = new LinkedList<>();
+        //初始化graph
+        for (int i = 0; i < numCourses; i++) {
+            map.put(i, new ArrayList<>());
+        }
+        //构建graph。 [1,0]代表 0 -> 1 ,要修课程1之前需要修课程0， 1的入度为1， 0的入度为0
+        for (int i = 0; i < prerequisites.length; i++) {
+            map.get(prerequisites[i][1]).add(prerequisites[i][0);
+            indegree[prerequisites[i][0]]++;
+        }
+        //首先将入度为0的点入队列
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        //遍历队列里的点
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            res[count++] = course;
+            for (int i : map.get(course)) {
+                if (--indegree[i] == 0) {
+                    queue.offer(i);
+                }
+            }
+        }
+        return count == numCourses ? res : new int[0];
+
+    }
+}
+
+
+//Solution2
 public class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         int[] res = new int[numCourses];

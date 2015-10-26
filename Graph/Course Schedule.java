@@ -104,31 +104,32 @@ public class Solution {
 
     //BFS topological sort by using HashMap and Queue
 	public boolean canFinish(int numCourses, int[][] prerequisites) {
-		HashMap<Integer, ArrayList<Integer>> map = HashMap<Integer, ArrayList<Integer>>();
-		int[] indegree = new int[numCourses];
-		Queue<Integer> queue = new LinkedList<Integer>();
-		int count = numCourses;
-		for (int i = 0; i < numCourses; i++) {
-			map.put(i, new ArrayList<Integer>());
-		}
-		for (int i = 0; i < prerequisites.length; i++) {
-			map.get(prerequisites[i][0]).add(prerequisites[i][1]);
-			indegree[prerequisites[i][1]]++;
-		}
-		for (int i = 0; i < numCourses; i++) {
-			if (indegree[i] == 0) {
-				queue.offer(i);
-			}
-		}
-		while (!queue.isEmpty()) {
-			int current = queue.poll();
-			for (int i : map.get(current)) {
-				if (--indegree[i] == 0) {
-					queue.offer(i);
-				}
-			}
-			count--;
-		}
-		return count == 0;
-	}
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+        int[] indegree = new int[numCourses];
+        int count = 0;
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            map.put(i, new ArrayList<>());
+        }
+        for (int i = 0; i < prerequisites.length; i++) {
+            map.get(prerequisites[i][1]).add(prerequisites[i][0]);
+            indegree[prerequisites[i][0]]++;
+        }
+        
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            for (int i : map.get(course)) {
+                if (--indegree[i] == 0) {
+                    queue.offer(i);
+                }
+            }
+            count++;
+        }
+        return count == numCourses;
+    }
 }

@@ -25,6 +25,7 @@
 */
 
 public class Solution {
+    //Solution1
     public int candy(int[] ratings) {
         if(ratings==null || ratings.length==0)
               return 0;
@@ -56,6 +57,32 @@ public class Solution {
         int sum = 0;
         for (int i = 0; i < len; i++) {
             sum += Math.max(left[i], right[i]);
+        }
+        return sum;
+    }
+
+    //Solution2
+    public int candy(int[] ratings) {
+        int candy[] = new int[ratings.length];
+        int sum = 0;
+        Arrays.fill(candy, 1);
+        
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candy[i] = candy[i - 1] + 1;
+            }
+        }
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                if (i - 1 >= 0 && ratings[i - 1] <= ratings[i]) {
+                    candy[i] = Math.max(candy[i + 1] + 1, candy[i]);
+                } else {
+                    candy[i] = candy[i + 1] + 1;
+                }
+            }
+        }
+        for (int i = 0; i < candy.length; i++) {
+            sum += candy[i];
         }
         return sum;
     }

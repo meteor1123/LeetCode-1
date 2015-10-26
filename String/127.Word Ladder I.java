@@ -22,6 +22,43 @@
 */
 
 
+//By myself, prefer
+public class Solution {
+    public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        int curNum = 1;
+        int nextNum = 0;
+        int level = 1;
+        while (!queue.isEmpty()) {
+            String curWord = queue.poll();
+            wordList.remove(curWord);
+            curNum--;
+            for (int i = 0; i < curWord.length(); i++) {
+                char[] curWordArr = curWord.toCharArray();
+                for (char c = 'a'; c <= 'z'; c++) {
+                    curWordArr[i] = c;
+                    String newWord = new String(curWordArr);
+                    if (newWord.equals(endWord)) {
+                        return level + 1;
+                    }
+                    if (!newWord.equals(curWord) && wordList.contains(newWord)) {
+                        wordList.remove(newWord);
+                        queue.offer(newWord);
+                        nextNum++;
+                    }
+                }
+            }
+            
+            if (curNum == 0) {
+                curNum = nextNum;
+                nextNum = 0;
+                level++;
+            }
+        }
+        return 0;
+    }
+}
  public int ladderLength(String start, String end, HashSet<String> dict) {
         //corner case,notice if the length between start and end is different mean impossible to match
         if (start == null || end == null || start.length() == 0 || end.length() == 0 || start.length() != end.length())

@@ -44,7 +44,8 @@ public class Solution {
         return res;
     }
     
-    //eval用来记录将要变化的值，multed另一个是当前运算后的值
+    //eval用来记录此次操作以后的总值，multed仅记录这步运算符后的值， 
+    //比如 2 + 3 * 5, eval = 2 + 3 * 5= 17, multed = 3 * 5=15
     public void helper(List<String> res, String path, String num, int target, int index, long eval, long multed) {
         if (index == num.length()) {
             if (target == eval) {
@@ -54,17 +55,20 @@ public class Solution {
         }
         
         for (int i = index; i < num.length(); i++) {
-            if (i != index && num.charAt(index) == '0') {
+            if (i != index && num.charAt(index) == '0') {//滤掉有0开头的字符串，我们只要判断长度大于1且首字符是‘0’的字符串，将其滤去即可
                 break;
             }
             long cur = Long.parseLong(num.substring(index, i + 1));
             if (index == 0) {
-                helper(res, path + cur, num, target, i + 1, cur, cur);
+                helper(res, path + cur, num, target, i + 1, cur, cur);//处理首位数字
             } else {
                 helper(res, path + "+" + cur, num, target, i + 1, eval + cur, cur);
                 helper(res, path + "-" + cur, num, target, i + 1, eval - cur, -cur);
+
                 helper(res, path + "*" + cur, num, target, i + 1, eval - multed + multed * cur, multed * cur);
+                //比如 2 + 5 * 3的时候，要将原来的eval = 2 + 5 = 7 减去5， 再乘以3，
             }
         }
+         //不需要backtracking，因为每一步都分三种情况递进
     }
 }

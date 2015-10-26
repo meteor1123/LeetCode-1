@@ -64,7 +64,7 @@ public class Solution {
 }
 
 
-//Solution2
+//Solution2 dfs by col
 public class Solution {
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> res = new ArrayList<>();
@@ -111,8 +111,8 @@ public class Solution {
         return true;
     }
 
-    //Solution3 no row 
-    public List<List<String>> solveNQueens(int n) {
+    //Solution3 no col prefer,dfs by row
+        public List<List<String>> solveNQueens(int n) {
         List<List<String>> res = new ArrayList<>();
         if (n < 0) {
             return res;
@@ -128,8 +128,8 @@ public class Solution {
         
     }
     
-    public void dfs(int n, int col, char[][] board, List<List<String>> res) {
-        if (col == n) {
+    public void dfs(int n, int row, char[][] board, List<List<String>> res) {
+        if (row == n) {
             List<String> item = new ArrayList<>();
             for (char[] rowRes : board) {
                 item.add(new String(rowRes));
@@ -139,10 +139,10 @@ public class Solution {
         }
         
         for (int i = 0; i < n; i++) {
-            if (isValid(board, i, col)) {
-                 board[i][col] = 'Q';
-                 dfs(n, col + 1, board, res);
-                 board[i][col] = '.';
+            if (isValid(board, row, i)) {
+                 board[row][i] = 'Q';
+                 dfs(n, row + 1, board, res);
+                 board[row][i] = '.';
             }
         }
     }

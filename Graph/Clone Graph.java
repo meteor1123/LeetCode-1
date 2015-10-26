@@ -32,14 +32,15 @@
  *     List<UndirectedGraphNode> neighbors;
  *     UndirectedGraphNode(int x) { 
  *          label = x; 
- *          neighbors = new ArrayList<UndirectedGraphNode>(); 
-     
- }
+ *          neighbors = new ArrayList<UndirectedGraphNode>();
  * };
  */
 public class Solution {
 
 	//BFS
+    /*
+        已错点分析，记住每一个点都要新建一个copynode，
+    */
     public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
         if (node == null) {
             return null;
@@ -56,13 +57,13 @@ public class Solution {
             //put all the neighbor into the queue
             for (UndirectedGraphNode oldneighbor : curNode.neighbors) {
             	//use hashmap to avoid the previous graph point repeat go into the queue
-                if (!hm.containsKey(oldneighbor)) {
+                if (!hm.containsKey(oldneighbor)) {//这句话就可以排除重复访问
                     queue.add(oldneighbor);
                     UndirectedGraphNode newNeighbor = new UndirectedGraphNode(oldneighbor.label);
                     //use hash to mapping the  relation between new and old graph node
                     hm.put(oldneighbor, newNeighbor);
                 }
-                //put all the neighbor node to the newNode
+                //put one of the neighbor node to the newNode
                 hm.get(curNode).neighbors.add(hm.get(oldneighbor));
             }
         }

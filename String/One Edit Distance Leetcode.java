@@ -16,6 +16,12 @@
 			if  s.substring(i, m)  ==  t.substring(i + 1, n),return true
 			else return false;
 */
+/*
+    这题其实超级简单
+    分三步 s.length() == t.length(), 只要比较char 计算count不同就行
+          |s.length() - t.length()| == 1， 找到不同的位数，从这个位开始比较后面的字符串是否相同，长的那个要从i + 1 开始是相当于删除操作
+
+*/
 public class Solution {
     public boolean isOneEditDistance(String s, String t) {
         int m = s.length();
@@ -38,7 +44,7 @@ public class Solution {
         if (m == n - 1) {
             for (int i = 0; i < m; i++) {
                 if (s.charAt(i) != t.charAt(i)) {
-                    return s.substring(i, m).equals(t.substring(i + 1, n));
+                    return s.substring(i).equals(t.substring(i + 1)); 
                 }
             }
             return true;
