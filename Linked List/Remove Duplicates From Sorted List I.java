@@ -38,25 +38,6 @@
  		}
  		return head;
  	}
-
- 	//solution2
- 	public ListNode deleteDuplicates(ListNode head) {
- 		ListNode pre = head;
- 		ListNode cur = head.next;
- 		while (cur != null) {
- 			if (pre.val == cur.val) {
- 				cur = cur.next;
- 				if (cur == null)
- 					pre.next == null;
- 			} else {
- 				pre.next = cur;
- 				pre = pre.next;
- 				cur = cur.next;
- 			}
- 		}
- 		return head;
- 	}
-
  	//Solution3 chapter9
  	public ListNode deleteDuplicates(ListNode head) {
         if (head == null) {

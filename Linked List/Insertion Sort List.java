@@ -32,8 +32,8 @@
  	  pre     cur     next
 
  	 newhead (loop1: end)
- 	  -1 --> 4       6 -->  3 --> null
- 	  		pre    cur,next    
+ 	  -1 --> 4 -> null       6 -->  3 --> null
+ 	  		pre           cur, next
 
  	 newhead (loop2: start)
  	 -1 --> 4      6 --> 3 --> null
@@ -49,14 +49,16 @@
 
 	 newhead (loop3: end)
 	 -1 --> 3 --> 4 --> 6  null
-	 pre                    cur,next; 
+	 pre                    cur,next;
 
 */
 public class Solution {
 	public ListNode insertionSortList(ListNode head) {
 		if (head == null || head.next == null)
 			return head;
+		//很奇怪为什么这里 newhead 没有指向head对吧？实际上在 pre = newhead以后， pre.next = cur,就将newhead指向了第一个head
 		ListNode newhead = new ListNode(0);//dummy head for the result sorted LinkedList
+		
 		ListNode cur = head;//cur is current node, the node to be plugged in the sorted list
 
 		//cur代表当前要排序的点

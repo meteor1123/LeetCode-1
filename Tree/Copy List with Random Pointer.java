@@ -65,7 +65,7 @@ public class Solution {
         RandomListNode newhead = head.next;
         RandomListNode copyNode = head.next;
         
-        while (oldNode != null && copyNode != null) {
+        while (copyNode != null) {
             oldNode.next = copyNode.next;
             if (copyNode.next != null) {
                 copyNode.next = copyNode.next.next;
@@ -120,47 +120,54 @@ public class Solution {
     	}
     	return newhead;
     }
+}
 
 
-    //Modified the variable name
+
+/**
+ * Definition for singly-linked list with a random pointer.
+ * class RandomListNode {
+ *     int label;
+ *     RandomListNode next, random;
+ *     RandomListNode(int x) { this.label = x; }
+ * };
+ */
+
+
+//Modified the variable name
+public class Solution {
     public RandomListNode copyRandomList(RandomListNode head) {
         if (head == null) {
             return head;
         }
-        
         //copy every ListNode
-        RandomListNode originalNode = head;
-        while (originalNode != null) {
-            RandomListNode copyNode = new RandomListNode(originalNode.label);
-            copyNode.next = originalNode.next;
-            originalNode.next = copyNode;
-            originalNode = copyNode.next;
+        RandomListNode oldNode = head;
+        while (oldNode != null) {
+            RandomListNode copyNode = new RandomListNode(oldNode.label);
+            copyNode.next = oldNode.next;
+            oldNode.next = copyNode;
+            oldNode = copyNode.next;
         }
-        
         //set the random value
-        originalNode = head;
-        while (originalNode != null && originalNode.next != null) {
-            if (originalNode.random != null) {
-                originalNode.next.random = originalNode.random.next;
+        oldNode = head;
+        while (oldNode != null && oldNode.next != null) {
+            if (oldNode.random != null) {
+                oldNode.next.random =  oldNode.random.next;
             }
-            originalNode = originalNode.next.next;
+            oldNode = oldNode.next.next;
         }
-        
         //divide the ListNode
-        originalNode = head;
+        oldNode = head;
         RandomListNode newhead = head.next;
-        RandomListNode copyNode = newhead;
-        
-        while (originalNode != null && copyNode != null) {
-            originalNode.next = copyNode.next;
-            originalNode = originalNode.next;
-            if (copyNode.next != null) {
-                copyNode.next = copyNode.next.next;
+        RandomListNode copyList = newhead;
+        while (copyList != null) {
+            oldNode.next = copyList.next;
+            oldNode = oldNode.next;
+            if (copyList.next != null) {
+                copyList.next = copyList.next.next;
             }
-            copyNode = copyNode.next;
+            copyList = copyList.next;
         }
         return newhead;
     }
-
-
 }
