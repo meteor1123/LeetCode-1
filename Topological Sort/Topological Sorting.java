@@ -49,12 +49,13 @@
 */
 
 public class Solution {
+	//注意在这题中，如果node 有neighbor就意味着 node -> neighbor   node指向neighbor！
 	public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
 		ArrayList<DirectedGraphNode> result = new ArrayList<DirectedGraphNode>();
-		//用hashmap开确定一个点的邻接点数
+		//用hashmap开确定一个点的邻接点数， key是定点，value是入度！
 		HashMap<DirectedGraphNode, Integer> map = new HashMap();
 
-		//遍历每个node的邻接点，
+		//遍历每个node的邻接点,构建每个点的入度
 		for (DirectedGraphNode node : graph) {
 			for (DirectedGraphNode neighbor : node.neighbors) {
 				if (map.containsKey(neighbor)) {

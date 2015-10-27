@@ -75,6 +75,42 @@ public class Solution {
 	*  所以总时间复杂度是O(nklogk)。空间复杂度是堆的大小，即为O(k)。
  	*
  	*/
+    //Solution2 prefer
+    public ListNode mergeKLists(ListNode[] lists) {  
+        // write your code here
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        //最小堆，默认就是最小堆，但是要给ListNode写comparator
+        PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(new Comparator<ListNode>(){
+            @Override
+            public int compare(ListNode l1, ListNode l2) {
+                return l1.val - l2.val;
+            }
+        });
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        //先把所有的头结点加入堆中，
+        for (ListNode node : lists) {
+            if (node != null) {
+                queue.offer(node);
+            }
+        }
+        
+        while (!queue.isEmpty()) {
+            //Poll出来的肯定是最小的，接上
+            tail.next = queue.poll();
+            //如果tail.next 非空，加入queue
+            tail = tail.next;
+            //判断tail.next
+            if (tail.next != null) {
+                queue.add(tail.next);
+            }
+        }
+        return dummy.next;
+    }
+
+    //Solution3 
     public ListNode mergeKLists(List<ListNode> lists) {
         if (lists == null || lists.size() == 0){
         	return null;

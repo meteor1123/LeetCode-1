@@ -13,15 +13,13 @@ public class Solution {
         }
         int size = 0;
         h = head;
-        ListNode cur = head;
         //caculate the size of ListNode
-        while (cur != null) {
-            cur = cur.next;
+        while (head != null) {
+            head = head.next;
             size++;
         }
         return sortedListToBSTHelper(0, size - 1);
     }
-    
     //divide and Conquer
     public TreeNode sortedListToBSTHelper(int start, int end) {
         if (start > end) {
@@ -31,9 +29,9 @@ public class Solution {
         //recursive the most left node,
         TreeNode left = sortedListToBSTHelper(start, mid - 1);
         TreeNode root = new TreeNode(h.val);
+        root.left = left;
         h = h.next;
         TreeNode right = sortedListToBSTHelper(mid + 1, end);
-        root.left = left;
         root.right = right;
         return root;
     }
