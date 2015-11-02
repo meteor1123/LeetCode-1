@@ -47,9 +47,12 @@ public class Solution {
     }
 }
 
+
+//Solution2:
+//Brute force by xiaoyingzi, easy to finish
+//time complexity
 public class Solution {
-    //Brute force by xiaoyingzi, easy to finish
-    //time complexity 
+     
     public String longestPalindrome(String s) {
         if (s == null || s.length() <= 1) {
             return s;
@@ -82,7 +85,10 @@ public class Solution {
         return true;
     }
 
+
+
     /*
+        Solution3
         Let s be the input string, i and j are two indices of the string.
 
         Define a 2-dimension array "table" and 
@@ -101,6 +107,7 @@ public class Solution {
         dp[i][j] 表示substring(i, j + 1) 是否为palindrome ，----> 0....i....j....s.length() - 1
         因此我们可以很明显的看出来，i从末尾开始往前递进， j从i往后开始递进， 到最后就是 0 = i .....j = s.length() - 1 这个区间段是否
     */
+
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) {
             return "";
@@ -126,20 +133,21 @@ public class Solution {
         return res;
     }
 
-    //中心回探法
-/*
-    基本思路是对于每个子串的中心（可以是一个字符，或者是两个字符的间隙，比如串abc,中心可以是a,b,c,或者是ab的间隙，bc的间隙）往两边同时进行扫描，
-    直到不是回文串为止。假设字符串的长度为n,那么中心的个数为2*n-1(字符作为中心有n个，间隙有n-1个）。
-    对于每个中心往两边扫描的复杂度为O(n),所以时间复杂度为O((2*n-1)*n)=O(n^2),空间复杂度为O(1)
+    
+    /*
+        Solution4:
+        中心回探法
+        对于每个中心往两边扫描的复杂度为O(n),所以时间复杂度为O((2*n-1)*n)=O(n^2),空间复杂度为O(1)
+        基本思路是对于每个子串的中心（可以是一个字符，或者是两个字符的间隙，比如串abc,中心可以是a,b,c,或者是ab的间隙，bc的间隙）往两边同时进行扫描，
+        直到不是回文串为止。假设字符串的长度为n,那么中心的个数为2*n-1(字符作为中心有n个，间隙有n-1个）。
+    
     */
     public String longestPalindrome(String s) {
         if (s == null || s.length() <= 1) {
             return s;
         }
-        
         //to store the maxLen of palindrome
         String longest = s.substring(0, 1);
-        
         //iterative every center divide point
         for (int i = 0; i < s.length(); i++) {
             // like abba, a , b , b , a is center
@@ -148,7 +156,6 @@ public class Solution {
             if (temp.length() > longest.length()) {
                 longest = temp;
             }
-            
             // like abba, ab bb ba 's interval is divide interval 
             // get longest palindrome with center of i, i+1
             temp = helper(s, i, i + 1);
@@ -158,7 +165,6 @@ public class Solution {
         }
         return longest;
     }
-    
     public String helper(String s, int begin, int end) {
         while (begin >= 0 && end <= s.length() - 1 && s.charAt(begin) == s.charAt(end)) {
             //notice that, begin go to left, end go to right, from center to edge! 
@@ -169,7 +175,7 @@ public class Solution {
     }
 }
 
-//Brute Force by myself
+//Solution5:Brute Force by myself
 public class Solution {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) {

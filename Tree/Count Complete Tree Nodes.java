@@ -3,7 +3,8 @@
 	Given a complete binary tree, count the number of nodes.
 
 	Definition of a complete binary tree from Wikipedia:
-	In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+	In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. 
+    It can have between 1 and 2h nodes inclusive at the last level h.
 	Tags: Tree, BinarySearch
 */
 
@@ -47,7 +48,21 @@ public class Solution {
         } 
         if (height(root.right) == rootHeight - 1) {
             return (1 << rootHeight) + countNodes(root.right);// 2^h - 1 + count(root.right) + 1(root);
+            /*
+                     1
+                   /   \
+                  2     3
+                 / \   / 
+                4   5 6
+            */
         } else {
+            /*
+                     1
+                   /  \
+                  2    3
+                 / \
+                4   5
+            */
             return (1 << rootHeight - 1) + countNodes(root.left) ;// 2^(h - 1) - 1 + cout(root.left) + 1(root);
         }
     }

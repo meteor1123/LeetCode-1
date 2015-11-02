@@ -52,6 +52,7 @@ public class Solution {
     }
 
     //Solution2
+    //maxValue 是要计算每一个结点的 左右路线和结点值的最大值， left right是为了求左边路线最大和右边路线最大，所以findMax就是遍历所有结点，返回最大的路线
     public class Solution {
     int maxValue;
     public int maxPathSum(TreeNode root) {

@@ -9,62 +9,74 @@
 
 
 
+/*
+        1
+       / \
+      2   3
+         / \
+        4   5
+     Serialize：   用queue level order变成 "1,2,3,#,#,4,5,#,#,#,#,"   #代表该node为空，点号分割每一个node，记得要把最后一个点号删掉-> 1,2,3,#,#,4,5,#,#,#,#
+                   这里用for循环，限制为每一层的size，控制每一层的String生成
+     deserialize:  设置一个String[], 按照","号分割取得TreeNode的值
 
+*/
 
+//Solution1 queue iterative
 public class Codec {
 	public String serialize(TreeNode root) {
         if (root == null) {
             return "";
         }
-        Queue<TreeNode> q = new LinkedList<> ();
-        q.offer (root) ;
-        StringBuilder sb = new StringBuilder ();      
-        while (!q.isEmpty()) {
-            int size = q.size ();
-            for (int i = 0 ; i < size ; ++i) {
-                TreeNode cur = q.poll();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        StringBuilder sb = new StringBuilder();
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.poll();
                 if (cur != null) {
-                    q.offer (cur.left);
-                    q.offer (cur.right);
+                    queue.offer(cur.left);
+                    queue.offer(cur.right);
                 }
-                String val = cur == null ? "#" : String.valueOf(cur.val) ;
-                sb.append (val);
-                sb.append (",");
+                String val = cur == null ? "#" : String.valueOf(cur.val);
+                sb.append(val);
+                sb.append(",");
             }
         }
-        sb.setLength (sb.length() - 1);
+        sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
 	// Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
-        if (data == null || data.length () == 0) {
-            return null ;
+     public TreeNode deserialize(String data) {
+        if (data == null || data.length() == 0) {
+            return null;
         }
-        String [] val = data.split(",");
-        TreeNode root = new TreeNode (Integer.parseInt (val[0]));
-        Queue<TreeNode> q = new LinkedList<> ();
-        q.offer(root) ;
-        for (int i = 1 ; i < val.length ; i += 2) {
-            TreeNode cur = q.poll();
+        String[] val = data.split(",");
+        TreeNode root = new TreeNode(Integer.valueOf(val[0]));
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        //i控制string数组里的值，queue控制遍历的TreeNode，val[i] ,val[i + 1] 确保是 cur的left和right节点值，则有 
+        for (int i = 1; i < val.length; i += 2) {
+            TreeNode cur = queue.poll();
             if (!"#".equals(val[i])) {
-                TreeNode left = new TreeNode (Integer.parseInt (val[i]));
-                cur.left = left ;
-                q.offer (left);
+                TreeNode left = new TreeNode(Integer.valueOf(val[i]));
+                cur.left = left;
+                queue.offer(left);
             }
             if (i + 1 < data.length() && !"#".equals(val[i + 1])) {
-                TreeNode right = new TreeNode (Integer.parseInt (val[i + 1]));
-                cur.right = right ;
-                q.offer (right);
+                TreeNode right = new TreeNode(Integer.valueOf(val[i + 1]));
+                cur.right = right;
+                queue.offer(right);
             }
         }
-        return root ;
+        return root;
     }
 }
 
 
 
 
-//Recursive Method, DFS, preorder
+//Solution2: Recursive Method, DFS, preorder
 public class Codec {
 
     // Encodes a tree to a single string.

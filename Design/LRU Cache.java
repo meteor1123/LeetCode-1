@@ -37,6 +37,87 @@
 		就要减少查找的时间复杂度，所以这里利用HashMap来做，这样时间苏咋读就是O(1)。
 */
 
+//Solution1 头尾结点都用pseudo结点，便于reduce the boundary checking
+public class LRUCache {
+    private HashMap<Integer, DoubleLinkedList> cache = new HashMap<Integer, DoubleLinkedList>();
+    private int count;
+    private int capacity;
+    private DoubleLinkedList head;
+    private DoubleLinkedList tail;
+    public LRUCache(int capacity) {
+        this.count = 0;
+        this.capacity = capacity;
+        
+        head = new DoubleLinkedList();
+        head.pre = null;
+        
+        tail = new DoubleLinkedList();
+        tail.post = null;
+        
+        head.post = tail;
+        tail.pre = head;
+    }
+    public void addNode(DoubleLinkedList node) {
+        node.pre = head;
+        node.post = head.post;
+        head.post.pre = node;
+        head.post = node;
+    }
+    public void removeNode(DoubleLinkedList node) {
+        DoubleLinkedList pre = node.pre;
+        DoubleLinkedList post = node.post;
+        pre.post = post;
+        post.pre = pre;
+        
+    }
+    public void moveToHead(DoubleLinkedList node) {
+        this.removeNode(node);
+        this.addNode(node);
+    }
+    public DoubleLinkedList popTail() {
+        DoubleLinkedList res = tail.pre;
+        this.removeNode(res);
+        return res;
+    }
+    public int get(int key) {
+        DoubleLinkedList node = cache.get(key);
+        if (node == null) {
+            return -1;
+        }
+        this.moveToHead(node);
+        return node.value;
+    }
+    
+    public void set(int key, int value) {
+        DoubleLinkedList node = cache.get(key);
+        if (node == null) {
+            DoubleLinkedList newNode = new DoubleLinkedList();
+            newNode.key = key;
+            newNode.value = value;
+            this.cache.put(key, newNode);
+            this.addNode(newNode);
+            count++;
+            if (count > capacity) {
+                DoubleLinkedList tail = this.popTail();
+                this.cache.remove(tail.key);
+                count--;
+            }
+        } else {
+            node.value = value;
+            this.moveToHead(node);
+        }
+    }
+    
+    class DoubleLinkedList {
+        int key;
+        int value;
+        DoubleLinkedList pre;
+        DoubleLinkedList post;
+    }
+}
+
+
+//Solution2
 public class LRUCache {
     private HashMap<Integer, DoubleLinkedListNode> map = new HashMap<Integer, DoubleLinkedListNode>();//hashmap的作用在于，根据某一key（Integer）值去检索该结点是否存在
     private DoubleLinkedListNode head;//头结点

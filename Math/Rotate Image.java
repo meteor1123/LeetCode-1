@@ -10,7 +10,7 @@
 /*
     The idea was firstly transpose the matrix and then flip it symmetrically. For instance,
 
-    1  2  3             
+    1  2  3
     4  5  6
     7  8  9
     after transpose, it will be swap(matrix[i][j], matrix[j][i])
@@ -40,7 +40,7 @@ public class Solution {
     	}
 
     	for (int i = 0; i < m; i++) {
-    		for (int j = 0; j < m / 2; j++) {
+    		for (int j = 0; j < n / 2; j++) {
     			int temp = matrix[i][j];
     			matrix[i][j] = matrix[i][n - j - 1];
     			matrix[i][n - j - 1] = temp;

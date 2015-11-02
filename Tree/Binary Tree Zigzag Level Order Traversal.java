@@ -37,13 +37,11 @@ public class Solution {
 		//根据层数判断是否需要reverse
 		if (depth % 2 == 0) {
 			res.get(depth).add(root.val);
-			dfs(root.left, res, depth + 1);
-			dfs(root.right, res, depth + 1);
 		} else if (depth % 2 == 1){
 			res.get(depth).add(0, root.val);
-			dfs(root.left, res, depth + 1);
-			dfs(root.right, res, depth + 1);
 		}
+		dfs(root.left, res, depth + 1);
+		dfs(root.right, res, depth + 1);
 	}
 
 	//BFS 
