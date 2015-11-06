@@ -63,21 +63,23 @@ public class Solution {
 	}
 
     //DFS    
-    public ArrayList<LinkedList<Integer>> levelOrder(TreeNode root) {
-        ArrayList<LinkedList<Integer>> res = new ArrayList<LinkedList<Integer>>();
-        if (root == null)
-            return res;
-        dfs(root, 0, res);
-        return res;
+	public List<List<Integer>> levelOrder(TreeNode root) {
+         List<List<Integer>> res = new ArrayList<>();
+         if (root == null) {
+             return res;
+         }
+         dfs(res, root, 0);
+         return res;
     }
-    
-    public void dfs(TreeNode root, int depth, ArrayList<LinkedList<Integer>> res) {
-        if (root == null)
-            return ;
-        if (depth >= res.size())
-            res.add(new LinkedList<Integer>());
+    public void dfs(List<List<Integer>> res, TreeNode root, int depth) {
+        if (root == null) {
+            return;
+        }
+        if (res.size() <= depth) {
+            res.add(new ArrayList<>());
+        }
         res.get(depth).add(root.val);
-        dfs(root.left, depth + 1, res);
-        dfs(root.right, depth + 1, res);
+        dfs(res, root.left, depth + 1);
+        dfs(res, root.right, depth + 1);
     }
 }

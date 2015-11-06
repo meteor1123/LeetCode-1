@@ -26,6 +26,7 @@ public class Solution {
     public void dfs(TreeNode root, String path, List<String> res) {
         if (root.left == null && root.right == null) {
             res.add(path + root.val);
+            return;
         }
         if (root.left != null) {
             dfs(root.left, path + root.val + "->", res);

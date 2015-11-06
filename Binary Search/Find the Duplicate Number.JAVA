@@ -31,6 +31,8 @@
 /*
     Solution: 不用管数组里的实际数字，用 n + 1 个数分布在1-n这个区间，直接用区间序号来计算
 */
+
+//Solution1
 public class Solution {
     public int findDuplicate(int[] nums) {
         int start = 1;
@@ -57,3 +59,22 @@ public class Solution {
         return count;
     }
 }
+
+//Solution2
+//用linkedlist cycle II 的算法
+public int findDuplicate(int[] nums) {
+    int slow = 0, fast = 0;
+    do{
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    }while(slow != fast);
+    slow = 0;
+    while(slow != fast){
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return slow;
+}
+
+
+

@@ -47,7 +47,7 @@ public class Solution {
             return 0;
         } 
         if (height(root.right) == rootHeight - 1) {
-            return (1 << rootHeight) + countNodes(root.right);// 2^h - 1 + count(root.right) + 1(root);
+            return (1 << (rootHeight - 1)) - 1 + countNodes(root.right) + 1;// 2^(h - 1)(左子树) - 1 + count(root.right) + 1(root);
             /*
                      1
                    /   \
@@ -63,13 +63,13 @@ public class Solution {
                  / \
                 4   5
             */
-            return (1 << rootHeight - 1) + countNodes(root.left) ;// 2^(h - 1) - 1 + cout(root.left) + 1(root);
+            return (1 << (rootHeight - 2)) - 1 + countNodes(root.left) + 1;// 2^(h - 2)（右子树） - 1 + cout(root.left) + 1(root);
         }
     }
     
     public int height(TreeNode root) {
         if (root == null) {
-            return -1;
+            return 0;
         }
         return 1 + height(root.left);
     }

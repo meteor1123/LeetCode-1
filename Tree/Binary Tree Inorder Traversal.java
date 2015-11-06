@@ -33,10 +33,10 @@ public class Solution {
 
     //Iterative version 1 recommend!
     public List<Integer> inorderTraversal(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
+        List<Integer> res = new ArrayList<>();
         if (root == null)
             return res;
-        LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
+        LinkedList<TreeNode> stack = new LinkedList<>();
         while (root != null || !stack.isEmpty()) {
             if (root != null) {
                 stack.push(root);
@@ -47,39 +47,28 @@ public class Solution {
                 root = root.right;
             }
         }
+        return res;
     }
-
-    //Recursive version 2
-    public List<Integer> inorderTraversal(TreeNode root) {
-        ArrayList<Integer> treeVal = new ArrayList<Integer>();
-        if(root != null){
-            treeVal.addAll(inorderTraversal(root.left));
-            treeVal.add(root.val);
-            treeVal.addAll(inorderTraversal(root.right));
-        }
-        return treeVal;
-    }
-
 
 
     //Iterative version 2
-    public List<Integer> inorderTraversal(TreeNode root) {
-    	ArrayList<Integer> res = new ArrayList<Integer>();
-    	if (root == null)
-    		return res;
-    	LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
-    	TreeNode cur = root;
+    // public List<Integer> inorderTraversal(TreeNode root) {
+    // 	ArrayList<Integer> res = new ArrayList<Integer>();
+    // 	if (root == null)
+    // 		return res;
+    // 	LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
+    // 	TreeNode cur = root;
 
-    	while (cur != null || !stack.isEmpty()) {
-    		while (cur != null) {
-    			stack.push(cur);
-    			cur = cur.next;
-    		}
-    		cur = stack.pop();
-    		res.add(cur.val);
-    		cur = cur.right;
-    	}
-    }
+    // 	while (cur != null || !stack.isEmpty()) {
+    // 		while (cur != null) {
+    // 			stack.push(cur);
+    // 			cur = cur.next;
+    // 		}
+    // 		cur = stack.pop();
+    // 		res.add(cur.val);
+    // 		cur = cur.right;
+    // 	}
+    // }
 
     //Morris traversal
 

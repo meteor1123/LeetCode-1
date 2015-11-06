@@ -5,13 +5,17 @@
 public class Solution {
     //recursive
     public List<Integer> preorderTraversal(TreeNode root) {
-    	ArrayList<Integer> res = new ArrayList<Integer>();
-    	if (root != null) {
-    		res.add(root.val);
-    		res.addAll(root.left);
-    		res.addAll(root.right);
-    	}
-    	return res;
+        List<Integer> res = new ArrayList<>();
+        preorder(res, root);
+        return res;
+    }
+    public void preorder(List<Integer> res, TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        res.add(root.val);
+        preorder(res, root.left);
+        preorder(res, root.right);
     }
 
     //Iterative stack1
@@ -29,6 +33,7 @@ public class Solution {
     		if (cur.left != null)
     			stack.push(cur.left);
     	}
+        return res;
     }
 
     //Iterative stack2

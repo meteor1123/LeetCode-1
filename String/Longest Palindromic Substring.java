@@ -7,6 +7,57 @@
 //http://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-substring-java/
 
 
+//Best manacher's Algorithm   O(n) O(n)
+//http://www.felix021.com/blog/read.php?2040
+//http://articles.leetcode.com/2011/11/longest-palindromic-substring-part-ii.html
+public class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() <= 1) {
+            return s;
+        }
+        s = preProcess(s);
+        int[] p = new int[s.length()];
+        int mid = 0;
+        int max = 0;
+        for (int i = 1; i < s.length() - 1; i++) {
+            p[i] = i < max ? Math.min(p[mid - (i - mid)], max - i) : 0; 
+            while (s.charAt(i - p[i] - 1) == s.charAt(i + p[i] + 1)) {
+                p[i]++;
+            }
+            if (i + p[i] > max) {
+                mid = i;
+                max = p[i];
+            }
+        }
+        int maxLen = 0;
+        mid = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (p[i] > maxLen) {
+                mid = i;
+                maxLen = p[i];
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = mid - maxLen; i <= mid + maxLen; i++) {
+            if (s.charAt(i) != '#') {
+                sb.append(s.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+    public String preProcess(String s) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('~');
+        for (int i = 0; i < s.length(); i++) {
+            sb.append('#');
+            sb.append(s.charAt(i));
+        }
+        sb.append("#$");
+        return sb.toString();
+    }
+}
+
+
 //Solution1 Best, time: O(n*n), O(1) space
 /*
     本题用到中心回探法，什么是中心回探？

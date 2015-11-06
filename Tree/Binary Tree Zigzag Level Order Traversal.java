@@ -45,21 +45,20 @@ public class Solution {
 	}
 
 	//BFS 
-	public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
-		ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+		List<List<Integer>> res = new ArrayList<>();
 		if (root == null)
 			return res;
 		boolean reverse = false;
-		LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+		Queue<TreeNode> queue = new LinkedList<>();
 		queue.add(root);
 		int curNum = 1;
 		int nextNum = 0;
-		ArrayList<Integer> levelres = new ArrayList<Integer>();
-
+		List<Integer> item = new ArrayList<>();
 		while(!queue.isEmpty()) {
 			TreeNode cur = queue.poll();
 			curNum--;
-			levelres.add(cur.val);
+			item.add(cur.val);
             if (cur.left != null) {
 				queue.add(cur.left);
 				nextNum++;
@@ -68,19 +67,17 @@ public class Solution {
 				queue.add(cur.right);
 				nextNum++;
 			}
-	
-
 			if (curNum == 0) {
 				curNum = nextNum;
 				nextNum = 0;
 				if (reverse) {			
-					Collections.reverse(levelres);//关键 reverse为true时，用Collections的reverse转置
+					Collections.reverse(item);//关键 reverse为true时，用Collections的reverse转置
 					reverse = false;
-				}
-				else 
+				} else {
 					reverse = true;
-				res.add(levelres);
-				levelres = new ArrayList<Integer>();
+				}
+				res.add(item);
+				item = new ArrayList<>();
 			}
 		}
 		return res;

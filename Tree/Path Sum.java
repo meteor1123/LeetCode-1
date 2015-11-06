@@ -27,3 +27,32 @@ public class Solution {
     }
 }
  
+
+//BFS
+public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return false;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<Integer> pathSum = new LinkedList<>();
+        queue.offer(root);
+        pathSum.offer(root.val);
+        while (!queue.isEmpty()) {
+            TreeNode cur = queue.poll();
+            int newSum = pathSum.poll();
+            if (cur.left == null && cur.right == null) {
+                if (newSum == sum) {
+                    return true;
+                }
+            }
+            if (cur.left != null) {
+                queue.offer(cur.left);
+                pathSum.offer(newSum + cur.left.val);
+            }
+            if (cur.right != null) {
+                queue.offer(cur.right);
+                pathSum.offer(newSum + cur.right.val);
+            }
+        }
+        return false;
+    }

@@ -1,4 +1,4 @@
-/*
+    /*
 	Binary Tree Longest Consecutive Sequence
 	Given a binary tree, find the length of the longest consecutive sequence path.
 
@@ -49,5 +49,27 @@ public class Solution {
         dfs(root.left, root, count);
         dfs(root.right, root, count);
         
+    }
+}
+
+//Concise
+public class Solution {
+    int max;
+    public int longestConsecutive(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        max = 0;
+        dfs(root, root, 0);
+        return max;
+    }
+    public void dfs(TreeNode cur, TreeNode pre, int count) {
+        if (cur == null) {
+            return;
+        }
+        count = pre.val + 1 == cur.val ? count + 1 : 1;
+        max = Math.max(count, max);
+        dfs(cur.left, cur, count);
+        dfs(cur.right, cur, count);
     }
 }

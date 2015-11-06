@@ -26,7 +26,7 @@ public class Solution {
 
     //Recursive 2
     public List<Integer> postorderTraversal(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
+        List<Integer> res = new ArrayList<>();
         if (root == null)
             return res;
         dfs(root, res);
@@ -76,29 +76,32 @@ public class Solution {
 		2）如果栈顶元素右结点是空或者已经访问过，那么说明栈顶元素的左右子树都访问完毕，应该访问自己继续回溯了。
     */
     public List<Integer> postorderTraversal(TreeNode root) {
-    	List<Integer> res = new ArrayList<Integer>();
-    	if (root == null)
-    		return res;
-    	LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
-    	TreeNode pre = null;
-    	while (root != null || stack.isEmpty()) {
-    		if (root != null) {
-    			stack.push(root);
-    			root = root.left;
-    		} 
-    		else {
-    			TreeNode peekNode = stack.peek();
-    			if (peekNode.right != null || peekNode.right != pre) 
-    				root = peekNode.right;
-    			else {
-    				stack.pop();
-    				res.add(peekNode.val);
-    				pre = peekNode;
-    			}
-    			
-    		}
-    	}
-    	return res;
+        List<Integer> res = new ArrayList<>();
+        if (root == null)
+            return res;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode pre = null;
+        while (root != null || !stack.isEmpty()) {
+            //往左探底
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } 
+            else {
+                TreeNode peekNode = stack.peek();
+                //一直往右探底
+                if (peekNode.right != null && peekNode.right != pre) 
+                    root = peekNode.right;
+                else {
+                    //已经探底，加入这个值
+                    stack.pop();
+                    res.add(peekNode.val);
+                    pre = peekNode;
+                }
+                
+            }
+        }
+        return res;
     }
 
 }
