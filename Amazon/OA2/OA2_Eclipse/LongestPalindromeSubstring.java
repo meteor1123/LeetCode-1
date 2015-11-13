@@ -1,6 +1,6 @@
-package OA1;
+package OA2;
 public class LongestPalindromeSubstring {
-	public String longestPalindrome(String s) {
+	public static String longestPalindrome(String s) {
         if (s == null || s.length() <= 1) {
             return s;
         }
@@ -34,7 +34,7 @@ public class LongestPalindromeSubstring {
         }
         return sb.toString();
     }
-    public String preProcess(String s) {
+    public static String preProcess(String s) {
         StringBuilder sb = new StringBuilder();
         sb.append('~');
         for (int i = 0; i < s.length(); i++) {
@@ -46,7 +46,7 @@ public class LongestPalindromeSubstring {
     }
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		System.out.println(longestPalindrome("aaabbbavvvvvvabb"));
 	}
 }
 

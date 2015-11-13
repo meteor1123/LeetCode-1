@@ -358,36 +358,36 @@
 		    */
 
 			//Morris用的pre，不管在哪个遍历里，实际上最后都是当前节点在inorder下的前驱结点！！！
-		public class Solution {
-			public List<Integer> preorderTraversal(TreeNode root) {
-		        if (root == null) {
-		            return Collections.emptyList();
-		        }
-		        List<Integer> res = new ArrayList<>();
-		        TreeNode pre = null;
-		        while (root != null) {
-		            if (root.left == null) {
-		                res.add(root.val);
-		                root = root.right;
-		            } else {
-		                pre = root.left;
-		                while (pre.right != null && pre.right != root) {
-		                    pre = pre.right;
-		                }
-		                //假如pre.right 为空，叶子节点，记录root的信息，方便回溯
-		                if (pre.right == null) {
-		                    pre.right = root;
-		                    res.add(root.val);//关键步骤，在这里将当前的root结点输出到结果，先将root输出，再遍历下面的叶子节点输出
-		                    root = root.left;
-		                }  else {
-		                    pre.right = null;
-		                    root = root.right;
-		                }
-		            } 
-		        }
-		        return res;
-		    }
-		}
+			public class Solution {
+				public List<Integer> preorderTraversal(TreeNode root) {
+			        if (root == null) {
+			            return Collections.emptyList();
+			        }
+			        List<Integer> res = new ArrayList<>();
+			        TreeNode pre = null;
+			        while (root != null) {
+			            if (root.left == null) {
+			                res.add(root.val);
+			                root = root.right;
+			            } else {
+			                pre = root.left;
+			                while (pre.right != null && pre.right != root) {
+			                    pre = pre.right;
+			                }
+			                //假如pre.right 为空，叶子节点，记录root的信息，方便回溯
+			                if (pre.right == null) {
+			                    pre.right = root;
+			                    res.add(root.val);//关键步骤，在这里将当前的root结点输出到结果，先将root输出，再遍历下面的叶子节点输出
+			                    root = root.left;
+			                }  else {
+			                    pre.right = null;
+			                    root = root.right;
+			                }
+			            } 
+			        }
+			        return res;
+			    }
+			}
 			1.5.2 Inorder
 			/*  Inorder Morris Solution:
 		        例子图片在这里：http://www.cnblogs.com/AnnieKim/archive/2013/06/15/MorrisTraversal.html
@@ -397,35 +397,85 @@
 		            b) 如果前驱节点的右孩子为当前节点，将它的右孩子重新设为空（恢复树的形状）。输出当前节点。当前节点更新为当前节点的右孩子。
 		        3. 重复以上1、2直到当前节点为空。
 		    */
-		public class Solution {
-		    public List<Integer> inorderTraversal(TreeNode root) {
-		        if(root == null) return new ArrayList<Integer>();
-		        List<Integer> res = new ArrayList<Integer>();
-		        TreeNode pre = null;
-		        while(root != null){
-		            if(root.left == null){
-		                res.add(root.val);
-		                root = root.right;
-		            } else{
-		                pre = root.left;
-		                while (pre.right != null && pre.right != root){
-		                    pre = pre.right;
-		                }
-		                if(pre.right == null){
-		                    pre.right = root;
-		                    root = root.left;
-		                    //res.add(root.val); //preorder是在这里加入res
-		                }else{
-		                    pre.right = null;
-		                    res.add(root.val);//与preorder唯一的不同
-		                    root = root.right;
-		                }
-		            }
-		        }
-		        return res;
-		    }
-		}
-	
+			public class Solution {
+			    public List<Integer> inorderTraversal(TreeNode root) {
+			        if(root == null) return new ArrayList<Integer>();
+			        List<Integer> res = new ArrayList<Integer>();
+			        TreeNode pre = null;
+			        while(root != null){
+			            if(root.left == null){
+			                res.add(root.val);
+			                root = root.right;
+			            } else{
+			                pre = root.left;
+			                while (pre.right != null && pre.right != root){
+			                    pre = pre.right;
+			                }
+			                if(pre.right == null){
+			                    pre.right = root;
+			                    root = root.left;
+			                    //res.add(root.val); //preorder是在这里加入res
+			                }else{
+			                    pre.right = null;
+			                    res.add(root.val);//与preorder唯一的不同
+			                    root = root.right;
+			                }
+			            }
+			        }
+			        return res;
+			    }
+			}
+			1.6 Vertical Level Traversal Of Tree
+			//Print arbitrary binary tree by vertical levels / columns from left to right,high to low
+			public class Solution {
+				public List<List<Integer>> verticalLevelTraversalofTree(TreeNode root){
+					List<List<Integer>> res = new ArrayList<>();
+					//map's key is column, we assume the root column is zero, the left node will minus 1 ,and the right node will plus 1
+					HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+					//use a queue to do bfs
+					LinkedList<TreeNode> queue = new LinkedList<>();
+					//use a HashMap to store the TreeNode and the according cloumn value
+					HashMap<TreeNode, Integer> weight = new HashMap<>();
+					if (root == null) {
+						return res;
+					}
+					queue.add(root);
+					weight.put(root, 0);
+					int min = 0;
+					while (!queue.isEmpty()) {
+						TreeNode node = queue.poll();
+						int w = weight.get(node);
+						//if map doesn't has this column value, just create a list ,and put into map
+						if (!map.containsKey(w)) {
+							ArrayList<Integer> list = new ArrayList<>();
+							list.add(node.val);
+							map.put(w, list);
+						} else {
+							ArrayList<Integer> list = map.get(w);
+							list.add(node.val);
+							map.put(w, list);
+						}
+						//enqueue
+						if (node.left != null) {
+							queue.add(node.left);
+							//put the node to weight hashmap
+							weight.put(node.left, w - 1);
+						}
+						if (node.right != null) {
+							queue.add(node.right);
+							weight.put(node.right, w + 1);
+						}
+						//update min ,min means the minimum column value, which is the left most node
+						min = Math.min(min, w);
+					}
+					//generate res
+					while(map.containsKey(min)) {
+						res.add(map.get(min++));
+					}
+					return res;
+				}
+			}
+
    
 
 
@@ -593,7 +643,64 @@
     		}
 
 
-3.
+3. The Property Of Tree
+	3.1 Depth And Height
+		3.1.1 Height Of Tree
+		    public int height(TreeNode root) {
+		        if (root == null) {
+		            return 0;
+		        }
+		        return 1 + height(root.left);
+		    }
+		3.1.2 Maximum Depth
+			public int maxDepth(TreeNode root) {
+				if (root == null)
+					return 0;
+				int leftMaxDepth = maxDepth(root.left);
+				int rightMaxDepth = maxDepth(root.right);
+				return Math.max(leftMaxDepth, rightMaxDepth) + 1;
+			}
+		3.1.3 Minimum Depth
+			public int minDepth(TreeNode root) {
+		    	if (root == null)
+		    		return 0;
+		    	if (root.left == null)
+		    		return minDepth(root.right) + 1;
+		    	if (root.right == null)
+		    		return minDepth(root.left) + 1;
+		    	return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+		    }
+		3.1.4 Count Complete Tree
+			/*
+				In a complete binary tree every level, except possibly the last, is completely filled, 
+				and all nodes in the last level are as far left as possible. 
+				It can have between 1 and 2h nodes inclusive at the last level h.
+			*/
+		    public int countNodes(TreeNode root) {
+		        int rootHeight = height(root);//3.1.1 Height of Tree Method
+		        if (rootHeight < 0) {
+		            return 0;
+		        } 
+		        if (height(root.right) == rootHeight - 1) {
+		            return (1 << (rootHeight - 1)) - 1 + countNodes(root.right) + 1;// 2^(h - 1)(左子树) - 1 + count(root.right) + 1(root);
+		            /*
+		                     1
+		                   /   \
+		                  2     3
+		                 / \   / 
+		                4   5 6
+		            */
+		        } else {
+		            /*
+		                     1
+		                   /  \
+		                  2    3
+		                 / \
+		                4   5
+		            */
+		            return (1 << (rootHeight - 2)) - 1 + countNodes(root.left) + 1;// 2^(h - 2)（右子树） - 1 + cout(root.left) + 1(root);
+		        }
+		    }
 
 
 

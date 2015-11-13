@@ -62,7 +62,7 @@
 
 public class Solution {
     public List<String> fullJustify(String[] words, int L) {
-    	ArrayList<String> res = new ArrayList<String>();
+    	ArrayList<String> res = new ArrayList<>();
     	if (words == null || words.length == 0)
     		return res;
     	//上一次计算的单词的长度

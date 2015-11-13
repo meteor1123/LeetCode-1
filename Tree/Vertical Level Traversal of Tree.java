@@ -88,14 +88,13 @@ public void verticalLevelTraversalofTree(TreeNode root){
 
 //Has return
 public List<List<Integer>> verticalLevelTraversalofTree(TreeNode root){
-
-	List<List<Integer>> res = new ArrayList<List<Integer>>();
+	List<List<Integer>> res = new ArrayList<>();
 	//map's key is column, we assume the root column is zero, the left node will minus 1 ,and the right node will plus 1
-	HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+	HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
 	//use a queue to do bfs
-	LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+	LinkedList<TreeNode> queue = new LinkedList<>();
 	//use a HashMap to store the TreeNode and the according cloumn value
-	HashMap<TreeNode, Integer> weight = new HashMap<TreeNode, Integer>();
+	HashMap<TreeNode, Integer> weight = new HashMap<>();
 	if (root == null) {
 		return res;
 	}
@@ -105,10 +104,9 @@ public List<List<Integer>> verticalLevelTraversalofTree(TreeNode root){
 	while (!queue.isEmpty()) {
 		TreeNode node = queue.poll();
 		int w = weight.get(node);
-
 		//if map doesn't has this column value, just create a list ,and put into map
 		if (!map.containsKey(w)) {
-			ArrayList<Integer> list = new ArrayList<Integer>();
+			ArrayList<Integer> list = new ArrayList<>();
 			list.add(node.val);
 			map.put(w, list);
 		} else {
@@ -116,7 +114,6 @@ public List<List<Integer>> verticalLevelTraversalofTree(TreeNode root){
 			list.add(node.val);
 			map.put(w, list);
 		}
-
 		//enqueue
 		if (node.left != null) {
 			queue.add(node.left);
