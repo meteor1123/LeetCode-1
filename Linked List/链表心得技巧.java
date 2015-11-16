@@ -101,8 +101,34 @@
 				return head;
 			}
 		}
-}
-
+	}
+	1.6 Rotate List //Given a list, rotate the list to the right by k places, where k is non-negative.
+		// For example:
+		// 	Given  1->2->3->4->5->NULL and k = 2,
+		// 	return 4->5->1->2->3->NULL.
+		public class Solution {
+		    public ListNode rotateRight(ListNode head, int k) {
+		        if (head == null || head.next == null) {
+		            return head;
+		        }
+		        ListNode dummy = new ListNode(0);
+		        dummy.next = head;
+		        ListNode fast = dummy;
+		        ListNode slow = dummy;
+		        int len = 0;
+		        while (fast.next != null) {
+		            fast = fast.next;
+		            len++;
+		        }
+		        for (int i = 0; i < len - k % len; i++) {
+		            slow = slow.next;
+		        }
+		        fast.next = dummy.next;
+		        dummy.next = slow.next;
+		        slow.next = null;
+		        return dummy.next;
+		    }
+		}
 
 2. Double Pointer Method
 	2.1 Find Median
@@ -132,6 +158,24 @@
 		}
 	2.3 Linked List CycleI
 		设置slow = slow.next，fast = fast.next.next，只要相遇就是有cycle否则没有
+		public class FindLoopsInLinkedList {
+			public boolean hasCycle(ListNode head) {
+				if (head == null) {
+					return false;
+				}
+				ListNode slow = head;
+				ListNode fast = head;
+				while (fast != null && fast.next != null) {
+					slow = slow.next;
+					fast = fast.next.next;
+					if (slow == fast) {
+						return true;
+					}
+				}
+				return false;
+			}	
+		}
+
 	2.4 Linked List CycleII
 		step1: fast走两步，slow走一步，
 		step2: 第一次相遇时slow走过的距离：a+b，fast走过的距离：a+b+c+b
@@ -140,6 +184,69 @@
 				c:环总距离减去b
 		step3: 2(a + b) = a + b + c + b   ===> a = c，
 		step4: 因此slow和fast相遇后，将slow指向头结点，slow 和fast 分别继续走，第二次相遇时的点就是环入口
+		public ListNode detectCycleStartPosition(ListNode head) {  
+		 	ListNode slow = head;
+		 	ListNode fast = head;
+		 	while (fast != null && fast.next != null) {
+		 		fast = fast.next.next;
+		 		slow = slow.next;
+		 		if (fast == slow) {
+		 			slow = head;
+		 			while (fast != slow) {
+		 				fast = fast.next;
+		 				slow = slow.next;
+		 			}
+		 			return slow;
+		 		}
+		 	}
+		 	return null;
+		}
+
+    2.5 Reorder List  //Given {1,2,3,4}, reorder it to {1,4,2,3}.
+		public class Solution {
+		    public void reorderList(ListNode head) {
+		        if (head == null || head.next == null) {
+		            return;
+		        }
+		        ListNode slow = head;
+		        ListNode fast = head;
+		        while (fast.next != null && fast.next.next != null) {
+		            fast = fast.next.next;
+		            slow = slow.next;
+		        }
+		        ListNode secondHalf = slow.next;
+		        slow.next = null;
+		        secondHalf = reverse(secondHalf);// Using 1.1 reverse
+		        merge(head, secondHalf);//Using 3.1 merge Method
+		    }
+		}
+
+	2.6 Palindrome Linked List
+		public class Solution {
+		    public boolean isPalindrome(ListNode head) {
+		        if (head == null || head.next == null) {
+		            return true;
+		        }
+		        ListNode fast = head;
+		        ListNode slow = head;
+		        while (fast.next != null && fast.next.next != null) {
+		            slow = slow.next;
+		            fast = fast.next.next;
+		        }
+		        ListNode secondList = slow.next;
+		        slow.next = null;
+		        ListNode partTwo = reverse(secondList);//1.1 普通Reverse 
+		        ListNode partOne = head;
+		        while (partTwo != null) {
+		            if (partOne.val != partTwo.val) {
+		                return false;
+		            }
+		            partOne = partOne.next;
+		            partTwo = partTwo.next;
+		        }
+		        return true;
+		    }
+		}
 
 3. Merge Two List
 	3.1 Just Merge (without order)
@@ -153,6 +260,7 @@
 				l2 = temp2;
 			}
 		}
+
 	3.2 Merge With Order
 		public ListNode merge(ListNode l1, ListNode l2) {
 	        if (l1 == null) {
@@ -181,7 +289,6 @@
 	        }
 	        return dummy.next;
 	    }
-
 4. Find Length Of Linked List
 	4.1	int len = 0; 
 		ListNode dummy = new ListNode(0);
@@ -196,8 +303,6 @@
     		fast = fast.next;
     		len++
     	}//这种方法求出来 fast最后会是最后一个结点的next，也就是null，所以fast结点就废了，没有用处
-
-
 
 5. LinkedList Sort
 	5.1 Sort One LinkedList(Merge Sort)
@@ -224,7 +329,6 @@
 	        ListNode rightlists = sortList(secondhalf);
 	        return merger(leftlists, rightlists);
 	    }
-
 	5.2 Sort K Sorted LinkedlList(Merge Sort)
 	    public ListNode mergeSort(ListNode[] lists, int start, int end) {
 	        if (start >= end) {
@@ -257,6 +361,34 @@
 	        }
         	return dummy.next;
     	}
+    5.4 Partition List  //Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+			  			//Given 1->4->3->2->5->2 and x = 3,
+					    //return 1->2->2->4->3->5.
+		public class Solution {
+		    public ListNode partition(ListNode head, int x) {
+		        if (head == null || head.next == null) {
+		            return head;
+		        }
+		        ListNode small = new ListNode(-1);
+		        ListNode smallHead = small;
+		        ListNode larger = new ListNode(-1);
+		        ListNode largerHead = larger;
+		        while (head != null) {
+		            if (head.val < x) {
+		                small.next = head;
+		                small = small.next;
+		            } else {
+		                larger.next = head;
+		                larger = larger.next;
+		            }
+		            head = head.next;
+		        }
+		        larger.next = null;
+		        small.next = largerHead.next;
+		        return smallHead.next;
+		    }
+		}
+
 
 6. Remove Elements
 	6.1  在有序的链表中移除重复结点使得每个结点只出现一次
@@ -334,12 +466,153 @@
 			return head;
 		}
 
+7. LinkedList Insert, Delete Operation
+	7.1 Insert Node In A Loop Linked List
+		public class LinkedListInsert {
+			public ListNode Solution(ListNode head, int val) {
+				if (head == null) {
+					ListNode rvalue = new ListNode(val);
+					rvalue.next = rvalue;
+					return rvalue;
+				}
+				ListNode cur = head;
+				do {
+					if (val <= cur.next.val && val >= cur.val)	break;
+					if (cur.val > cur.next.val && (val < cur.next.val || val > cur.val))	break;
+					cur = cur.next;
+				} while (cur != head);
+				ListNode newNode = new ListNode(val);
+				newNode.next = cur.next;
+				cur.next = newNode;
+				return newNode;
+			}
+		}
+	7.2 Delete Node In A Linked List
+	public class Solution {
+	    public void deleteNode(ListNode node) {
+	        if (node == null || node.next == null) {
+	            return;
+	        }
+	        node.val = node.next.val;
+	        node.next = node.next.next;
+	    }
+	}
 
+8. Math Operation In LinkedList
+	8.1 Add Two Numbers
+		Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+		Output: 7 -> 0 -> 8
+		public class Solution {
+		    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+		        if (l1 == null) {
+		            return l2;
+		        }
+		        if (l2 == null) {
+		            return l1;
+		        }
+		        ListNode newhead = new ListNode(-1);
+		        ListNode l3 = newhead;
+		        int sum = 0;
+		        while (l1 != null || l2 != null) {
+		            if (l1 != null) {
+		                sum += l1.val;
+		                l1 = l1.next;
+		            }
+		            if (l2 != null) {
+		                sum += l2.val;
+		                l2 = l2.next;
+		            }
+		            l3.next = new ListNode(sum % 10);
+		            sum = sum / 10;
+		            l3 = l3.next;
+		        }
+		        if (sum == 1) {
+		            l3.next = new ListNode(1);
+		        }
+		        return newhead.next;
+		    }
+		}
 
+9. Two LinkedList Operation
+	9.1 Intersection Of Two Linked Lists
+		public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+	    	/*
+	            1.分别算出A 和 B链表的长度
+	            2. 比较A 和B 哪个长，哪个长就走 长 - 短的 路程
+	            3. 短的从开头开始走， 长的从长减短的位置开始走
+	            4. 此时遇到的
+	        */
+	        int lenA = 0;
+	    	int lenB = 0;
+	    	ListNode h1 = headA;
+	    	ListNode h2 = headB;
+	    	while (h1 != null) {
+	    		lenA++;
+	    		h1 = h1.next;
+	    	}
+	    	while (h2 != null) {
+	    		lenB++;
+	    		h2 = h2.next;
+	    	}
+	    	h1 = headA;
+	    	h2 = headB;
+	    	if (lenA > lenB) {
+	    		for (int i = 0; i < lenA - lenB; i++) {
+	    			h1 = h1.next;
+	    		}
+	    	} else { 
+	    		for (int i = 0; i < lenB - lenA; i++) {
+	    			h2 = h2.next;
+	    		}
+	    	}
+	    	while (h1 != null && h2 != null) {
+	    		if (h1.val == h2.val) {
+	    			return h1;
+	    		} else {
+	    			h1 = h1.next;
+	    			h2 = h2.next;
+	    		}
 
-
-
-
+	    	}
+	    	return null;
+	    }
+	9.2 Copy List With Random Pointer
+	public class Solution {
+	    public RandomListNode copyRandomList(RandomListNode head) {
+	        if (head == null) {
+	            return head;
+	        }
+	        //copy every ListNode
+	        RandomListNode oldNode = head;
+	        while (oldNode != null) {
+	            RandomListNode copyNode = new RandomListNode(oldNode.label);
+	            copyNode.next = oldNode.next;
+	            oldNode.next = copyNode;
+	            oldNode = copyNode.next;
+	        }
+	        //set the random value
+	        oldNode = head;
+	        while (oldNode != null && oldNode.next != null) {
+	            if (oldNode.random != null) {
+	                oldNode.next.random =  oldNode.random.next;
+	            }
+	            oldNode = oldNode.next.next;
+	        }
+	        //divide the ListNode
+	        oldNode = head;
+	        RandomListNode newhead = head.next;
+	        RandomListNode copyList = newhead;
+	        while (copyList != null) {
+	            oldNode.next = copyList.next;
+	            oldNode = oldNode.next;
+	            if (copyList.next != null) {
+	                copyList.next = copyList.next.next;
+	            }
+	            copyList = copyList.next;
+	        }
+	        return newhead;
+	    }
+	}
 
 
 

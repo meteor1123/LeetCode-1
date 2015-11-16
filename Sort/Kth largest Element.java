@@ -23,6 +23,19 @@
 	        return x - y;
 	    }
 	}
+	  	PriorityQueue<Integer> heap = new PriorityQueue<>(new Comparator<Integer>() {
+		    @Override
+		    //最小堆
+		    public int compare(Integer arg0, Integer arg1) {
+		        if (arg0 > arg1) {
+		            return 1;
+		        } else if (arg0 < arg1) {
+		            return - 1;
+		        } else {
+		            return 0;
+		        }
+		    }
+		});
 
 	2.maxHeap
 	In order to implement a max-heap, you can create your own Comparator:
@@ -31,6 +44,19 @@
 	        return y - x;
 	    }
 	}
+		PriorityQueue<Integer> heap = new PriorityQueue<>(new Comparator<Integer>() {
+		    @Override
+		    //最大堆
+		    public int compare(Integer arg0, Integer arg1) {
+		        if (arg1 > arg0) {
+		            return 1;
+		        } else if (arg1 < arg0) {
+		            return -1;
+		        } else {
+		            return 0;
+		        }
+		    }
+		});
 
 	So, you can create a min-heap and max-heap in the following way:
 

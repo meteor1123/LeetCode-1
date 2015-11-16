@@ -425,7 +425,7 @@
 			        return res;
 			    }
 			}
-			1.6 Vertical Level Traversal Of Tree
+	1.6 Vertical Level Traversal Of Tree
 			//Print arbitrary binary tree by vertical levels / columns from left to right,high to low
 			public class Solution {
 				public List<List<Integer>> verticalLevelTraversalofTree(TreeNode root){
@@ -641,6 +641,43 @@
 		        }
 		        return res;
     		}
+    2.3 Binary Tree Longest Consecutive Sequence Path
+			 //   1
+			 //    \
+			 //     3
+			 //    / \
+			 //   2   4
+			 //        \
+			 //         5
+		     //Longest consecutive sequence path is 3-4-5, so return 3.
+			 //   2
+			 //    \
+			 //     3
+			 //    / 
+			 //   2    
+			 //  / 
+			 // 1
+		     //Longest consecutive sequence path is 2-3,not3-2-1, so return 2.
+			public class Solution {
+			    int max;
+			    public int longestConsecutive(TreeNode root) {
+			        if (root == null) {
+			            return 0;
+			        }
+			        max = 0;
+			        dfs(root, root, 0);
+			        return max;
+			    }
+			    public void dfs(TreeNode cur, TreeNode pre, int count) {
+			        if (cur == null) {
+			            return;
+			        }
+			        count = pre.val + 1 == cur.val ? count + 1 : 1;
+			        max = Math.max(count, max);
+			        dfs(cur.left, cur, count);
+			        dfs(cur.right, cur, count);
+			    }
+			}
 
 
 3. The Property Of Tree
@@ -652,14 +689,13 @@
 		        }
 		        return 1 + height(root.left);
 		    }
-		3.1.2 Maximum Depth
-			public int maxDepth(TreeNode root) {
-				if (root == null)
-					return 0;
-				int leftMaxDepth = maxDepth(root.left);
-				int rightMaxDepth = maxDepth(root.right);
-				return Math.max(leftMaxDepth, rightMaxDepth) + 1;
-			}
+		3.1.2 Depth Of Tree(Maximum Depth)
+			public int depth(TreeNode root) {
+		        if (root == null) {
+		            return 0;
+		        }
+		        return Math.max(depth(root.left), depth(root.right)) + 1;
+    		}
 		3.1.3 Minimum Depth
 			public int minDepth(TreeNode root) {
 		    	if (root == null)
@@ -670,7 +706,19 @@
 		    		return minDepth(root.left) + 1;
 		    	return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
 		    }
-		3.1.4 Count Complete Tree
+		3.1.4 Balanced Binary Tree
+			public boolean isBalanced(TreeNode root) {
+		        if (root == null) {
+		            return true;
+		        }
+		        int leftDepth = depth(root.left);//3.1.2 Depth of Tree
+		        int rightDepth = depth(root.right);
+		        if (Math.abs(leftDepth - rightDepth) > 1) {
+		            return false;
+		        } 
+		        return isBalanced(root.left) && isBalanced(root.right);
+		    }
+		3.1.5 Count Complete Tree
 			/*
 				In a complete binary tree every level, except possibly the last, is completely filled, 
 				and all nodes in the last level are as far left as possible. 
@@ -701,6 +749,694 @@
 		            return (1 << (rootHeight - 2)) - 1 + countNodes(root.left) + 1;// 2^(h - 2)（右子树） - 1 + cout(root.left) + 1(root);
 		        }
 		    }
+    3.2 SubTree, Symmetric Tree, Same Tree, Balanced Binary Tree
+    	3.2.1 Same Tree
+    		public boolean isSameTree(TreeNode p, TreeNode q) {
+		        if (p == null && q == null) {
+		            return true;
+		        }
+		        if (p == null || q == null) {
+		            return false;
+		        }
+		        if (p.val != q.val) {
+		            return false;
+		        }
+		        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+		    }
+		3.2.2 Symmetric Tree
+			public boolean isSymmetric(TreeNode root) {
+		    	if (root == null) {
+		    		return false;
+		    	}
+		    	return isSymmetric(root.left, root.right);
+		    }
+		    public boolean isSymmetric(TreeNode p, TreeNode q) {
+		    	if (p == null && q == null) {
+		    		return true;
+		    	}
+		    	if (p == null || q == null) {
+		    		return false;
+		    	}
+		    	return p.val == q.val && isSymmetric(p.left, q.right) && isSymmetric(p.right, q.left);
+		    }
+		3.2.3 SubTree
+	        // T2 is a subtree of T1 in the following case:
+			//        1                3
+			//       / \              / 
+			// T1 = 2   3      T2 =  4
+			//         /
+			//        4
+			// T2 isn't a subtree of T1 in the following case:
+
+			//        1               3
+			//       / \               \
+			// T1 = 2   3       T2 =    4
+			//         /
+			//        4
+	    	/**
+		     * @param T1, T2: The roots of binary tree.
+		     * @return: True if T2 is a subtree of T1, or false.
+		     */
+		    public boolean isSubtree(TreeNode T1, TreeNode T2) {
+		        if (T2 == null) {
+		            return true;
+		        }
+		        if (T1 == null) {
+		            return false;
+		        }
+		        return isSameTree(T1, T2) || isSubtree(T1.left, T2) || isSubtree(T1.right, T2);
+		    }
+		3.2.4 Count Univalue Subtrees
+			public class Solution {
+			    int count = 0;
+			    public int countUnivalSubtrees(TreeNode root) {
+			        all(root, 0);
+			        return count;
+			    }
+			    public boolean all(TreeNode root, int val) {
+			        if (root == null)
+			            return true;
+			        if (!all(root.left, root.val) | !all(root.right, root.val))// || 或，判断第一个表达式的结果如果是正确的话，就会进入if内，不会判断后面的表达式，因此会漏算后面的计数，这就是short-circuit
+			                                                                   // | 或 无论前面的结果如何，都会将所有表达式运行
+			            return false;
+			        count++;
+			        return root.val == val;
+			    }
+			}
+	3.3 Lowest Common Ancestor Of A Binary Tree
+			public class Solution {
+			    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+			        if (root == null || root == p || root == q) {
+			            return root;
+			        }
+			        TreeNode leftChild = lowestCommonAncestor(root.left, p, q);
+			        TreeNode rightChild = lowestCommonAncestor(root.right, p, q);
+			        if (leftChild != null && rightChild != null) {
+			            return root;
+			        }
+			        if (leftChild != null) {
+			            return leftChild;
+			        }
+			        if (rightChild != null) {
+			            return rightChild;
+			        }
+			        return null;
+			    }
+			}
+
+		    
+4. Binary Search Tree 
+		4.1 Binary Search Tree Iterator //Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+			public class BSTIterator {
+			    private Stack<TreeNode> stack = new Stack<TreeNode>();
+			    public BSTIterator(TreeNode root) {
+			        pushAll(root);
+			    }
+			    /** @return whether we have a next smallest number */
+			    public boolean hasNext() {
+			        return !stack.isEmpty();
+			    }
+			    /** @return the next smallest number */
+			    public int next() {
+			        TreeNode tmpNode = stack.pop();
+			        pushAll(tmpNode.right);
+			        return tmpNode.val;
+			    }
+			    private void pushAll(TreeNode node) {
+			        while (node != null) {
+			            stack.push(node);
+			            node = node.left;
+			        }
+			    }
+			}
+		4.2 Closest Binary Search Tree Value
+			//Iterative
+			public int closestValue(TreeNode root, double target) {
+				int closet = root.val;
+				while (root != null) {
+					if (Math.abs(root.val - target) <= Math.abs(closet - target)) {
+						closet = root.val;
+					}
+					root = root.val < target ? root.right : root.left;
+				}
+				return closet;
+			}
+			//Recursive
+			public int closestValue(TreeNode root, double target) {
+		        TreeNode child = target < root.val ? root.left : root.right;
+		        if (child == null) {
+		            return root.val;
+		        }
+		        int closetVal = closestValue(child, target);
+		        return Math.abs(closetVal - target) < Math.abs(root.val - target) ? closetVal : root.val;
+		    }
+		4.3 Closest Binary Search Tree Value II
+			/*
+					中序遍历结果是将树中元素从小到大排列，逆式的中序遍历即先遍历右子树再访问根节点最后遍历左子树会得到树中元素从大到小排列的结果，
+		    	因此可通过中序遍历获取最接近target节点的predecessors，通过逆中序遍历获取最接近target节点的successors,
+		    	然后merge perdecessors 和 successors 获取最接近target节点的 k个节点值。 注意到在中序遍历时遇到比target 大的节点即停止，
+		    	因为由BST的性质可知后面的元素均会比target 大，即所有target的predecessors均已找到，同理逆中序遍历时遇到不大于 target的节点即可停止递归。 
+			*/
+		    O(n + k)
+			public class Solution {
+				    public List<Integer> closestKValues(TreeNode root, double target, int k) {
+				        List<Integer> res = new ArrayList<>();
+				        Stack<Integer> pre = new Stack<>();
+				        Stack<Integer> post = new Stack<>();
+				        
+				        inorder(root, target, false, pre);
+				        inorder(root, target, true, post);
+
+				        while (k-- > 0) {
+				            if (pre.isEmpty()) {
+				                res.add(post.pop());
+				            } else if (post.isEmpty()) {
+				                res.add(pre.pop());
+				            } else if (Math.abs(pre.peek() - target) < Math.abs(post.peek() - target)) {
+				                res.add(pre.pop());
+				            } else {
+				                res.add(post.pop());
+				            }
+				        }
+				        return res;
+				    }
+
+				    public void inorder(TreeNode root, double target, boolean reverse, Stack<Integer> stack) {
+				        if (root == null) {
+				            return;
+				        }
+				        inorder(reverse ? root.right : root.left, target, reverse, stack);
+				        // early terminate, no need to traverse the whole tree
+				        if ((reverse && root.val <= target) || (!reverse && root.val > target)) {
+				            return;
+				        }
+				        // track the value of current node
+				        stack.push(root.val);
+				        inorder(reverse ? root.left : root.right, target, reverse, stack);
+				    }
+			}
+		4.4 Convert Sorted Array To Binary Search Tree
+			public class Solution {    
+			    public TreeNode sortedArrayToBST(int[] num) {
+			    	//Corner case
+			    	if (num == null || num.length <= 0)
+			    		return null; 
+			    	//use a dfs helper to  generate the bst
+			    	return dfs(num, 0, num.length - 1);
+				}
+				//as we know,  using inorder traverse the bst ,we will get a ascending array,
+				public TreeNode dfs(int[] num, int start, int end) {
+					//this is the termination condition.
+					if (start > end) //mean we reach the null node
+						return null;
+					int mid = (start + end) / 2; //every time we let mid = start + end / 2
+					TreeNode root = new TreeNode(num[mid]);//generate a root node
+					//and recursive genarate the left tree and right tree.
+					root.left = dfs(num, start, mid - 1);
+					root.right = dfs(num, mid + 1, end);
+					return root; 
+				}
+			}
+		4.5 Inorder Successor In BST
+			public class Solution {
+			    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+			        if (root == null) {
+			            return null;
+			        }
+			        if (root.val <= p.val) {
+			            return inorderSuccessor(root.right, p);
+			        } else {
+			            TreeNode left = inorderSuccessor(root.left, p);
+			            return (left != null) ? left : root;
+			        }
+			    }
+			}
+		4.6 Inorder Predecessor In BST
+			public class Solution {
+				public TreeNode predecessor(TreeNode root, TreeNode p) {
+				  	if (root == null)
+				    	return null;
+				  	if (root.val >= p.val) {
+				    	return predecessor(root.left, p);
+				  	} else {
+				    	TreeNode right = predecessor(root.right, p);
+				    	return (right != null) ? right : root;
+				  	}
+				}
+			}
+		4.7 Kth Smallest Element In A BST
+			public class Solution {
+			    public int kthSmallest(TreeNode root, int k) {
+			        int leftNum = countNode(root.left);
+			        if (leftNum + 1 == k) {
+			            return root.val;
+			        } else if (leftNum + 1 < k) {
+			            return kthSmallest(root.right, k - leftNum - 1);
+			        } else {
+			            return kthSmallest(root.left, k);
+			        }
+			    }
+			    
+			    public int countNode(TreeNode root) {
+			        if (root == null) {
+			            return 0;
+			        }
+			        return countNode(root.left) + countNode(root.right) + 1;
+			    }
+			}
+		4.8 Lowest Common Ancestor Of A Binary Search Tree
+			    //iterative1 prefer
+			    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+			        while (true) {
+			            if (root.val > p.val && root.val > q.val) {
+			                root = root.left;
+			            } else if (root.val < p.val && root.val < q.val) {
+			                root = root.right;
+			            } else {
+			                return root;
+			            }
+			        }
+			    }
+			    //recursive1 prefer
+			    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+			        if (root.val > p.val && root.val > q.val) {
+			            return lowestCommonAncestor(root.left, p, q);
+			        } else if (root.val < p.val && root.val < q.val) {
+			            return lowestCommonAncestor(root.right, p, q);
+			        } else {
+			            return root;
+			        }
+			    }
+		4.9 Recover Binary Search Tree
+				public class Solution {
+				    public TreeNode firstElement = null;
+				    public TreeNode secondElement = null;
+				    public TreeNode preElement = new TreeNode(Integer.MIN_VALUE);
+				    public void recoverTree(TreeNode root) {
+				        if (root == null) {
+				            return;
+				        }
+				        dfs(root);
+				        int temp = firstElement.val;
+				        firstElement.val = secondElement.val;
+				        secondElement.val = temp;
+				    }
+				    public void dfs(TreeNode root) {
+				        if (root == null) {
+				            return ;
+				        }
+				        dfs(root.left);
+				        if (firstElement == null && preElement.val > root.val) {
+				            firstElement = preElement;
+				        }
+				        if (firstElement != null && preElement.val > root.val) {
+				            secondElement = root;
+				        }
+				        preElement = root;
+				        dfs(root.right);
+				    }
+				}
+		4.10 Validate Binary Search Tree
+			public class Solution {
+			    public boolean isValidBST(TreeNode root) {
+			        if (root == null) {
+			            return true;
+			        }
+			        return isValid(root, Long.MIN_VALUE, Long.MAX_VALUE);
+			    }
+			    public boolean isValid(TreeNode root, long min, long max) {
+			        if (root == null) {
+			            return true;
+			        }
+			        if (min < root.val && root.val < max) {
+			            return isValid(root.left, min, root.val) && isValid(root.right, root.val, max);
+			        } else {
+			            return false;
+			        }
+			    }
+			}
+		4.11 Verify Preorder Sequence In Binary Search Tree
+			public class Solution {
+			    public boolean verifyPreorder(int[] preorder) {
+			        int low = Integer.MIN_VALUE;
+			        Stack<Integer> stack = new Stack<>();
+			        for (int val : preorder) {
+			            if (val < low) {
+			                return false;
+			            }
+			            while (!stack.empty() && val > stack.peek()) {
+			                low = stack.pop();
+			            }
+			            stack.push(val);
+			        }
+			        return true;
+			    }
+			}
+		4.12 Unique Binary Search Trees
+			public class Solution {
+			    public int numTrees(int n) {
+			        if (n == 0 || n == 1) {
+			            return n;
+			        }
+			        int[] dp = new int[n + 1];
+			        dp[0] = 1;
+			        dp[1] = 1;
+			        for (int i = 2; i <= n; i++) {
+			            for (int j = 0; j < i; j++) {
+			                dp[i] += dp[j] * dp[i - j - 1];
+			            }
+			        }
+			        return dp[n];
+			    }
+			}
+		4.13 Unique Binary Search Trees II(return all the unique BST)
+			public class Solution {
+			    public List<TreeNode> generateTrees(int n) {
+			        return helper(1, n);
+			    }
+			    public List<TreeNode> helper (int left, int right) {
+			        List<TreeNode> res = new ArrayList<>();
+			        if (left > right) {
+			            res.add(null);
+			            return res;
+			        }
+			        for (int i = left; i <= right; i++) {
+			            List<TreeNode> leftList = helper(left, i - 1);
+			            List<TreeNode> rightList = helper(i + 1, right);
+			            for (int j = 0; j < leftList.size(); j++) {
+			                for (int k = 0; k < rightList.size(); k++) {
+			                    TreeNode root = new TreeNode(i);
+			                    root.left = leftList.get(j);
+			                    root.right = rightList.get(k);
+			                    res.add(root);
+			                }
+			            }
+			        }
+			        return res;
+			    }
+			}
+
+
+5. Binary Tree Transform
+		5.1 Binary Tree Upside Down
+			// Given a binary tree where all the right nodes are either leaf nodes with a sibling 
+			// (a left node that shares the same parent node) or empty, flip it upside down and turn it into a tree where 
+			// the original right nodes turned into left leaf nodes. Return the new root.
+			// Given a binary tree {1,2,3,4,5},
+			//     1
+			//    / \
+			//   2   3
+			//  / \
+			// 4   5
+			// return the root of the binary tree [4,5,2,#,#,3,1].
+			//    4
+			//   / \
+			//  5   2
+			//     / \
+			//    3   1  
+			public class Solution {
+				//DFS 
+				public TreeNode upsideDownBinaryTree(TreeNode root) {
+					if (root == null || (root.left == null && root.right == null)) {
+						return root;
+					}
+					TreeNode newRoot = upsideDownBinaryTree(root.left);
+					root.left.left = root.right;
+					root.left.right = root;
+					root.left = null;
+					root.right = null;
+					return newRoot;
+				}
+				//BFS
+				public TreeNode upsideDownBinaryTree(TreeNode root) {
+					TreeNode cur = root;
+					TreeNode pre = null;
+					TreeNode next = null;
+					TreeNode temp = null;
+					while (cur != null) {
+						next = cur.left;
+						cur.left = temp;
+						temp = cur.right;
+						cur.right = pre;
+						pre = cur;
+						cur = next;
+					}
+					return pre;
+				}
+			}
+		5.2 Flatten Binary Tree To Linked List（in-place）
+					 1
+			        / \
+			       2   5
+			      / \   \
+			     3   4   6     ->  	   1
+									    \
+									     2
+									      \
+									       3
+									        \
+									         4
+									          \
+									           5
+									            \
+									             6 
+			public class Solution {
+			    TreeNode lastvisited = null;
+			    public void flatten(TreeNode root) {
+			        if (root == null) {
+			            return;
+			        }
+			        TreeNode realRight = root.right;
+			        if (lastvisited != null) {
+			            lastvisited.left = null;
+			            lastvisited.right = root;
+			        }
+			        lastvisited = root;
+			        flatten(root.left);
+			        flatten(realRight);
+			    }
+			}
+		5.3 Invert Binary Tree
+			public class Solution {
+			    public TreeNode invertTree(TreeNode root) {
+			        if (root == null || (root.left == null && root.right == null)) {
+			            return root;
+			        }
+			        TreeNode tempLeft = root.left;
+			        root.left = invertTree(root.right);
+			        root.right = invertTree(tempLeft);
+			        return root;
+			    }
+			}
+		5.4 Populating Next Right Pointers In Each Node(Perfect Binary Tree)
+			public class Solution {
+				//Recursive
+			    public void connect(TreeLinkNode root) {
+			        if (root == null) {
+			            return;
+			        }
+			        if (root.left != null) {
+			            root.left.next = root.right;
+			        }
+			        if (root.right != null && root.next != null) {
+			            root.right.next = root.next.left;
+			        }
+			        connect(root.left);
+			        connect(root.right);
+			    }
+    			//Iterative
+			    public void connect(TreeLinkNode root) {
+			        if (root == null) {
+			            return;
+			        }
+			        TreeLinkNode cur = root;
+			        while (cur != null && cur.left != null) {
+			            cur.left.next = cur.right;
+			            if (cur.next != null) {
+			                cur.right.next = cur.next.left;
+			                cur = cur.next;
+			            } else {
+			                root = root.left;
+			                cur = root;
+			            }
+			        }
+			    }
+			}
+		5.5	Populating Next Right Pointers In Each Node II(No Need To A Perfect Binary Tree)
+				public void connect(TreeLinkNode root) {
+				    //tempChild 是每层的头结点（dummy node） tempChild.next是每层最左边的结点
+			        TreeLinkNode tempChild = new TreeLinkNode(0);
+			        while (root != null) {
+			            TreeLinkNode curChild = tempChild;//用curChild 来遍历root下的left和right child 并设置next
+			            while (root != null) {
+			                if (root.left != null) {
+			                    curChild.next = root.left;
+			                    curChild = curChild.next;
+			                }
+			                if (root.right != null) {
+			                    curChild.next = root.right;
+			                    curChild = curChild.next;
+			                }
+			                //root的左右儿子都设置完后，root向右前进.
+			                root = root.next;
+			            }
+			            //遍历完一层的root，也就是设置完root这一层的结点的儿子们的next指针后， 将tempChild 赋值给root，因为tempChild是root下面那一层的最左边的孩子
+			            root = tempChild.next;
+			            tempChild.next = null;
+			        }
+			    }
+
+
+
+6. Construct Binary Tree
+		6.1 Construct Binary Tree From Preorder And Inorder Traversal
+			public class Solution {
+			    public TreeNode buildTree(int[] preorder, int[] inorder) {
+			        return build(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
+			    }
+			    public TreeNode build(int[] pre, int preStart, int preEnd, int[] in, int inStart, int inEnd) {
+			        if (preStart > preEnd || inStart > inEnd) {
+			            return null;
+			        }
+			        int rootVal = pre[preStart];
+			        int rootIndex = 0;
+			        for (int i = inStart; i <= inEnd; i++) {
+			            if (in[i] == rootVal) {
+			                rootIndex = i;
+			                break;
+			            }
+			        }
+			        int len = rootIndex - inStart;
+			        TreeNode root = new TreeNode(rootVal);
+			        root.left = build(pre, preStart + 1, preStart + len, in, inStart, rootIndex - 1);
+			        root.right = build(pre, preStart + len + 1, preEnd, in, rootIndex + 1, inEnd);
+			        return root;
+			    }
+			}
+		6.2 Construct Binary Tree From Inorder And Postorder Traversal
+			public class Solution {
+			    public TreeNode buildTree(int[] inorder, int[] postorder) {
+			        return build(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1);
+			    }
+			    public TreeNode build(int[] in, int inStart, int inEnd, int[] post, int postStart, int postEnd) {
+			        if (inStart > inEnd || postStart > postEnd) {
+			            return null;
+			        }
+			        int rootVal = post[postEnd];
+			        int rootIndex = postEnd;
+			        for (int i = inStart; i <= inEnd; i++) {
+			            if (in[i] == rootVal) {
+			                rootIndex = i;
+			                break;
+			            }
+			        }
+			        int len = rootIndex - inStart;
+			        TreeNode root = new TreeNode(rootVal);
+			        root.left = build(in, inStart, rootIndex - 1, post, postStart, postStart + len - 1);
+			        root.right = build(in, rootIndex + 1, inEnd, post, postStart + len, postEnd - 1);
+			        return root;
+			    }
+			}
+		6.3 Serialize And Deserialize Binary Tree
+				//Recursive
+				public class Solution {
+					//
+					public String serialize(TreeNode root) {
+				        StringBuilder sb = new StringBuilder();
+				        buildString(root, sb);
+				        return sb.toString();
+				    }
+				    private void buildString(TreeNode node, StringBuilder sb) {
+				        if (node == null) {
+				            sb.append("#").append(" ");
+				        } else {
+				            sb.append(node.val).append(" ");
+				            buildString(node.left, sb);
+				            buildString(node.right, sb);
+				        }
+				    }
+				    // Decodes your encoded data to tree.
+				    public TreeNode deserialize(String data) {
+				        if (data == null) {
+				            return null;
+				        }
+				        String[] strs = data.split(" ");
+				        Queue<String> queue = new LinkedList<>();
+				        queue.addAll(Arrays.asList(strs));
+				        return buildTree(queue);
+				    }
+				    
+				    public TreeNode buildTree(Queue<String> queue) {
+				        String val = queue.poll();
+				        if (val.equals("#")) {
+				            return null;
+				        } else {
+				            TreeNode node = new TreeNode(Integer.valueOf(val));
+				            node.left = buildTree(queue);
+				            node.right = buildTree(queue);
+				            return node;
+				        }
+				    }
+				}
+				//Iterative
+				public class Codec {
+					public String serialize(TreeNode root) {
+				        if (root == null) {
+				            return "";
+				        }
+				        Queue<TreeNode> queue = new LinkedList<>();
+				        queue.offer(root);
+				        StringBuilder sb = new StringBuilder();
+				        while (!queue.isEmpty()) {
+				            int size = queue.size();
+				            for (int i = 0; i < size; i++) {
+				                TreeNode cur = queue.poll();
+				                if (cur != null) {
+				                    queue.offer(cur.left);
+				                    queue.offer(cur.right);
+				                }
+				                String val = cur == null ? "#" : String.valueOf(cur.val);
+				                sb.append(val);
+				                sb.append(",");
+				            }
+				        }
+				        sb.deleteCharAt(sb.length() - 1);
+				        return sb.toString();
+				    }
+					// Decodes your encoded data to tree.
+				     public TreeNode deserialize(String data) {
+				        if (data == null || data.length() == 0) {
+				            return null;
+				        }
+				        String[] val = data.split(",");
+				        TreeNode root = new TreeNode(Integer.valueOf(val[0]));
+				        Queue<TreeNode> queue = new LinkedList<>();
+				        queue.offer(root);
+				        //i控制string数组里的值，queue控制遍历的TreeNode，val[i] ,val[i + 1] 确保是 cur的left和right节点值，则有 
+				        for (int i = 1; i < val.length; i += 2) {
+				            TreeNode cur = queue.poll();
+				            if (!"#".equals(val[i])) {
+				                TreeNode left = new TreeNode(Integer.valueOf(val[i]));
+				                cur.left = left;
+				                queue.offer(left);
+				            }
+				            if (i + 1 < data.length() && !"#".equals(val[i + 1])) {
+				                TreeNode right = new TreeNode(Integer.valueOf(val[i + 1]));
+				                cur.right = right;
+				                queue.offer(right);
+				            }
+				        }
+				        return root;
+				    }
+				}
+
+
+
+
+
+
+
+
 
 
 

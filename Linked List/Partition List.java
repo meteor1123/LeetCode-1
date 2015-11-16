@@ -20,6 +20,7 @@
  *     }
  * }
  */
+
 /*
     给定一个x的值，小于x都放在大于等于x的前面,并且不改变链表之间node原始的相对位置。每次看这道题我老是绕晕，纠结为什么4在3的前面。。
     其实还是得理解题意，4->3->5都是大于等3的数，而且这保持了他们原来的相对位置 。
@@ -29,14 +30,13 @@
     最后，把小链表接在大链表上，别忘了把大链表的结尾赋成null。
 */
 public class Solution {
-     public ListNode partition(ListNode head, int x) {
+    public ListNode partition(ListNode head, int x) {
     	if (head == null || head.next == null)
     		return head;
     	ListNode small = new ListNode(-1);
     	ListNode smallhead = small;
     	ListNode large = new ListNode(-1);
     	ListNode largehead = large;
-
     	while (head != null) {
     		if (head.val < x) {
     			small.next = head;

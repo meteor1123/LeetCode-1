@@ -49,17 +49,15 @@ public class Solution {
 public class Solution {
     int count = 0;
     public int countUnivalSubtrees(TreeNode root) {
-        checkUniSubTree(root, 0);
+        all(root, 0);
         return count;
     }
-    
-    public boolean checkUniSubTree(TreeNode root, int val) {
-        if (root == null) {
+    public boolean all(TreeNode root, int val) {
+        if (root == null)
             return true;
-        }
-        if (!checkUniSubTree(root.left, root.val) | !checkUniSubTree(root.right, root.val)) {
+        if (!all(root.left, root.val) | !all(root.right, root.val))// 要是 || 或，计算第一个的结果如果是正确的话，就不会计算后面的，就会漏算后面的计数，这就是short-circuit
+                                                                   // | 或 无论前面的结果如何，都会将所有表达式运行
             return false;
-        }
         count++;
         return root.val == val;
     }

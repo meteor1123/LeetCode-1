@@ -25,12 +25,13 @@
 
 /*
 	Solution:
-	中序遍历结果是将树中元素从小到大排列，逆式的中序遍历即先遍历右子树再访问根节点最后遍历左子树会得到树中元素从大到小排列的结果，
-	因此可通过中序遍历获取最接近target节点的perdecessors，通过逆中序遍历获取最接近target节点的successors,
-	然后merge perdecessors 和 successors 获取最接近target节点的 k个节点值。 注意到在中序遍历时遇到比target 大的节点即停止，
-	因为由BST的性质可知后面的元素均会比target 大，即所有target的predecessors均已找到，同理逆中序遍历时遇到不大于 target的节点即可停止递归。 
+    	中序遍历结果是将树中元素从小到大排列，逆式的中序遍历即先遍历右子树再访问根节点最后遍历左子树会得到树中元素从大到小排列的结果，
+    	因此可通过中序遍历获取最接近target节点的predecessors，通过逆中序遍历获取最接近target节点的successors,
+    	然后merge perdecessors 和 successors 获取最接近target节点的 k个节点值。 注意到在中序遍历时遇到比target 大的节点即停止，
+    	因为由BST的性质可知后面的元素均会比target 大，即所有target的predecessors均已找到，同理逆中序遍历时遇到不大于 target的节点即可停止递归。 
 */
 
+//Solution1 O(n + k)
 public class Solution {
     public List<Integer> closestKValues(TreeNode root, double target, int k) {
         List<Integer> res = new ArrayList<>();
@@ -46,11 +47,12 @@ public class Solution {
             } else if (post.isEmpty()) {
                 res.add(pre.pop());
             } else if (Math.abs(pre.peek() - target) < Math.abs(post.peek() - target)) {
-                res.add(pre.pop));
+                res.add(pre.pop());
             } else {
                 res.add(post.pop());
             }
         }
+        return res;
     }
 
     public void inorder(TreeNode root, double target, boolean reverse, Stack<Integer> stack) {
@@ -70,7 +72,6 @@ public class Solution {
 }
 
 public class Solution {
-
 	//用最小堆，首先用任意的遍历算法去遍历树，再将最小堆的堆顶依次poll加入res list
 	public List<Integer> closestKValues(TreeNode root, double target, int k) {
         List<Integer> res = new ArrayList<>();
@@ -87,14 +88,12 @@ public class Solution {
                 }
             }
         });
-        
         inorder(root, heap);
         for (int i = 0; i < k; i++) {
             res.add(heap.poll());
         }
         return res;
     }
-    
     public void inorder(TreeNode root, Queue<Integer> heap) {
         if (root == null) {
             return;

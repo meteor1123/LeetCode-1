@@ -78,14 +78,12 @@ public class Codec {
 
 //Solution2: Recursive Method, DFS, preorder
 public class Codec {
-
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
         StringBuilder sb = new StringBuilder();
         buildString(root, sb);
         return sb.toString();
     }
-    
     private void buildString(TreeNode node, StringBuilder sb) {
         if (node == null) {
             sb.append("#").append(" ");

@@ -28,7 +28,6 @@ public class Solution {
 		TreeLinkNode head = root; //The left most node in the lower level
 		TreeLinkNode pre = null; //The previous node in the lower level
 		TreeLinkNode cur = null; //The current node in the upper level
-
 		while (head != null) {
 			//move to next level
 			cur = head;
@@ -44,7 +43,6 @@ public class Solution {
 					}
 					pre = cur.left;
 				}
-
 				//right child
 				if (cur.right != null) {
 					if (pre != null) {
@@ -57,7 +55,6 @@ public class Solution {
 				//move to next node
 				cur = cur.next;
 			}
-
 		}
 	}
 
