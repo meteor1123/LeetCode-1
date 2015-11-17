@@ -33,11 +33,14 @@
 	4 + (permutations of 1, 2, 3)
 
 
-	We know how to calculate the number of permutations of n numbers... n! So each of those with permutations of 3 numbers means there are 6 possible permutations. Meaning there would be a total of 16 permutations in this particular one. So if you were to look for the (k = 14) 14th permutation, it would be in the
+	We know how to calculate the number of permutations of n numbers... n! So each of those with permutations of 3 numbers means there are 6 possible permutations. 
+	Meaning there would be a total of 16 permutations in this particular one. So if you were to look for the (k = 14) 14th permutation, it would be in the
 
 	3 + (permutations of 1, 2, 4) subset.
 
-	To programmatically get that, you take k = 13 (subtract 1 because of things always starting at 0) and divide that by the 6 we got from the factorial, which would give you the index of the number you want. In the array {1, 2, 3, 4}, k/(n-1)! = 13/(4-1)! = 13/3! = 13/6 = 2. The array {1, 2, 3, 4} has a value of 3 at index 2. So the first number is a 3.
+	To programmatically get that, you take k = 13 (subtract 1 because of things always starting at 0) and divide that by the 6 we got from the factorial,
+	which would give you the index of the number you want. In the array {1, 2, 3, 4}, k/(n-1)! = 13/(4-1)! = 13/3! = 13/6 = 2. 
+	The array {1, 2, 3, 4} has a value of 3 at index 2. So the first number is a 3.
 
 	Then the problem repeats with less numbers.
 
@@ -79,6 +82,30 @@
 	Done! It really was all about pattern finding.
 */
 
+//Solution1
+/*
+	The logic is as follows: 
+		1. For n numbers, permutations can be divided into n groups with (n - 1)! elements in each group. 
+		2. Thus, k / (n - 1)! is the group index among the current n (to be) sorted groups
+		3. and k % (n - 1)! is the sequence number k for next iteration.    
+*/
+public class Solution {
+	public String getPermutation(int n, int k) {
+	    LinkedList<Integer> list = new LinkedList<>();
+	    for (int i = 1; i <= n; i++) list.add(i);
+	    int fact = 1;
+	    for (int i = 2; i <= n; i++) fact *= i; // factorial
+
+	    StringBuilder strBuilder = new StringBuilder();
+	    for (k--; n > 0; n--) {
+	        fact /= n;
+	        strBuilder.append(list.remove(k / fact));
+	        k %= fact;
+	    }
+    	return strBuilder.toString();
+	}
+}
+//Solution2
 public class Solution {
     public String getPermutation(int n, int k) {
         List<Integer> num = new ArrayList<Integer>();

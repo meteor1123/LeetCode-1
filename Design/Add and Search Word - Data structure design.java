@@ -58,7 +58,7 @@ public class WordDictionary {
             return node.children[word[k] - 'a'] != null && match(word, k + 1, node.children[word[k] - 'a']);
         } else {
         	//if is '.',  check every children with the node, since '.' match every single character.
-            for (int i = 0; i < node.children.length; i++) {
+            for (int i = 0; i < node.children.length; i++) { //node.children.length == 26, we can replace with 26
             	//
                 if (node.children[i] != null) {
                     if (match(word, k + 1, node.children[i])) {
