@@ -58,14 +58,14 @@ public class Solution {
 		//size 
 		if (n <= 1) {
 			if (item.size() > 1) {
-				res.add(new ArrayListM<>(item));
+				res.add(new ArrayList<>(item));
 			}
 			return;
 		}
 		for (int i = start; i <= n; i++) {
 			if (n % i == 0) {
 				item.add(i);
-				dfs(res, item, n / i; i);
+				dfs(res, item, n / i, i);
 				item.remove(item.size() - 1);
 			}
 		}

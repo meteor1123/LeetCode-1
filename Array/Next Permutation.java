@@ -34,9 +34,12 @@
 
     1. 从后往前找，找到第一个nums[i] < nums[i + 1], 返回i的位置
     2. 判断i 是不是大于等于0， 如果i小于0， 这个数字一定是形如 321 这样的 逆序排列，下一个数字是 123， 因此只要直接reverse并返回。
-    3. 所以我们这里面的操作是基于 i >- 0, 从  j = i + 1这个位置开始，从前往后找到最小的使得nums[j] <= nums[i]，的j，返回j的位置
-       注意到，i + 1 之后是逆序，排列，所以最后大于nums[i]那个就是最小的j.
+    3. 所以我们这里面的操作是基于 i >= 0, 从  j = i + 1这个位置开始，从前往后找到最小的使得nums[j] > nums[i]，的j，返回j的位置
+       注意到，i + 1 之后是逆序排列，所以最后大于nums[i]那个就是最小的j.
     4. swao i和j， 并reverse i+1 到 nums.length - 1 位置的数.
+*/
+/*
+
 */
 public class Solution {
 	public void nextPermutation(int[] num) {
@@ -64,13 +67,11 @@ public class Solution {
         }
         reverse(num, i + 1, num.length - 1);
     }
-    
     public void swap (int[] num, int i, int j) {
         int temp = num[i];
         num[i] = num[j];
         num[j] = temp;
-    }
-    
+    }  
     public void reverse(int[] num, int i, int j) {
         while (i < j) {
             swap(num, i++, j--);

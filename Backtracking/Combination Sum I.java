@@ -121,9 +121,9 @@ public class Solution {
     //stack solution
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         Arrays.sort(candidates);
-        int i=0, 
-            size = candidates.length, 
-            sum=0;
+        int i = 0;
+        int size = candidates.length;
+        int sum = 0;
         Stack<Integer> combi = new Stack<>();//存储要放入结果里的candidates
         Stack<Integer> indices = new Stack<>();//和combi对应的每个candidates的 index
         List<List<Integer>> result = new ArrayList<>();

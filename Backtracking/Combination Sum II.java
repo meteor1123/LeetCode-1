@@ -60,7 +60,6 @@ public class Solution {
             return res;
         }
         Arrays.sort(num);
-        boolean[] visited = new boolean[num.length];
         List<Integer> item = new ArrayList<>();
         helper(num, target, 0, item, res);
         return res;
@@ -84,4 +83,45 @@ public class Solution {
             item.remove(item.size() - 1);
         }
     }
+}
+
+
+//Iterative
+public class Solution {
+
+    public List<List<Integer>> combinationSum2(int[] num, int target) {
+        List<List<Integer>> rslt = new ArrayList<List<Integer>>();
+        Set<List<Integer>> set = new HashSet<List<Integer>>();
+        Stack<List<Integer>> stack = new Stack<List<Integer>>();
+        Arrays.sort(num);
+        // initial list
+        List<Integer> root = new ArrayList<Integer>();
+        root.add(0);
+        root.add(-1);
+        // DFS
+        stack.push(root);
+        while(!stack.isEmpty()){
+            List<Integer> list = stack.pop();
+            // check if target found
+            if(list.get(0)==target){
+                List<Integer> path = new ArrayList<Integer>();
+                for(int i = 0;i < list.size()-2;i++)
+                    path.add(list.get(i+2));
+                set.add(path);
+            }
+            // push child list
+            for(int i = list.get(1)+1;i < num.length;i++){
+                if(list.get(0)+num[i] > target) break;
+                List<Integer> path = new ArrayList<Integer>(list);
+                path.set(0, path.get(0)+num[i]);
+                path.set(1, i);
+                path.add(num[i]);
+                stack.push(path);
+            }
+        }
+        rslt.addAll(set);
+
+        return rslt;  
+    }
+
 }

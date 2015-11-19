@@ -52,10 +52,11 @@
     }
 
     //Iterative1
-     /*
+    /*
         The idea is to iteratively generate combinations for all lengths from 1 to k. 
         We start with a list of all numbers <= n as combinations for k == 1.
-        When we have all combinations of length k-1, we can get the new ones for a length k with trying to add to each one all          elements that are <= n and greater than the last element of a current combination.
+        When we have all combinations of length k-1, we can get the new ones for a length k with trying to add to each one all          
+        elements that are <= n and greater than the last element of a current combination.
     */
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> res = new ArrayList<>();

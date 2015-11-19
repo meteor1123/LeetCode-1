@@ -12,21 +12,18 @@
 	If each character occurs even number of times, then it must be a palindrome. How about character which occurs odd number of times?
 */
 
+//Best
 public class Solution {
     public boolean canPermutePalindrome(String s) {
-        HashMap<Character, Integer> hm = new HashMap<>();
+        HashSet<Character> set = new HashSet<>();
         for (char c : s.toCharArray()) {
-            if (hm.containsKey(c)) {
-                hm.remove(c);
+            if (set.contains(c)) {
+                set.remove(c);
             } else {
-                hm.put(c, 1);
+                set.add(c);
             }
         }
-        int sum = 0;
-        for (int i : hm.values()) {
-            sum += i;
-        }
-        return sum > 1 ? false : true;
+        return set.size() <= 1;
     }
 }
 

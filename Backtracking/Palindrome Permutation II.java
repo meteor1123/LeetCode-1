@@ -25,7 +25,7 @@
                                                                 因此原来是奇数加了是偶数，原来是偶数，加了会和-1 中和为0， 
                                                                 没有影响 还是偶数
               3. 遍历HashMap的每一个entry条目，假如val %2  != 0,说明是奇数，要取该字符为mid
-                 将每个字符的 val/2数量假如 list中
+                 将每个字符的 val/2数量加入 list中
               4. dfs这个list中的所有字符，形如{a, b) 构造出它们的 pemutation， 也就是 ab, ba， 
                  然后再用sb.toString() + mid + sb.reverse().toString() 的方法构造palindrome permutation！
              

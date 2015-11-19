@@ -55,7 +55,28 @@ public class Solution {
 
     }
 
-    //iteration
+    //Iteration1
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new LinkedList<>();
+        if (digits == null || digits.length() == 0) {
+            return res;
+        }
+        String[] keyboard = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        res.add("");
+        for (int i = 0; i < digits.length(); i++) {
+            String letters = keyboard[digits.charAt(i) - '2'];
+            int size = res.size();
+            for (int j = 0; j < size; j++) {
+                String item = res.remove(0);
+                for (int k = 0; k < letters.length(); k++) {
+                    res.add(item + letters.charAt(k));
+                }
+            }
+        }
+        return res;
+    }
+    
+    //iteration2
     public ArrayList<String> letterCombinations(String digits) {
         ArrayList<String> res = new ArrayList<String>();
         if (digits.length() == 0 || digits == null) {
