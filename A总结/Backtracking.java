@@ -610,12 +610,264 @@
 				    }
 				}
 
+		3. Subsets（子集）
+			3.1 SubsetsI
+				//Recursive
+				public class Solution {
+				    public List<List<Integer>> subsets(int[] nums) {
+				        List<List<Integer>> res = new ArrayList<>();
+				        if (nums == null || nums.length == 0) {
+				            return res;
+				        }
+				        List<Integer> item = new ArrayList<>();
+				        Arrays.sort(nums);
+				        res.add(new ArrayList<Integer>());
+				        helper(nums, res, item, 0);
+				        return res;
+				    }
+				    public void helper(int[] nums, List<List<Integer>> res, List<Integer> item, int start) {
+				        for (int i = start; i < nums.length; i++) {
+				            item.add(nums[i]);
+				            res.add(new ArrayList<Integer>(item));
+				            helper(nums, res, item, i + 1);
+				            item.remove(item.size() - 1);
+				        }
+				    }
+				}
+				//Iteration
+				/*
+					res = { {} }
+                    res = { {} } + { {1} }
+                    res = { {}, {1} } + {{2} ,{1, 2} } = {{}, {1}, {2}, {1, 2}};
+                    res = {{}, {1}, {2}, {1, 2}} + {{3}, {1,3}, {2, 3}, {1, 2, 3}};
+				*/
+                public class Solution {
+					public List<List<Integer>> subsets(int[] nums) {
+				        List<List<Integer>> res = new ArrayList<>();
+				        res.add(new ArrayList<>());
+				        Arrays.sort(nums);
+				        int size = 0;
+					    for (int i = 0; i < nums.length; i++) {
+				            size = res.size();
+				            for (int j = 0; j < size; j++) {
+				                List<Integer> item = new ArrayList<>(res.get(j));
+				                item.add(nums[i]);
+				                res.add(item);
+				            }
+				        }
+				        return res;
+				    }
+				}
+			3.2 SubsetsII
+				//Recursive
+				public class Solution {
+				    public List<List<Integer>> subsetsWithDup(int[] nums) {
+				        List<List<Integer>> res = new ArrayList<>();
+				        if (nums == null || nums.length == 0) {
+				            return res;
+				        }
+				        Arrays.sort(nums);
+				        boolean[] visited = new boolean[nums.length];
+				        List<Integer> item = new ArrayList<>();
+				        res.add(new ArrayList<Integer>());
+				        helper(nums, res, item, visited, 0);
+				        return res;
+				    }
+				    public void helper(int[] nums, List<List<Integer>> res, List<Integer> item, boolean[] visited, int start) {
+				        for (int i = start; i < nums.length; i++) {
+				            if (i != 0 && nums[i - 1] == nums[i] && !visited[i - 1]) {
+				                continue;
+				            }
+				            if (!visited[i]) {
+				                item.add(nums[i]);
+				                visited[i] = true;
+				                res.add(new ArrayList<>(item));
+				                helper(nums, res, item, visited, i + 1);
+				                visited[i] = false;
+				                item.remove(item.size() - 1);
+				            }
+				        }
+				    }
+				}
+				//Iteration
+				public class Solution {
+					public List<List<Integer>> subsetsWithDup(int[] nums) {
+				        List<List<Integer>> res = new ArrayList<>();
+				        res.add(new ArrayList<>());
+				        Arrays.sort(nums);
+				        int size = 0;
+				        int startIndex = 0;
+				        for (int i = 0; i < nums.length; i++) {
+				            if (i >= 1 && nums[i] == nums[i - 1]) {
+				                startIndex = size;
+				            } else {
+				                startIndex = 0;
+				            }
+				            size = res.size();
+				            for (int j = startIndex; j < size; j++) {
+				                List<Integer> item = new ArrayList<>(res.get(j));
+				                item.add(nums[i]);
+				                res.add(item);
+				            }
+				        }
+				        return res;
+				    }
+				}
 
-		4. Bits And Math Backtracking
-			4.1 Gray Code
-			
 
-			
+
+
+		4. Bits, Math, Others,Backtracking
+			4.1 Gray Code 
+				/*
+					 n = 0: 0
+					 n = 1: 0 -> 1
+					 n = 2: 0 -> 1 -> 3 -> 2
+					 n = 3: 0 -> 1 -> 3 -> 2 -> 6 -> 7 -> 5 -> 4 , 规律，每次从res中从后往前取 + 1 << (n - 1)
+				*/
+				//Recursive
+				//O(2^n) time, O(1) space OR O(n) space if consider recursion stack
+				public List<Integer> grayCode(int n) {
+			        if (n == 0) {
+			            List<Integer> res = new ArrayList<>();
+			            res.add(0);
+			            return res;
+			        }
+			        List<Integer> res = grayCode(n - 1);
+			        int inc = 1 << n - 1;
+			        for (int i = res.size() - 1; i >= 0; i--) {
+			            res.add(res.get(i) + inc);
+			        }
+			        return res;
+			    }
+			    //Iteration
+	    		// O(2^n) time, O(1) space
+			    public List<Integer> grayCode(int n) {
+			        List<Integer> res = new ArrayList<>();
+			        res.add(0);
+			        for (int i = 0; i < n; i++) {
+			            int inc = 1 << i;
+			            for (int j = res.size() - 1; j >= 0; j--) {
+			                res.add(res.get(j) + inc);
+			            }
+			        }
+			        return res;
+			    }
+			4.2 Generate Parentheses
+				//Recursive
+				/*
+					(n)*h(n) time:
+				    Explanation:
+				    	此题时间复杂度应该是解的个数乘以每个解的长度, 解的个数对应卡特兰数h(n)的通项公式: 
+					    h(n) = 2n!/(n!*n+1!) = C(2*n, n)/(n+1)
+					    解的长度是2n, 也就是O(n)
+
+				    O(n) space:
+				    path的最大长度也是recursion stack的最高高度, 为2n.
+				*/ 
+				public class Solution {
+				    public List<String> generateParenthesis(int n) {
+				        List<String> res = new ArrayList<>();
+				        if (n < 1) {
+				            return res;
+				        }
+				        helper(res, "", n, n);
+				        return res;
+				    }
+				    public void helper(List<String> res, String item, int left, int right) {
+				        if (left == 0 && right == 0) {
+				            res.add(item);
+				            return;
+				        }
+				        if (left > 0) {
+				            helper(res, item + '(', left - 1, right);
+				        } 
+				        if (left < right) {
+				            helper(res, item + ')', left, right - 1);
+				        }
+				    }
+				}
+				//Iteration
+				/*
+					Let the "(" always at the first position, to produce a valid result, we can only put ")" in a way that there will be 
+					i pairs () inside the extra () and n - 1 - i pairs () outside the extra pair.
+
+					Let us consider an example to get clear view:
+					f(0): ""
+					f(1): "("f(0)")"
+					f(2): "("f(0)")"f(1), "("f(1)")"
+					f(3): "("f(0)")"f(2), "("f(1)")"f(1), "("f(2)")"
+					So f(n) = "("f(0)")"f(n-1) , "("f(1)")"f(n-2) "("f(2)")"f(n-3) ... "("f(i)")"f(n-1-i) ... "(f(n-1)")"
+				*/
+				public List<String> generateParenthesis(int n) {
+			        List<List<String>> lists = new ArrayList<>();
+			        List<String> initList = new ArrayList<>();
+			        initList.add("");
+			        lists.add(initList);
+			        for (int i = 1; i <= n; i++) {
+			            List<String> res = new ArrayList<>();
+			            for (int j = 0; j < i; j++) {
+			                for (String first : lists.get(j)) {
+			                    for (String second : lists.get(i - 1 - j)) {
+			                        res.add("(" + first + ")" + second);
+			                    }
+			                }
+			            }
+			            lists.add(res);
+			        }
+			        return lists.get(lists.size() - 1);
+			    }
+
+		5. N-Queen
+			5.1 N-Queens I
+				//O(n) space, use matrix[i] to denote i row, matrix[i] col.
+				public class Solution {
+				    public List<List<String>> solveNQueens(int n) {
+				        List<List<String>> res = new ArrayList<>();
+				        if (n <= 0) {
+				            return res;
+				        }
+				        List<String> item = new ArrayList<>();
+				        int[] matrix = new int[n];
+				        dfs(res, 0, n, matrix);
+				        return res;
+				    }
+				    public void dfs(List<List<String>> res, int row, int n, int[] matrix) {
+				        if (row == n) {
+				            List<String> item = new ArrayList<>();
+				            for (int i = 0; i < n; i++) {
+				                StringBuilder sb = new StringBuilder();
+				                for (int j = 0; j < n; j++) {
+				                    if (j == matrix[i]) {
+				                        sb.append('Q');
+				                    } else {
+				                        sb.append('.');
+				                    }
+				                }
+				                item.add(sb.toString());
+				            }
+				            res.add(item);
+				            return;
+				        }
+				        for (int i = 0; i < n; i++) {
+				            matrix[row] = i;
+				            if (isValid(matrix, row)) {
+				                dfs(res, row + 1, n, matrix);
+				            }
+				        }
+				    }
+				    public boolean isValid(int[] matrix, int row) {
+				        for (int i = 0; i < row; i++) {
+				            if (matrix[i] == matrix[row] || Math.abs(matrix[i] - matrix[row]) == row - i) {
+				                return false;
+				            }
+				        }
+				        return true;
+				    }
+				}
+			5.2 N-Queens II			
+
+							
 
 
 

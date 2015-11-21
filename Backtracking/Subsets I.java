@@ -1,4 +1,4 @@
-/*
+nr/*
 	Subsets
 	Given a set of distinct integers, S, return all possible subsets.
 
@@ -80,7 +80,7 @@ public class Solution {
         for (int i : S) {
             /*
                 like at first is res = { {} }
-                               res = { {} ,{1} }
+                                res = { {} ,{1} }
                                 res = { {}, {1} } + {{2} ,{1, 2} } = {{}, {1}, {2}, {1, 2}};
                                 res = {{3}, {1,3}, {2, 3}, {1, 2, 3}} + {{}, {1}, {2}, {1, 2}}
                                     = [
