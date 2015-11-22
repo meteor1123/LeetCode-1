@@ -101,7 +101,6 @@ public class Solution {
                 return isMatch(s.substring(1), p.substring(1));
             }
         }
-
         //P.length() >=2
         while (!s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.')) {
             if (isMatch(s, p.substring(2))) {

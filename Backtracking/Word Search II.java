@@ -23,6 +23,7 @@
 */
 
 //Solution 1
+public class Solution {
     public List<String> findWords(char[][] board, String[] words) {
          ArrayList<String> res = new ArrayList<String>();
         if (board == null || board.length == 0 || board[0].length == 0 || words == null) {

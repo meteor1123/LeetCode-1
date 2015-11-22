@@ -817,8 +817,64 @@
 			        }
 			        return lists.get(lists.size() - 1);
 			    }
-
-		5. N-Queen
+			4.3 Restore IP Addresses
+				//Recursive
+				public class Solution {
+				    public List<String> restoreIpAddresses(String s) {
+				        List<String> res = new ArrayList<>();
+				        if (s == null || s.length() == 0 || s.length() > 12) {
+				            return res;
+				        }
+				        dfs(s, "", res, 0);
+				        return res;
+				    }
+				    public void dfs(String s, String item, List<String> res, int start) {
+				        if (start == 3 && isValid(s)) {
+				            res.add(item + s);
+				            return;
+				        }
+				        for (int i = 0; i < 3 && i < s.length(); i++) {
+				            String subStr = s.substring(0, i + 1);
+				            if (isValid(subStr)) {
+				                dfs(s.substring(i + 1), item + subStr + '.', res, start + 1);
+				            }
+				        }
+				    }
+				    public boolean isValid(String s) {
+				        if (s == null || s.length() == 0) {
+				            return false;
+				        }
+				        if (s.charAt(0) == '0' && !s.equals("0")) {
+				            return false;
+				        }
+				        if (Integer.valueOf(s) <= 255 && Integer.valueOf(s) >= 0) {
+				            return true;
+				        }
+				        return false;
+				    }
+				}
+				//Iterative
+				public class Solution {
+					public List<String> restoreIpAddresses(String s) {
+				        List<String> res = new ArrayList<String>();
+				        int len = s.length();
+				        for (int i = 1; i < 4 && i < len - 2; i++) {
+				            for (int j = i + 1; j < i + 4 && j < len - 1; j++) { 
+				                for (int k = j + 1; k < j + 4 && k < len; k++) {
+				                    String s1 = s.substring(0, i);
+				                    String s2 = s.substring(i, j);
+				                    String s3 = s.substring(j, k);
+				                    String s4 = s.substring(k, len);
+				                    if (isValid(s1) && isValid(s2) && isValid(s3) && isValid(s4)) {
+				                        res.add(s1 + "." + s2 + "." + s3 + "." + s4);
+				                    }
+				                }
+				            }
+				        }
+				        return res;
+				    }
+				}
+		5. N-Queen, Sudo, Flip Game I & II
 			5.1 N-Queens I
 				//O(n) space, use matrix[i] to denote i row, matrix[i] col.
 				public class Solution {
@@ -866,10 +922,273 @@
 				    }
 				}
 			5.2 N-Queens II			
+				public class Solution {
+				    int count;
+				    public int totalNQueens(int n) {
+				        count = 0;
+				        if (n == 0) {
+				            return count;
+				        }
+				        int[] matrix = new int[n];
+				        dfs(matrix, 0, n);
+				        return count;
+				    }
+				    
+				    public void dfs(int[] matrix, int row, int n) {
+				        if (row == n) {
+				            count++;
+				            return;
+				        }
+				        for (int i = 0 ; i < n; i++) {
+				            matrix[row] = i;
+				            if (isValid(matrix, row)){
+				                dfs(matrix, row + 1, n);
+				            }
+				        }
+				    }
+				    public boolean isValid(int[] matrix, int row) {
+				        for (int i = 0; i < row; i++) {
+				            if (matrix[i] == matrix[row] || Math.abs(matrix[i] - matrix[row]) == row - i) {
+				                return false;
+				            }
+				        }
+				        return true;
+				    }
+				}
+			5.3 Sudo Solver
+				public class Solution {
+				    public void solveSudoku(char[][] board) {
+				        if (board == null || board.length == 0 || board[0].length == 0) {
+				            return ;
+				        }
+				        dfs(board);
+				    }
+				    public boolean dfs(char[][] board) {
+				        for (int i = 0; i < board.length; i++) {
+				            for (int j = 0; j < board[0].length; j++) {
+				                if (board[i][j] == '.') {
+				                    for (char c = '1'; c <= '9'; c++) {
+				                        if (isValid(board, i, j, c)) {
+				                            board[i][j] = c;
+				                            if (dfs(board)) {
+				                                return true;
+				                            } else {
+				                            	//Backtracking
+				                                board[i][j] = '.';
+				                            }
+				                        }
+				                    }
+				                    return false;
+				                }
+				            }
+				        }
+				        return true;
+				    }
+				    public boolean isValid(char[][] board, int row, int col, char c) {
+				        for (int i = 0; i < board.length; i++) {
+				            if (board[i][col] == c) {
+				                return false;
+				            }
+				        }
+				        for (int i = 0; i < board.length; i++) {
+				            if (board[row][i] == c) {
+				                return false;
+				            }
+				        }
+				        //Key Point, use row / 3  + 0 ~ 2  and col / 3 + 0 ~ 2, to verify the small 3 * 3 matrix
+				        for (int i = (row / 3) * 3; i < (row / 3) * 3 + 3; i++) {
+				            for (int j = (col / 3) * 3; j < (col / 3) * 3 + 3; j++) {
+				                if (board[i][j] == c) {
+				                    return false;
+				                }
+				            }
+				        }
+				        return true;
+				    }
+				}
+			5.4 Valid Sudo
+				public class Solution {
+				    public boolean isValidSudoku(char[][] board) {
+				        if (board == null || board.length == 0) {
+				            return false;
+				        }
+				        return dfs(board);
+				    }
+				    public boolean dfs(char[][] board) {
+				        for (int i = 0; i < 9; i++) {
+				            for (int j = 0; j < 9; j++) {
+				               if (board[i][j] != '.') {
+				                   if (!isValid(board, i, j, board[i][j])){
+				                       return false;
+				                   }
+				               }
+				            }
+				        }
+				        return true;
+				    }
+				    public boolean isValid (char[][] board, int row, int col, char c) {
+				    	//check whole row
+				        for (int i = 0; i < 9; i++) {
+				            if (i != row && board[i][col] == c) {
+				                return false;
+				            }
+				        }
+				        //check whole col
+				        for (int i = 0; i < 9; i++) {
+				            if (i != col && board[row][i] == c) {
+				                return false;
+				            }
+				        }
+				        //check the block
+				        for (int i = (row / 3) * 3; i < (row / 3) * 3 + 3; i++) {
+				            for (int j = (col / 3) * 3; j < (col / 3) * 3 + 3; j++) {
+				                if ((i != row && j != col) && board[i][j] == c) {
+				                    return false;
+				                }
+				            }
+				        }
+				        return true;
+				    }
+				}
+			5.5 Flip Game I & II
+				/*
+				    For the time complexity, here is what I thought, let's say the length of the input string s is n, 
+				    there are at most n - 1 ways to replace "++" to "--" (imagine s is all "+++..."), once we replace one "++", 
+				    there are at most (n - 2) - 1 ways to do the replacement, it's a little bit like solving the N-Queens problem, 
 
-							
+				    the time complexity is (n - 1) x (n - 3) x (n - 5) x ..., so it's O(n!!)
+				*/
+				public class Solution {
+				    public List<String> generatePossibleNextMoves(String s) {
+				        List<String> res = new ArrayList<>();
+				        if (s == null || s.length() < 2) {
+				            return res;
+				        }     
+				        for (int i = 0; i < s.length() - 1; i++) {
+				            if (s.startsWith("++", i)) {
+				                res.add(s.substring(0, i) + "--" + s.substring(i + 2, s.length()));
+				            }
+				        }
+				        // Flip Game II 用这句替换上面
+				        // for (int i = 0; i < s.length() - 1; i++) {
+				        //     if (s.startsWith("++", i)) {
+				        //         String item = s.substring(0, i) + "--" +s.substring(i + 2);
+				        //         if (!canWin(item)) {
+				        //             return true;
+				        //         }
+				        //     }
+				        // }
+				        return res;
+				    }
+				}
 
-
+		6. Word Backtracking
+			6.1 Word Search I
+				public class Solution {
+				    public boolean exist(char[][] board, String word) {
+				        if (board == null || board.length == 0) {
+				            return false;
+				        }
+				        if (word == null || word.length() == 0) {
+				            return true;
+				        }
+				        boolean[][] visited = new boolean[board.length][board[0].length];
+				        for (int i = 0; i < board.length; i++) {
+				            for (int j = 0; j < board[0].length; j++) {
+				                if (dfs(i, j, board, word, 0, visited)) {
+				                    return true;
+				                }
+				            }
+				        }
+				        return false;
+				    }
+				    public boolean dfs(int row, int col, char[][] board, String word, int index, boolean[][] visited) {
+				        if (index == word.length()) {
+				            return true;
+				        }
+				        if (row < 0 || col < 0 || row > board.length - 1 || col > board[0].length - 1 || word.charAt(index) != board[row][col] || visited[row][col]) {
+				            return false;
+				        }
+				        visited[row][col] = true;
+				        boolean res = dfs(row - 1, col, board, word, index + 1, visited) ||
+				               dfs(row + 1, col, board, word, index + 1, visited) ||
+				               dfs(row, col + 1, board, word, index + 1, visited) ||
+				               dfs(row, col - 1, board, word, index + 1, visited);
+				        visited[row][col] = false;
+				        return res;
+				    }
+				}
+			6.2 Word Search II
+				public class Solution {
+				    public List<String> findWords(char[][] board, String[] words) {
+				         ArrayList<String> res = new ArrayList<String>();
+				        if (board == null || board.length == 0 || board[0].length == 0 || words == null) {
+				            return res;
+				        }
+				        // HashSet<String> set = new HashSet<>();
+				        Trie root = new Trie();
+				        for (int i = 0; i < words.length; i++) {
+				            root.insert(words[i]);
+				        }
+				        int m = board.length;
+				        int n = board[0].length;
+				        boolean[][] visited = new boolean[m][n];
+				        for (int i = 0; i < m; i++) {
+				            for (int j = 0; j < n; j++) {
+				                dfs(res, board, i, j, visited, root, "");
+				            }
+				        }
+				        return res;
+				     }
+				     public void dfs(ArrayList<String> res, char[][] board, int row, int col, boolean[][] visited, Trie root, String item) {
+				         if (row < 0 || col < 0 || row > board.length - 1 || col > board[0].length - 1 || visited[row][col]) {
+				             return ;
+				         }
+				         item = item + board[row][col];
+				         if (!root.startsWith(item)) {
+				             return;
+				         }
+				         visited[row][col] = true;
+				         if (root.search(item) && !res.contains(item)) {
+				             res.add(item);
+				         }
+				         dfs(res, board, row + 1, col, visited, root, item);
+				         dfs(res, board, row - 1, col, visited, root, item);
+				         dfs(res, board, row, col + 1, visited, root, item);
+				         dfs(res, board, row, col - 1, visited, root, item);
+				         visited[row][col] = false;
+				     }
+				}
+			6.3 Word Break II
+				/*
+					s = "catsanddog", dict = ["cat", "cats", "and", "sand", "dog"].
+					A solution is ["cats and dog", "cat sand dog"].
+				*/
+				public class Solution {
+				    public List<String> wordBreak(String s, Set<String> wordDict) {
+				        List<String> res = new ArrayList<>();
+				        if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0 || !isWordBreak(s, wordDict)) {
+				            return res;
+				        }
+				        helper(s, wordDict, 0, "", res);
+				        return res;
+				    }
+				    public void helper(String s, Set<String> wordDict, int start, String item, List<String> res) {
+				        if (start == s.length()) {
+				            res.add(item);
+				            return;
+				        }
+				        //Key point
+				        StringBuilder sb = new StringBuilder();
+				        for (int i = start; i < s.length(); i++) {
+				            sb.append(s.charAt(i));
+				            if (wordDict.contains(sb.toString())) {
+				                String newItem = item.length() > 0 ? (item + " " + sb.toString()) : sb.toString();
+				                helper(s, wordDict, i + 1, newItem, res);
+				            }
+				        }
+				    }
+				}
 
 
 

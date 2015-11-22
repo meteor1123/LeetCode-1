@@ -29,7 +29,6 @@ class TrieNode {
 }
 public class Solution {
     private TrieNode root;
-
     public Solution() {
         root = new TrieNode();
     }
