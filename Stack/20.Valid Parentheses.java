@@ -16,7 +16,7 @@
     running time : O(n)
 */
 
-
+public class Solution {
     public boolean isValid(String s) {
         //Using stack to store the string
         Stack<Character> stack = new Stack<Character>();
@@ -59,3 +59,38 @@
             return false;
         return true;
     }
+}
+
+//Solution2 by myself
+public class Solution {
+    public boolean isValid(String s) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char peek = stack.pop();
+                if (peek == '(' && c == ')') {
+                    continue;
+                } else if (peek == '[' && c == ']') {
+                    continue;
+                } else if (peek == '{' && c == '}') {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+        }
+        if (!stack.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+}

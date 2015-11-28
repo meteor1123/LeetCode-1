@@ -24,10 +24,7 @@
                     if yes return ""
                     if no return substring(0, size() - 1), since we need to remove the last blank space;
 */
-public class Solution {
-
-
-    
+public class Solution { 
     //Solution Chapter 9
     public String reverseWords(String s) {
         if (s == null || s.length() == 0) {
@@ -46,92 +43,24 @@ public class Solution {
         //remove the last blank space(空格)
         return sb.substring(0, sb.length() - 1);
     }
-    
-    //Solution1
-    public String reverseWords(String s) {
-        if (s == null || s.length() == 0)
-            return s;
-        String[] res = s.split(" ");
-        if (res == null || res.length == 0)
-            return "";
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < res.length; i++) {
-            if (!res[i].isEmpty())
-                list.add(res[i]);
-        }
-        Collections.reverse(list);
-        
-        String ans = "";
-        for (int i = 0; i < list.size() - 1; i++) {
-            ans += list.get(i) + " ";
-        }
-        ans += list.get(list.size() - 1);
-        return ans;
-    }
+}
 
-    //solution2
+//No using split(), O(n) time, O(1) space, prefer
+public class Solution {
     public String reverseWords(String s) {
-        if (s == null) {
-            return null;
-        }
-        s = s.trim();
-        if (s.length() == 0) {
-            return "";
-        }
-        StringBuilder res = new StringBuilder);
-        for (int i = s.length() - 1; i >= 0; i--) {
-            if (i != s.length() - 1 && s.charAt(i) == ' ' && s.charAt(i) == s.charAt(i + 1)) {
+        StringBuilder res = new StringBuilder();
+        for (int start = s.length() - 1; start >= 0; start--) {
+            if (s.charAt(start) == ' ') {
                 continue;
             }
-            res.append(s.charAt(i));
-        }
-        int left = 0;
-        int right = 0;
-        while (right < res.length()) {
-            while (right < res.length() && res.charAt(right) != ' ') {
-                right++;
+            int end = start;
+            while (start >= 0 && s.charAt(start) != ' ') {
+                start--;
             }
-            int next = right + 1;
-            right--;
-            while (left < right) {
-                char temp = res.charAt(left);
-                res.setCharAt(left++, res.charAt(right));
-                res.setCharAt(right--, temp);
-            }
-            left = next;
-            right = next;
+            res.append(s.substring(start + 1, end + 1)).append(' ');
         }
-        return res.toString();
+        return res.toString().trim();
     }
-
-    //Solution3
-    public String reverseWords(String s) {
-        if(s == null) return "";
-
-        int i = 0;
-        String newStr = "";
-        String word = "";
-        while(i<s.length()){
-            char c = s.charAt(i);
-            if(c == ' '){
-                if(newStr != "" && word != "")
-                    newStr = word + " " + newStr;
-                if(newStr == "" && word != "")
-                    newStr = word;
-                word = "";
-            }else{
-                word += c;
-            }
-            i++;
-        }
-        if(newStr != "" && word != "")
-            newStr = word + " " + newStr;
-        if(newStr == "" && word != "")
-            newStr = word;
-
-        return newStr;
-    }
-}
 }
 
 

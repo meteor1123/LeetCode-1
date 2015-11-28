@@ -85,7 +85,6 @@ public class Solution {
         }
         return s.substring(low, low + maxLen);
     }
-    
     public void extendPalindrome(String s, int i, int j) {
         while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
             i--;

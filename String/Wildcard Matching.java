@@ -99,22 +99,22 @@
             if (p < pattern.length()  && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))){
                 s++;
                 p++;
-            }
-            // * found, only advancing pattern pointer
-            else if (p < pattern.length() && pattern.charAt(p) == '*'){
+            } else if (p < pattern.length() && pattern.charAt(p) == '*'){// * found, only advancing pattern pointer
                 starIdx = p;
                 match = s;
                 p++;
-            }
-           // last pattern pointer was *, advancing string pointer
-            else if (starIdx != -1){
+            } else if (starIdx != -1){ // last pattern pointer was *, advancing string pointer
                 p = starIdx + 1;
                 match++;
                 s = match;
+                
+            //current pattern pointer is not star, last patter pointer was not *
+            } else {//characters do not match
+                return false;
             }
-           //current pattern pointer is not star, last patter pointer was not *
-          //characters do not match
-            else return false;
+           
+            
+           
         }
 
         //check for remaining characters in pattern

@@ -257,7 +257,8 @@
 				            swap(num, i, j);
 				        }
 				        reverse(num, i + 1, num.length - 1);
-				    } 
+				    }   
+				}
 			1.5 Palindrome Permutation II
 				/*
 					Given a string s, return all the palindromic permutations (without duplicates) of it. Return an empty list if no palindromic permutation could be form.
@@ -698,7 +699,7 @@
 				        int size = 0;
 				        int startIndex = 0;
 				        for (int i = 0; i < nums.length; i++) {
-				            if (i >= 1 && nums[i] == nums[i - 1]) {
+				            if (i != 0 && nums[i] == nums[i - 1]) {
 				                startIndex = size;
 				            } else {
 				                startIndex = 0;
@@ -1189,6 +1190,72 @@
 				        }
 				    }
 				}
+			6.4 Regular Matching
+				/*
+					'.' Matches any single character.
+					'*' Matches zero or more of the preceding element.
+				*/
+				public boolean isMatch(String s, String p) {
+			        if (p.isEmpty()) {
+			            return s.isEmpty();
+			        }
+			        //check the p.length() == 1 ,or the charAt(1) != '*', easy to do just recursive find the substring(1)
+			        if (p.length() == 1 || p.charAt(1) != '*') {
+			            if (s.isEmpty() || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0))) {
+			                return false;
+			            } else {
+			                return isMatch(s.substring(1), p.substring(1));
+			            }
+			        }
+			        //P.length() >=2 and p.charAt(1) must be equals = '*', notice the last if statement
+			        while (!s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.')) {
+			            if (isMatch(s, p.substring(2))) {
+			                return true;
+			            }
+			            s = s.substring(1);
+			        }
+			        return isMatch(s, p.substring(2));
+			    }
+			6.5 Wildcard Matching Greedy
+				/*
+					'?' Matches any single character.
+					'*' Matches any sequence of characters (including the empty sequence).
+
+					主要是*的匹配问题。p每遇到一个*，就保留住当前*的坐标和s的坐标，然后s从前往后扫描，如果不成功，则s++,重新扫描。
+			        1. *s==*p or *p == ? ：匹配，s++ p++。
+			        2. p=='*'：也是一个匹配，但可能有0个或者多个字符用于匹配，
+			        	 所以将'*'所在位置保存(star)，并且将s的位置也保存下来(ss)。
+			        3. 如果不匹配，查看之前是否有'*'。没有则返回false，有则对ss的下一个位置和start之后的重新匹配。
+				*/
+				public class Solution {
+				    public boolean isMatch(String str, String pattern) {
+				        int s = 0;
+				        int p = 0;
+				        int match = 0;
+				        int starIndex = -1;
+				        while (s < str.length()) {
+				            if (p < pattern.length() && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))) {
+				                s++;
+				                p++;
+				            } else if (p < pattern.length() && pattern.charAt(p) == '*') {
+				                starIndex = p;
+				                match = s;
+				                p++;
+				            } else if (starIndex != -1) {
+				                p = starIndex + 1;
+				                match++;
+				                s = match;
+				            } else {
+				                return false;
+				            }
+				        }
+				        while (p < pattern.length() && pattern.charAt(p) == '*') {
+				            p++;
+				        }
+				        return p == pattern.length();
+				    }
+				}
+
 
 
 

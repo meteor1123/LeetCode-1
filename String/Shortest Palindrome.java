@@ -15,7 +15,7 @@
 
 	3. 对字符串l执行KMP算法，可以得到“部分匹配数组”p（也称“失败函数”）
 
-	4. 我们只关心p数组的最后一个值p[l.length*()-1]，因为它表明了rev_s与s相互匹配的最大前缀长度。
+	4. 我们只关心p数组的最后一个值p[l.length*()-1]，因为它表明了rev_s与s相互匹配的最大前后缀长度。
 
 	5. 最后只需要将rev_s的前k个字符与原始串s拼接即可，其中k是s的长度len(s)与p[-1]之差。
 */
@@ -38,8 +38,8 @@
 
 /*
 	1. 这里要用到kmp算法的next数组，next数组可以求出一个字符串最大匹配的前后缀长度
-	2. 求一个字符串的palindrome，最简单的方法就是 combineStr = reverse(s) + s, 比如 abcd + dcba, aabb + bbaa
-	3. 这里的问题在于如何取到最短的palindrome，abcddcba = abcdcba, aabbbbaa = aabaa,皆为最短palindrome
+	2. 求一个字符串的palindrome，最简单的方法就是 combineStr = s + reverse(s) + , 比如 abcd + dcba, aabb + bbaa 
+	3. 这里的问题在于如何取到最短的palindrome
 	4. 因此我们可以使用next数组求出combineStr的最长匹配前后缀，
 	   将这个匹配的最长前后缀截取丢掉，使用其余的部分reverse(s) + s,
 	  （注意要将s的最长匹配前后缀丢掉！之后reverse，再加上s，便是shortest palindrome!)

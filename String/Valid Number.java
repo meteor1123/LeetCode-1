@@ -38,8 +38,6 @@ public class Solution {
             if (i >= s.length())
                 return false;
         }
-
-
         //2.ignoring the symbol
         if (s.charAt(i) == '+' ||s.charAt(i) == '-')
             i++;
@@ -49,8 +47,7 @@ public class Solution {
         //
         int j = s.length() - 1;
         while (s.charAt(j) == ' ')
-            j--;
-            
+            j--;   
         if (i <= j)
             s = s.substring(i, j + 1);
         else 

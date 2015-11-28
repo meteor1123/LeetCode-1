@@ -93,7 +93,7 @@ public class Solution {
         if (p.isEmpty()) {
             return s.isEmpty();
         }
-
+        //check the p.length() == 1 ,or the charAt(1) != '*', easy to do just recursive find the substring(1)
         if (p.length() == 1 || p.charAt(1) != '*') {
             if (s.isEmpty() || (p.charAt(0) != '.' && p.charAt(0) != s.charAt(0))) {
                 return false;
@@ -101,7 +101,7 @@ public class Solution {
                 return isMatch(s.substring(1), p.substring(1));
             }
         }
-        //P.length() >=2
+        //P.length() >=2 and p.charAt(1) must be equals = '*', notice the last if statement
         while (!s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.')) {
             if (isMatch(s, p.substring(2))) {
                 return true;
@@ -110,92 +110,4 @@ public class Solution {
         }
         return isMatch(s, p.substring(2));
     }
-
-    //recursive
-    /*
-        (1)p[j+1]不是'*'。情况比较简单，只要判断当前s的i和p的j上的字符是否一样（如果有p在j上的字符是'.',也是相同），
-           如果不同，返回false，否则，递归下一层i+1，j+1; 
-        (2)p[j+1]是'*'。那么此时看从s[i]开始的子串，假设s[i],s[i+1],...s[i+k]都等于p[j]那么意味着这些都有可能是合适的匹配，
-           那么递归对于剩下的(i,j+2),(i+1,j+2),...,(i+k,j+2)都要尝试（j+2是因为跳过当前和下一个'*'字符）。 
-    */
-    public boolean isMatch(String s, String p) {
-        if (p.length() == 0) {
-            return s.length() == 0;
-        }
-        
-        // length == 1 is the case that is easy to forget.
-        // as p is subtracted 2 each time, so if original
-        // p is odd, then finally it will face the length 1
-        if (p.length() == 1) {
-            return (s.length() == 1) && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.');
-        }
-        
-        // next char is not '*': must match current character
-        
-        if (p.charAt(1) != '*') {
-            if (s.length() == 0) {
-                return false;
-            } else {
-                return (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.')
-                        && isMatch(s.substring(1), p.substring(1));
-                        //substring(i) means from i to n;
-             }
-        } else {
-                // next char is *
-                while (s.length() > 0 && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.')) {
-                    //since p.charAt(1) is *, and no matter p.charAt(0) is what kind of character,
-                    //if s == p.substring(2) , since  x* can be empty, so return true;
-                    if (isMatch(s, p.substring(2))) {
-                        return true;
-                    }
-                    //continue let the s forward
-                    s = s.substring(1);
-                }
-                return isMatch(s, p.substring(2));
-        }
-    }
-
-    //DP2
-    public boolean isMatch(String s, String p) {
-        if (s == null && p == null) {
-            return true;
-        }
-        if (s.length() == 0 && p.length() == 0) {
-            return true;
-        }
-        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
-        dp[0][0] = true;
-        for (int i = 1; i <= s.length(); i++) {
-            dp[i][0] = false;
-        }
-        for (int j = 1; j <= p.length(); j++) {
-            if (p.charAt(j - 1) == '*' && j > 1) {
-                dp[0][j] = dp[0][j - 2];
-            } else {
-                dp[0][j] = false;
-            }
-        }
-
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = 0; j < p.length(); j++) {
-
-                if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') {
-                    dp[i + 1][j + 1] = dp[i][j];
-
-                } else if (p.charAt(j) == '*' && j > 0) {
-                    
-                    if (s.charAt(i) == p.charAt(j - 1) || p.charAt(j - 1) == '.') {
-                        dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j] || dp[i + 1][j - 1];
-                    } else {
-                        dp[i + 1][j + 1] = dp[i + 1][j - 1];
-                    }
-
-                } else {
-                    dp[i + 1][j + 1] = false;
-                }
-            }
-        }
-        return dp[s.length()][p.length()];
-    }
-
 }

@@ -12,6 +12,7 @@
 	Follow up: Could you improve it to O(n log n) time complexity?
 */
 
+//O(n*n)
 public class Solution {
     public int lengthOfLIS(int[] nums) {
         if (nums == null || nums.length == 0) {
@@ -29,5 +30,39 @@ public class Solution {
             max = Math.max(max, dp[i]);
         }
         return max;
+    }
+}
+
+
+
+//O(n),binarySearch and Dp
+/*
+    The idea is that as you iterate the sequence, you keep track of the minimum value a subsequence of given length might end with, f
+    or all so far possible subsequence lengths. So dp[i] is the minimum value a subsequence of length i+1 might end with. Having this info,
+     for each new number we iterate to, we can determine the longest subsequence where it can be appended using binary search. 
+*/
+public class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        int len = 0;
+        for (int num : nums) {
+            int i = binarySearch(dp, 0, len, num);
+            dp[i] = num;
+            if (i == len) {
+                len++;
+            }
+        }
+        return len;
+    }
+    private int binarySearch(int[] nums, int start, int end, int target) {
+        while (start < end) {
+            int mid = start + (end - start)/2;
+            if (nums[mid] >= target) {
+                end = mid;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return end;
     }
 }

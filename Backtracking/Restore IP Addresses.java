@@ -79,7 +79,6 @@ public class Solution {
         }
         return res;
     }
-    
     public boolean isValid(String s) {
         if (s.length() > 3 || s.length() == 0 || (s.charAt(0) == '0' && s.length() > 1) 
             ||Integer.parseInt(s) > 255) {
