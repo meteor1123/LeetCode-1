@@ -207,7 +207,7 @@
 
 
 2. Math
-		2.1	Basic Calculator
+		2.1	Basic Calculator I
 			/*
 			    Principle:
 			        (Sign before '+'/'-') = (This context sign);
@@ -295,6 +295,45 @@
 			        return res;
 			    }
 			}
+
+3. String Problem
+		3.1 Simplify Path
+		/*		
+			当遇到“/../"则需要返回上级目录，需检查上级目录是否为空。
+	        当遇到"/./"则表示是本级目录，无需做任何特殊操作。 
+	        当遇到"//"则表示是本级目录，无需做任何操作。
+	        当遇到其他字符则表示是文件夹名，无需简化。
+	        当字符串是空或者遇到”/../”，则需要返回一个"/"。
+	        当遇见"/a//b"，则需要简化为"/a/b"。
+		*/
+		public class Solution {
+		    public String simplifyPath(String path) {
+		        String res = "";
+		        if (path == null || path.length() == 0) {
+		            return res;
+		        }
+		        String[] pathArr = path.split("/");
+		        LinkedList<String> stack = new LinkedList<String>();
+		        for (String s : pathArr) {
+		            if (s.length() == 0 || s.equals(".")) {
+		                continue;
+		            } else if (s.equals("..")) {
+		                if (!stack.isEmpty()) {
+		                    stack.pop();
+		                }
+		            } else {
+		                stack.push(s);
+		            }
+		        }
+		        if (stack.isEmpty()) {
+		            return "/";
+		        }
+		        while (!stack.isEmpty()) {
+		            res += "/" + stack.removeLast();
+		        }
+		        return res;
+		    }
+		}
 
 
 

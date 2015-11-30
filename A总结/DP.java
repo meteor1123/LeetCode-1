@@ -4,7 +4,7 @@
 
 
 
-1. Word Problem
+1. Word And String Problem
 		1.1 Word Break I
 			/*
 				s = "leetcode",
@@ -118,6 +118,69 @@
 			    }
 			}
 
+		1.4 Scramble String
+			public class Solution {
+			    public boolean isScramble(String s1, String s2) {
+			        if (s1 == null || s2 == null || s1.length() != s2.length()) {
+			            return false;
+			        }
+			        if (s1.length() == 0) {
+			            return true;
+			        }
+			        boolean[][][] check = new boolean[s1.length()][s2.length()][s1.length() + 1];
+			        for (int i = 0; i < s1.length(); i++) {
+			            for (int j = 0; j < s2.length(); j++) {
+			                check[i][j][1] = s1.charAt(i) == s2.charAt(j);
+			            }
+			        }
+			        for (int len = 2; len <= s1.length(); len++) {
+			            for (int i = 0; i + len - 1 < s1.length(); i++) {
+			                for (int j = 0; j + len - 1 < s2.length(); j++) {
+			                    for (int k = 1; k < len; k++) {
+			                        check[i][j][len] |= check[i][j][k] && check[i + k][j + k][len - k] ||
+			                                            check[i][j + len - k][k] && check[i + k][j][len - k];
+			                    }
+			                }
+			            }
+			        }
+			        return check[0][0][s1.length()];
+			    }
+			}
+		1.5 Interleaving String
+			/*
+				Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+				For example,
+				Given:
+				s1 = "aabcc",
+				s2 = "dbbca",
+				When s3 = "aadbbcbcac", return true.
+				When s3 = "aadbbbaccc", return false.
+			*/
+			public class Solution {
+			    public boolean isInterleave(String s1, String s2, String s3) {
+			        int m = s1.length();
+			        int n = s2.length();
+			        if (m + n != s3.length()) {
+			            return false;
+			        }
+			        boolean[][] dp = new boolean[m + 1][n + 1];
+			        dp[0][0] = true;
+			        for (int i = 1; i <= m; i++) {
+			            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+			        }
+			        for (int i = 1; i <= n; i++) {
+			            dp[0][i] = dp[0][i - 1] && s2.charAt(i - 1) == s3.charAt(i - 1);
+			        }
+			        for (int i = 1; i <= m; i++) {
+			            for (int j = 1; j <= n; j++) {
+			                dp[i][j] = dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1) ||
+			                           dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1);
+			            }
+			        }
+			        return dp[m][n];
+			    }
+			}
+
 
 
 		
@@ -221,8 +284,8 @@
 			}
 			//O(n),binarySearch and Dp
 			/*
-			    The idea is that as you iterate the sequence, you keep track of the minimum value a subsequence of given length might end with, f
-			    or all so far possible subsequence lengths. So dp[i] is the minimum value a subsequence of length i+1 might end with. Having this info,
+			    The idea is that as you iterate the sequence, you keep track of the minimum value a subsequence of given length might end with, 
+			    for all so far possible subsequence lengths. So dp[i] is the minimum value a subsequence of length i+1 might end with. Having this info,
 			     for each new number we iterate to, we can determine the longest subsequence where it can be appended using binary search. 
 			*/
 			public class Solution {

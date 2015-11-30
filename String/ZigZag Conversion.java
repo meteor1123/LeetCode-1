@@ -14,7 +14,8 @@
 
 /*
 	PAYPALISHIRING是输入
-
+    
+    输出
 	P   A   H   N
 	A P L S I I G
 	Y   I   R 

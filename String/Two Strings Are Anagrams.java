@@ -4,6 +4,9 @@
 
 	Example
 	Given s="abcd", t="dcab", return true
+
+	Challenge
+		O(n) time, O(1) extra space
 */
 
 public class Solution {
@@ -25,3 +28,33 @@ public class Solution {
 		return true;
 	}
 }
+
+//Solution2 prefer
+public class Solution {
+    /**
+     * @param s: The first string
+     * @param b: The second string
+     * @return true or false
+     */
+    public boolean anagram(String s, String t) {
+        // write your code here
+        if ((s == null && t != null) || (s != null && t == null) || (s.length() != t.length())) {
+            return false;
+        }
+        int[] charArr = new int[256];
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != ' ') {
+                charArr[s.charAt(i) - '0']++;
+            }
+            if (t.charAt(i) != ' ') {
+                charArr[t.charAt(i) - '0']--;
+            }         
+        }
+        for (int i = 0; i < charArr.length; i++) {
+            if (charArr[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};

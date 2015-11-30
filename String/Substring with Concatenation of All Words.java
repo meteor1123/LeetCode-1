@@ -124,54 +124,6 @@
     }
 
 
-    //concise！
-    public List<Integer> findSubstring(String S, String[] L) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        //use a target to store the every single word's amount of String array
-        HashMap<String, Integer> target = new HashMap<String, Integer>();
-        //use real HashMap to find the matched word in String S
-        HashMap<String, Integer> real = new HashMap<String, Integer>();
-        
-        //store every word from L to hashmap, the value is appear amount
-        for (String str : L) {
-            if (target.containsKey(str)) {
-                int val = target.get(str);
-                target.put(str, val + 1);
-            } else {
-                target.put(str, 1);
-            }
-        }
-        
-        //wSize denote a word's length
-        int wSize = L[0].length();
-        //lSize denote the length of String array
-        int lSize = L.length;
-
-        //travese the String S 
-        for (int i = 0; i <= S.length() - wSize * lSize; i++) {
-            //int the second for loop, evertime just check wSize * lSize string, 
-            for (int j = i; j <= i + wSize * lSize - 1; j = j + wSize) {
-                
-                String temp = S.substring(j, j + wSize);
-                if (!target.containsKey(temp)) {
-                    break; 
-                } 
-                if (real.containsKey(temp)) {
-                    int value = real.get(temp);
-                    real.put(temp, value + 1);
-                } else {
-                    real.put(temp, 1);
-                }
-            }
-            if (real.equals(target)) {
-                res.add(i);
-            }
-            real.clear();
-        }
-        return res;
-        
-    }
-
 /*
     1. 用两个hashmap，一个用来存放words数组中每个word和出现的次数
     2. 遍历方法是关键， 外层循环从0 ~ s.length() - wordLen * arrLen，也就是遍历words数组里wordLen * arrLen 长度的字符串的次数，即可遍历完所有可能次数
@@ -180,6 +132,7 @@
     4. 如果target中有，放入real中，每一次的内层for循环结束，判断这个real 是否和target hashmap相等。相等，将i的位置加入res
     5. 清空real，进行下一次遍历
 */
+//Concise but TLE :(
 public class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> res = new ArrayList<>();

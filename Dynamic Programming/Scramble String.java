@@ -51,18 +51,21 @@ anagram is used first to test if the corresponding parts are anagrams. If not, s
 public class Solution {
 	//Recursive
     public boolean isScramble(String s1, String s2) {
-        if (s1 == null || s2 == null || s1.length() != s2.length()) {
+        if (s1.length() != s2.length()) {
             return false;
         }
         if (s1.equals(s2)) {
             return true;
         }
-        char[] c1 = s1.toCharArray();
-        char[] c2 = s2.toCharArray();
-        Arrays.sort(c1);
-        Arrays.sort(c2);
-        if (!Arrays.equals(c1, c2)) {
-            return false;
+        int[] count = new int[256];
+        for (int i = 0; i < s1.length(); i++) {
+            count[s1.charAt(i) - '0']++;
+            count[s2.charAt(i) - '0']--;
+        }
+        for (int i = 0; i < s1.length(); i++) {
+            if (count[s1.charAt(i) - '0'] != 0) {
+                return false;
+            }
         }
         for (int i = 1; i < s1.length(); i++) {
             if (isScramble(s1.substring(0, i), s2.substring(0, i)) &&
@@ -116,8 +119,8 @@ public class Solution {
             for (int i = 0; i + len - 1 < s1.length(); i++) {
                 for (int j = 0; j + len - 1 < s2.length(); j++) {
                     for (int k = 1; k < len; k++) {
-                        check[i][j][len] |= check[i][j][k] && check[i + k][j + k][len - k] 
-                        || check[i][j + len - k][k] && check[i + k][j][len - k];
+                        check[i][j][len] |= check[i][j][k] && check[i + k][j + k][len - k] ||
+                                            check[i][j + len - k][k] && check[i + k][j][len - k];
                     }
                 }
             }

@@ -22,7 +22,34 @@
 
 */
 
-//Prefer solution
+//Prefer Solution1
+public class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int m = s1.length();
+        int n = s2.length();
+        if (m + n != s3.length()) {
+            return false;
+        }
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        dp[0][0] = true;
+        for (int i = 1; i <= m; i++) {
+            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+        }
+        for (int i = 1; i <= n; i++) {
+            dp[0][i] = dp[0][i - 1] && s2.charAt(i - 1) == s3.charAt(i - 1);
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                dp[i][j] = dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1) ||
+                           dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1);
+            }
+        }
+        return dp[m][n];
+    }
+}
+
+
+//solution2
 public class Solution {
     public boolean isInterleave(String s1, String s2, String s3) {
         int m = s1.length();
@@ -53,44 +80,6 @@ public class Solution {
         return dp[m][n];
     }
 }
-public class Solution {
-    public boolean isInterleave(String s1, String s2, String s3) {
-        if (s1.length() + s2.length() != s3.length()) {
-            return false;
-        }
-        ////dp[i][j]表示用s1的前i个字符和s2的前j个字符能不能按照规则表示出s3的前i+j个字符
-        //dp[i][j] means use (0 ~ i-1) length i string and (0 ~ j - 1) length j string,
-        //whether can generate i + j string of s3
-        boolean[][] dp = new boolean[s1.length() + 1][s2.length() + 1];
-        dp[0][0] = true;
-        for (int i = 1; i <= s1.length(); i++) {
-            if (s1.charAt(i - 1) == s3.charAt(i - 1)) {
-                dp[i][0] = true;
-            } else {
-                break;
-            }
-        }
-        
-        for (int j = 1; j <= s2.length(); j++) {
-            if (s2.charAt(j - 1) == s3.charAt(j - 1)) {
-                dp[0][j] = true;
-            } else {
-                break;
-            }
-        }
-        
-        for (int i = 1; i <= s1.length(); i++) {
-            for (int j = 1; j <= s2.length(); j++) {
-                char c = s3.charAt(i + j - 1);
-                if (c == s1.charAt(i - 1) && dp[i - 1][j]) {
-                    dp[i][j] = true;
-                }
-                if (c == s2.charAt(j - 1) && dp[i][j - 1]){
-                    dp[i][j] = true;
-                }
-            }
-        }
-        return dp[s1.length()][s2.length()];
-    }
-}
+
+
 

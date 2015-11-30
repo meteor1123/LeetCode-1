@@ -1,6 +1,6 @@
 /*
 	Longest Common Substring
-	iven two strings, find the longest common substring.
+	given two strings, find the longest common substring.
 
 	Return the length of it.
 

@@ -5,136 +5,252 @@
 
 
 1. Math, Alphabet, Game, Other
-		1.1 Flip Game I & II
-			/*
-				For example, given s = "++++", after one move, it may become one of the following states:
-				[
-				  "--++",
-				  "+--+",
-				  "++--"
-				]
-				T(N) = T(N-2) + T(N-3) + [T(2) + T(N-4)] + [T(3) + T(N-5)] + ... 
-				        [T(N-5) + T(3)] + [T(N-4) + T(2)] + T(N-3) + T(N-2)
-				     = 2 * sum(T[i])  (i = 3..N-2)
-			*/
-			//I
-			public class Solution {
-			    public List<String> generatePossibleNextMoves(String s) {
-			        List<String> res = new ArrayList<>();
-			        if (s == null || s.length() < 2) {
-			            return res;
-			        }
-			        for (int i = 0; i < s.length(); i++) {
-			            if (s.startsWith("++", i)) {
-			                res.add(s.substring(0, i) + "--" + s.substring(i + 2));
-			            }
-			        }
-			        return res;
-			    }
-			}
-			//II
-			public class Solution {
-			    public boolean canWin(String s) {
-			        if (s == null || s.length() < 2) {
-			            return false;
-			        }
-			        for (int i = 0; i < s.length() - 1; i++) {
-			            if (s.startsWith("++", i)) {
-			                String item = s.substring(0, i) + "--" +s.substring(i + 2);
-			                //If the opponent can't win, then we win,recursively check the result
-			                if (!canWin(item)) {
-			                    return true;
-			                }
-			            }
-			        }
-			        return false;
-			    }
-			}
-		1.2 Integer To Roman
-			public class Solution {
-				public static String intToRoman(int num) {
-			        String M[] = {"", "M", "MM", "MMM"};//1000, 2000, 3000
-			        //                100,  200,  300,   400, 500,  600,  700,   800,   900
-			        String C[] = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
-			        //                10,   20,   30,    40,  50,   60,   70,    80,    90  
-			        String X[] = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
-			        //                1,    2,    3,     4,   5,    6,    7,     8,     9
-			        String I[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
-			        return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10];
-			    }
-			}
-		1.3 Roman To Integer
-			public class Solution {
-			    public int romanToInt(String s) {
-			        if (s == null || s.length() == 0) {
-			            return 0;
-			        }
-			        int res = 0;
-			        for (int i = s.length() - 1; i >= 0; i--) {
-			            char c = s.charAt(i);
-			            if (c == 'I') {
-			                if (res >= 5) {
-			                    res -= 1;
-			                } else {
-			                    res += 1;
-			                }
-			            } else if (c == 'V') {
-			                res += 5;
-			            } else if (c == 'X') {
-			                if (res >= 50) {
-			                    res -= 10;
-			                } else {
-			                    res += 10;
-			                }
-			            } else if (c == 'L') {
-			                res += 50;
-			            } else if (c == 'C') {
-			                if (res >= 500) {
-			                    res -= 100;
-			                } else {
-			                    res += 100;
-			                }
-			            } else if (c == 'D') {
-			                res += 500;
-			            } else if (c == 'M') {
-			                res += 1000;
-			            }
-			        }
-			        return res;
-			    }
-			}
-		1.4 Add Binary
-			public class Solution {
-			    public String addBinary(String a, String b) {
-			        if (a == null || a.length() == 0) {
-			            return b;
-			        }
-			        if (b == null || b.length() == 0) {
-			            return a;
-			        }
-			        StringBuilder sb = new StringBuilder();
-			        int flag = 0;
-			        int i = a.length() - 1;
-			        int j = b.length() - 1;
-			        while (i >= 0 || j >= 0) {
-			            if (i >= 0) {
-			                flag += a.charAt(i) - '0';
-			                i--;
-			            }
-			            if (j >= 0) {
-			                flag += b.charAt(j) - '0';
-			                j--;
-			            }
-			            sb.insert(0, flag % 2);
-			            flag = flag / 2;
-			        }
-			        if (flag == 1) {
-			            sb.insert(0, "1");
-			        }
-			        return sb.toString();
-			    }
-			}
-		1.5 Count And Say
+		1.1 Game Proble
+			1.1.1 Flip Game I
+				/*
+					For example, given s = "++++", after one move, it may become one of the following states:
+					[
+					  "--++",
+					  "+--+",
+					  "++--"
+					]
+					T(N) = T(N-2) + T(N-3) + [T(2) + T(N-4)] + [T(3) + T(N-5)] + ... 
+					        [T(N-5) + T(3)] + [T(N-4) + T(2)] + T(N-3) + T(N-2)
+					     = 2 * sum(T[i])  (i = 3..N-2)
+				*/
+				//I
+				public class Solution {
+				    public List<String> generatePossibleNextMoves(String s) {
+				        List<String> res = new ArrayList<>();
+				        if (s == null || s.length() < 2) {
+				            return res;
+				        }
+				        for (int i = 0; i < s.length(); i++) {
+				            if (s.startsWith("++", i)) {
+				                res.add(s.substring(0, i) + "--" + s.substring(i + 2));
+				            }
+				        }
+				        return res;
+				    }
+				}
+			1.1.2 Flip Game II
+				public class Solution {
+				    public boolean canWin(String s) {
+				        if (s == null || s.length() < 2) {
+				            return false;
+				        }
+				        for (int i = 0; i < s.length() - 1; i++) {
+				            if (s.startsWith("++", i)) {
+				                String item = s.substring(0, i) + "--" +s.substring(i + 2);
+				                //If the opponent can't win, then we win,recursively check the result
+				                if (!canWin(item)) {
+				                    return true;
+				                }
+				            }
+				        }
+				        return false;
+				    }
+				}
+		1.2 Alphabet Convert Problem
+			1.2.1 Integer To Roman
+				public class Solution {
+					public static String intToRoman(int num) {
+						//				  1000, 2000, 3000
+				        String M[] = {"", "M", "MM", "MMM"};
+
+				        //                100,  200,  300,   400, 500,  600,  700,   800,   900
+				        String C[] = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
+
+				        //                10,   20,   30,    40,  50,   60,   70,    80,    90  
+				        String X[] = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
+
+				        //                1,    2,    3,     4,   5,    6,    7,     8,     9
+				        String I[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
+
+				        return M[num / 1000] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10];
+				    }
+				}
+			1.2.2 Roman To Integer
+				public class Solution {
+				    public int romanToInt(String s) {
+				        if (s == null || s.length() == 0) {
+				            return 0;
+				        }
+				        int res = 0;
+				        for (int i = s.length() - 1; i >= 0; i--) {
+				            char c = s.charAt(i);
+				            if (c == 'I') {
+				                if (res >= 5) {
+				                    res -= 1;
+				                } else {
+				                    res += 1;
+				                }
+				            } else if (c == 'V') {
+				                res += 5;
+				            } else if (c == 'X') {
+				                if (res >= 50) {
+				                    res -= 10;
+				                } else {
+				                    res += 10;
+				                }
+				            } else if (c == 'L') {
+				                res += 50;
+				            } else if (c == 'C') {
+				                if (res >= 500) {
+				                    res -= 100;
+				                } else {
+				                    res += 100;
+				                }
+				            } else if (c == 'D') {
+				                res += 500;
+				            } else if (c == 'M') {
+				                res += 1000;
+				            }
+				        }
+				        return res;
+				    }
+				}
+			1.2.3 Integer To English Words
+				public class Solution {
+				    private final String[] lessThan20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+				    private final String[] tens = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+				    private final String[] thousands = {"", "Thousand", "Million", "Billion"};
+				    public String numberToWords(int num) {
+				        if (num == 0) {
+				            return "Zero";
+				        }
+				        int i = 0;
+				        String words = "";
+				        while (num > 0) {
+				            if (num % 1000 != 0) {
+				                words = helper(num % 1000) + thousands[i] + " " + words;
+				            }
+				            num /= 1000;
+				            i++;
+				        }
+				        return words.trim();
+				    }
+				    private String helper(int num) {
+				        if (num == 0) {
+				            return "";
+				        } else if (num < 20) {
+				            return lessThan20[num] + " ";
+				        } else if (num < 100) {
+				            return tens[num / 10] + " " + helper(num % 10);
+				        } else {
+				            return lessThan20[num / 100] + " Hundred " + helper(num % 100);
+				        }
+				    }
+				}
+
+		1.3 Math Problem
+			1.3.1 Add Binary
+				public class Solution {
+				    public String addBinary(String a, String b) {
+				        if (a == null || a.length() == 0) {
+				            return b;
+				        }
+				        if (b == null || b.length() == 0) {
+				            return a;
+				        }
+				        StringBuilder sb = new StringBuilder();
+				        int flag = 0;
+				        int i = a.length() - 1;
+				        int j = b.length() - 1;
+				        while (i >= 0 || j >= 0) {
+				            if (i >= 0) {
+				                flag += a.charAt(i) - '0';
+				                i--;
+				            }
+				            if (j >= 0) {
+				                flag += b.charAt(j) - '0';
+				                j--;
+				            }
+				            sb.insert(0, flag % 2);
+				            flag = flag / 2;
+				        }
+				        if (flag == 1) {
+				            sb.insert(0, "1");
+				        }
+				        return sb.toString();
+				    }
+				}
+			1.3.2 Multiply Strings
+				public class Solution {
+				    public String multiply(String num1, String num2) {
+				        int len1 = num1.length();
+				        int len2 = num2.length();
+				        int[] products = new int[num1.length() + num2.length()];
+				        for (int i = len1 - 1; i >= 0; i--) {
+				            for (int j = len2 - 1; j >= 0; j--) {
+				                int a = num1.charAt(i) - '0';
+				                int b = num2.charAt(j) - '0';
+				                products[i + j + 1] += a * b;
+				            }
+				        }
+				        int carry = 0;
+				        for (int i = products.length - 1; i >= 0; i--) {
+				            int temp = (carry + products[i]) % 10;
+				            carry = (carry + products[i]) / 10;
+				            products[i] = temp;
+				        }
+				        StringBuilder sb = new StringBuilder();
+				        for (int num : products) {
+				            sb.append(num);
+				        }
+				        while (sb.length() != 0 && sb.charAt(0) == '0') {
+				            sb.deleteCharAt(0);
+				        }
+				        return sb.length() == 0 ? "0" : sb.toString();
+				    }
+				}
+		1.4 Compare Problem
+			1.4.1 Compare Version Numbers
+				public class Solution {
+				    public int compareVersion(String version1, String version2) {
+				        String[] v1 = version1.split("\\.");
+				        String[] v2 = version2.split("\\.");
+				        int len = Math.max(v1.length, v2.length);
+				        for (int i = 0; i < len; i++) {
+				            Integer i1 = i < v1.length ? Integer.parseInt(v1[i]) : 0; 
+				            Integer i2 = i < v2.length ? Integer.parseInt(v2[i]) : 0;
+				            if (i1 > i2) {
+				                return 1;
+				            } else if (i1 < i2) {
+				                return -1;
+				            } 
+				        }
+				        return 0;
+				    }
+				}
+			1.4.2 Compare Strings
+				/*
+					Compare two strings A and B, determine whether A contains all of the characters in B.
+					The characters in string A and B are all Upper Case letters.
+					Example
+						For A = "ABCD", B = "ACD", return true.
+						For A = "ABCD", B = "AABC", return false.
+					Note
+						The characters of B in A are not necessary continuous or ordered.
+				*/
+				public class Solution {
+				    public boolean compareStrings(String A, String B) {
+				        int[] arrA = new int[256];
+				        for (int i = 0; i < A.length(); i++) {
+				            arrA[A.charAt(i) - '0']++;
+				        }
+				        int count = 0;
+				        for (int i = 0; i < B.length(); i++) {
+				            if (arrA[B.charAt(i) - '0'] > 0) {
+				                arrA[B.charAt(i) - '0']--;
+				                count++;
+				            } 
+				        }
+				        return count == B.length();
+				    }
+				}
+		1.5	Others 
+			1.5.1 Count And Say
 			/*
 				The count-and-say sequence is the sequence of integers beginning as follows:
 				1, 11, 21, 1211, 111221, ...
@@ -168,24 +284,9 @@
 			        return res;
 			    }
 			}
-		1.6 Compare Version Numbers
-			public class Solution {
-			    public int compareVersion(String version1, String version2) {
-			        String[] v1 = version1.split("\\.");
-			        String[] v2 = version2.split("\\.");
-			        int len = Math.max(v1.length, v2.length);
-			        for (int i = 0; i < len; i++) {
-			            Integer i1 = i < v1.length ? Integer.parseInt(v1[i]) : 0; 
-			            Integer i2 = i < v2.length ? Integer.parseInt(v2[i]) : 0;
-			            if (i1 > i2) {
-			                return 1;
-			            } else if (i1 < i2) {
-			                return -1;
-			            } 
-			        }
-			        return 0;
-			    }
-			}
+
+		
+
 
 2. Longest Problem
 		2.1 Longest Substring With At Most Two Distinct Characters
@@ -516,6 +617,38 @@
 			        return end;
 			    }
 			}
+		2.8 Longest Common Substring
+			/*
+				given two strings, find the longest common substring.
+				Example
+					Given A=“ABCD”, B=“CBCE”, return  2
+				D[i][j] 定义为：两个string的前i个和前j个字符串，尾部连到最后的最长子串。
+				D[i][j] = 
+					1. i = 0 || j = 0 : 0
+					2. s1.char[i - 1] = s2.char[j - 1] ? D[i-1][j-1] + 1 : 0;
+			*/
+			public class Solution {
+				public int longestCommonSubstring(String A, String B) {
+					int[][] dp = new int[A.length() + 1][B.length() + 1];
+					int result = 0;
+					for (int i = 0; i <= A.length(); i++) {
+						for (int j = 0; j <= B.length(); j++) {
+							if (i == 0 || j == 0) {
+								res[i][j] = 0;
+								continue;
+							}
+							if (A.charAt(i - 1) != B.charAt(j - 1)) {
+								dp[i][j] = 0;
+							} else {
+								dp[i][j] = dp[i - 1][j - 1] + 1;
+							}
+							result = Math.max(result, res[i][j]);
+						}
+					}
+					return result;
+				}
+			}
+
 
 3. Anagram Problem
 		3.1 Valid Anagram
@@ -536,7 +669,35 @@
 			        return true;
 			    }
 			}
-		3.2 Group Anagrams
+		3.2 Two Strings Are Anagrams
+			/*
+				Write a method anagram(s,t) to decide if two strings are anagrams or not.
+				Example
+					Given s="abcd", t="dcab", return true.
+
+				Challenge
+					O(n) time, O(1) extra space
+			*/
+			public class Solution {
+			    public boolean anagram(String s, String t) {
+			        int[] charArr = new int[256];
+			        for (int i = 0; i < s.length(); i++) {
+			            if (s.charAt(i) != ' ') {
+			                charArr[s.charAt(i) - '0']++;
+			            }
+			            if (t.charAt(i) != ' ') {
+			                charArr[t.charAt(i) - '0']--;
+			            }
+			        }
+			        for (int i = 0; i < charArr.length; i++) {
+			            if (charArr[i] != 0) {
+			                return false;
+			            }
+			        }
+			        return true;
+			    }
+			}
+		3.3 Group Anagrams
 			/*
 				For example, given: ["eat", "tea", "tan", "ate", "nat", "bat"], 
 				Return:
@@ -565,8 +726,39 @@
 			        }
 			        return res;
 			    }
-
 			}
+		3.4 Anagrams LintCode
+			/*
+				Given an array of strings, return all groups of strings that are anagrams.
+				Example
+					Given ["lint", "intl", "inlt", "code"], return ["lint", "inlt", "intl"].
+					Given ["ab", "ba", "cd", "dc", "e"], return ["ab", "ba", "cd", "dc"].
+			*/
+			public class Solution {
+			    public List<String> anagrams(String[] strs) {
+			        List<String> res = new ArrayList<>();
+			        if (strs == null || strs.length == 0) {
+			            return res;
+			        }
+			        HashMap<String, List<String>> map = new HashMap<>();
+			        for (String s : strs) {
+			            char[] arr = s.toCharArray();
+			            Arrays.sort(arr);
+			            String key = new String(arr);
+			            if (!map.containsKey(key)) {
+			                map.put(key, new ArrayList<String>());
+			            }
+			            map.get(key).add(s);
+			        }
+			        for (List<String> item : map.values()) {
+			            if (item.size() > 1) {
+			                res.addAll(item);
+			            }
+			        }
+			        return res;
+			    }
+			}
+
 4. Palindrome Problem
 		4.1 Valid Palindrome
 			/*
@@ -765,69 +957,183 @@
 			}
 
 5. String And Word Modification Problem
-		5.1 Reverse Word In A String I & II
-			//Using split()
-			public class Solution {
-				//Using split(), Reverse Word In A String I
-				public String reverseWords(String s) {
-			        if (s == null || s.length() == 0) {
-			            return "";
-			        }
-			        String[] strArr = s.split(" ");
-			        if (strArr.length == 0) {
-			            return "";
-			        }
-			        StringBuilder sb = new StringBuilder();
-			        for (int i = strArr.length - 1; i >= 0; i--) {
-			            if (!strArr[i].equals("")) {
-			                sb.append(strArr[i]).append(" ");
-			            }
-			        }
-			        return sb.toString().trim();
-			    }
-			    //No using split()
-			    public String reverseWords(String s) {
-			        StringBuilder res = new StringBuilder();
-			        for (int start = s.length() - 1; start >= 0; start--) {
-			            if (s.charAt(start) == ' ') {
-			                continue;
-			            }
-			            int end = start;
-			            while (start >= 0 && s.charAt(start) != ' ') {
-			                start--;
-			            }
-			            res.append(s.substring(start + 1, end + 1)).append(' ');
-			        }
-			        return res.toString().trim();
-			    }
-			}
-			//Reverse Word In A String II
-			public class Solution {
-				public class Solution {
-				    public void reverseWords(char[] s) {
-				        reverse(s, 0, s.length - 1);
-				        for (int i = 0, j = 0; j < s.length; j++) {
-				            if (s[j] == ' ') {
-				                reverse(s, i, j - 1);
-				                i = j + 1;
-				            }
-				            if (j == s.length - 1) {
-				                reverse(s, i, j);
-				            }
-				        }
-				    }
-				    public void reverse(char[] s, int start, int end) {
-				        while (start < end) {
-				            swap(s, start++, end--);
-				        }
-				    }
-				    public void swap(char[] s, int i, int j) {
-				        char temp = s[i];
-				        s[i] = s[j];
-				        s[j] = temp;
-				    }
-				}
-			}
+		5.1 Reverse And Rotate 
+				5.1.1 Reverse Word In A String I
+					//Using split()
+					public class Solution {
+						//Using split(), Reverse Word In A String I
+						public String reverseWords(String s) {
+					        if (s == null || s.length() == 0) {
+					            return "";
+					        }
+					        String[] strArr = s.split(" ");
+					        if (strArr.length == 0) {
+					            return "";
+					        }
+					        StringBuilder sb = new StringBuilder();
+					        for (int i = strArr.length - 1; i >= 0; i--) {
+					            if (!strArr[i].equals("")) {
+					                sb.append(strArr[i]).append(" ");
+					            }
+					        }
+					        return sb.toString().trim();
+					    }
+					    //No using split()
+					    public String reverseWords(String s) {
+					        StringBuilder res = new StringBuilder();
+					        for (int start = s.length() - 1; start >= 0; start--) {
+					            if (s.charAt(start) == ' ') {
+					                continue;
+					            }
+					            int end = start;
+					            while (start >= 0 && s.charAt(start) != ' ') {
+					                start--;
+					            }
+					            res.append(s.substring(start + 1, end + 1)).append(' ');
+					        }
+					        return res.toString().trim();
+					    }
+					}
+				5.1.2 Reverse Word In A String II
+					//Reverse Word In A String II
+					public class Solution {
+						public class Solution {
+						    public void reverseWords(char[] s) {
+						        reverse(s, 0, s.length - 1);
+						        for (int i = 0, j = 0; j < s.length; j++) {
+						            if (s[j] == ' ') {
+						                reverse(s, i, j - 1);
+						                i = j + 1;
+						            }
+						            if (j == s.length - 1) {
+						                reverse(s, i, j);
+						            }
+						        }
+						    }
+						    public void reverse(char[] s, int start, int end) {
+						        while (start < end) {
+						            swap(s, start++, end--);
+						        }
+						    }
+						    public void swap(char[] s, int i, int j) {
+						        char temp = s[i];
+						        s[i] = s[j];
+						        s[j] = temp;
+						    }
+						}
+					}
+				5.1.3 Rotate String / Rotate Array
+					/*
+						Given a string and an offset, rotate string by offset. (rotate from left to right)
+						Example
+							Given "abcdefg".
+							offset=0 => "abcdefg"
+							offset=1 => "gabcdef"
+							offset=2 => "fgabcde"
+							offset=3 => "efgabcd"
+						Challenge
+							Rotate in-place with O(1) extra memory.
+					*/
+					/*
+						Key point: 	从转动的位置开始将两个部分反转，然后再将整个字符串反转即可
+									(1) reverse(str, 0, str.length - offset - 1);
+							        (2) reverse(str, str.length - offset, str.length - 1);
+							        (3) reverse(str, 0, str.length - 1);
+							        (4) finally we can get a array which was already moved from left to right with offset position
+					*/
+					public class Solution {
+					    public void rotateString(char[] str, int offset) {
+					        if (str == null || str.length == 0) {
+					            return;
+					        }
+					        offset = offset % str.length;
+					        reverse(str, 0, str.length - offset - 1);
+					        reverse(str, str.length - offset, str.length - 1);
+					        reverse(str, 0, str.length - 1);
+					    }
+					    public void reverse(char[] str, int i, int j) {
+					        while (i < j) {
+					            swap(str, i++, j--);
+					        }
+					    }
+					    public void swap(char[] str, int i, int j) {
+					        char temp = str[i];
+					        str[i] = str[j];
+					        str[j] = temp;
+					    }
+					}
+				5.1.4 Scramble String
+					/*
+						We say that "rgeat" is a scrambled string of "great".
+						We say that "rgtae" is a scrambled string of "great".
+						Given two strings s1 and s2 of the same length, determine if s2 is a scrambled string of s1.
+					*/
+					//Solution1: Recursive
+					public class Solution {
+					    public boolean isScramble(String s1, String s2) {
+					        if (s1.length() != s2.length()) {
+					            return false;
+					        }
+					        if (s1.equals(s2)) {
+					            return true;
+					        }
+					        int[] count = new int[256];
+					        for (int i = 0; i < s1.length(); i++) {
+					            count[s1.charAt(i) - '0']++;
+					            count[s2.charAt(i) - '0']--;
+					        }
+					        for (int i = 0; i < count.length; i++) {
+					            if (count[i] != 0) {
+					                return false;
+					            }
+					        }
+					        for (int i = 1; i < s1.length(); i++) {
+					            if (isScramble(s1.substring(0, i), s2.substring(0, i)) && 
+					                isScramble(s1.substring(i), s2.substring(i))) {
+					                return true;
+					            }
+					            if (isScramble(s1.substring(0, i), s2.substring(s2.length() - i)) && 
+					                isScramble(s1.substring(i), s2.substring(0, s2.length() - i))) {
+					                return true;
+					            }
+					        }
+					        return false;
+					    }
+					}
+				5.1.5 Interleaving String
+					/*
+						Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+						For example,
+						Given:
+						s1 = "aabcc",
+						s2 = "dbbca",
+						When s3 = "aadbbcbcac", return true.
+						When s3 = "aadbbbaccc", return false.
+					*/
+					public class Solution {
+					    public boolean isInterleave(String s1, String s2, String s3) {
+					        int m = s1.length();
+					        int n = s2.length();
+					        if (m + n != s3.length()) {
+					            return false;
+					        }
+					        boolean[][] dp = new boolean[m + 1][n + 1];
+					        dp[0][0] = true;
+					        for (int i = 1; i <= m; i++) {
+					            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+					        }
+					        for (int i = 1; i <= n; i++) {
+					            dp[0][i] = dp[0][i - 1] && s2.charAt(i - 1) == s3.charAt(i - 1);
+					        }
+					        for (int i = 1; i <= m; i++) {
+					            for (int j = 1; j <= n; j++) {
+					                dp[i][j] = dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(i + j - 1) ||
+					                           dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1);
+					            }
+					        }
+					        return dp[m][n];
+					    }
+					}
 
 		5.2 Length Of Last Word
 			/*
@@ -876,9 +1182,78 @@
 			        return res;
 			    }
 			}
-// Your Codec object will be instantiated and called as such:
-// Codec codec = new Codec();
-// codec.decode(codec.encode(strs));
+		5.3 Space Replacement
+			/*
+				Write a method to replace all spaces in a string with %20. The string is given in a characters array, 
+				you can assume it has enough space for replacement and you are given the true length of the string.
+				You code should also return the new length of the string after replacement.
+				Example
+					Given "Mr John Smith", length = 13.
+					The string after replacement should be "Mr%20John%20Smith".
+				Challenge
+					Do it in-place.
+			*/
+			public class Solution {
+			    public int replaceBlank(char[] string, int length) {
+			        int realLen = length;
+			        for (int i = 0; i < length; i++) {
+			            if (string[i] == ' ') {
+			                realLen += 2;
+			            }
+			        }
+			        int index = realLen;
+			        for (int i = length - 1; i>= 0; i--) {
+			            if (string[i] == ' ') {
+			                string[--index] = '0';
+			                string[--index] = '2';
+			                string[--index] = '%';
+			            } else {
+			                string[--index] = string[i];
+			            }
+			        }
+			        return realLen;
+			    }
+			}
+		5.4 ZigZag Conversion
+			/*
+				The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: 
+				(you may want to display this pattern in a fixed font for better legibility)
+					P   A   H   N
+					A P L S I I G
+					Y   I   R
+				And then read line by line: "PAHNAPLSIIGYIR"
+				Write the code that will take a string and make this conversion given a number of rows:
+				
+				string convert(string text, int nRows);
+				convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
+			*/
+			public class Solution {
+			    public String convert(String s, int numRows) {
+			        char[] c = s.toCharArray();
+			        int len = s.length();
+			        StringBuilder[] sb = new StringBuilder[numRows];
+			        for (int i = 0; i < sb.length; i++) {
+			            sb[i] = new StringBuilder();
+			        }
+			        int i = 0;
+			        while (i < len) {
+			            for (int index = 0; index < numRows && i < len; index++) {
+			                sb[index].append(c[i++]);
+			            }
+			            for (int index = numRows - 2; index >= 1 && i < len; index--) {
+			                sb[index].append(c[i++]);
+			            }
+			        }
+			        for (int index = 1; index < sb.length; index++) {
+			            sb[0].append(sb[index]);
+			        }
+			        return sb[0].toString();
+			    }
+			}
+
+		
+
+
 
 6. File Read And Write
 		6.1 Read N Characters Given Read4 I
@@ -1093,5 +1468,196 @@
 				        }
 				    } 
 				}
+
+9. Slide Window Problem
+		9.1 Longest Substring With At Most K Distinct Characters
+			//O (n * k)
+			public class Solution {
+			    public int lengthOfLongestSubstringTwoDistinct(String s) {
+			        if (s == null || s.length() == 0) {
+			            return 0;
+			        }
+			        HashMap<Character, Integer> map = new HashMap<>();
+			        int maxLen = 0;
+			        int start = 0;
+			        for (int i = 0; i < s.length(); i++) {
+			            char c = s.charAt(i);
+			            if (!map.containsKey(c) && map.size() == K) {
+			                int leftCharPos = s.length();
+			                char leftChar = ' ';
+			                for (char ch : map.keySet()) {
+			                    if (map.get(ch) < leftCharPos) {
+			                        leftCharPos = map.get(ch);
+			                        leftChar = ch;
+			                    }
+			                }
+			                start = leftCharPos + 1;
+			                map.remove(leftChar);
+			            }
+			            map.put(c, i);
+			            maxLen = Math.max(maxLen, i - start + 1);
+			        }
+			        return maxLen;
+			    }
+			}
+		9.2 Longest Substring Without Repeating Characters
+			//O(n)
+			public class Solution {
+			    public int lengthOfLongestSubstring(String s) {
+			        if (s == null || s.length() == 0) {
+			            return 0;
+			        }
+			        int left = 0;
+			        int right = 0;
+			        int maxLen = 0;
+			        HashSet<Character> set = new HashSet<>();
+			        while (right < s.length()) {
+			            char c = s.charAt(right);
+			            if (set.contains(c)) {
+			                while (s.charAt(left) != c) {
+			                    set.remove(s.charAt(left));
+			                    left++;
+			                }
+			                left++;
+			            } else {
+			                set.add(c);
+			                maxLen = Math.max(maxLen, right - left + 1);
+			            }
+			            right++;
+			        }
+			        return Math.max(maxLen, right - 1 - left + 1);
+			    }
+			}
+		9.3 Substring With Concatenation Of All Words
+			/*
+				You are given a string, s, and a list of words, words, that are all of the same length. 
+				Find all starting indices of substring(s) in s that is a concatenation of each word in words exactly once and without any intervening characters.
+
+				For example, given:
+					s: "barfoothefoobarman"
+					words: ["foo", "bar"]
+
+				You should return the indices: [0,9].
+				(order does not matter).
+			*/
+			public class Solution {
+			    public List<Integer> findSubstring(String s, String[] words) {
+			        List<Integer> res = new ArrayList<Integer>();
+			        if (s == null || s.length() == 0 || words == null || words.length == 0) {
+			            return res;
+			        }
+			        int wordLen = words[0].length();
+			        int arrLen = words.length;
+			        HashMap<String, Integer> map = new HashMap<>();
+			        for (String word : words) {
+			            map.put(word, !map.containsKey(word) ? 1 : map.get(word) + 1);
+			        }
+			        for (int i = 0; i < wordLen; i++) {
+			            HashMap<String, Integer> curMap = new HashMap<>();
+			            int count = 0;
+			            int left = i;
+			            for (int j = i; j <= s.length() - wordLen; j += wordLen) {
+			                String str = s.substring(j, j + wordLen);
+			                if (map.containsKey(str)) {
+			                    curMap.put(str, !curMap.containsKey(str) ? 1 : curMap.get(str) + 1);
+			                    if (curMap.get(str) <= map.get(str)) {
+			                        count++;
+			                    } else {
+			                        while (curMap.get(str) > map.get(str)) {
+			                            String temp = s.substring(left, left + wordLen);
+			                            if (curMap.containsKey(temp)) {
+			                                curMap.put(temp, curMap.get(temp) - 1);
+			                                if (curMap.get(temp) < map.get(temp)) {
+			                                    count--;
+			                                }
+			                            }
+			                            left += wordLen;
+			                        }
+			                    }
+			                    if (count == words.length) {
+			                        res.add(left);
+			                        String temp = s.substring(left, left + wordLen);
+			                        if (curMap.containsKey(temp)) {
+			                            curMap.put(temp, curMap.get(temp) - 1);
+			                        }
+			                        count--;
+			                        left += wordLen;
+			                    }
+			                } else {
+			                    curMap.clear();
+			                    count = 0;
+			                    left = j + wordLen;
+			                }
+			            }
+			        }
+			        return res;
+			    }
+			}
+	9.4	Minimum Window Substring
+		/*
+			Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+			For example,
+			S = "ADOBECODEBANC"
+			T = "ABC"
+			Minimum window is "BANC".
+
+			Note:
+			If there is no such window in S that covers all characters in T, return the empty string "".
+
+			If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+		*/
+		public class Solution {
+			public String minWindow(String S, String T) {
+		        String res = "";
+		        if (S == null || S.length() == 0 || T == null || T.length() == 0)
+		            return res;
+		        HashMap<Character, Integer> dict = new HashMap<Character, Integer>();
+		        for (int i = 0; i < T.length(); i++) {
+		            if (!dict.containsKey(T.charAt(i)))
+		                dict.put(T.charAt(i), 1);
+		            else 
+		                dict.put(T.charAt(i), dict.get(T.charAt(i)) + 1);
+		        }
+		        //count record the matched characterS of String T
+		        int count = 0;
+		        //left record the left position of the slider window
+		        int left = 0;
+		        //record the minimum length of matched window
+		        int minLen = S.length() + 1;
+		        //the start position of matched window
+		        int minStart = 0;
+		        //traverse the String S ,begin from the right window position
+		        for (int right = 0; right < S.length(); right ++) {
+		            //if the traverse character -- S.charAt(right) is matched with the hashmap(dict)
+		            if (dict.containsKey(S.charAt(right))) {
+		                //minus the amount of the matched character in the dict
+		                dict.put(S.charAt(right), dict.get(S.charAt(right)) - 1);
+		                //after minus, the amount of the matched character is still >= 0, means this is a right matched character
+		                if (dict.get(S.charAt(right)) >= 0)
+		                    count++;
+		                //if count == T.length(), means we find a matched window, so we need to check the length whether is min or not
+		                while (count == T.length()) {
+		                    if (right - left + 1 < minLen) {
+		                        minLen = right - left + 1;
+		                        minStart = left;
+		                    }
+		                    //We need to move the left side of the window
+		                    //if the character of left position is contains in the dict, we need to plus 1 with the value,
+		                    if (dict.containsKey(S.charAt(left))) {
+		                        dict.put(S.charAt(left), dict.get(S.charAt(left)) + 1);
+		                        //if the dict value of left charAt is > 0 ,means cause we move the left side of the window so produce a mismatched
+		                        if (dict.get(S.charAt(left)) > 0)
+		                            count--;
+		                    }
+		                    left++; //keep move the left position unless the count is  != T.length();
+		                }
+		            }
+		        }
+		        if (minLen > S.length())
+		            return "";
+		        return S.substring(minStart, minStart + minLen);
+		    }
+		}
+
 
 
