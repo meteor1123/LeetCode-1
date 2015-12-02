@@ -12,6 +12,11 @@
 	You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
 */
 
+/*
+    O(1) amortized for each operation
+    Each element only ever gets moved like that once, though, and only after we already spent time pushing it, 
+    so the overall amortized cost for each operation is O(1).
+*/
 class MyQueue {
     Stack<Integer> input = new Stack();
     Stack<Integer> output = new Stack();
@@ -35,7 +40,6 @@ class MyQueue {
         }
         return output.peek();
     }
-
     // Return whether the queue is empty.
     public boolean empty() {
         return input.isEmpty() && output.isEmpty();

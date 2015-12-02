@@ -42,7 +42,6 @@ public class Solution {
         if (words == null || words.length == 0) {
             return 0;
         }
-        int start = 0;
         int minLen = words.length;
         int indexOne = -1;
         int indexTwo = -1;

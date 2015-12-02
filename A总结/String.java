@@ -1182,7 +1182,70 @@
 			        return res;
 			    }
 			}
-		5.3 Space Replacement
+		5.4 Decode Ways
+			//DP
+			public class Solution {
+			    public int numDecodings(String s) {
+			        if (s == null || s.length() == 0) {
+			            return 0;
+			        }
+			        int[] dp = new int[s.length() + 1];
+			        dp[0] = 1;
+			        if (isValid(s.substring(0, 1))) {
+			            dp[1] = 1;
+			        } else {
+			            dp[1] = 0;
+			        }
+			        for (int i = 2; i <= s.length(); i++) {
+			            if (isValid(s.substring(i - 1, i))) {
+			                dp[i] += dp[i - 1];
+			            }
+			            if (isValid(s.substring(i - 2, i))) {
+			                dp[i] += dp[i - 2];
+			            }
+			        }
+			        return dp[s.length()];
+			    }
+			    public boolean isValid(String s) {
+			        if (s.charAt(0) == '0') {
+			            return false;
+			        }
+			        int code = Integer.parseInt(s);
+			        return code <= 26 && code >= 1;
+			    }
+			}
+			//Recursive
+			public class Solution {
+			    int num;
+			    public int numDecodings(String s) {
+			        if (s.length() == 0) {
+			            return 0;
+			        }
+			        num = 0;
+			        dfs(s);
+			        return num;
+			    }
+			    
+			    public void dfs(String s){
+			        if (s.length() == 0) {
+			            num++;
+			        }
+			        for(int i = 0; i <= 1 && i < s.length(); i++){
+			            if (isValid(s.substring(0, i + 1))) {
+			                dfs(s.substring(i + 1));
+			            }
+			        }
+			    }
+			    
+			    public boolean isValid(String s){
+			        if (s.charAt(0) == '0') {
+			            return false;
+			        }
+			        int code = Integer.parseInt(s);
+			        return code >= 1 && code <= 26;
+			    }
+			}
+		5.5 Space Replacement
 			/*
 				Write a method to replace all spaces in a string with %20. The string is given in a characters array, 
 				you can assume it has enough space for replacement and you are given the true length of the string.
@@ -1214,7 +1277,7 @@
 			        return realLen;
 			    }
 			}
-		5.4 ZigZag Conversion
+		5.6 ZigZag Conversion
 			/*
 				The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: 
 				(you may want to display this pattern in a fixed font for better legibility)
@@ -1399,6 +1462,71 @@
 			        return false;
 			    }
 			}
+		7.3 Shortest Word Distance 
+			7.3.1 Shortest Word Distance I
+				/*
+					For example,
+						Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
+
+						Given word1 = “coding”, word2 = “practice”, return 3.
+						Given word1 = "makes", word2 = "coding", return 1.
+					Note:
+					You may assume that word1 does not equal to word2, and word1 and word2 are both in the list.
+				*/
+				public class Solution {
+				    public int shortestDistance(String[] words, String word1, String word2) {
+				        if (words == null || words.length == 0) {
+				            return 0;
+				        }
+				        int start = -1;
+				        int end = -1;
+				        int minLen = Integer.MAX_VALUE;
+				        for (int i = 0; i < words.length; i++) {
+				            if (words[i].equals(word1)) {
+				                start = i;
+				            } else if (words[i].equals(word2)) {
+				                end = i;
+				            }
+				            if (start != -1 && end != -1) {
+				                minLen = Math.min(minLen, Math.abs(end - start));
+				            }
+				        }
+				        return minLen;
+				    }
+				}
+			7.3.2 Shortest Word Distance II
+				//需要design，以适应可以多次调用查询不同word之间的最短距离
+				public class WordDistance {
+				    private HashMap<String, ArrayList<Integer>> map;
+				    public WordDistance(String[] words) {
+				        map = new HashMap<String, ArrayList<Integer>>();
+				        for (int i = 0; i < words.length; i++) {
+				            if (!map.containsKey(words[i])) {
+				                map.put(words[i], new ArrayList<>());
+				            }
+				            map.get(words[i]).add(i);
+				        }
+				    }
+				    //从O(m * n) 缩减到O(m + n)的关键在于要意识到，两个list里面的下标都已经是排好序的了，类似merge sort的merge方法
+				    public int shortest(String word1, String word2) {
+				        List<Integer> list1 = map.get(word1);
+				        List<Integer> list2 = map.get(word2);
+				        int minLen = Integer.MAX_VALUE;
+				        int i = 0;
+				        int j = 0;
+				        while (i < list1.size() && j < list2.size()) {
+				            minLen = Math.min(minLen, Math.abs(list1.get(i) - list2.get(j)));
+				            if (list1.get(i) > list2.get(j)) {
+				                j++;
+				            } else {
+				                i++;
+				            }
+				        }
+				        return minLen;
+				    }
+				}
+
+			7.3.3 Shortest Word Distance III
 
 
 8. String Matching
@@ -1593,71 +1721,61 @@
 			        return res;
 			    }
 			}
-	9.4	Minimum Window Substring
-		/*
-			Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
-			For example,
-			S = "ADOBECODEBANC"
-			T = "ABC"
-			Minimum window is "BANC".
+		9.4	Minimum Window Substring
+			/*
+				Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+				For example,
+				S = "ADOBECODEBANC"
+				T = "ABC"
+				Minimum window is "BANC".
 
-			Note:
-			If there is no such window in S that covers all characters in T, return the empty string "".
-
-			If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
-		*/
-		public class Solution {
-			public String minWindow(String S, String T) {
-		        String res = "";
-		        if (S == null || S.length() == 0 || T == null || T.length() == 0)
-		            return res;
-		        HashMap<Character, Integer> dict = new HashMap<Character, Integer>();
-		        for (int i = 0; i < T.length(); i++) {
-		            if (!dict.containsKey(T.charAt(i)))
-		                dict.put(T.charAt(i), 1);
-		            else 
-		                dict.put(T.charAt(i), dict.get(T.charAt(i)) + 1);
-		        }
-		        //count record the matched characterS of String T
-		        int count = 0;
-		        //left record the left position of the slider window
-		        int left = 0;
-		        //record the minimum length of matched window
-		        int minLen = S.length() + 1;
-		        //the start position of matched window
-		        int minStart = 0;
-		        //traverse the String S ,begin from the right window position
-		        for (int right = 0; right < S.length(); right ++) {
-		            //if the traverse character -- S.charAt(right) is matched with the hashmap(dict)
-		            if (dict.containsKey(S.charAt(right))) {
-		                //minus the amount of the matched character in the dict
-		                dict.put(S.charAt(right), dict.get(S.charAt(right)) - 1);
-		                //after minus, the amount of the matched character is still >= 0, means this is a right matched character
-		                if (dict.get(S.charAt(right)) >= 0)
-		                    count++;
-		                //if count == T.length(), means we find a matched window, so we need to check the length whether is min or not
-		                while (count == T.length()) {
-		                    if (right - left + 1 < minLen) {
-		                        minLen = right - left + 1;
-		                        minStart = left;
-		                    }
-		                    //We need to move the left side of the window
-		                    //if the character of left position is contains in the dict, we need to plus 1 with the value,
-		                    if (dict.containsKey(S.charAt(left))) {
-		                        dict.put(S.charAt(left), dict.get(S.charAt(left)) + 1);
-		                        //if the dict value of left charAt is > 0 ,means cause we move the left side of the window so produce a mismatched
-		                        if (dict.get(S.charAt(left)) > 0)
-		                            count--;
-		                    }
-		                    left++; //keep move the left position unless the count is  != T.length();
-		                }
-		            }
-		        }
-		        if (minLen > S.length())
-		            return "";
-		        return S.substring(minStart, minStart + minLen);
-		    }
-		}
+				Note:
+				If there is no such window in S that covers all characters in T, return the empty string "".
+				If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+			*/
+			public class Solution {
+			    public String minWindow(String s, String t) {
+			        String res = "";
+			        if (s == null || s.length() == 0 || t == null || t.length() == 0) {
+			            return res;
+			        }
+			        HashMap<Character, Integer> map = new HashMap<>();
+			        for (char c : t.toCharArray()) {
+			            map.put(c, map.containsKey(c) ? map.get(c) + 1 : 1);
+			        }
+			        int minStart = 0;
+			        int minLen = s.length() + 1;
+			        int count = 0;
+			        int left = 0;
+			        for (int right = 0; right < s.length(); right++) {
+			            char rightChar = s.charAt(right);
+			            if (map.containsKey(rightChar)) {
+			                map.put(rightChar, map.get(rightChar) - 1);
+			                if (map.get(rightChar) >= 0) {
+			                    count++;
+			                }
+			                while (count == t.length()) {
+			                    if (right - left + 1 < minLen) {
+			                        minLen = right - left + 1;
+			                        minStart = left;
+			                    }
+			                    char leftChar = s.charAt(left);
+			                    if (map.containsKey(leftChar)) {
+			                        map.put(leftChar, map.get(leftChar) + 1);
+			                        if (map.get(leftChar) > 0) {
+			                            count--;
+			                        }
+			                    }
+			                    left++;
+			                }
+			            }
+			        }
+			        if (minLen > s.length()) {
+			            return "";
+			        }
+			        return s.substring(minStart, minStart + minLen);
+			    }
+			}
 
 
 
