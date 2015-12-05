@@ -49,36 +49,6 @@ public class Solution {
         return false;
     }
 
-    //Solution2
-    public boolean isHappy(int n) {
-        if (n <= 0) {
-            return false;
-        }
-        if (n == 1) {
-            return true;
-        }
-        HashSet<Integer> set = new HashSet<Integer>();
-        set.add(n);
-        int newValue = 0;
-        while (n > 0) {
-            newValue += Math.pow(n % 10, 2) ;
-            n = n / 10;
-            if (n == 0) {
-                if (set.contains(newValue)) {
-                    return false;
-                } else if (newValue == 1) {
-                    return true;
-                } else {
-                    set.add(newValue);
-                    n = newValue;
-                    newValue = 0;
-                }
-            }
-        } 
-        return false;
-    }
-}
-
 //Solution3
 public class Solution {
     public boolean isHappy(int n) {

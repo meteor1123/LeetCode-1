@@ -47,6 +47,33 @@
 		保证两个peek一定是median（size相等时,偶数长度）
 		large的peek是median（size不等时，奇数长度）
 */
+
+//Solution1 prefer
+class MedianFinder {
+
+    // Adds a number into the data structure.
+    PriorityQueue<Integer> min = new PriorityQueue<>();
+    PriorityQueue<Integer> max = new PriorityQueue<>(1000, Collections.reverseOrder());
+    public void addNum(int num) {
+        max.offer(num);
+        min.offer(max.poll());
+        if (max.size() < min.size()) {
+            max.offer(min.poll());
+        }
+    }
+
+    // Returns the median of current data stream
+    public double findMedian() {
+        if (max.size() == min.size()) {
+            return (max.peek() + min.peek()) / 2.0;
+        } else {
+            return max.peek();
+        }
+    }
+};
+
+
+//Solution2 stefan, store negative
 class MedianFinder {
 	 private Queue<Long> small = new PriorityQueue<Long>();
 	 private Queue<Long> large = new PriorityQueue<Long>(); 

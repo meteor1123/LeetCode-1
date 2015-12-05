@@ -14,9 +14,9 @@
 
     该数据结构支持如下操作：
 
-    1. floor()方法返set中≤给定元素的最大元素；如果不存在这样的元素，则返回 null。
+    1. floor()方法返set中不大于给定元素的最大元素；如果不存在这样的元素，则返回 null。
 
-    2. ceiling()方法返回set中≥给定元素的最小元素；如果不存在这样的元素，则返回 null。
+    2. ceiling()方法返回set中不小于给定元素的最小元素；如果不存在这样的元素，则返回 null。
 */
 import java.util.SortedSet;
 
@@ -77,7 +77,7 @@ public class Solution {
         因此每当能到map.keySet().size() == k这个判断 就意味我们就要从hashmap中移除num[i - k], 这样在后面put元素进来，并进行下一次循环的时候保证在范围k内。
 
 */
-//Solution time O(n)! Best!
+//Solution3 time O(n)! Best!
 public class Solution {
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
         if (k < 1 || t < 0) {
@@ -105,5 +105,45 @@ public class Solution {
             map.put(bucket, remappedNum);
         }
         return false;
+    }
+}
+
+//Solution4 上面的简化版
+public class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if (t < 0) {
+            return false;
+        }
+        HashMap<Integer, Integer> map = new HashMap<>();//key存储的是nums[i]的值，value是下标
+        t++;
+        for (int i = 0; i < nums.length; i++) {
+            //距离只要超过k就移除最左边界限的数
+            if (i > k) {
+                map.remove(getID(nums[i - k - 1], t));
+            }
+            int m = getID(nums[i], t);
+            //只要存在duplicate则一定会在下标范围k以内，因为上一句已确保
+            if (map.containsKey(m)) {
+                return true;
+            }
+            if (map.containsKey(m - 1) && Math.abs(nums[i] - map.get(m - 1)) < t) {
+                return true;
+            }
+            if (map.containsKey(m + 1) && Math.abs(nums[i] - map.get(m + 1)) < t) {
+                return true;
+            }
+            map.put(m, nums[i]);
+        }
+        return false;
+    }
+    //ID是根据数组的值计算bucket，而不是下标！
+    private int getID(int i, int t) {
+        return i < 0 ? (i + 1)/t - 1 : i / t;
+        //为什么要这么做？因为在java中 -3/5 == 0 而不是-1
+        /*
+            比如t = 4， 则 （-5，-4， -3， -2， -1） 在bucket为 -1的桶里， 
+                         （0， 1， 2， 3， 4）在bucket为0的桶里， 
+                          （-10， -9， -8， -7， -6） 在bucket为-2 的桶里，   i < 0 == (i + 1) / t - 1, 解决负数时的索引问题
+        */
     }
 }

@@ -17,23 +17,24 @@ public class Solution {
         }
         return false;
     }
-    //Solution2 by myself
+}
+
+//Solution2 by myself
+public class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         if (nums == null || nums.length <= 1) {
             return false;
         }
-        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            if (!hm.containsKey(nums[i])) {
-                hm.put(nums[i], i);
-            } else {
-                if (i - hm.get(nums[i]) <= k) {
+            if (map.containsKey(nums[i])) {
+                if (i - map.get(nums[i]) <= k) {
                     return true;
-                } else {
-                    hm.put(nums[i], i);
                 }
             }
+            map.put(nums[i], i);
         }
         return false;
     }
 }
+

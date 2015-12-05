@@ -62,6 +62,8 @@
 
 	PriorityQueue minHeap = new PriorityQueue();
 	PriorityQueue maxHeap = new PriorityQueue(size, new MyComparator());
+
+	PriorityQueue<Integer> maxHeap = new PriorityQueue<>(1000, Collections.reverseOrder());
 */
 
 	/*

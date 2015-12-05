@@ -17,7 +17,6 @@ public class Solution {
     public List<String> findStrobogrammatic(int n) {
         return helper(n, n);
     }
-    
     List<String> helper(int n, int m) {
         if (n == 0) {
             // ArrayList<String> tempRes = new ArrayList<String>();
@@ -31,8 +30,7 @@ public class Solution {
             // tempRes.add("8");
             return new ArrayList<String>(Arrays.asList("0", "1", "8"));//asList 的只能读，不能改
         }
-        
-        List<String> list = helper(n - 2, m);
+        List<String> list = helper(n - 2, m);//why n - 2? since every time we add two number, one from head,the other from end
         List<String> res = new ArrayList<String>();
         for (int i = 0; i < list.size(); i++) {
             String s = list.get(i);

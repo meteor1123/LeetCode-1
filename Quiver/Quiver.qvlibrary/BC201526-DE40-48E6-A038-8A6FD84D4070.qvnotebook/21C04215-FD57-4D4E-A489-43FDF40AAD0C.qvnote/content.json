@@ -1,0 +1,32 @@
+{
+  "title": "Constructor",
+  "cells": [
+    {
+      "type": "text",
+      "data": "<h2 style=\"margin-top: 30px; color: rgb(51, 51, 51); font-family: Helvetica;\">Calling Constructors in Superclasses</h2><div><p><span style=\"font-family: Helvetica; font-size: 16px; color: rgb(51, 51, 51);\">In Java a class can ex</span><font face=\"Helvetica\" size=\"3\">tend another class. When a class extends a<font>nother class it is also said to \"inherit\" from the class it extends. T</font>he class </font><span style=\"font-family: Helvetica; font-size: 16px;\">that extends is called the subclass, and the class being extended is called the superclass. Inheritance is covered in more detail in my tutorial about&nbsp;<a href=\"http://tutorials.jenkov.com/java/inheritance.html\" style=\"color: rgb(85, 26, 139); text-decoration: none; font-weight: 700;\">inheritance in Java</a>.</span></p><p style=\"color: rgb(51, 51, 51); font-family: Helvetica; font-size: 16px;\">A class that extends another class does not inherit its constructors. However, the subclass must call a constructor in the superclass inside one of the subclass constructors!</p><p style=\"color: rgb(51, 51, 51); font-family: Helvetica; font-size: 16px;\">Look at the following two Java classes. The class Car extends (inherits from) the class Vehicle.</p></div>"
+    },
+    {
+      "type": "code",
+      "language": "java",
+      "data": "public class Vehicle {\n    private String regNo = null;\n\n    public Vehicle(String no) {\n        this.regNo = no;\n    }\n}"
+    },
+    {
+      "type": "code",
+      "language": "java",
+      "data": "public class Car extends Vehicle {\n    private String brand = null;\n\n    public Car(String br, String no) {\n        super(no);\n        this.brand = br;\n    }\n}"
+    },
+    {
+      "type": "text",
+      "data": "<span style=\"color: rgb(51, 51, 51); font-family: Helvetica; font-size: 16px;\">Notice the constructor in the Car class. It calls the constructor in the superclass using this Java statement:</span>"
+    },
+    {
+      "type": "code",
+      "language": "java",
+      "data": "super(no);"
+    },
+    {
+      "type": "text",
+      "data": "<span style=\"color: rgb(51, 51, 51); font-family: Helvetica; font-size: 16px;\">Using the keyword&nbsp;</span><code style=\"font-family: Courier; font-size: 16px; color: rgb(51, 51, 51);\">super</code><span style=\"color: rgb(51, 51, 51); font-family: Helvetica; font-size: 16px;\">&nbsp;refers to the superclass of the class using the&nbsp;</span><code style=\"font-family: Courier; font-size: 16px; color: rgb(51, 51, 51);\">super</code><span style=\"color: rgb(51, 51, 51); font-family: Helvetica; font-size: 16px;\">&nbsp;keyword. When&nbsp;</span><code style=\"font-family: Courier; font-size: 16px; color: rgb(51, 51, 51);\">super</code><span style=\"color: rgb(51, 51, 51); font-family: Helvetica; font-size: 16px;\">&nbsp;keyword is followed by parentheses like it is here, it refers to a constructor in the superclass. In this case it refers to the constructor in the Vehicle class. Because Car extends Vehicle, the Car constructors must all call a constructor in the Vehicle.</span>"
+    }
+  ]
+}

@@ -11,38 +11,26 @@
 /*
 	Using  two stack,one stack for store normal element, the other store the min elements.
 */
+//Solution1 : Two Stack
 class MinStack {
-
-    //Code Ganker
-    ArrayList<Integer> stack = new ArrayList<Integer>();
-    ArrayList<Integer> minStack = new ArrayList<Integer>();
+    Stack<Integer> stack = new Stack<>();
+    Stack<Integer> minStack = new Stack<>();
     public void push(int x) {
-        stack.add(x);
-        if (minStack.isEmpty() || minStack.get(minStack.size() - 1) >= x)
-            minStack.add(x);
+        stack.push(x);
+        if (minStack.isEmpty() || minStack.peek() >= x) {
+            minStack.push(x);
+        }
     }
-
     public void pop() {
-        if (stack.isEmpty())
-            return ;
-        int elem = stack.remove(stack.size() - 1);
-        if (!minStack.isEmpty() && elem == minStack.get(minStack.size() - 1))
-            minStack.remove(minStack.size() - 1);
+        int peek = stack.pop();
+        if (minStack.peek() == peek) {
+            minStack.pop();
+        }
     }
-
     public int top() {
-        if (!stack.isEmpty())
-            return stack.get(stack.size() - 1);
-        return 0;
+        return stack.peek();
     }
-
     public int getMin() {
-        if (!minStack.isEmpty())
-            return minStack.get(minStack.size() - 1);
-        return 0;
+        return minStack.peek();
     }
-
-
-    //Clean book
-    
 }

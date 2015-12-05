@@ -101,24 +101,26 @@
 					  [3],
 					  [4,5,6]
 					]
-
 					By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,2,3,4,5,6].
 				*/
+				/*
+					思路： 1. 
+				*/
 				public class Vector2D {
-				    Iterator<List<Integer>> i;
-				    Iterator<Integer> j;
+				    Iterator<List<Integer>> listIter;
+				    Iterator<Integer> numIter;
 				    public Vector2D(List<List<Integer>> vec2d) {
-				        i = vec2d.iterator();
+				        listIter = vec2d.iterator();
 				    }
 				    public int next() {
 				        hasNext();
-				        return j.next();
+				        return numIter.next();
 				    }
 				    public boolean hasNext() {
-				        while ((j == null || !j.hasNext()) && i.hasNext()) {
-				            j = i.next().iterator();
+				        while ((numIter == null || !numIter.hasNext()) && listIter.hasNext()) {
+				            numIter = listIter.next().iterator();
 				        }
-				        return j != null && j.hasNext();
+				        return numIter != null && numIter.hasNext();
 				    }
 				}
 		1.2 Iterator Interface
@@ -238,8 +240,73 @@
 			        return queue.isEmpty();
 			    }
 			}
+		2.3 Min Stack
+			//Solution1: Two Stack
+				class MinStack {
+				    Stack<Integer> stack = new Stack<>();
+				    Stack<Integer> minStack = new Stack<>();
+				    public void push(int x) {
+				        stack.push(x);
+				        if (minStack.isEmpty() || minStack.peek() >= x) {
+				            minStack.push(x);
+				        }
+				    }
+				    public void pop() {
+				        int peek = stack.pop();
+				        if (minStack.peek() == peek) {
+				            minStack.pop();
+				        }
+				    }
+				    public int top() {
+				        return stack.peek();
+				    }
+				    public int getMin() {
+				        return minStack.peek();
+				    }
+				}
+			//Solution2: One Stack, Store the value and the min's diff
+				class MinStack {
+				    int min;
+				    Stack<Integer> stack;
+				    public MinStack () {
+				        stack = new Stack<>();
+				    }
+				    public void push(int x) {
+				        if (stack.isEmpty()) {
+				            stack.push(0);
+				            min = x;
+				        } else {
+				            stack.push(x - min);
+				            if (x < min) {
+				                min = x;
+				            }
+				        }
+				    }
+				    public void pop() {
+				        if (stack.isEmpty()) {
+				            return;
+				        }
+				        int pop = stack.pop();
+				        if (pop < 0) {
+				            min = min - pop;
+				        }
+				    }
+				    public int top() {
+				        int top = stack.peek();
+				        if (top > 0) {
+				            return top + min;
+				        } else {
+				            return min;
+				        }
+				    }
+				    public int getMin() {
+				        return min;
+				    }
+				}
 
-3. String And Word Design
+
+
+3. String, Word, Other Data Structure Design
 		3.1 Shortest Word Distance II 
 			/*
 				Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
@@ -277,5 +344,45 @@
 			    }
 			}
 
+		3.2 Two Sum III - Data Structure Design
+			public class TwoSum {
+			    // Add the number to an internal data structure.
+			    HashMap<Integer, Integer> map = new HashMap<>();
+				public void add(int number) {
+				    map.put(number, map.containsKey(number) ? map.get(number) + 1 : 1);
+				}
+			    // Find if there exists any pair of numbers which sum is equal to the value.
+				public boolean find(int value) {
+				    for (int key : map.keySet()) {
+				        if (map.containsKey(value - key)) {
+				            if (map.get(value - key) >= 2 || (map.get(value - key) == 1 && key != value - key)) {
+				                return true;
+				            }
+				        }
+				    }
+				    return false;
+				}
+			}
+		3.3 Find Median From Data Stream
+			class MedianFinder {
+			    // Adds a number into the data structure.
+			    PriorityQueue<Integer> min = new PriorityQueue<>();
+			    PriorityQueue<Integer> max = new PriorityQueue<>(1000, Collections.reverseOrder());
+			    public void addNum(int num) {
+			        max.offer(num);
+			        min.offer(max.poll());
+			        if (max.size() < min.size()) {
+			            max.offer(min.poll());
+			        }
+			    }
+			    // Returns the median of current data stream
+			    public double findMedian() {
+			        if (max.size() == min.size()) {
+			            return (max.peek() + min.peek()) / 2.0;
+			        } else {
+			            return max.peek();
+			        }
+			    }
+			};
 
 			
