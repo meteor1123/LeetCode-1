@@ -283,6 +283,60 @@
 			    }
 			}
 
+4. Binary Tree 
+		4.1 Binary Tree Vertical Order Traversal
+			/*
+				Given binary tree [3,9,20,4,5,2,7],
+				    _3_
+				   /   \
+				  9    20
+				 / \   / \
+				4   5 2   7
+				return its vertical order traversal as:
+				[
+				  [4],
+				  [9],
+				  [3,5,2],
+				  [20],
+				  [7]
+				]
+			*/
+			public class Solution {
+			    public List<List<Integer>> verticalOrder(TreeNode root) {
+			        List<List<Integer>> res = new ArrayList<>();
+			        if (root == null) {
+			            return res;
+			        }
+			        HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+			        Queue<TreeNode> queue = new LinkedList<>();
+			        HashMap<TreeNode, Integer> weight = new HashMap<TreeNode, Integer>();
+			        queue.offer(root);
+			        weight.put(root, 0);
+			        int min = 0;
+			        while (!queue.isEmpty()) {
+			            TreeNode node = queue.poll();
+			            int w = weight.get(node);
+			            if (!map.containsKey(w)) {
+			                map.put(w, new ArrayList<>());
+			            }
+			            map.get(w).add(node.val);
+			            if (node.left != null) {
+			                queue.add(node.left);
+			                weight.put(node.left, w - 1);
+			            } 
+			            if (node.right != null) {
+			                queue.add(node.right);
+			                weight.put(node.right, w + 1);
+			            }
+			            min = Math.min(min, w);
+			        }
+			        while (map.containsKey(min)) {
+			            res.add(map.get(min++));
+			        }
+			        return res;
+			    }
+			}
+
 
 
 

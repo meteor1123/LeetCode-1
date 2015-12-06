@@ -40,7 +40,99 @@
 		}
 	1.2 Ugly Number 
 		1.2.1 Ugly Number I
+			/*
+				Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. 
+			*/
+			public class Solution {
+			    public boolean isUgly(int num) {
+			        if (num <= 0) {
+			            return false;
+			        }
+			        for (int i = 2; i <= 5; i++) {
+			            while (num % i == 0) {
+			                num = num / i;
+			            }
+			        }
+			        return num == 1;
+			    }
+			}
 		1.2.2 Ugly Number II
+			//Solution1 DP, O(n)
+			public class Solution {
+			    public int nthUglyNumber(int n) {
+			        int[] ugly = new int[n];
+			        ugly[0] = 1;
+			        int index2 = 0, index3 = 0, index5 = 0;
+			        int factor2 = 2, factor3 = 3, factor5 = 5;
+			        for (int i = 1;i < n; i++) {
+			            int min = Math.min(Math.min(factor2, factor3), factor5);
+			            ugly[i] = min;
+			            if (factor2 == min) {
+			                factor2 = 2 * ugly[++index2];
+			            }
+			            if (factor3 == min) {
+			                factor3 = 3 * ugly[++index3];
+			            }
+			            if (factor5 == min) {
+			                factor5 = 5 * ugly[++index5];
+			            }
+			        }
+			        return ugly[n - 1];
+			    }
+			}
+			//Solution2 O(nlogk)
+			public class Solution {
+			    public int nthUglyNumber(int n) {
+			        if (n == 1) {
+			            return 1;
+			        }
+			        PriorityQueue<Long> pq = new PriorityQueue<>();
+			        pq.offer(1l);
+			        for (long i = 1; i < n; i++) {
+			            long temp = pq.poll();
+			            while (!pq.isEmpty() && pq.peek() == temp) {
+			                pq.poll();//remove the duplicate
+			            }
+			            pq.add(temp * 2);
+			            pq.add(temp * 3);
+			            pq.add(temp * 5);
+			        }
+			        return pq.poll().intValue();
+			    }
+			}
+		1.2.3 Super Ugly Number
+			/*
+				Write a program to find the nth super ugly number.
+				Super ugly numbers are positive numbers whose all prime factors are in the given prime list primes of size k. 
+				For example, [1, 2, 4, 7, 8, 13, 14, 16, 19, 26, 28, 32] is the sequence of the first 12 super ugly numbers given primes = [2, 7, 13, 19] of size 4.
+
+				Note:
+				(1) 1 is a super ugly number for any given primes.
+				(2) The given numbers in primes are in ascending order.
+				(3) 0 < k ≤ 100, 0 < n ≤ 106, 0 < primes[i] < 1000.
+			*/
+			public class Solution {
+			    public int nthSuperUglyNumber(int n, int[] primes) {
+			        if (n == 1) {
+			            return 1;
+			        }
+			        int[] res = new int[n];
+			        res[0] = 1;
+			        int[] index = new int[primes.length];
+			        for (int i = 1; i < n; i++) {
+			            res[i] = Integer.MAX_VALUE;
+			            for (int j = 0; j < primes.length; j++) {
+			                res[i] = Math.min(res[i], primes[j] * res[index[j]]);
+			            }
+			            for (int j = 0; j < primes.length; j++) {
+			                if (res[i] == primes[j] * res[index[j]]) {
+			                    index[j]++;
+			                }
+			            }
+			        }
+			        return res[n - 1];
+			    }
+			}
 	1.3 Strobogrammatic Number 
 		1.3.1 Strobogrammatic Number I
 			/*
@@ -149,4 +241,4 @@
 				        return res;
 				    }
 				}
-	1.4 Super Ugly Number
+	1.4 

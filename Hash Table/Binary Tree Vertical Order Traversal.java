@@ -60,9 +60,10 @@ public class Solution {
         while (!queue.isEmpty()) {
             TreeNode node = queue.poll();
             int w = weight.get(node);
-            ArrayList<Integer> list = !map.containsKey(w) ? new ArrayList<>() : map.get(w);
-            list.add(node.val);
-            map.put(w, list);
+            if (!map.containsKey(w)) {
+                map.put(w, new ArrayList<>());
+            }
+            map.get(w).add(node.val);
             if (node.left != null) {
                 queue.add(node.left);
                 weight.put(node.left, w - 1);
