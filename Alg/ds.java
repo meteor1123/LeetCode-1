@@ -1,3 +1,8 @@
+What do you like best when you working at Amzon?
+What keeps Amazon Web Services cloud on top?
+Why Amazon Web Services rules the cloud ?
+What do you think of seattle?
+
 ## ArrayList
 
 - advantage
