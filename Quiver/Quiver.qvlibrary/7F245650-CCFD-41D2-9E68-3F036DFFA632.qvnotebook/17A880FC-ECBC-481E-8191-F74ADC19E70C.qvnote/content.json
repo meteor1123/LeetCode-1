@@ -1,0 +1,15 @@
+{
+  "title": "Schedule",
+  "cells": [
+    {
+      "type": "code",
+      "language": "java",
+      "data": "1.Question:\n    (1)Is there any unvalid input such as the end time is no larger than start time?\n    (2)Does a content will appear more than once?If yes, if they in same location, how to define which one is valid?, if they in different               location, if they are all valid in their location, will it work?\n    (3)How to define the valid sequence? Which content come first and the later content if has overlap, so it will be unvalid content?\n"
+    },
+    {
+      "type": "code",
+      "language": "java",
+      "data": "2. Solution1: \n    1. 首先对输入进行筛选，只有valid的time(startTime < endTime)才可以加入List\n    2. 构造一个HashMap<String, List<ScheduleRequest>> locationMap; key是location， value是所有同一个location的schedule\n    3. 创建一个comparator，按照startTime，从小到大排序\n    4. 遍历locationMap的values：\n      \n      for (String location : locationMap.keySet()) {\n  \t\t\tHashSet<String> set = new HashSet<>();//用来去重同一个地区的多个相同id的content\n  \t\t\tList<ScheduleRequest> sameLocationReq = locationMap.get(location);\n  \t\t\tCollections.sort(sameLocationReq, comp);//按照startTime 排序\n  \t\t\tint index = 0;\n  \t\t\tScheduleRequest pre = sameLocationReq.get(index);\n  \t\t\tset.add(pre.getId());\n  \t\t\tindex++;\n  \t\t\t/*\n  \t\t\t   将相邻的两个content进行对比，因为按照start进行排序，只要对比cur的startTime是否大于pre的                                                            endTime,(1)如果不大于，则是冲突的schedule，加入unValidReq List,并从原先的List里remove掉这个                                                     schedule。(2)如果大于，则说明是一个有效的schedule，将其Id加入set记录以避免以后的重复，并将pre = cur,inde++，进行下一次对比\n  \t\t\t*/\n  \t\t\twhile (index < sameLocationReq.size()) {\n  \t\t\t\tScheduleRequest cur = sameLocationReq.get(index);\n  \t\t\t\tif (set.contains(cur.getId()) || !checkTwoReqTime(pre, cur)) {\n  \t\t\t\t\tunValidReq.add(cur);\n  \t\t\t\t\tsameLocationReq.remove(cur);\n  \t\t\t\t} else {\n  \t\t\t\t\tset.add(cur.getId());\n  \t\t\t\t\tpre = cur;\n  \t\t\t\t\tindex++;\n  \t\t\t\t} \n  \t\t\t}\n  \t\t}"
+    }
+  ]
+}
