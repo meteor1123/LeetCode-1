@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import schedule.ScheduleRequest;
 
-public class optimizationVersion4 {
+public class optimizationVersion4_canRun {
 	public static List<ScheduleRequest> optimize(List<ScheduleRequest> scheduleList, List<ScheduleRequest> insertList, final HashMap<String, Integer> contentScoreMap, final HashMap<String, Double> locationValueMap) {
 		//if the insertList is null or size() equals zero, we dont need to optimize,just return
 		if (insertList == null || insertList.size() == 0) {

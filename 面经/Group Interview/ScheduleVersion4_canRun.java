@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class ScheduleVersion4 {
+public class ScheduleVersion4_canRun {
 	public static List<List<ScheduleRequest>> schedule(List<ScheduleRequest> requests, HashMap<String, Integer> contentScoreMap, HashMap<String, Double> locationValueMap) {
 		List<List<ScheduleRequest>> res = new ArrayList<>();
 		if (requests == null || requests.size() == 0) {

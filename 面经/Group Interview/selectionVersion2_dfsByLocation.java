@@ -10,7 +10,7 @@ import java.util.List;
 
 import schedule.ScheduleRequest;
 
-public class selectionVersion2 {
+public class selectionVersion2_dfsByLocation {
 	public static List<List<String>> selection(SelectionRequest selectionReq, List<ScheduleRequest> scheduleList,  final HashMap<String, Integer> contentScoreMap, HashMap<String, Double> locationValueMap) {
 		if (selectionReq == null || scheduleList == null || scheduleList.size() == 0) {
 			return null;
@@ -35,21 +35,17 @@ public class selectionVersion2 {
 		}
 		List<List<String>> selectionList = new ArrayList<>();
 		List<String> item = new ArrayList<>();
-		
+		List<List<String>> res = new ArrayList<>();
 		dfs(0, locationArr, selectionList, item, locationMap, scheduleList);
-		
-		return selectionList;
+		findMaxWeight(res, selectionList, contentScoreMap, locationValueMap, scheduleList);
+		return res;
 	}
 	
 	private static void dfs(int index, String[] locationArr, List<List<String>> selectionList, List<String> item, HashMap<String, List<String>> locationMap, List<ScheduleRequest> scheduleList){
 		// TODO Auto-generated method stub
 		if (index == locationArr.length) {
 			for (String id : item) {
-//				for (ScheduleRequest content : scheduleList) {
-//					if (content.getId().equals(id)) {
-						System.out.println("Id:" +  id + " "+ id.hashCode());
-//					}
-//				}
+				System.out.println("Id:" +  id + " ");
 			}
 			System.out.println("*******************");
 			selectionList.add(new ArrayList<>(item));
@@ -76,21 +72,30 @@ public class selectionVersion2 {
 		}
 	}
 	
-	public static void findMaxWeight(List<List<ScheduleRequest>> res, List<List<ScheduleRequest>> selectionListRes, HashMap<String, Integer> contentScoreMap, HashMap<String, Double> locationValueMap) {
+	public static void findMaxWeight(List<List<String>> res, List<List<String>> selectionListRes, HashMap<String, Integer> contentScoreMap, HashMap<String, Double> locationValueMap, List<ScheduleRequest> scheduleList) {
 		double maxValue = 0;
-		for (List<ScheduleRequest> scheduleReqList : selectionListRes) {
+		for (List<String> item : selectionListRes) {
 			double sum = 0;
-			for (ScheduleRequest scheduleReq : scheduleReqList) {
-				sum += contentScoreMap.get(scheduleReq.getId()) * locationValueMap.get(scheduleReq.getLocation());
+			for (String id : item) {
+				sum += contentScoreMap.get(id) * locationValueMap.get(getLocationFromId(id, scheduleList));
 				if (maxValue < sum) {
 					res.clear();
-					res.add(new ArrayList<ScheduleRequest>(scheduleReqList));
+					res.add(new ArrayList<String>(item));
 					maxValue = sum;
 				} else if (maxValue == sum) {
-					res.add(new ArrayList<ScheduleRequest>(scheduleReqList));
+					res.add(new ArrayList<String>(item));
 				}
 			}
 		}
+	}
+	
+	public static String getLocationFromId(String id, List<ScheduleRequest> scheduleList) {
+		for (ScheduleRequest schedule : scheduleList) {
+			if (schedule.getId().equals(id)) {
+				return schedule.getLocation();
+			}
+		}
+		return "";
 	}
 	public static List<List<ScheduleRequest>> removeDuplicate(List<List<ScheduleRequest>> selectionListRes, final HashMap<String, Integer> contentScoreMap) {
 		List<List<ScheduleRequest>> res = new ArrayList<>();
@@ -170,11 +175,11 @@ public class selectionVersion2 {
 		scheduleReqList.add(new ScheduleRequest("1", "San Jose", 2, 3));
 		scheduleReqList.add(new ScheduleRequest("2", "New York", 2, 3));
 		scheduleReqList.add(new ScheduleRequest("3", "Chicago", 2, 3));
-		scheduleReqList.add(new ScheduleRequest("2", "Chicago", 2, 3));
-		scheduleReqList.add(new ScheduleRequest("3", "New York", 2, 3));
+		scheduleReqList.add(new ScheduleRequest("4", "Chicago", 2, 3));
+		scheduleReqList.add(new ScheduleRequest("5", "New York", 2, 3));
+		scheduleReqList.add(new ScheduleRequest("6", "San Jose", 2, 3));
 //		scheduleReqList.add(new ScheduleRequest("3", "Seattle", 2, 3));
 //		scheduleReqList.add(new ScheduleRequest("4", "Los Angel", 2, 3));
-		scheduleReqList.add(new ScheduleRequest("5", "San Jose", 2, 3));
 
 
 		
@@ -185,9 +190,9 @@ public class selectionVersion2 {
 		contentScoreMap.put("4", 4);
 		contentScoreMap.put("5", 5);
 		contentScoreMap.put("6", 6);
-		contentScoreMap.put("7", 7);
-		contentScoreMap.put("8", 8);
-		contentScoreMap.put("9", 9);
+//		contentScoreMap.put("7", 7);
+//		contentScoreMap.put("8", 8);
+//		contentScoreMap.put("9", 9);
 		HashMap<String, Double> locationValueMap = new HashMap<>();
 		locationValueMap.put("San Jose", 8.0);
 		locationValueMap.put("New York", 5.0);
@@ -197,7 +202,7 @@ public class selectionVersion2 {
 //		locationValueMap.put("Seattle", 6.0);
 	
 		List<List<String>> res = new ArrayList<>();
-		res = selectionVersion2.selection(selectionReq, scheduleReqList,  contentScoreMap, locationValueMap);
+		res = selectionVersion2_dfsByLocation.selection(selectionReq, scheduleReqList,  contentScoreMap, locationValueMap);
 //		Comparator<ScheduleRequest> comp = new Comparator<ScheduleRequest>() {
 //			@Override
 //			public int compare(ScheduleRequest s1, ScheduleRequest s2) {
@@ -205,14 +210,14 @@ public class selectionVersion2 {
 //				return s1.getId().compareTo(s2.getId());
 //			}
 //		};
-//		for (List<String> sr : res) {
-//			Collections.sort(sr, comp);
-//			System.out.println("Selection :");
-//			for (ScheduleRequest item : sr) {
-//				System.out.println("    ID: " + item.getId() + " Location: " + item.getLocation() + " Time: " + item.getStartTime());
-//			}
-//			System.out.println("**********************************");
-//		}
+		for (List<String> item : res) {
+			Collections.sort(item);
+			System.out.println("Selection :");
+			for (String id : item) {
+				System.out.println("    ID: " + id);
+			}
+			System.out.println("**********************************");
+		}
 		
 	}
 	
