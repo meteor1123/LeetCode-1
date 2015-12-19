@@ -43,6 +43,8 @@ public class Solution {
         return minDistance(I) + minDistance(J);
     }
     
+
+    //计算每个点对median 点的distance
     public int minDistance(List<Integer> list) {
         Collections.sort(list);
         int start = 0;

@@ -22,12 +22,6 @@
 //Solution1: Two Hash Table
 public class Solution {
     public boolean isIsomorphic(String s, String t) {
-        if (s == null && t == null) {
-            return true;
-        }
-        if (s == null || t == null) {
-            return false;
-        }
         int len = s.length();
         HashMap<Character, Character> hm = new HashMap<Character, Character>();
         HashSet<Character> used = new HashSet<Character>();
@@ -66,6 +60,22 @@ public class Solution {
                 map.put(c1, c2);
             } else if (map.get(c1) != c2) {
                     return false;
+            }
+        }
+        return true;
+    }
+}
+
+//Solution3 : Best
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        int[] map1 = new int[256];
+        int[] map2 = new int[256];
+        for (int i = 0; i < s.length(); i++) {
+            if (map1[s.charAt(i)] != map2[t.charAt(i)]) {
+                return false;
+            } else {
+                map1[s.charAt(i)] = map2[t.charAt(i)] = i + 1;
             }
         }
         return true;

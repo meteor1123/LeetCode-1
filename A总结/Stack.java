@@ -337,4 +337,83 @@
 
 
 
+4. Histogram Problem
+		4.1 Largest Rectangle In Histogram
+			/*
+				For example,
+					Given height = [2,1,5,6,2,3],
+					return 10.
+			*/
+			public class Solution {
+			    public int largestRectangleArea(int[] height) {
+			    	Stack<Integer> stack = new Stack<Integer>();
+			    	int i = 0 ;
+			    	int maxArea = 0;
+			    	int[] h = new int[height.length + 1];
+			    	h = Arrays.copyOf(height, height.length + 1);
+			    	while (i < h.length) {
+			    		if (stack.isEmpty() || h[stack.peek()] <= h[i]) {
+			    			stack.push(i);
+			                i++;
+			    		} else {
+			    			int top = stack.pop();
+			    			maxArea = Math.max(maxArea, h[top] * (stack.isEmpty() ? i: i - stack.peek() - 1));
+			    		}
+			    	}
+			    	return maxArea;
+			    }
+			}
+
+
+		4.2 Maximal Rectangle
+			/*
+				Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
+			*/
+			public class Solution {
+			    public int maximalRectangle(char[][] matrix) {
+			        if (matrix.length == 0 || matrix[0].length == 0) {
+			            return 0;
+			        }
+			        int[] height = new int[matrix[0].length];
+			        int maxArea = 0;
+			        for (int i = 0; i < matrix.length; i++) {
+			            for (int j = 0; j < matrix[0].length; j++) {
+			                if (matrix[i][j] == '1') {
+			                    height[j]++;
+			                } else if (matrix[i][j] == '0') {
+			                    height[j] = 0;
+			                }
+			            }
+			            //key point,要计算累计的matrix行的 最大值
+			            maxArea = Math.max(maxArea, findMaxAreaInHistogram(height));
+			        }
+			        return maxArea;
+			    }
+    		//Use the Histogram method to find every 
+		    public int findMaxAreaInHistogram(int[] height) {
+		        int[] h = new int[height.length + 1];
+		        h = Arrays.copyOf(height, height.length + 1);
+		        int maxArea = 0;
+		        int i = 0;
+		        Stack<Integer> stack = new Stack<>();
+		        while (i < h.length) {
+		            if (stack.isEmpty() || h[i] >= h[stack.peek()]) {
+		                stack.push(i);
+		                i++;
+		            } else {
+		                int top = stack.pop();
+		                maxArea = Math.max(maxArea, h[top] * (stack.isEmpty() ? i : i - stack.peek() - 1));
+		            }
+		        }
+		        return maxArea;
+		    }
+		}
+
+
+
+
+
+
+
+
 

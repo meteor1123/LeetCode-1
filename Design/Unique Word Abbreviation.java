@@ -14,7 +14,8 @@
 	              1
 	     1---5----0
 	d) l|ocalizatio|n          --> l10n
-	Assume you have a dictionary and given a word, find whether its abbreviation is unique in the dictionary. A word's abbreviation is unique if no other word from the dictionary has the same abbreviation.
+	Assume you have a dictionary and given a word, find whether its abbreviation is unique in the dictionary. 
+    A word's abbreviation is unique if no other word from the dictionary has the same abbreviation.
 
 	Example: 
 	Given dictionary = [ "deer", "door", "cake", "card" ]
@@ -28,15 +29,17 @@ public class ValidWordAbbr {
     HashMap<String, String> map;
     public ValidWordAbbr(String[] dictionary) {
         map = new HashMap<>();
-        for (String s : dictionary) {
-            String abbrev = generateAbb(s);
-            if (map.containsKey(abbrev)) {
-                map.put(abbrev, "");//如果这里出现重复的abbrev，则设置为空，因为不是unqiue
+        for (String word : dictionary) {
+            String abbr = generateAbb(word);
+            if (!map.containsKey(abbr)) {
+                map.put(abbr, word);
             } else {
-                map.put(abbrev, s);
+                if (!map.get(abbr).equals(word)) {
+                    map.put(abbr, "-1");
+                }
             }
         }
-    }
+    } 
 
     public boolean isUnique(String word) {
         String key = generateAbb(word);
@@ -44,6 +47,9 @@ public class ValidWordAbbr {
     }
     
     public String generateAbb(String word) {
+        if (word.length() <= 2) {
+            return word;
+        }
         String abb = word.charAt(0) + String.valueOf(word.length() - 2) + word.charAt(word.length() - 1);
         return abb;
     }

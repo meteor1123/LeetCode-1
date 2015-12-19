@@ -129,6 +129,208 @@
 			        return minLen;
 			    }
 			}
+		1.4 Isomorphic Strings
+			/*
+				Isomorphic Strings 
+				Given two strings s and t, determine if they are isomorphic.
+
+				For example,
+					Given "egg", "add", return true.
+					Given "foo", "bar", return false.
+					Given "paper", "title", return true.
+			*/
+			/*
+				主要的edge case 就是：ab, aa
+			*/
+			//Solution1
+			public boolean isIsomorphic(String s, String t) {
+		        int[] map1 = new int[256];
+		        int[] map2 = new int[256];
+		        for (int i = 0; i < s.length(); i++) {
+		            if (map1[s.charAt(i)] != map2[t.charAt(i)]) {
+		                return false;
+		            } else {
+		                map1[s.charAt(i)] = map2[t.charAt(i)] = i + 1;
+		            }
+		        }
+		        return true;
+			}
+			//Solution2
+			public class Solution {
+			    public boolean isIsomorphic(String s, String t) {
+			        int len = s.length();
+			        HashMap<Character, Character> hm = new HashMap<Character, Character>();
+			        HashSet<Character> used = new HashSet<Character>();
+			        for (int i = 0; i < len; i++) {
+			            char sChar = s.charAt(i);
+			            char tChar = t.charAt(i);
+			            if (!hm.containsKey(sChar)) {
+			                if (used.contains(tChar)) {
+			                    return false;
+			                }
+			                hm.put(sChar, tChar);
+			                used.add(tChar);
+			            } else {
+			                if (hm.get(sChar) != tChar) {
+			                    return false;
+			                }
+			            }
+			        }
+			        return true;
+			    }
+			}
+		1.5 Word Pattern
+			/*
+				Given a pattern and a string str, find if str follows the same pattern.
+
+				Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in str.
+
+				Examples:
+				pattern = "abba", str = "dog cat cat dog" should return true.
+				pattern = "abba", str = "dog cat cat fish" should return false.
+				pattern = "aaaa", str = "dog cat cat dog" should return false.
+				pattern = "abba", str = "dog dog dog dog" should return false.
+				Notes:
+				You may assume pattern contains only lowercase letters, and str contains lowercase letters separated by a single space.
+			*/
+			//Solution1 Same as above
+			//Solution2
+			public boolean wordPattern(String pattern, String str) {
+		        String[] words = str.split(" ");
+		        if (words.length != pattern.length())
+		            return false;
+		        Map index = new HashMap();
+		        for (Integer i = 0; i < words.length; ++i)
+		            if (index.put(pattern.charAt(i), i) != index.put(words[i], i))//如果之前有值就返回之前的value的值
+		                return false;
+		        return true;
+		    }
+	    1.6 Bulls And Cows
+		    /*
+		    	Secret number:  "1807"
+				Friend's guess: "7810": "1A3B"
+
+				Secret number:  "1123"
+				Friend's guess: "0111": "1A1B"
+		    */
+			public class Solution {
+			    public String getHint(String secret, String guess) {
+			        int bulls = 0;
+			        int cows = 0;
+			        int[] numbers = new int[10];
+			        for (int i = 0; i < secret.length(); i++) {
+			            if (secret.charAt(i) == guess.charAt(i)) {
+			                bulls++;
+			            } else {
+			                if (numbers[secret.charAt(i) - '0']++ < 0) {
+			                    cows++;
+			                } 
+			                if (numbers[guess.charAt(i) - '0']-- > 0) {
+			                    cows++;
+			                }
+			            }
+			        }
+			        return bulls + "A" + cows + "B";
+			    }
+			}
+		1.7 Repeated DNA Sequences
+			/*
+				All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG". When studying DNA, 
+				it is sometimes useful to identify repeated sequences within the DNA.
+				Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.
+
+				For example,
+					Given s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT",
+
+				Return:
+					["AAAAACCCCC", "CCCCCAAAAA"].
+			*/
+			public class Solution {
+			    public List<String> findRepeatedDnaSequences(String s) {
+			        List<String> res = new ArrayList<>();
+			        if (s == null || s.length() <= 10) {
+			            return res;
+			        }
+			        HashMap<Character, Integer> mapping = new HashMap<>();
+			        mapping.put('A', 0);
+			        mapping.put('C', 1);
+			        mapping.put('G', 2);
+			        mapping.put('T', 3);
+			        //key是10位数字通过左移+组成的hash值， value是出现的次数
+			        HashMap<Integer, Integer> map = new HashMap<>();
+			        int hash = 0;
+			        for (int i = 0; i < s.length(); i++) {
+			            char c = s.charAt(i);
+			            if (i < 9) {
+			                hash = (hash << 2) + mapping.get(c);
+			            } else {
+			                hash = (hash << 2) + mapping.get(c);
+			                hash &= (1 << 20) - 1;//关键点，20位的掩码，取20位hash值
+			                if (map.containsKey(hash) && map.get(hash) == 1) {
+			                    res.add(s.substring(i - 9, i + 1));
+			                    map.put(hash, map.get(hash) + 1);
+			                } else if (!map.containsKey(hash)) {
+			                    map.put(hash, 1);
+			                } 
+			            }
+			        }
+			        return res;
+			    }
+			}
+		1.8 Unique Word Abbreviation
+			/*
+				An abbreviation of a word follows the form <first letter><number><last letter>. Below are some examples of word abbreviations:
+				a) it                      --> it    (no abbreviation)
+
+				     1
+				b) d|o|g                   --> d1g
+
+				              1    1  1
+				     1---5----0----5--8
+				c) i|nternationalizatio|n  --> i18n
+
+				              1
+				     1---5----0
+				d) l|ocalizatio|n          --> l10n
+				Assume you have a dictionary and given a word, find whether its abbreviation is unique in the dictionary. A word's abbreviation is unique if no other word from the dictionary has the same abbreviation.
+
+				Example: 
+				Given dictionary = [ "deer", "door", "cake", "card" ]
+
+				isUnique("dear") -> false
+				isUnique("cart") -> true
+				isUnique("cane") -> false
+				isUnique("make") -> true
+			*/
+			public class ValidWordAbbr {
+			    HashMap<String, String> map;
+			    public ValidWordAbbr(String[] dictionary) {
+			        map = new HashMap<>();
+			        for (String word : dictionary) {
+			            String abbr = generateAbb(word);
+			            if (!map.containsKey(abbr)) {
+			                map.put(abbr, word);
+			            } else {
+			                if (!map.get(abbr).equals(word)) {
+			                    map.put(abbr, "-1");
+			                }
+			            }
+			        }
+			    } 
+
+			    public boolean isUnique(String word) {
+			        String key = generateAbb(word);
+			        return !map.containsKey(key) || map.get(key).equals(word);
+			    }
+			    
+			    public String generateAbb(String word) {
+			        if (word.length() <= 2) {
+			            return word;
+			        }
+			        String abb = word.charAt(0) + String.valueOf(word.length() - 2) + word.charAt(word.length() - 1);
+			        return abb;
+			    }
+			}
 
 2. Array Problem
 		2.1 Duplicate Problem
@@ -280,6 +482,86 @@
 			            }
 			        }
 			        return true;
+			    }
+			}
+	3.3 Count Primes
+		/*
+			Description:
+				Count the number of prime numbers less than a non-negative number, n.
+		*/
+			public class Solution {
+			    public int countPrimes(int n) {
+			        boolean[] notPrimes = new boolean[n];
+			        int count = 0;
+			        for (int i = 2; i < n; i++) {
+			            if (!notPrimes[i]) {
+			                count++;
+			                for (int j = 2 * i; j < n; j = j + i) {
+			                    notPrimes[j] = true;
+			                }
+			            }
+			        }
+			        return count;
+			    }
+			}
+
+	3.4 Fraction To Recurring Decimal
+		/*
+			Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+
+			If the fractional part is repeating, enclose the repeating part in parentheses.
+
+			For example,
+
+			Given numerator = 1, denominator = 2, return "0.5".
+			Given numerator = 2, denominator = 1, return "2".
+			Given numerator = 2, denominator = 3, return "0.(6)".
+		*/
+			public class Solution {
+			    public String fractionToDecimal(int numerator, int denominator) {
+			        if (numerator == 0) {
+			            return "0";
+			        }
+			        if (denominator == 0) {
+			            return "";
+			        }
+			        String ans = "";
+			        
+			        if (((numerator < 0) && (denominator > 0)) || ((numerator > 0) && (denominator < 0)) ) {//按位异或
+			            ans += "-";
+			        }
+			        
+			        long num = numerator;
+			        long den = denominator;
+			        
+			        num = Math.abs(num);
+			        den = Math.abs(den);
+			        
+			        long res = num / den;
+			        ans += String.valueOf(res);
+			        
+			        long rem = (num % den) * 10;
+			        if (rem == 0) {
+			            return ans;
+			        }
+			        
+			        HashMap<Long, Integer> map = new HashMap<Long, Integer>();
+			        ans += ".";
+			        while (rem != 0) {
+			            if (map.containsKey(rem)) {
+			                int begin = map.get(rem);
+			                String part1 = ans.substring(0, begin);
+			                String part2 = ans.substring(begin, ans.length());
+			                ans = part1 + "(" + part2 + ")";
+			                return ans;
+			            }
+			            
+			            map.put(rem, ans.length());
+			            res = rem / den;
+			            ans += res + "";
+			            rem = (rem % den) * 10;
+			        }
+			        return ans;
 			    }
 			}
 

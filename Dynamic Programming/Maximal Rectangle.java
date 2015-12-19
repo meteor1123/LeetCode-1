@@ -45,6 +45,8 @@ public class Solution {
 }
 
 
+
+//Solution2
 public class Solution {
     /*
         This solution is so clever that I think so hard to understand it.
