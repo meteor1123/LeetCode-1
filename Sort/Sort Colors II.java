@@ -21,10 +21,12 @@ class Solution {
         }
     }
     
-    public int partition(int[] colors, int l, int r, int pivot) {
-        int i = l, j = r;
+    //Partition1
+    public int partition(int[] colors, int low, int high, int pivot) {
+        int i = low;
+        int j = high;
         while (i <= j) {
-            while (i < r && colors[i] <= pivot) {
+            while (i < high && colors[i] <= pivot) {
                 ++i;
             }
             while (j > 0 && colors[j] > pivot) {
@@ -38,6 +40,29 @@ class Solution {
         }
         return i - 1;
     }
+
+    //Partition2
+    public int partition(int[] a, int low, int high, int pivot) {
+       int i = low;
+       int j = high;
+       while (true) {
+           while (i < j && a[i] <= pivot) {
+               i++;
+           }
+           while (i < j && a[j] > pivot) {
+               j--;
+           }
+           if (i == j) {
+               break;
+           }
+           swap(a, i, j);
+       }
+       swap(a, high, i);
+       return i - 1;
+    }
+
+
+
     public void swap(int[] colors, int l, int r) {
         int temp = colors[l];
         colors[l] = colors[r];

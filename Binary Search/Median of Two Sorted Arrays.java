@@ -4,6 +4,45 @@
 	Tags: Divide and Conquer ,Array, Binary Search
 */
 
+
+/*
+	Analysis:
+	Assume that the number of elements in A and B are both larger than k/2, and if we compare the k/2-th smallest element in A(i.e. A[k/2-1]) 
+	and the k-th smallest element in B(i.e. B[k/2 - 1]), there are three results:
+	(Becasue k can be odd or even number, so we assume k is even number here for simplicy. The following is also true when k is an odd number.)
+	A[k/2-1] = B[k/2-1]
+	A[k/2-1] > B[k/2-1]
+	A[k/2-1] < B[k/2-1]
+	if A[k/2-1] < B[k/2-1], that means all the elements from A[0] to A[k/2-1](i.e. the k/2 smallest elements in A) are in the range of k smallest elements in the union of A and B. Or, 
+	in the other word, A[k/2 - 1] can never be larger than the k-th smalleset element in the union of A and B.
+
+	Why?
+	We can use a proof by contradiction. 
+	Since A[k/2 - 1] is larger than the k-th smallest element in the union of A and B, 
+	then we assume it is the (k+1)-th smallest one. Since it is smaller than B[k/2 - 1], then B[k/2 - 1] should be at least the (k+2)-th smallest one. 
+	So there are at most (k/2-1) elements smaller than A[k/2-1] in A, and at most (k/2 - 1) elements smaller than A[k/2-1] in B.So the total number is k/2+k/2-2, 
+	which, no matter when k is odd or even, is surly smaller than k(since A[k/2-1] is the (k+1)-th smallest element).
+	So A[k/2-1] can never larger than the k-th smallest element in the union of A and B if A[k/2-1]<B[k/2-1];
+	Since there is such an important conclusion, we can safely drop the first k/2 element in A, which are definitaly smaller than k-th element in the union of A and B.
+	This is also true for the A[k/2-1] > B[k/2-1] condition, which we should drop the elements in B.
+	When A[k/2-1] = B[k/2-1], then we have found the k-th smallest element, that is the equal element, we can call it m. There are each (k/2-1) numbers smaller than m in A and B, so m must be the k-th smallest number. So we can call a function recursively, when A[k/2-1] < B[k/2-1], we drop the elements in A, else we drop the elements in B.
+
+
+	We should also consider the edge case, that is, when should we stop?
+	1. When A or B is empty, we return B[k-1]( or A[k-1]), respectively;
+	2. When k is 1(when A and B are both not empty), we return the smaller one of A[0] and B[0]
+	3. When A[k/2-1] = B[k/2-1], we should return one of them
+
+	In the code, we check if m is larger than n to garentee that the we always know the smaller array, for coding simplicy.
+*/
+/*
+	
+	这个findKth()函数写的非常经典，思路如下：
+	1. 保持A是短的那一个数组，B是长的
+	2. 平分k, 一半在A，一半在B （如果A的长度不足K/2,那就pa就指到最后一个）
+	3. 如果partA的值 < partB的值，那证明第K个数肯定不会出现在partA之前，递归，把A数组partA之前的砍掉，同理递归砍B数组。
+	4. 递归到 m == 0 （短的数组用完了） 就返回 B[k - 1], 或者k == 1（找第一个数）就返回min(A第一个数，B第一个数）
+*/
 public class Solution {
 
 	//Solution1:
@@ -20,28 +59,28 @@ public class Solution {
 		}
 	}
 
-	public static int findKth(int[] A, int astart, int aend, int[] B, int bstart, int bend, int k) {
-		int m = aend - astart + 1;
-		int n = bend - bstart + 1;
+	public static int findKth(int[] A, int aStart, int aEnd, int[] B, int bStart, int bEnd, int k) {
+		int m = aEnd - aStart + 1;
+		int n = bEnd - bStart + 1;
 
 		if (m > n) {
-			return findKth(B, bstart, bend, A, astart, aend, k);
+			return findKth(B, bStart, bEnd, A, aStart, aEnd, k);
 		}
 		if (m == 0) {
 			return B[k - 1];
 		}
 		if (k == 1) {
-			return Math.min(A[astart], B[bstart]);
+			return Math.min(A[aStart], B[bStart]);
 		}
 
 		//this statement is assgin the median index to A and B,
 		int partA = Math.min(k / 2, m);
 		int partB = k - partA;
 
-		if (A[astart + partA - 1] < B[bstart + partB - 1]) {
-			return findKth(A, astart + partA, aend, B, bstart, bend, k - partA);
-		} else if (A[astart + partA - 1] > B[bstart + partB - 1]) {
-			return findKth(A, astart, aend, B, bstart + partB, bend, k - partB);
+		if (A[aStart + partA - 1] < B[bStart + partB - 1]) {
+			return findKth(A, aStart + partA, aEnd, B, bStart, bEnd, k - partA);
+		} else if (A[aStart + partA - 1] > B[bStart + partB - 1]) {
+			return findKth(A, aStart, aEnd, B, bStart + partB, bEnd, k - partB);
 		} else {
 			return A[start + partA - 1];
 		}

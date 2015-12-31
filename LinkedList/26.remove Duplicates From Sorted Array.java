@@ -16,8 +16,7 @@ public class Solution {
         //只要A[i]和A[i - 1]不同，就可以将A[i]赋值给A[index],index记录着数组里不同长度的个数
         for (int i = 1; i < A.length; i++){
             if (A[i] != A[i-1]){
-                A[index] = A[i];
-                index ++;
+                A[index++] = A[i];
             }
         }
         return index;

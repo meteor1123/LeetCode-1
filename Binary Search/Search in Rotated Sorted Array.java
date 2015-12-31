@@ -60,7 +60,7 @@ public class Solution {
             if (A[mid] == target) {
                 return mid;
             }
-            //A[start] < A[mid] means the array doesn't rotated, just search like the normal array
+            //A[start] < A[mid] y
             if (A[start] < A[mid]) {
             	//target in the front of mid
                 if (A[start] <= target && target <= A[mid]) {

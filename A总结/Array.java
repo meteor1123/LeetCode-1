@@ -130,10 +130,43 @@
 			        return globalMax;
 			    }
 			}
+		2.4 Shortest Word Distance III
+		/*
+			For example,
+				Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
+
+				Given word1 = “makes”, word2 = “coding”, return 1.
+				Given word1 = "makes", word2 = "makes", return 3.
+
+			Note:
+				You may assume word1 and word2 are both in the list.
+				The word may be duplicate
+		*/
+			public class Solution {
+			    public int shortestWordDistance(String[] words, String word1, String word2) {
+			        int dist = words.length;
+			        int index1 = words.length;
+			        int index2 = -words.length;
+			        for (int i = 0; i < words.length; i++) {
+			            if (words[i].equals(word1)) {
+			                index1 = i;
+			            } 
+			            if (words[i].equals(word2)) {
+			                if (word1.equals(word2)) {
+			                    index1 = index2;
+			                }
+			                index2 = i;
+			            }
+			            dist = Math.min(dist, Math.abs(index2 - index1));
+			        }
+			        return dist;
+			    }
+			}
 
 2. Two Pointer Problem
 
 3. K Sum Problem
+		
 
 4. A
 

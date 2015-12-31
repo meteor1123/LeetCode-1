@@ -1527,6 +1527,23 @@
 				}
 
 			7.3.3 Shortest Word Distance III
+				//word1 和 word2 可能相等
+				public int shortestWordDistance(String[] words, String word1, String word2) {
+				    long dist = Integer.MAX_VALUE;
+				    long i1 = dist;
+				    long i2 = -dist;
+				    for (int i = 0; i < words.length; i++) {
+				        if (words[i].equals(word1))
+				            i1 = i;
+				        if (words[i].equals(word2)) {
+				            if (word1.equals(word2))
+				                i1 = i2;
+				            i2 = i;
+				        }
+				        dist = Math.min(dist, Math.abs(i1 - i2));
+				    }
+				    return (int) dist;
+				}
 
 
 8. String Matching
@@ -1597,7 +1614,32 @@
 				    } 
 				}
 
+
 9. Slide Window Problem
+		9.0 Minimum Size Subarray Sum
+			/*
+				Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+				For example, given the array [2,3,1,2,4,3] and s = 7,
+				the subarray [4,3] has the minimal length under the problem constraint.
+			*/
+			public class Solution {
+			    public int minSubArrayLen(int s, int[] nums) {
+			        int minLen = Integer.MAX_VALUE;
+			        int left = 0;
+			        int right = 0;
+			        int sum = 0;
+			        while (right < nums.length) {
+			            sum += nums[right];
+			            while (sum >= s) {
+			                minLen = Math.min(minLen, right - left + 1);
+			                sum -= nums[left];
+			                left++;
+			            }
+			            right++;
+			        }
+			        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+			    }
+			}
 		9.1 Longest Substring With At Most K Distinct Characters
 			//O (n * k)
 			public class Solution {
@@ -1778,4 +1820,130 @@
 			}
 
 
+10. Word Ladder Problem
+		10.1 Word Ladder I
+			/*
+				Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
 
+				Only one letter can be changed at a time
+				Each intermediate word must exist in the word list
+				For example,
+
+				Given:
+				beginWord = "hit"
+				endWord = "cog"
+				wordList = ["hot","dot","dog","lot","log"]
+				As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+				return its length 5.
+
+				Note:
+				Return 0 if there is no such transformation sequence.
+				All words have the same length.
+				All words contain only lowercase alphabetic characters.
+			*/
+			public class Solution {
+			    public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
+			        Queue<String> queue = new LinkedList<>();
+			        queue.offer(beginWord);
+			        wordList.remove(beginWord);
+			        int curNum = 1;
+			        int nextNum = 0;
+			        int level = 1;
+			        while (!queue.isEmpty()) {
+			            String word = queue.poll();
+			            curNum--;
+			            for (int i = 0; i < word.length(); i++) {
+			                char[] wordArr = word.toCharArray();
+			                for (char c = 'a'; c <= 'z'; c++) {
+			                    wordArr[i] = c;
+			                    String newWord = new String(wordArr);
+			                    if (newWord.equals(endWord)) {
+			                        return level + 1;
+			                    }
+			                    if (wordList.contains(newWord)) {
+			                        queue.offer(newWord);
+			                        nextNum++;
+			                        wordList.remove(newWord);
+			                    }
+			                }
+			            }
+			            if (curNum == 0) {
+			                curNum = nextNum;
+			                nextNum = 0;
+			                level++;
+			            }
+			        }
+			        return 0;
+			    }
+			}
+		10.2 Word Ladder II
+		10.3 Longest Word Chain
+			/*
+				给定一个词典， 对于里面单词删掉任何一个字母，如果新单词还在词典里，就形成一个 chain：old word -> new word, 求最长长
+				比如给List<String> dict = {a,ba,bca,bda,bdca} 最长是4：bdca->bda->ba->a；. more info on 1point3acres.com
+			*/
+			/*
+				Solution2: 我用的map<Integer (length)，set<String>> 先字典里的词放到map里，然后从最长的词的set里开始recursive call，直到搜到长度是1的里面或者找不到了，int变量记录最长结果。
+			*/
+			public class Solution {
+				public static int longestWordChain(String[] dict) {
+					 if (dict == null || dict.length == 0) {
+						 return 0;
+					 }
+					 Arrays.sort(dict, new Comparator<String>() {
+						@Override
+						public int compare(String o1, String o2) {
+							// TODO Auto-generated method stub
+							return o2.length() - o1.length();
+						}
+					 });
+					 HashSet<String> set = new HashSet<>();
+					 for (String word : dict) {
+						 set.add(word);
+					 }
+					 HashSet<String> visited = new HashSet<>();
+					 Queue<String> queue = new LinkedList<>();
+					 int maxLen = 0;
+					 for (String str : dict) {
+						 if (maxLen >= str.length()) {
+							 break;
+						 }
+						 if (visited.contains(str)) {
+							continue; 
+						 }
+						 queue.offer(str);
+						 int curNum = 1;
+						 int nextNum = 0;
+						 int level = 1;
+						 while (!queue.isEmpty()) {
+							 String word = queue.poll();
+							 curNum--;
+							 if (visited.contains(word)) {
+								 continue;
+							 }
+							 visited.add(word);
+							 HashSet<String> levelSet = new HashSet<>();
+							 for (int i = 0; i < word.length(); i++) {
+								 StringBuilder sb = new StringBuilder(word);
+								 String temp = sb.deleteCharAt(i).toString();	
+								 if (temp.equals("")){
+									 break;
+								 }
+								 if (set.contains(temp) && !visited.contains(temp) && !levelSet.contains(temp)){				 
+									 queue.offer(temp);
+									 levelSet.add(temp);
+									 nextNum++;
+								 }
+							 }
+							 if (curNum == 0 && nextNum != 0) {
+								 curNum = nextNum;
+								 level++;
+								 nextNum = 0;			  
+							 }
+							 maxLen = Math.max(level, maxLen);
+						 } 	 
+						 
+					 }
+					 return maxLen;
+				 }
+			}

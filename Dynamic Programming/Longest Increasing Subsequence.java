@@ -37,9 +37,9 @@ public class Solution {
 
 //O(n),binarySearch and Dp
 /*
-    The idea is that as you iterate the sequence, you keep track of the minimum value a subsequence of given length might end with, f
-    or all so far possible subsequence lengths. So dp[i] is the minimum value a subsequence of length i+1 might end with. Having this info,
-     for each new number we iterate to, we can determine the longest subsequence where it can be appended using binary search. 
+    The idea is that as you iterate the sequence, you keep track of the minimum value a subsequence of given length might end with, 
+    for all so far possible subsequence lengths. So dp[i] is the minimum value a subsequence of length i+1 might end with. Having this info,
+    for each new number we iterate to, we can determine the longest subsequence where it can be appended using binary search. 
 */
 public class Solution {
     public int lengthOfLIS(int[] nums) {

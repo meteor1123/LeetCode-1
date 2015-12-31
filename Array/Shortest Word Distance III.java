@@ -74,7 +74,7 @@ public int shortestWordDistance(String[] words, String word1, String word2) {
     long dist = Integer.MAX_VALUE;
     long i1 = dist;
     long i2 = -dist;
-    for (int i=0; i<words.length; i++) {
+    for (int i = 0; i < words.length; i++) {
         if (words[i].equals(word1))
             i1 = i;
         if (words[i].equals(word2)) {

@@ -241,7 +241,183 @@
 				        return res;
 				    }
 				}
-		1.4 Count Primes
+		1.4 Missing Number
+			/*
+				Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+				For example,
+				Given nums = [0, 1, 3] return 2.
+
+				Note:
+				Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?
+			*/
+			public class Solution {
+				//这里的数和index是对应的， 除了missing number，将所有的数与其对应的index进行xor操作
+			    public int missingNumber(int[] nums) {
+			        int xor = 0;
+			        int i = 0;
+			        for (; i < nums.length; i++) {
+			            xor = xor ^ i ^ nums[i];
+			         // nums[0]=0 nums[1]=2  nums[2]=3    i=3
+			        }// 形如 0 ，2 ， 3 = 0 ^ (0 ^ 0) ^ (1 ^ 2) ^ (2 ^ 3)   ^  3
+			        return xor ^ i;
+			    }
+			}
+		1.5 Palindrome Number
+			public class Solution {
+			    public boolean isPalindrome(int x) {
+			        if (x < 0) {
+			            return false;
+			        }
+			        int div = 1;
+			        while (x / div >= 10) {
+			            div *= 10;
+			        }
+			        while (x > 0) {
+			            int left = x / div;
+			            int right = x % 10;
+			            if (left != right) {
+			                return false;
+			            }
+			            x = (x % div) / 10;
+			            div = div / 100;
+			        }
+			        return true;
+			    }
+			}
+		1.6 Perfect Squares
+			/*
+				Perfect Squares
+				Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+
+				For example, given n = 12, return 3 because 12 = 4 + 4 + 4; given n = 13, return 2 because 13 = 4 + 9.
+			*/
+			/*
+				动态规划（Dynamic Programming）
+				时间复杂度：O(n * log n)
+				初始化，令dp[y * y] = 1，其中y * y <= n
+
+				状态转移方程：
+					dp[x + y * y] = min(dp[x + y * y], dp[x] + 1);
+			   	 	dp[i] = dp[i - j * j] + 1;
+			*/
+			public class Solution {
+			    //Solution1 prefer
+			    public int numSquares(int n) {
+			        int[] dp = new int[n + 1];
+			        dp[1] = 1;
+			        for(int i = 2; i <= n; i++) {
+			            dp[i] = Integer.MAX_VALUE;
+			            for (int j = 1; j <= Math.sqrt(i); j++) {
+			                dp[i] = Math.min(dp[i], dp[i - j*j] + 1);
+			            }
+			        }
+			        return dp[n];
+			    }
+
+			}
+
+
+2. Math Operation
+		2.1 Divide Two Integers
+			/*
+				Divide two integers without using multiplication, division and mod operator.
+				If it is overflow, return MAX_INT.
+			*/
+			/*
+				Suppose we want to divide 15 by 3, so 15 is dividend and 3 is divisor. Well, 
+				division simply requires us to find how many times we can subtract the divisor from the the dividend without making the dividend negative.
+
+				Let's get started. We subtract 3 from 15 and we get 12, which is positive. Let's try to subtract more. 
+				Well, we shift 3 to the left by 1 bit and we get 6. Subtracting 6 from 15 still gives a positive result.
+				Well, we shift again and get 12. We subtract 12 from 15 and it is still positive. We shift again, obtaining 24 and we know we can at most subtract 12. 
+				ell, since 12 is obtained by shifting 3 to left twice, we know it is 4 times of 3. 
+				How do we obtain this 4? Well, we start from 1 and shift it to left twice at the same time. We add 4 to an answer (initialized to be 0). 
+				In fact, the above process is like 15 = 3 * 4 + 3. We now get part of the quotient (4), with a remainder 3.
+				
+				Then we repeat the above process again. We subtract divisor = 3 from the remaining dividend = 3 and obtain 0. We know we are done. No shift happens, so we simply add 1 << 0 to the answer.
+
+				Now we have the full algorithm to perform division.
+
+				According to the problem statement, we need to handle some exceptions, such as overflow.
+
+				Well, two cases may cause overflow:
+
+				divisor = 0;
+				dividend = INT_MIN and divisor = -1 (because abs(INT_MIN) = INT_MAX + 1).
+			*/
+			public class Solution {
+			    public int divide(int dividend, int divisor) {
+			        if (divisor == 0) {
+			            return dividend >= 0 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+			        }
+			        if (dividend == 0) {
+			            return 0;
+			        }
+			        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+			            return Integer.MAX_VALUE;
+			        }
+			        boolean isNegative = (dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0);
+			        long a = Math.abs((long)dividend);
+			        long b = Math.abs((long)divisor);
+			        
+			        int res = 0;
+			        
+			        while (a >= b) {
+			            int shift = 0;
+			            while (a >= (b << shift)) {
+			                shift++;
+			            }
+			            a -= b << (shift - 1);
+			            res += 1 << (shift - 1);
+			        }
+			        return isNegative ? -res : res;
+			    }
+			}
+		2.2 Sqrt
+			/*
+				Implement int sqrt(int x).
+
+				Compute and return the square root of x.
+			*/
+			public class Solution {
+			    public int mySqrt(int x) {
+			        int start = 0;
+			        int end = x;
+			        while (start <= end) {
+			            long mid = (long)(start + end) / 2;
+			            if (mid * mid < x) {
+			                start = (int)mid + 1;
+			            } else if (mid * mid > x) {
+			                end = (int)mid - 1;
+			            } else {
+			                return (int)mid;
+			            }
+			        }
+			        return end;
+			    }
+			}
+		2.3 Pow
+			public class Solution {
+			    public double myPow(double x, int n) {
+			        if (n >= 0) {
+			            return pow(x, n);
+			        } else {
+			            return 1 / pow(x, -n);
+			        }
+			    }
+			    public double pow(double x, int n) {
+			        if (n == 0) {
+			            return 1;
+			        }
+			        double res = pow(x, n/2);
+			        if (n % 2 == 0) {
+			            return res * res;
+			        } else {
+			            return res * res * x;
+			        }
+			    }
+			}
+		2.3 Count Primes
 			/*
 				Description:
 					Count the number of prime numbers less than a non-negative number, n.
@@ -261,3 +437,255 @@
 				        return count;
 				    }
 				}
+		2.4 Add Digits
+			/*
+				Add Digits 
+				Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.
+
+			    For example:
+
+			    Given num = 38, the process is like: 3 + 8 = 11, 1 + 1 = 2. Since 2 has only one digit, return it.
+
+			    Follow up:
+			    Could you do it without any loop/recursion in O(1) runtime?
+			*/
+			    //Solution1:prefer
+			    public class Solution {
+				    public int addDigits(int num) {
+				        return 1 + (num - 1) % 9;
+				    }
+				}
+				//Solution2:
+				public int addDigits(int num) {
+			        if (num <= 9 & num >= 0) {
+			            return num;
+			        }
+			        int sum = 0;
+			        while (num > 0) {
+			            sum += num % 10;
+			            num = num / 10;
+			        }
+			        return addDigits(sum);
+			    }
+		2.5 Power Of Two
+			public class Solution {
+			    /*
+			        Power of 2 means only one bit of n is '1', so use the trick n&(n-1)==0 to judge whether that is the case
+			    */
+			    public boolean isPowerOfTwo(int n) {
+			        return n > 0 && (n & (n - 1)) == 0;
+			    }
+			}
+		2.6 Plus One
+			/*
+				Given a non-negative number represented as an array of digits, plus one to the number.
+				The digits are stored such that the most significant digit is at the head of the list.
+			*/
+			public class Solution {
+			    public int[] plusOne(int[] digits) {
+			        int len = digits.length;
+			        for (int i = len - 1; i >= 0; i--) {
+			            if (digits[i] == 9) {
+			                digits[i] = 0;
+			            } else {
+			                digits[i]++;
+			                return digits;
+			            }
+			        }
+			        int[] res = new int[len + 1];
+			        res[0] = 1;
+			        return res;
+			    }
+			}
+		2.7 Reverse Integer
+			/*
+				Reverse digits of an integer.
+					Example1: x = 123, return 321
+					Example2: x = -123, return -321
+			*/
+			public class Solution {
+			    public int reverse(int x) {
+			        long res = 0;
+			        while (x != 0) {
+			            res = res * 10 + x % 10;
+			            if(res > Integer.MAX_VALUE || res < Integer.MIN_VALUE){
+			                return 0;
+			            } 
+			            x = x / 10;
+			        }
+			        return (int)res;
+			    }
+			}
+		2.7 Factorial Trailing Zeroes
+			/*
+				完全取决与 在阶乘中 含有5这个因子的数的个数！
+			*/
+			public class Solution {
+			    public int trailingZeroes(int n) {
+			        int res = 0;
+			        while (n > 0) {
+			            n = n / 5;
+			            res += n;
+			        }
+			        return res;
+			    }
+			}
+		2.8 Fraction To Recurring Decimal
+			/*
+				Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+
+				If the fractional part is repeating, enclose the repeating part in parentheses.
+
+				For example,
+
+				Given numerator = 1, denominator = 2, return "0.5".
+				Given numerator = 2, denominator = 1, return "2".
+				Given numerator = 2, denominator = 3, return "0.(6)".
+			*/
+			public class Solution {
+			    public String fractionToDecimal(int numerator, int denominator) {
+			        if (numerator == 0) {
+			            return "0";
+			        }
+			        if (denominator == 0) {
+			            return "";
+			        }
+			        String ans = "";
+			        
+			        if (((numerator < 0) && (denominator > 0)) || ((numerator > 0) && (denominator < 0)) ) {//按位异或
+			            ans += "-";
+			        }
+			        
+			        long num = numerator;
+			        long den = denominator;
+			        
+			        num = Math.abs(num);
+			        den = Math.abs(den);
+			        
+			        long res = num / den;
+			        ans += String.valueOf(res);
+			        
+			        long rem = (num % den) * 10;
+			        if (rem == 0) {
+			            return ans;
+			        }
+			        
+			        HashMap<Long, Integer> map = new HashMap<Long, Integer>();
+			        ans += ".";
+			        while (rem != 0) {
+			            if (map.containsKey(rem)) {
+			                int begin = map.get(rem);
+			                String part1 = ans.substring(0, begin);
+			                String part2 = ans.substring(begin, ans.length());
+			                ans = part1 + "(" + part2 + ")";
+			                return ans;
+			            }
+			            
+			            map.put(rem, ans.length());
+			            res = rem / den;
+			            ans += res + "";
+			            rem = (rem % den) * 10;
+			        }
+			        return ans;
+			    }
+			}
+
+
+3. Geometry
+		3.1 Rectangle Area
+		/*
+			Rectangle Area
+
+			Find the total area covered by two rectilinear rectangles in a 2D plane.
+			Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
+
+									  |
+		 						______|________(C,D) : (3, 4)
+								|	  |       |
+								|     |       |
+								|	  |_______|_____________ (G, H) : (9, 2)
+								|	  |		  |			   |
+					____________|_____|_______|____________|_________
+				       (A, B):(-3, 0) |	O:(0,0)  		   |
+									  |____________________|
+									  |(E, F) :(0, -1)
+									  |
+									  |
+									  |
+									  |
+
+			Assume that the total area is never beyond the maximum possible value of int.
+		*/
+		public class Solution {
+		    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+		        int areaA = Math.abs(C - A) * Math.abs(D - B);//求出ABCD这个矩形面积
+		        int areaB = Math.abs(G - E) * Math.abs(H - F);//求出EFGH这个矩形面积
+		    
+		        if (A >= G || B >= H || C <= E || D <= F) {
+		            return areaA + areaB;//不重叠的情况
+		        }
+		        int length = Math.min(C, G) - Math.max(A, E);//C,G 决定右边界， A,E 决定左边界
+		        int height = Math.min(D, H) - Math.max(B, F);//D,H 决定上边界， B,F 决定下边界
+		        return areaA + areaB - length * height;
+		    }
+		}
+
+
+
+
+5. Others
+		5.1 Excel Sheet Column Title
+			/*
+				char to int --> 
+					1.直接和int进行运算
+					2. c - '0' ,比如'9' - '0'
+				int to char --> 
+					1.(char)
+					2. + 'a' 就是对应的1 ： a 
+			*/
+			/*
+				Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+				For example:
+
+				    1 -> A
+				    2 -> B
+				    3 -> C
+				    ...
+				    26 -> Z
+				    27 -> AA
+				    28 -> AB 
+			*/
+			public class Solution {
+			    public String convertToTitle(int n) {
+			        StringBuilder sb = new StringBuilder();
+			        while (n > 0) {
+			            n--;
+			            sb.insert(0, (char)(n % 26 + 'A'));
+			            n = n / 26;
+			        }
+			        return sb.toString();
+			    }
+			}
+		5.2 Excel Sheet Column Number
+			/*
+				Given a column title as appear in an Excel sheet, return its corresponding column number.
+				For example:
+
+				    A -> 1
+				    B -> 2
+				    C -> 3
+				    ...
+				    Z -> 26
+				    AA -> 27
+				    AB -> 28 
+			*/
+			public class Solution {
+			    public int titleToNumber(String s) {
+			        int res = 0;
+			        for (int i = 0; i < s.length(); i++) {
+			            char c = s.charAt(i);
+			            res = 26 * res + c % 64;
+			        }
+			        return res;
+			    }
+			}

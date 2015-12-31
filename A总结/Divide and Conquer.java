@@ -133,7 +133,58 @@
 			        nums[r] = temp;
 			    }
 			}
-		1.5 Burst Balloons
+		1.5 Median Of Two Sorted Arrays
+			/*
+				There are two sorted arrays nums1 and nums2 of size m and n respectively. Find the median of the two sorted arrays. 
+				The overall run time complexity should be O(log (m+n)).
+			*/
+				public class Solution {
+				    public double findMedianSortedArrays(int A[], int B[]) {
+						int m = A.length;
+						int n = B.length;
+						int total = m + n;
+						if (total % 2 != 0) {
+							return findKth(A, 0, m - 1, B, 0, n - 1, total / 2 + 1);
+						} else {
+							double x = findKth(A, 0, m - 1, B, 0, n - 1, total / 2);
+							double y = findKth(A, 0, m - 1, B, 0, n - 1, total / 2 + 1);
+							return (double) (x + y) / 2;
+						}
+					}
+
+					public static int findKth(int[] A, int aStart, int aEnd, int[] B, int bStart, int bEnd, int k) {
+						int m = aEnd - aStart + 1;
+						int n = bEnd - bStart + 1;
+
+						if (m > n) {
+							return findKth(B, bStart, bEnd, A, aStart, aEnd, k);
+						}
+						if (m == 0) {
+							return B[k - 1];
+						}
+						if (k == 1) {
+							return Math.min(A[aStart], B[bStart]);
+						}
+
+						//this statement is assgin the median index to A and B,
+						int partA = Math.min(k / 2, m);
+						int partB = k - partA;
+
+						if (A[aStart + partA - 1] < B[bStart + partB - 1]) {
+							return findKth(A, aStart + partA, aEnd, B, bStart, bEnd, k - partA);
+
+						} else if (A[aStart + partA - 1] > B[bStart + partB - 1]) {
+
+							return findKth(A, aStart, aEnd, B, bStart + partB, bEnd, k - partB);
+
+						} else {
+							
+							return A[aStart + partA - 1];
+						}
+					}
+				}
+
+		1.6 Burst Balloons
 			/*
 				Example:
 				Given [3, 1, 5, 8]
@@ -224,28 +275,28 @@
 			}
 
 2. String Problem
-		2.1 Different Ways To Add Parentheses
-		/*
-			Given a string of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. 
-			The valid operators are +, - and *.
+			2.1 Different Ways To Add Parentheses
+			/*
+				Given a string of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. 
+				The valid operators are +, - and *.
 
-			Example 1
-				Input: "2-1-1".
+				Example 1
+					Input: "2-1-1".
 
-				((2-1)-1) = 0
-				(2-(1-1)) = 2
-				Output: [0, 2]
+					((2-1)-1) = 0
+					(2-(1-1)) = 2
+					Output: [0, 2]
 
-			Example 2
-				Input: "2*3-4*5"
+				Example 2
+					Input: "2*3-4*5"
 
-				(2*(3-(4*5))) = -34
-				((2*3)-(4*5)) = -14
-				((2*(3-4))*5) = -10
-				(2*((3-4)*5)) = -10
-				(((2*3)-4)*5) = 10
-				Output: [-34, -14, -10, -10, 10]
-		*/
+					(2*(3-(4*5))) = -34
+					((2*3)-(4*5)) = -14
+					((2*(3-4))*5) = -10
+					(2*((3-4)*5)) = -10
+					(((2*3)-4)*5) = 10
+					Output: [-34, -14, -10, -10, 10]
+			*/
 			public class Solution {
 			    public List<Integer> diffWaysToCompute(String input) {
 			        List<Integer> res = new ArrayList<>();
@@ -271,6 +322,39 @@
 			            res.add(Integer.valueOf(input));
 			        }
 			        return res;
+			    }
+			}
+
+			2.2 Expression Add Operators
+			//eval用来记录此次操作以后的总值，multed仅记录这步运算符后的值， 
+    		//比如 2 + 3 * 5, eval = 2 + 3 * 5= 17, multed = 3 * 5=15
+			public class Solution {
+			    public List<String> addOperators(String num, int target) {
+			        List<String> res = new ArrayList<>();
+			        if (num == null || num.length() == 0) {
+			            return res;
+			        }
+			        helper(res, "", num, target, 0, 0, 0);
+			        return res;
+			    }
+			    public void helper(List<String> res, String path, String num, int target, int index, long item, long multed) {
+			        if (index == num.length() && target == item) {
+			            res.add(path);
+			            return;
+			        }
+			        for (int i = index; i < num.length(); i++) {
+			            if (i > index && num.charAt(index) == '0') { //如果首位为0，并且字符串长度还大于1，则舍去
+			                break;
+			            }
+			            long cur = Long.parseLong(num.substring(index, i + 1));
+			            if (index == 0) {
+			                helper(res, path + cur, num, target, i + 1, cur, cur);
+			            } else {
+			                helper(res, path + "+" + cur, num, target, i + 1, item + cur, cur);
+			                helper(res, path + "-" + cur, num, target, i + 1, item - cur, -cur);
+			                helper(res, path + "*" + cur, num, target, i + 1, item - multed + multed * cur, multed * cur);
+			            }
+			        }
 			    }
 			}
 

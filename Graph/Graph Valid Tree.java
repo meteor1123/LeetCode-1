@@ -153,22 +153,19 @@ public class Solution {
         boolean[] visited = new boolean[n];
         Deque<Integer> stack = new ArrayDeque<Integer>();
         stack.push(0);
-        while(!stack.isEmpty())
-        {
+        while(!stack.isEmpty()) {
             int node = stack.pop();
             if(visited[node])
                 return false;
             visited[node] = true;
-            for(int neighbor : graph.get(node))
-            {
+            for(int neighbor : graph.get(node)) {
                 stack.push(neighbor);
                 graph.get(neighbor).remove(node);
             }
         }
 
         // fully connected
-        for(boolean result : visited)
-        {
+        for(boolean result : visited) {
             if(!result)
                 return false;
         }

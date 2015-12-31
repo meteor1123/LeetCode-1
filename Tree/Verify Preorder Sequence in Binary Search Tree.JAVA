@@ -65,13 +65,14 @@
 //Solution 2 ... O(1) extra space, Same as above, but abusing the given array for the stack.
 
 public boolean verifyPreorder(int[] preorder) {
-    int low = Integer.MIN_VALUE, i = -1;
-    for (int p : preorder) {
-        if (p < low)
+    int low = Integer.MIN_VALUE;
+    int i = -1;
+    for (int val : preorder) {
+        if (val < low)
             return false;
-        while (i >= 0 && p > preorder[i])
+        while (i >= 0 && val > preorder[i])
             low = preorder[i--];
-        preorder[++i] = p;
+        preorder[++i] = val;
     }
     return true;
 }

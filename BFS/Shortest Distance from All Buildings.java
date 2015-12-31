@@ -21,74 +21,62 @@
 */
 
 /*
-	Solution: 1. 设两个数组 record1 用来记录这个坐标已经被多少个坐标值为1进行了多少次bfs
-						  record2 用来记录这个坐标对已经遍历过的坐标值为1的点的距离和，因为bfs 所以一定是这个点到所有1点的最近距离
+	Solution: 1. 设两个数组 reach 用来记录这个坐标已经被多少个坐标值为1进行了多少次bfs
+						  dist 用来记录这个坐标对已经遍历过的坐标值为1的点的距离和，因为bfs 所以一定是这个点到所有1点的最近距离
 
 			  2. 对所有坐标值为1的点进行bfs，记录所有0点对这个点的距离.
-			  3. 遍历所有坐标值为0的点的record1 和record2值，找record1等于所有1的数量，并且record2的值
+			  3. 遍历所有坐标值为0的点的reach 和dist值，找reach等于所有1的数量，并且dist的值
 
 */
 public class Solution {
     public int shortestDistance(int[][] grid) {
-        int row = grid.length;
-        if (row == 0) {
-            return -1;
+        if (grid == null || grid.length == 0) {
+            return 0;
         }
-        int col = grid[0].length;
-        int[][] record1 = new int[row][col];// visited num用来记录 所有坐标值为1的点对这个坐标进行了多少次bfs
-        int[][] record2 = new int[row][col];// distance
-        
-        int numOfOne = 0;
-        for(int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-            	//遍历每一个1值点
+        final int[] shift = new int[]{0, 1, 0, -1, 0};
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dist = new int[m][n];
+        int[][] reach = new int[m][n];
+        int buildNum = 0;//记录1的个数
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 1) {
-                    numOfOne++;
-                    boolean[][] visited = new boolean[grid.length][grid[0].length];
-                    Queue<int[]> queue = new LinkedList<int[]>();
-                    queue.offer(new int[] {i, j});
-                    int dist = 0;
-                    //对所有的点进行bfs，计算和上面这个1点的距离
+                    buildNum++;//发现1 ，数量++
+                    Queue<int[]> queue = new LinkedList<>();
+                    queue.offer(new int[]{i, j});//从这个building开始做bfs
+                    boolean[][] visited = new boolean[m][n];//记录遍历过的点避免重复
+                    int level = 1; //building附近的点level为1，再外层再+1.
                     while (!queue.isEmpty()) {
                         int size = queue.size();
-                        for (int k = 0; k < size; k++) {
-                            int[] node = queue.poll();
-                            int x = node[0];
-                            int y = node[1];
-                            record1[x][y] ++;
-                            record2[x][y] += dist;
-                            
-                            if (x > 0 && grid[x - 1][y] == 0 && !visited[x - 1][y]) {
-                                queue.offer(new int[]{x - 1, y});
-                                visited[x - 1][y] = true;
-                            }
-                            if (x + 1 < grid.length && grid[x + 1][y] == 0 && !visited[x + 1][y]) {
-                                queue.offer(new int[]{x + 1, y});
-                                visited[x + 1][y] = true;
-                            }
-                            if (y > 0 && grid[x][y - 1] == 0 && !visited[x][y - 1]) {
-                                queue.offer(new int[]{x, y - 1});
-                                visited[x][y - 1] = true;
-                            }
-                            if (y + 1 < grid[0].length && grid[x][y + 1] == 0 && !visited[x][y + 1]) {
-                                queue.offer(new int[]{x, y + 1});
-                                visited[x][y + 1] = true;
+                        //只遍历
+                        for (int q = 0; q < size; q++) {
+                            int[] point = queue.poll();
+                            for (int k = 0; k < 4; k++) {
+                                int nextRow = point[0] + shift[k];
+                                int nextCol = point[1] + shift[k + 1];
+                                if (nextRow >= 0 && nextRow < m && nextCol >= 0 && nextCol < n && !visited[nextRow][nextCol] && grid[nextRow][nextCol] == 0) {
+                                    queue.offer(new int[]{nextRow, nextCol});
+                                    dist[nextRow][nextCol] += level;//累加对所有点的距离
+                                    reach[nextRow][nextCol]++;//grid[nextRow][nextCol] 这个点目前遇到多少1
+                                    visited[nextRow][nextCol] = true;
+                                }
                             }
                         }
-                        dist++;
+                        level++;
                     }
                 }
             }
         }
-        int res = Integer.MAX_VALUE;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (grid[i][j] == 0 && record1[i][j] == numOfOne && record2[i][j] < res) {
-                    res = record2[i][j];
+        int minDist = Integer.MAX_VALUE;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0 && reach[i][j] == buildNum) {
+                    minDist = Math.min(minDist, dist[i][j]);
                 }
             }
         }
-        return res == Integer.MAX_VALUE ? -1 : res;
+        return minDist == Integer.MAX_VALUE ? -1 : minDist;
     }
 }
-

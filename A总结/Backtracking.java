@@ -610,6 +610,62 @@
 				        }
 				    }
 				}
+			2.6 Find All Combinations With Length N In A String
+				//Solution1:
+				public static List<String> permutation(String s, int n) {
+					List<String> res = new ArrayList<>();
+					if (s == null || s.length() == 0 || s.length() < n ) {
+						return res;
+					}
+
+					helper(s, "", 0, n, res);
+					return res;
+				}
+				private static void helper(String s, String item, int index, int n,
+					List<String> res) {
+					if (item.length() == n) {
+						res.add(item);
+						return;
+					}
+				
+					for (int i = index; i < s.length(); i++) {
+						if (i != index && s.charAt(i) ==  s.charAt(i - 1)) {
+							continue;
+						}
+						helper(s, item + s.charAt(i), i + 1, n, res);
+					}
+				}
+
+				//Solution2:
+				public static List<String> permutation(String s, int n) {
+					List<String> res = new ArrayList<>();
+					if (s == null || s.length() == 0 || s.length() < n ) {
+						return res;
+					}
+					boolean[] visited = new boolean[s.length()];
+					char[] word = s.toCharArray();
+					Arrays.sort(word);
+					helper(word, n, new StringBuilder(), res, visited);
+					return res;
+				}
+				private static void helper(char[] word, int n, StringBuilder item,
+						List<String> res, boolean[] visited) {
+					// TODO Auto-generated method stub
+					if (item.length() == n) {
+						res.add(item.toString());
+						return;
+					}
+					for (int i = 0; i < word.length; i++) {
+						if (visited[i] || i > 0 && word[i] == word[i - 1] && !visited[i - 1]) {
+							continue;
+						}
+						item.append(word[i]);
+						visited[i] = true;
+						helper(word, n, item, res, visited);
+						item.deleteCharAt(item.length() - 1);
+						visited[i] = false;
+					}
+				}
 
 		3. Subsets（子集）
 			3.1 SubsetsI
@@ -873,6 +929,52 @@
 				            }
 				        }
 				        return res;
+				    }
+				}
+
+			4.4 Decode Ways
+				/*
+					Decode Ways 
+					A message containing letters from A-Z is being encoded to numbers using the following mapping:
+					'A' -> 1
+					'B' -> 2
+					...
+					'Z' -> 26
+
+					Given an encoded message containing digits, determine the total number of ways to decode it.
+
+					For example,
+					Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
+					The number of ways decoding "12" is 2.
+					Tags:Dp, String
+				*/
+				public class Solution {
+					int num;
+				    public int numDecodings(String s) {
+				        if (s.length() == 0) {
+				            return 0;
+				        }
+				        num = 0;
+				        dfs(s);
+				        return num;
+				    }
+				    
+				    public void dfs(String s) {
+				        if (s.length() == 0) {
+				            num++;
+				        }
+				        for (int i = 0; i <= 1 && i < s.length(); i++) {
+				            if (isValid(s.substring(0, i + 1))) {
+				                dfs(s.substring(i + 1));
+				            }
+				        }
+				    }
+				    
+				    public boolean isValid(String s) {
+				        if (s.charAt(0) == '0') {
+				            return false;
+				        }
+				        return Integer.valueOf(s) >= 1 && Integer.valueOf(s) <= 26;
 				    }
 				}
 		5. N-Queen, Sudo, Flip Game I & II

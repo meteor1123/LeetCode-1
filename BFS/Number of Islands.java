@@ -25,6 +25,7 @@
 	
 
 */
+//DFS
 public class Solution {
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0) {
@@ -54,33 +55,42 @@ public class Solution {
     }
 }
 
-//color draw
+
+//BFS
 public class Solution {
-    private row = 0;
-    private col = 0;
-    
-    public void fillBlack(int[][] a, int x, int y) {
-        if (a == null) {
-            return;
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) {
+            return 0;
         }
-        
-        row = a.length;
-        col = a[0].length;
-        dfs(a, x, y);
+        int m = grid.length;
+        int n = grid[0].length;
+        int count = 0;
+        boolean[][] visited = new boolean[m][n];
+        final int[] shift = new int[] {0, 1, 0, -1, 0};
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    Queue<int[]> queue = new LinkedList<>();
+                    queue.offer(new int[]{i, j});
+                    while (!queue.isEmpty()) {
+                        int size = queue.size();
+                        for (int q = 0; q < size; q++) {
+                            int[] point = queue.poll();
+                            for (int k = 0; k < 4; k++) {
+                                int nextRow = point[0] + shift[k];
+                                int nextCol = point[1] + shift[k + 1];
+                                if (nextRow >= 0 && nextCol >= 0 && nextRow < m && nextCol < n && grid[nextRow][nextCol] == '1' && !visited[nextRow][nextCol]) {
+                                    queue.offer(new int[]{nextRow, nextCol});
+                                    grid[nextRow][nextCol] = '2';
+                                    visited[nextRow][nextCol] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return count;
     }
-    
-    public void dfs(int[][] a, int i, int j) {.
-        if (i < 0 || i >= row || j < 0 || j >= col || a[i][j] != 0) {
-            return;
-        }
-        a[i][j] = 1;
-        dfs(a, i - 1, j);
-        dfs(a, i + 1, j);
-        dfs(a, i, j + 1);
-        dfs(a, i, j - 1);
-     
-    }   
 }
-
-
-

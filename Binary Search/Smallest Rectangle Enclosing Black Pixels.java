@@ -40,30 +40,36 @@
 	We can do the same for the other boundaries. The area is then calculated by the boundaries. Thus the algorithm runs in O(m * log n + n * log m)
 */
 //Solution1 Binary Search
-	public class Solution {
-	private char[][] image;
-    public int minArea(char[][] iImage, int x, int y) {
-        image = iImage;
-        int m = image.length, n = image[0].length;
-        int top = search(0, x, 0, n, true, true);
-        int bottom = search(x + 1, m, 0, n, false, true);
-        int left = search(0, y, top, bottom, true, false);
-        int right = search(y + 1, n, top, bottom, false, false);
-        return (right - left) * (bottom - top);
+public class Solution {
+    public int minArea(char[][] image, int x, int y) {
+        int m = image.length;
+        int n = image[0].length;
+        int colMin = binarySearch(image, true, 0, y, 0, m, true);
+        int colMax = binarySearch(image, true, y + 1, n, 0, m, false);
+        int rowMin = binarySearch(image, false, 0, x, colMin, colMax, true);
+        int rowMax = binarySearch(image, false, x + 1, m, colMin, colMax, false);
+        return (colMax - colMin) * (rowMax - rowMin);
     }
-    private boolean isWhite(int mid, int k, boolean isRow) {
-        return ((isRow) ? image[mid][k] : image[k][mid]) == '0';
-    }
-    private int search(int i, int j, int low, int high, boolean opt, boolean isRow) {
-        while (i != j) {
-            int k = low, mid = (i + j) / 2;
-            while (k < high && isWhite(mid, k, isRow)) ++k;
-            if (k < high == opt)
-                j = mid;
-            else
-                i = mid + 1;
+    public int binarySearch(char[][] image, boolean isHorizontal, int lower, int upper, int min, int max, boolean goLower) {
+        //以find colMin为例子，lower 就是 0列， upper就是y列，我们要在(lower ~ upper)之间找最小的col， y是所给坐标的列数
+        while (lower < upper) {
+            int mid = lower + (upper - lower) / 2;//从中间开始
+            boolean isOne = false;//标识是否找到“1”
+            for (int i = min; i < max; i++) {//由于是找列的最小最大值，所以需要遍历每一行，min是最小行，max是最大行
+                if ((isHorizontal ? image[i][mid] : image[mid][i]) == '1') {
+                    //image[i][mid]在某一行找列的1出现的最小最大范围，
+                    //image[mid][i]在某一列找行的1出现的最小最大范围
+                    isOne = true;
+                    break;
+                }
+            }
+            if (isOne == goLower) {
+                upper = mid;
+            } else {
+                lower = mid + 1;
+            }
         }
-        return i;
+        return lower;
     }
 }
 //Solution2 DFS

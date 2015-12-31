@@ -182,8 +182,150 @@
 		        return start;
 		    }
 		}
+	1.5 Maximum Subarray
+			/* 	
+				Maximum Subarray 
+				Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
 
+				For example, given the array [−2,1,−3,4,−1,2,1,−5,4],
+				the contiguous subarray [4,−1,2,1] has the largest sum = 6.
 
+				More practice:
+					If you have figured out the O(n) solution, 
+					try coding another solution using the divide and conquer approach, which is more subtle.
+				Tags: Dp, Array, Divide and Conquer
+			*/
+			//Solution2: Greedy
+			public int maxSubArray(int[] A) {
+				// use a local to store a local maximum,
+				// and use a global to store a global maximum.
+				int local = A[0];
+				int global = A[0]
+				for (int i = 1; i < A.length; i++) {
+					local = Math.max(A[i], A[i] + local);
+					global = Math.max(local, global);
+				}
+				return global;
+			}
+	1.6 Maximum Subarray II
+			/*
+				Maximum Subarray II
+
+				Given an array of integers, find two non-overlapping subarrays which have the largest sum.
+
+				The number in each subarray should be contiguous.
+
+				Return the largest sum.
+
+				Have you met this question in a real interview? Yes
+				Example
+				For given [1, 3, -1, 2, -1, 2], the two subarrays are [1, 3] and [2, -1, 2] or [1, 3, -1, 2] and [2], they both have the largest sum 7.
+
+				Challenge
+					Can you do it in time complexity O(n) ?
+			*/
+			public class Solution {
+			    public int maxTwoSubArrays(ArrayList<Integer> nums) {
+					int[] left = new int[nums.size()];
+					int[] right = new int[nums.size()];
+
+					int localMax = 0;
+					int globalMax = Integer.MIN_VALUE;
+
+					for (int i = 0; i < nums.size(); i++) {
+						localMax = Math.max(localMax + nums.get(i) , nums.get(i));
+						globalMax = Math.max(localMax, globalMax);
+						left[i] = globalMax;
+					}
+
+					localMax = 0;
+					globalMax = Integer.MIN_VALUE;
+					for (int i = nums.size() - 1; i >= 0; i--) {
+						localMax = Math.max(localMax + nums.get(i), nums.get(i));
+						globalMax = Math.max(localMax, globalMax);
+						right[i] = globalMax;
+					}
+
+					int res = Integer.MIN_VALUE;
+					for (int i = 0; i < nums.size() - 1; i++) {
+						res = Math.max(res, left[i] + right[i + 1]);
+					}
+					return res;
+				}
+			}
+	1.8 Create Maximum Number
+			/*
+				Given two arrays of length m and n with digits 0-9 representing two numbers. Create the maximum number of length k <= m + n from digits of the two. The relative order of the digits from the same array must be preserved. Return an array of the k digits. You should try to optimize your time and space complexity.
+
+				Example 1:
+				nums1 = [3, 4, 6, 5]
+				nums2 = [9, 1, 2, 5, 8, 3]
+				k = 5
+				return [9, 8, 6, 5, 3]
+
+				Example 2:
+				nums1 = [6, 7]
+				nums2 = [6, 0, 4]
+				k = 5
+				return [6, 7, 6, 0, 4]
+
+				Example 3:
+				nums1 = [3, 9]
+				nums2 = [8, 9]
+				k = 3
+				return [9, 8, 9]
+			*/
+			/*
+				Solution: http://algobox.org/2015/12/24/create-maximum-number/
+			*/
+			/*
+				比较的不是nums1和nums2组成的数字之和，而是它们组成的数字的最大值
+			*/
+			public class Solution {
+			    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
+			        int m = nums1.length;
+			        int n = nums2.length;
+			        int[] res = new int[k];
+			        //为什么会有 i = Math.max(0, k - n), 当k >  n 时，nums1 至少取 k - n 个数， 因为只靠nums2肯定不够
+			        //                                 当k <= n 时，可以任意在nums1取k个数，或者nums2取k个数， 或者在nums1取 k - i, nums2取 i
+			        for (int i = Math.max(0, k - n); i <= k && i <= m; i++) {
+			            int[] candidate = merge(maxArray(nums1, i), maxArray(nums2, k - i), k);
+			            if (greater(candidate, 0, res, 0)) {
+			                res = candidate;
+			            }
+			        }
+			        return res;
+			    }
+			    private int[] merge(int[] nums1, int[] nums2, int k) {
+			        int[] res = new int[k];
+			        for (int i = 0, j = 0, r = 0; r < k; r++) {
+			            res[r] = greater(nums1, i, nums2, j) ? nums1[i++] : nums2[j++];
+			        }
+			        return res;
+			    }
+			    
+			    public boolean greater(int[] nums1, int i, int[] nums2, int j) {
+			        while (i < nums1.length && j < nums2.length && nums1[i] == nums2[j]) {
+			            i++;
+			            j++;
+			        }
+			        return j == nums2.length || (i < nums1.length && nums1[i] > nums2[j]);
+			    }
+			    
+			    public int[] maxArray(int[] nums, int k) {
+			        int m = nums.length;
+			        int[] res = new int[k];
+			        for (int i = 0, j = 0; i < m; i++) {
+			            while (m - i + j > k && j > 0 && res[j - 1] < nums[i]) {
+			                j--;
+			            }
+			            if (j < k) {
+			                res[j++] = nums[i];
+			            }
+			        }
+			        return res;
+			    }
+			}
 
 
 
