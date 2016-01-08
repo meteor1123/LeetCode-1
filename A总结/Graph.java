@@ -97,6 +97,59 @@
 			        return res;
 			    }
 			}
+		0.2 Number Of Connected Components In An Undirected Graph
+			/*
+				Number of Connected Components in an Undirected Graph
+				Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes), write a function to find the number of connected components in an undirected graph.
+
+				Example 1:
+				     0          3
+				     |          |
+				     1 --- 2    4
+				Given n = 5 and edges = [[0, 1], [1, 2], [3, 4]], return 2.
+
+				Example 2:
+				     0           4
+				     |           |
+				     1 --- 2 --- 3
+				Given n = 5 and edges = [[0, 1], [1, 2], [2, 3], [3, 4]], return 1.
+
+				Note:
+				You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
+			*/
+
+			public class Solution {
+			    public int countComponents(int n, int[][] edges) {
+			        int[] root = new int[n];
+			        // Arrays.fill(root, -1);
+			        for (int i = 0; i < n; i++) {
+			            root[i] = i;
+			        }
+			        for (int i = 0; i < edges.length; i++) {
+			            int x = find(root, edges[i][0]);
+			            int rootY = find(root, edges[i][1]);
+			            if (x != rootY) {
+			                root[x] = rootY;
+			            }
+			        }
+			        int count = 0;
+			        for (int i = 0; i < root.length; i++) {
+			            if (root[i] == i) {
+			                count++;
+			            }
+			        }
+			        return count;
+			    }
+			    
+			    public int find(int[] root, int i) {
+			        if (root[i] == i) {
+			            return i;
+			        }
+			        root[i] = find(root, root[i]); //Path compression
+			        return root[i];
+			    }
+			}
+
 
 
 1. Topological Sort
@@ -258,6 +311,102 @@
 			        return true;
 			    }
 			}
+		1.3 Alien Dictionary
+			/*
+				There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. You receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+
+				For example,
+				Given the following words in dictionary,
+
+				[
+				  "wrt",
+				  "wrf",
+				  "er",
+				  "ett",
+				  "rftt"
+				]
+				The correct order is: "wertf".
+
+				Note:
+				You may assume all letters are in lowercase.
+				If the order is invalid, return an empty string.
+				There may be multiple valid order of letters, return any one of them is fine.
+			*/
+			/*
+				1. 以每一个字符为顶点，构建有向图
+				2. 注意wrt ，并不就一定意味着 w < r < t, 比如一个英文单词 bad,并不意味着b < a，同一个字符不能比较顺序，
+				   能比较顺序的只有wrt和wrf中的 t和f: t < f ，也就是两个单词里的第一个字符能比较顺序，比如ett和rftt -> e < r
+			*/
+			public class Solution {
+			    public String alienOrder(String[] words) {
+			        //构建图
+			        HashMap<Character, HashSet<Character>> graph = new HashMap<>();
+			        for (int i = 0; i < words.length; i++) {
+			            for (int j = 0; j < words[i].length(); j++) {
+			                if (!graph.containsKey(words[i].charAt(j))) {
+			                    graph.put(words[i].charAt(j), new HashSet<Character>());
+			                }
+			            }
+			            if (i > 0) {
+			                getOrder(words[i - 1], words[i], graph);//构建前后两个word中的 char的顺序
+			            }
+			        }
+			        return topologicalSort(graph);
+			    }
+			    public String topologicalSort(HashMap<Character, HashSet<Character>> graph) {
+			        StringBuilder sb = new StringBuilder();
+			        HashMap<Character, Integer> indegree = new HashMap<>();
+			        Queue<Character> queue = new LinkedList<>();
+			        //构建入度hash
+			        for (char c : graph.keySet()) {
+			           for (char v : graph.get(c)) {
+			               if (indegree.containsKey(v)) {
+			                   indegree.put(v, indegree.get(v) + 1);
+			               } else {
+			                   indegree.put(v, 1);
+			               }
+			           }
+			        }
+			        //将入度为0的点进队列
+			        for (char c : graph.keySet()) {
+			            if (!indegree.containsKey(c)) {
+			                queue.offer(c);
+			            }
+			        }
+			        //用Queue，BFS遍历所有入度为0的点，
+			        while (!queue.isEmpty()) {
+			            char c = queue.poll();
+			            sb.append(c);
+			            for (char neighbor : graph.get(c)) {
+			                indegree.put(neighbor, indegree.get(neighbor) - 1);
+			                if (indegree.get(neighbor) == 0) {
+			                    queue.offer(neighbor);
+			                }
+			            }
+			        }
+			        //遍历完了还有点入度为0，意味着发现了环，返回空字符，不是一个正确的顺序
+			        for (int v : indegree.values()) {
+			            if (v != 0) {
+			                return "";
+			            }
+			        }
+			        return sb.toString();
+			        
+			    }
+			    //两个不同的单词只能比较第一个的不同char的顺序，比如 abc和aca
+			    public void getOrder(String s, String t, HashMap<Character, HashSet<Character>> graph) {
+			        for (int i = 0; i < Math.min(s.length(), t.length()); i++) {
+			            char c1 = s.charAt(i);
+			            char c2 = t.charAt(i);
+			            if (c1 != c2) {
+			                if (!graph.get(c1).contains(c2)) {
+			                    graph.get(c1).add(c2);
+			                }
+			                break;
+			            }
+			        }
+			    }
+			}
 
 
 2. Tree
@@ -369,12 +518,173 @@
 				        }
 				    }
 			    }
+		2.2 Minimum Height Trees
+			/*
+				For a undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs). Given such a graph, write a function to find all the MHTs and return a list of their root labels.
+
+				Format
+				The graph contains n nodes which are labeled from 0 to n - 1. You will be given the number n and a list of undirected edges (each edge is a pair of labels).
+
+				You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
+
+				Example 1:
+					Given n = 4, edges = [[1, 0], [1, 2], [1, 3]]
+
+					        0
+					        |
+					        1
+					       / \
+					      2   3
+					return [1]
+
+				Example 2:
+					Given n = 6, edges = [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]]
+					     0  1  2
+					      \ | /
+					        3
+					        |
+					        4
+					        |
+					        5
+					return [3, 4]
+				Note:
+
+					(1) According to the definition of tree on Wikipedia: “a tree is an undirected graph in which any two vertices are connected by exactly one path. 
+				    In other words, any connected graph without simple cycles is a tree.”
+
+					(2) The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
+			*/
+			/*
+				Solution: 核心思想，从叶子结点开始找中间的结点
+						  1. 用邻接矩阵保存graph信息
+						  2. 从所有的叶子节点开始遍历，从叶子节点的邻接结点中删除该叶子结点，并判断邻接结点的size是否等于1 如果等于1就是已经成为叶子结点，放入新的叶子节点list
+						  3. 下一层从新的叶子结点开始执行2，当剩下的结点说 <=2 时，跳出while，返回结果
+			*/
+			public class Solution {
+			    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+			        if (n <= 1) {
+			            return Collections.singletonList(0);
+			        }
+			        HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+			        for (int i = 0; i < n; i++) {
+			            map.put(i, new HashSet<>());
+			        }
+			        for (int[] edge : edges) {
+			            map.get(edge[0]).add(edge[1]);
+			            map.get(edge[1]).add(edge[0]);
+			        }
+			        List<Integer> leaves = new ArrayList<>();
+			        for (int i = 0; i < n; i++) {
+			            if (map.get(i).size() == 1) {
+			                leaves.add(i);
+			            }
+			        }
+			        while (n > 2) {
+			            n = n - leaves.size();
+			            List<Integer> newLeaves = new ArrayList<>();
+			            for (int i : leaves) {
+			                int j = map.get(i).iterator().next();
+			                map.get(j).remove(i);
+			                if (map.get(j).size() == 1) {
+			                    newLeaves.add(j);
+			                }
+			            }
+			            leaves = newLeaves;
+			        }
+			        return leaves;
+			    }
+			}
 	
 
 
-2. DFS
+2. Graph Problem
+		3.1 Clone Graph
+			/*
+				Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.
 
+				OJ's undirected graph serialization:
+				Nodes are labeled uniquely.
 
+				We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.
+				As an example, consider the serialized graph {0,1,2#1,2#2,2}.
+
+				The graph has a total of three nodes, and therefore contains three parts as separated by #.
+
+				First node is labeled as 0. Connect node 0 to both nodes 1 and 2.
+				Second node is labeled as 1. Connect node 1 to node 2.
+				Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.
+				Visually, the graph looks like the following:
+
+				       1
+				      / \
+				     /   \
+				    0 --- 2
+				         / \
+				         \_/
+			*/
+			//Soltuion1: BFS
+			/**
+			 * Definition for undirected graph.
+			 * class UndirectedGraphNode {
+			 *     int label;
+			 *     List<UndirectedGraphNode> neighbors;
+			 *     UndirectedGraphNode(int x) { 
+			 *       label = x; 
+			 *       neighbors = new ArrayList<UndirectedGraphNode>(); 
+			 *     }
+			 * };
+			 */
+			public class Solution {
+			    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+			        if (node == null) {
+			            return null;
+			        }
+			        HashMap<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+			        UndirectedGraphNode newRoot = new UndirectedGraphNode(node.label);
+			        Queue<UndirectedGraphNode> queue = new LinkedList<>();
+			        map.put(node, newRoot);
+			        queue.offer(node);
+			        while (!queue.isEmpty()) {
+			            UndirectedGraphNode curNode = queue.poll();
+			            for (UndirectedGraphNode oldNeighbor : curNode.neighbors) {
+			                if (!map.containsKey(oldNeighbor)) {
+			                    queue.offer(oldNeighbor);
+			                    UndirectedGraphNode newNeighbor = new UndirectedGraphNode(oldNeighbor.label);
+			                    map.put(oldNeighbor, newNeighbor);
+			                }
+			                map.get(curNode).neighbors.add(map.get(oldNeighbor));
+			            }
+			        }
+			        return newRoot;
+			    }
+			}
+			//Solution2: DFS
+			public class Solution {
+			    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+			        if (node == null) {
+			            return null;
+			        }
+			        HashMap<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+			        UndirectedGraphNode newRoot = new UndirectedGraphNode(node.label);
+			        map.put(node, newRoot);
+			        dfs(map, node);
+			        return newRoot;
+			    }
+			    
+			    public void dfs(HashMap<UndirectedGraphNode, UndirectedGraphNode> map, UndirectedGraphNode node) {
+			        if (node == null) {
+			            return;
+			        }
+			        for (UndirectedGraphNode oldNeighbor : node.neighbors) {
+			            if (!map.containsKey(oldNeighbor)) {
+			                UndirectedGraphNode newNeighbor = new UndirectedGraphNode(oldNeighbor.label);
+			                map.put(oldNeighbor, newNeighbor);
+			                dfs(map, oldNeighbor);
+			            }
+			            map.get(node).neighbors.add(map.get(oldNeighbor));
+			        }
+			    }
+			}
 
 3.
 

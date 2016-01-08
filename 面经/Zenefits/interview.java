@@ -116,6 +116,61 @@
 			        return true;
 			    }
 			}
+		1.3 A Pair With Given Sum In A Balanced BST
+			public class findTwoElementsEqualsSumInBST {
+				public int[] findPair(TreeNode root, int target) {
+					int[] pair = {-1, -1};
+					Stack<TreeNode> leftStack = new Stack<>();
+					Stack<TreeNode> rightStack = new Stack<>();
+					boolean searchLeft = true;
+					boolean searchRight = true;
+					TreeNode leftNode = root;
+					TreeNode rightNode = root;
+					int leftVal = 0, rightVal = 0;
+					
+					while (true) {
+						while (searchLeft) {
+							if (leftNode != null) {
+								leftStack.push(leftNode);
+								leftNode = leftNode.left;
+							} else {
+								searchLeft = false;
+								if (!leftStack.isEmpty()) {
+									leftNode = leftStack.pop();
+									leftVal = leftNode.val;
+									leftNode = leftNode.right;
+								}
+							}
+						}
+						while (searchRight) {
+							if (rightNode != null) {
+								rightStack.push(rightNode);
+								rightNode = rightNode.right;
+							} else {
+								searchRight = false;
+								if (!rightStack.isEmpty()) {
+									rightNode = rightStack.pop();
+									rightVal = rightNode.val;
+									rightNode = rightNode.left;
+								}
+							}
+						}
+						if (leftVal >= rightVal) {
+							return pair;
+						}
+						if (leftVal + rightVal == target) {
+							pair[0] = leftVal;
+							pair[1] = rightVal;
+							return pair;
+						} else if (leftVal + rightVal > target) {
+							searchRight = true;
+						} else {
+							searchLeft = true;
+						}
+					}
+				}
+			}
+
 
 
 
@@ -458,6 +513,56 @@
 
 			    public int getMin() {
 			        return minStack.peek();
+			    }
+			}
+			//Solution3: do not use api 
+			public class MinStack {
+			    private ListNode head = null;
+			    private ListNode min = null;
+			     
+			    public void push(int x) {
+			        ListNode newNode = new ListNode(x);
+			         
+			        if (head == null) {
+			            head = newNode;
+			        } else {
+			            head.next = newNode;
+			            newNode.prev = head;
+			            head = newNode;
+			        }
+			         
+			        // Update the min value
+			        if (min == null || newNode.val <= min.val) {
+			            min = newNode;
+			        }
+			    }
+			     
+			    public int pop() {
+			        ListNode node = head;
+			         
+			        head = head.prev;
+			        // Be careful only one node in the list
+			        if (head != null) {
+			            head.next = null;
+			        }
+			         
+			        // Find out the new min
+			        if (min == node) {
+			            ListNode p = head;
+			            min = head;
+			            while (p != null) {
+			                if (p.val < min.val) {
+			                    min = p;
+			                }
+			                p = p.prev;
+			            }
+			        }
+			         
+			        return node.val;
+			    }
+			     
+			    public int getMin() {
+			        return min.val;
 			    }
 			}
 
@@ -1199,19 +1304,67 @@
 				        return true;
 				    }
 				}
+		9.2 Random Shuffle String Except First And Last
+			public class shuffleString {
+				public static String shuffle(String s) {
+					String[] words = s.split(" ");
+					StringBuilder res = new StringBuilder();
+					for (int i = 0; i < words.length; i++) {
+						res.append(scramble(words[i]) + " ");
+					}
+					return res.toString();
+				}
+				public static String scramble(char first, char last, String word) {
+					String res = "" + first;
+					while (word.length() != 0) {
+						int index = (int)Math.floor(Math.random() * word.length());
+						char c = word.charAt(index);
+						word = word.substring(0, index) + word.substring(index + 1);
+						res += c;
+					}
+					return res + last;
+				}
+				public static String scramble(String word) {
+					if (word.length() < 3) {
+						return word;
+					}
+					String middle = word.substring(1,  word.length() - 1);
+					return scramble(word.charAt(0), word.charAt(word.length() - 1), middle);
+				}
+			}
+
 
 10. Math
 		10.1 Excel Sheet Column Title , Number And Alphabat Convert Problem
 			public class Solution {
 			    public String convertToTitle(int n) {
-			        StringBuilder res = new StringBuilder();
+			        StringBuilder sb = new StringBuilder();
 			        while (n > 0) {
 			            n--;
-			            char c = (char)((n % 26) + 'A');
-			            res.insert(0, c);
-			            n /= 26;
+			            char c = (char)(n % 26 + 'A');
+			            sb.insert(0, c);
+			            n = n / 26;
 			        }
-			        return res.toString();
+			        return sb.toString();
+			    }
+			}
+		10.1.2 Excel Sheet Column Number
+			/*
+			   A -> 1
+			   B -> 2
+			   C -> 3
+			   ...
+			   Z -> 26
+			   AA -> 27
+			   AB -> 28 
+			 */
+			public class Solution {
+			    public int titleToNumber(String s) {
+			        int res = 0;
+			        for (int i = 0; i < s.length(); i++) {
+			            res = res * 26 + (s.charAt(i) - 'A' + 1);
+			        }
+			        return res;
 			    }
 			}
 		10.2 Sqrt
@@ -1259,6 +1412,49 @@
 			            sb.deleteCharAt(0);
 			        }
 			        return sb.length() == 0 ? "0" : sb.toString();
+			    }
+			}
+		10.4 Sparse Matrix Multiplication
+			/*
+				Given two sparse matrices A and B, return the result of AB.
+
+				You may assume that A's column number is equal to B's row number.
+
+				Example:
+
+				A = [
+				  [ 1, 0, 0],
+				  [-1, 0, 3]
+				]
+
+				B = [
+				  [ 7, 0, 0 ],
+				  [ 0, 0, 0 ],
+				  [ 0, 0, 1 ]
+				]
+
+
+				     |  1 0 0 |   | 7 0 0 |   |  7 0 0 |
+				AB = | -1 0 3 | x | 0 0 0 | = | -7 0 3 |
+				                  | 0 0 1 |
+			 */
+			public class Solution {
+			    public int[][] multiply(int[][] A, int[][] B) {
+			        int m = A.length;
+			        int n = A[0].length;
+			        int nB = B[0].length;
+			        int[][] C = new int[m][nB];
+			        for (int i = 0; i < m; i++) {
+			            for (int k = 0; k < n; k++) {
+			                if (A[i][k] != 0) {
+			                    for (int j = 0; j < nB; j++) {
+			                        C[i][j] += A[i][k] * B[k][j];
+			                        
+			                    }
+			                }
+			            }
+			        }
+			        return C;
 			    }
 			}
 
@@ -1396,6 +1592,70 @@
 					int len = suffixes.length;
 					for (int i = len - 1; i >= len - k; i--) {
 						res.add(suffixes[i]);
+					}
+					return res;
+				}
+			}
+
+		14.2 TWo Differences
+		/*
+			(2)Given N unique positive integers, we want to count the total pairs of numbers whose difference is K. The solution should minimize computational time complexity to the best of your ability
+			Input Format:
+			1st line contains N and K, which are integers separated by a space.. 2nd line contains N integers that form the set.
+			Constraints 0 ≤ N ≤ 105,
+			         All N numbers are distinct and can be represented by 32 bit signed integer. 0 <K <= 109
+			Output Format:
+			One integer, the number of pairs of numbers that have differenceK.. Sample Input #1:
+			5215342
+			Sample Output #1: 3
+			Explanation:
+			The possible pairs are (5,3), (4,2) and (3,1).
+			Sample Input #2:
+			10 1363374326 364147530 61825163 1073065718 1281246024 1399469912 428047635 491595254 879792181 1069262793
+			Sample Output #2:
+			0
+			Explanation:
+			There are no pairs with a difference of 1.
+		 */
+			//Solution1: just return count
+			public class Solution {
+				public static int findDiff(int[] nums, int k) {
+					HashMap<Integer, Integer> map = new HashMap<>();
+					int count = 0;
+					for (int num : nums) {
+						if (!map.containsKey(num)) {
+							map.put(num, 1);
+						} else {
+							map.put(num, map.get(num) + 1);
+						}
+						if (map.containsKey(num - k) && map.get(num) <= 1) {
+							count++;
+						}
+						if (map.containsKey(num + k) && map.get(num) <= 1) {
+							count++;
+						}
+					}
+					return count;
+				}
+			}
+			//Solution2: return all pairs
+			public class Solution{
+				public static HashMap findDiffWithIndex(int[] nums, int k) {
+					HashMap<Integer, Integer> map = new HashMap<>();
+					HashSet<Integer> set = new HashSet<>();
+					int count = 0;
+					HashMap<Integer, Integer> res = new HashMap<>();
+					for (int i = 0; i < nums.length; i++) {
+						if (!map.containsKey(nums[i])) {
+							map.put(nums[i], i);
+						} 
+						if (map.containsKey(nums[i] - k) && !set.contains(nums[i])) {
+							res.put(map.get(nums[i] - k), i);
+						}
+						if (map.containsKey(nums[i] + k) && !set.contains(nums[i])) {
+							res.put(map.get(nums[i] + k), i);
+						}
+						set.add(nums[i]);
 					}
 					return res;
 				}

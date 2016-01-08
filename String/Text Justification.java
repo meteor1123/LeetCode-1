@@ -4,7 +4,8 @@
 
 	You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly L characters.
 
-	Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+	Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, 
+    the empty slots on the left will be assigned more spaces than the slots on the right.
 
 	For the last line of text, it should be left justified and no extra space is inserted between words.
 	For example,
@@ -141,8 +142,8 @@ public class Solution {
         //外层循环遍历所有的word
         for (int i = 0, w; i < words.length; i = w) {
             //len用来记录每一层字符的总长度
-            int len = -1;
-            //用w来遍历每一层的字符
+            int len = -1;//之所以初始化为1，是因为后面算len的时候每个word都自动包括1个空格的长度，而最后一个字符在非最后一行的时候是不需要加空格，-1就是为了中和最后一个字符的+1.
+            //用w来遍历可以放入某一行的words的index
             //len + words[w].length() + 1 要 <= maxWidth
             for (w = i; w < words.length && len + words[w].length() + 1 <= maxWidth; w++) {
                 len += words[w].length() + 1;// words[w].length 是word的长度， +1 是词后至少保留一个空格的长度
@@ -151,6 +152,10 @@ public class Solution {
             int space = 1;
             int extra = 0;
             if (w != i + 1 && w != words.length) {//not 1 char not last line
+                //为什么这里space需要+1？因为我们在计算len的时候已经将每个有效范围内的单词都加上一个空格的长度
+                //所以(maxWidth - len) / (w - i - 1) + 1 = maxWidth - len + w - i - 1     / w - i - 1, 
+                //                                      = maxWidth - (len - (w - i - 1)) / w - i - 1,
+                //我们注意到w - i - 1 是可以放空格的间隔， (len - (w - i - 1))才是字符除去空格后的真实长度。
                 space = (maxWidth - len) / (w - 1 - i) + 1;
                 extra = (maxWidth - len) % (w - 1 - i);
             }

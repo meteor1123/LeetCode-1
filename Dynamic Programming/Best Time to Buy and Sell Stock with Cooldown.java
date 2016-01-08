@@ -41,7 +41,7 @@
 		11. This is better than 3, but we can do even better
 		12. Since states of day i relies only on i-1 and i-2 we can reduce the O(n) space to O(1). 
 */
-Since states of day i relies only on i-1 and i-2 we can reduce the O(n) space to O(1). And here we are at our final solution:
+//Since states of day i relies only on i-1 and i-2 we can reduce the O(n) space to O(1). And here we are at our final solution:
 public class Solution {
     public int maxProfit(int[] prices) {
         if (prices == null || prices.length <= 1) {

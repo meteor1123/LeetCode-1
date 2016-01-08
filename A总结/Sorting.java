@@ -30,6 +30,132 @@
 			        nums[j] = temp;
 			    }
 			}
+		1.1.2 Wiggle Sort II
+			/*	
+				Given an unsorted array nums, reorder it such that nums[0] < nums[1] > nums[2] < nums[3]....
+
+				Example:
+				(1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6]. 
+				(2) Given nums = [1, 3, 2, 2, 3, 1], one possible answer is [2, 3, 1, 3, 1, 2].
+
+				Note:
+				You may assume all input has valid answer.
+
+				Follow Up:
+				Can you do it in O(n) time and/or in-place with O(1) extra space?
+			 */
+
+			//Solution1: O(nlogn) time, O(n) space
+			public class Solution {
+			    public void wiggleSort(int[] nums) {
+			        Arrays.sort(nums);
+			        int[] copy = Arrays.copyOf(nums, nums.length);
+			        int smallIndex = (nums.length + 1) / 2 - 1;
+			        int largeIndex = nums.length - 1;
+			        for (int i = 0; i < nums.length; i++) {
+			            if (i % 2 == 0) {
+			                nums[i] = copy[smallIndex - i / 2];
+			            } else {
+			                nums[i] = copy[largeIndex - i / 2];
+			            }
+			        }
+			    }
+			}
+			
+			//Solution2: O(n) time
+			import java.util.Random;
+			public class Solution {
+			    public void wiggleSort(int[] nums) {
+			       if (nums == null || nums.length == 0) {
+			           return;
+			       }
+			       int n = nums.length;
+			       randomShuffle(nums);
+			       double median = findMedian(nums);
+			       int firstHalfLen, secondHalfLen;
+			       if (n % 2 == 0) {
+			           firstHalfLen = n / 2;
+			       } else {
+			           firstHalfLen = n / 2 + 1;
+			       }
+			       secondHalfLen = n / 2;
+			       List<Integer> firstHalf = new ArrayList<>();
+			       List<Integer> secondHalf = new ArrayList<>();
+			       
+			       for (int i = 0; i < nums.length; i++) {
+			           if ((double)nums[i] < median) {
+			               firstHalf.add(nums[i]);
+			           } else if ((double)nums[i] > median) {
+			               secondHalf.add(nums[i]);
+			           }
+			       }
+			       
+			       while (firstHalf.size() < firstHalfLen) {
+			           firstHalf.add((int)median);
+			       }
+			       while (secondHalf.size() < secondHalfLen) {
+			           secondHalf.add((int)median);
+			       }
+			       
+			       for (int i = 0; i < firstHalf.size(); i++) {
+			           nums[i * 2] = firstHalf.get(firstHalf.size() - 1 - i)
+			           ;//从后往前加，因为在smaller list中median add在后面，large list中median也在后面，要避免这俩个median的冲突，因此要把smaller要从后遍历，large从前遍历，保证large一定大于smaller，
+			       }
+			       
+			       for (int i = 0; i < secondHalf.size(); i++) {
+			           nums[i * 2 + 1] = secondHalf.get(i);
+			       }
+			    }
+			    
+			    private double findMedian(int[] nums) {
+			        if(nums.length % 2 == 1) {
+			            return (double) findKth(nums, 0, nums.length-1, nums.length/2);
+			        } else {
+			            return ( 
+			                     (double) findKth(nums, 0, nums.length-1, nums.length/2 - 1) +
+			                     (double) findKth(nums, 0, nums.length-1, nums.length/2) 
+			                   ) / 2;
+			        }
+			    }
+			    private int findKth(int[] nums, int low, int high, int k) {
+			        int l = low;
+			        int r = high;
+			        int pivot = high;
+			        while (true) {
+			            while(l < r && nums[l] < nums[pivot]) {
+			                l++;
+			            }
+			            while(l < r && nums[r] >= nums[pivot]) {
+			                r--;
+			            }
+			            if (l == r) {
+			                break;
+			            }
+			            swap(nums, l, r);
+			        }
+			        swap(nums, l, high);
+			        if (l == k) {
+			            return nums[l];
+			        } else if (l < k) {
+			            return findKth(nums, l + 1, high, k);
+			        } else {
+			            return findKth(nums, low, l - 1, k);
+			        }
+			    }
+			    private void randomShuffle(int[] nums) {
+			        Random rm = new Random();
+			        for (int i = 0; i < nums.length - 1; i++) {
+			            int j = i + rm.nextInt(nums.length - i);
+			            swap(nums, i, j);
+			        }
+			    }
+			    private void swap(int[] nums, int i, int j) {
+			        int temp = nums[i];
+			        nums[i] = nums[j];
+			        nums[j] = temp;
+			    }
+			}
+
 		1.2 Sort Colors I
 			/*
 				Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.
@@ -269,8 +395,67 @@
 			    }
 			}
 
-4. N Sum Problem
-		4.1 Two Sum II - Input Array Is Sorted
+4. Bucket Sort / Radix Sort
+		4.1 Maximum Gap
+			/*
+				Given an unsorted array, find the maximum difference between the successive elements in its sorted form.
+
+				Try to solve it in linear time/space.
+
+				Return 0 if the array contains less than 2 elements.
+
+				You may assume all elements in the array are non-negative integers and fit in the 32-bit signed integer range.
+			*/
+			public class Solution {
+			    public int maximumGap(int[] nums) {
+			        if (nums == null || nums.length < 2) {
+			            return 0;
+			        }
+			        //get the max and min value of the array
+			        int min = nums[0];
+			        int max = nums[0];
+			        
+			        for (int i : nums) {
+			            min = Math.min(min, i);
+			            max = Math.max(max, i);
+			        }
+			        //the minimum possible gap, ceiling of the integer division
+			        int gapSize = (int)Math.ceil((double)(max - min)/(nums.length - 1));
+			        int[] bucketsMIN = new int[nums.length - 1];
+			        int[] bucketsMAX = new int[nums.length - 1];
+			        
+			        Arrays.fill(bucketsMIN, Integer.MAX_VALUE);
+			        Arrays.fill(bucketsMAX, Integer.MIN_VALUE);
+			        
+			        //put numbers into buckets，将数组里的数组放入buckets中，选出每个桶的max和min值
+			        for (int val : nums) {
+			            if (val == min || val == max) {
+			                continue;
+			            }
+			            int index = (val - min) / gapSize; //index of the right position in the buckets
+			            bucketsMIN[index] = Math.min(val, bucketsMIN[index]);
+			            bucketsMAX[index] = Math.max(val, bucketsMAX[index]);
+			        }
+			        
+			        //Scan the buckets for the max gap
+			        int maxGap = Integer.MIN_VALUE;
+			        int previous = min;
+			        
+			        for (int i = 0; i < nums.length - 1; i++) {
+			            if (bucketsMIN[i] == Integer.MAX_VALUE && bucketsMAX[i] == Integer.MIN_VALUE) {
+			                //empty bucket
+			                continue;
+			            }
+			            // min value minus the previous value is the current gap
+			            maxGap = Math.max(maxGap, bucketsMIN[i] - previous);
+			            // update previous bucket value
+			            previous = bucketsMAX[i];
+			        }
+			        
+			        maxGap = Math.max(maxGap, max - previous);//Update the final max value gap
+			        return maxGap;
+			    }
+			}
 
 
 5. Median Problem

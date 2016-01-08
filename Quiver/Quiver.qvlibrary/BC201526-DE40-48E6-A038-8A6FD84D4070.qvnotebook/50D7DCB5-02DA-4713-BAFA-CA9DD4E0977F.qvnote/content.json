@@ -1,0 +1,9 @@
+{
+  "title": "Hash table",
+  "cells": [
+    {
+      "type": "text",
+      "data": "<h3>Difference between HashMap, TreeMap, and Hashtable</h3><div><div>There are three main implementations of <span style=\"color: #2a1b81\">Map </span>interface in Java: Hash<span style=\"color: #2a1b81\">Map</span>, Tree<span style=\"color: #2a1b81\">Map</span>, and <span style=\"color: #2a1b81\">Hashtable</span>. The most important differences include:<br>• The order of iteration. HashMap and Hashtable make no guarantees as to the order of the map; in particular, they do not guarantee that the order will remain constant over time. But TreeMap will iterate the whole entries according the \"natural ordering\" of the keys or by a comparator.<br>• key-value permission. HashMap allows null key and null values (Only one null key is allowed because no two keys are allowed the same). Hashtable does not allow null key or null values. If TreeMap uses natural ordering or its comparator does not allow null keys, an exception will be thrown.<br>• Synchronized. Only Hashtable is synchronized, others are not. Therefore, \"if a thread-safe implementation is not needed, it is recommended to use HashMap in place of Hashtable.”</div>\n\n\n<p style=\"margin: 0px; font-size: 11px; line-height: normal; font-family: Helvetica;\"><br></p><p style=\"margin: 0px; font-size: 11px; line-height: normal; font-family: Helvetica;\"><img src=\"quiver-image-url/68F49856B64136C819655C043B13BC40.jpg\"><br></p></div><div><br></div><div><br></div>"
+    }
+  ]
+}

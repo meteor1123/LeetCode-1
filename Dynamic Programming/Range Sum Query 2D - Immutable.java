@@ -42,9 +42,16 @@ public class NumMatrix {
 	        }
 	    }
 	}
+	//（row1,col1） 是矩形左上角的顶点， (row2, col2)是矩形右下角的顶点
 	public int sumRegion(int row1, int col1, int row2, int col2) {
 	    return dp[row2 + 1][col2 + 1] - dp[row1][col2 + 1] - dp[row2 + 1][col1] + dp[row1][col1];
 	}
+
+	/*
+		比如  1 2 3
+			 4 5 6   求5,9 之间矩形的和就等于 = 1为左上顶点9为右下顶点的这个大矩形 -  （1 2 3） - （1 4 7） + （1） =  （5 6 8 9）
+			 7 8 9 
+	*/
 }
 
 //Solution2

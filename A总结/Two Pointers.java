@@ -336,6 +336,69 @@
 
 
 2. N Sum Problem
+		2.0 Two Sum
+			//Solution1: Hash
+			public class Solution {
+			    public int[] twoSum(int[] nums, int target) {
+			        int[] res = new int[2];
+			        HashMap<Integer, Integer> map = new HashMap<>();
+			        for (int i = 0; i < nums.length; i++) {
+			            if (map.containsKey(target - nums[i])) {
+			                res[0] = map.get(target - nums[i]) + 1;
+			                res[1] = i + 1;
+			                return res;
+			            } else {
+			                map.put(nums[i], i);
+			            }
+			        }
+			        return res;
+			    }
+			}
+			//Solution2: input is sorted array
+			public int[] twoSum(int[] numbers, int target) {
+			    int[] res = new int[2];
+			    if(numbers==null || numbers.length<2)
+			        return null;
+			    int left = 0;
+			    int right = numbers.length-1;
+			    while(left < right)
+			    {
+			        if(numbers[left] + numbers[right] == target)
+			        {
+			            res[0] = number[left];
+			            res[1] = number[right];
+			            return res;
+			        }
+			        else if(numbers[left] + numbers[right] > target)
+			        {
+			            right--;
+			        }
+			        else
+			        {
+			            left++;
+			        }
+			    }
+			    return null;
+			}
+			//brute force unsorted
+			public int[] twoSum(int[] numbers, int target) {
+				int[] res = new int[2];
+				if (number == null || numbers.length < 2) {
+					return null;
+				}
+				for (int i = 0; i < numbers.length - 1; i++) {
+					for (int j = i + 1; j < numbers.length; j++) {
+						if (numbers[i] + numbers[j] == target) {
+							res[0] = i + 1;
+							res[1] = j + 1;
+							return res;
+						} 
+					}
+				}
+				res[0] = -1;
+				res[1] = -1;
+				return res;
+			}
 		2.1 Two Sum II - Input Array Is Sorted
 			/*
 				Input: numbers={2, 7, 11, 15}, target=9

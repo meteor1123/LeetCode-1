@@ -648,6 +648,91 @@
 					return result;
 				}
 			}
+		2.9 Longest Subarray With Equal Number Of 0s And 1s
+			/*
+				Given an array containing only 0s and 1s, find the largest subarray which contain equal no of 0s and 1s. Expected time complexity is O(n).
+				Examples:
+
+				Input: arr[] = {1, 0, 1, 1, 1, 0, 0}
+				Output: 1 to 6 (Starting and Ending indexes of output subarray)
+
+				Input: arr[] = {1, 1, 1, 1}
+				Output: No such subarray
+
+				Input: arr[] = {0, 0, 1, 1, 0}
+				Output: 0 to 3 Or 1 to 4
+			*/
+			/*
+				Following is a solution that uses O(n) extra space and solves the problem in O(n) time complexity.
+				Let input array be arr[] of size n and maxsize be the size of output subarray.
+				1) Consider all 0 values as -1. The problem now reduces to find out the maximum length subarray with sum = 0.
+				2) Create a temporary array sumleft[] of size n. Store the sum of all elements from arr[0] to arr[i] in sumleft[i]. This can be done in O(n) time.
+				3) There are two cases, the output subarray may start from 0th index or may start from some other index. We will return the max of the values obtained by two cases.
+				4) To find the maximum length subarray starting from 0th index, scan the sumleft[] and find the maximum i where sumleft[i] = 0.
+				5) Now, we need to find the subarray where subarray sum is 0 and start index is not 0. This problem is equivalent to finding two indexes i & j in sumleft[] such that sumleft[i] = sumleft[j] and j-i is maximum. To solve this, we can create a hash table with size = max-min+1 where min is the minimum value in the sumleft[] and max is the maximum value in the sumleft[]. The idea is to hash the leftmost occurrences of all different values in sumleft[]. The size of hash is chosen as max-min+1 because there can be these many different possible values in sumleft[]. Initialize all values in hash as -1
+				6) To fill and use hash[], traverse sumleft[] from 0 to n-1. If a value is not present in hash[], then store its index in hash. If the value is present, then calculate the difference of current index of sumleft[] and previously stored value in hash[]. If this difference is more than maxsize, then update the maxsize.
+				7) To handle corner cases (all 1s and all 0s), we initialize maxsize as -1. If the maxsize remains -1, then print there is no such subarray.
+			*/
+			public class Solution {
+				int findSubArray(int arr[], int n) {
+				    int maxsize = -1, startindex;  // variables to store result values
+				  
+				    // Create an auxiliary array sunmleft[]. sumleft[i] will be sum of array 
+				    // elements from arr[0] to arr[i]
+				    int sumleft[n];
+				    int min, max; // For min and max values in sumleft[]
+				    int i;
+				  
+				    // Fill sumleft array and get min and max values in it. 
+				    // Consider 0 values in arr[] as -1
+				    sumleft[0] = ((arr[0] == 0)? -1: 1);
+				    min = arr[0]; max = arr[0];
+				    for (i=1; i<n; i++) {      
+				        sumleft[i] = sumleft[i-1] + ((arr[i] == 0)? -1: 1);
+				        if (sumleft[i] < min)
+				            min = sumleft[i];
+				        if (sumleft[i] > max)
+				            max = sumleft[i];
+				    }
+				  
+				    // Now calculate the max value of j - i such that sumleft[i] = sumleft[j].   
+				    // The idea is to create a hash table to store indexes of all visited values.   
+				    // If you see a value again, that it is a case of sumleft[i] = sumleft[j]. Check 
+				    // if this j-i is more than maxsize. 
+				    // The optimum size of hash will be max-min+1 as these many different values 
+				    // of sumleft[i] are possible. Since we use optimum size, we need to shift
+				    // all values in sumleft[] by min before using them as an index in hash[].
+				    int hash[max-min+1];
+				  
+				    // Initialize hash table
+				    for (i=0; i<max-min+1; i++)
+				        hash[i] = -1;
+				  
+				    for (i=0; i<n; i++) {
+				        // Case 1: when the subarray starts from index 0
+				        if (sumleft[i] == 0) {
+				           maxsize = i+1;
+				           startindex = 0;
+				        }
+				  
+				        // Case 2: fill hash table value. If already filled, then use it
+				        if (hash[sumleft[i]-min] == -1) {
+				            hash[sumleft[i]-min] = i;
+				        } else {
+				            if ( (i - hash[sumleft[i]-min]) > maxsize ) {
+				                maxsize = i - hash[sumleft[i]-min];
+				                startindex = hash[sumleft[i]-min] + 1;
+				            }
+				        }
+				    }
+				    if ( maxsize == -1 )
+				        printf("No such subarray");
+				    else
+				        printf("%d to %d", startindex, startindex+maxsize-1);
+				  
+				    return maxsize;
+				}
+			}
 
 
 3. Anagram Problem
@@ -1313,7 +1398,66 @@
 			        return sb[0].toString();
 			    }
 			}
+		5.7 Remove Duplicate Letters
+			/*
+				Remove Duplicate Letters
+				Given a string which contains only lowercase letters, remove duplicate letters so that every letter appear once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.
 
+				Example:
+				Given "bcabc"
+				Return "abc"
+
+				Given "cbacdcbc"
+				Return "acdb"
+
+				Tags: Greedy
+			*/
+			/*
+			    核心思想： 
+			            对所有的char统计出现的次数，从左边开始遍历对遍历到的字符count--，pos记录排序最小的字符出现的位置如果相同取最左边的，
+			             一旦某个字符的count == 0， 则break出来将pos位置的字符加入res，并将所有的s.charAt(pos)replace成“”，并从pos + 1 开始截取字符进行下一次遍历
+			*/
+			public class Solution {
+			    public String removeDuplicateLetters(String s) {
+			        int[] arr = new int[26];
+			        int pos = 0;
+			        for (int i = 0; i < s.length(); i++) {
+			            arr[s.charAt(i) - 'a']++;
+			        }
+			        for (int i = 0; i < s.length(); i++) {
+			            if (s.charAt(i) < s.charAt(pos)) {
+			                pos = i;
+			            }
+			            if (--arr[s.charAt(i) - 'a'] == 0) {
+			                break;
+			            }
+			        }
+			        return s.length() == 0 ? "" : s.charAt(pos) + 
+			                removeDuplicateLetters(s.substring(pos + 1).replaceAll("" + s.charAt(pos), ""));
+			    }
+			}
+		5.8 Summary Ranges
+			/*
+				Given a sorted integer array without duplicates, return the summary of its ranges.
+				For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
+			*/
+			public class Solution {
+			    public List<String> summaryRanges(int[] nums) {
+			        List<String> res = new ArrayList<>();
+			        for (int i = 0; i < nums.length; i++) {
+			            int val = nums[i];
+			            while (i + 1 < nums.length && nums[i + 1] - nums[i] == 1) {
+			                i++;
+			            }
+			            if (val != nums[i]) {
+			                res.add(val + "->" + nums[i]);
+			            } else {
+			                res.add(val + "");
+			            }
+			        }
+			        return res;
+			    }
+			}
 		
 
 
@@ -1378,7 +1522,72 @@
 			        return readBytes;
 			    }
 			}
+		6.3 Text Justification
+			/*
+				Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.
+				You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly L characters.
 
+				Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+
+				For the last line of text, it should be left justified and no extra space is inserted between words.
+
+				For example,
+				words: ["This", "is", "an", "example", "of", "text", "justification."]
+				L: 16.
+
+				Return the formatted lines as:
+				[
+				   "This    is    an",
+				   "example  of text",
+				   "justification.  "
+				]
+				Note: Each word is guaranteed not to exceed L in length.
+
+				click to show corner cases.
+
+				Corner Cases:
+				A line other than the last line might contain only one word. What should you do in this case?
+				In this case, that line should be left-justified.
+			*/
+			public class Solution {
+			    public List<String> fullJustify(String[] words, int maxWidth) {
+			        List<String> res = new ArrayList<>();
+			        for (int i = 0, w = 0; i < words.length; i = w) {
+			            int len = -1;//之所以初始化为1，是因为后面算len的时候每个word都自动包括1个空格的长度，而最后一个字符在非最后一行的时候是不需要加空格，-1就是为了中和最后一个字符的+1.
+			            for (w = i; w < words.length && len + words[w].length() + 1 <= maxWidth; w++) {
+			                len += words[w].length() + 1;
+			            }
+			            StringBuilder sb = new StringBuilder(words[i]);
+			            int space = 1;
+			            int extra = 0;
+			            if (w != i + 1 && w != words.length) {
+			                //为什么这里space需要+1？因为我们在计算len的时候已经将每个有效范围内的单词都加上一个空格的长度
+			                //所以(maxWidth - len) / (w - i - 1) + 1 = maxWidth - len + w - i - 1 / w - i - 1, 
+			                //                                       = maxWidth - (len - (w - i - 1)) / w - i - 1,
+			                //我们注意到w - i - 1 是可以放空格的间隔， (len - (w - i - 1))才是字符除去空格后的真实长度。
+			                space = (maxWidth - len) / (w - i - 1) + 1;
+			                extra = (maxWidth - len) % (w - i - 1);
+			            }
+			            for (int j = i + 1; j < w; j++) {
+			                for (int s = space; s > 0; s--) {
+			                    sb.append(' ');
+			                }
+			                if (extra > 0) {
+			                    sb.append(' ');
+			                    extra--;
+			                }
+			                sb.append(words[j]);
+			            }
+			            int strLen = maxWidth - sb.length();
+			            while (strLen > 0) {
+			                sb.append(' ');
+			                strLen--;
+			            }
+			            res.add(sb.toString());
+			        }
+			        return res;
+			    }
+			}
 
 
 7. Word Distance Problem
@@ -1877,6 +2086,103 @@
 			    }
 			}
 		10.2 Word Ladder II
+			/*
+			    Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:
+
+			    Only one letter can be changed at a time
+			    Each intermediate word must exist in the dictionary
+			    For example,
+
+			    Given:
+			        start = "hit"
+			        end = "cog"
+			        dict = ["hot","dot","dog","lot","log"]
+			    Return:
+			        [
+			            ["hit","hot","dot","dog","cog"],
+			            ["hit","hot","lot","log","cog"]
+			        ]
+			    Note:
+			        All words have the same length.
+			        All words contain only lowercase alphabetic characters.
+			    Tags:Array, Backtracking, BFS, String
+			*/
+
+
+			/*
+			    和wordladderI 的不同之处在于，需要返回所有可能的结果
+			    为什么搜索的时候保存前驱结点容易，而保存后继结点比较困难？
+			    answer：因为当我们到达当前节点是，我们总是知道前驱的，但是后继却还不知道，因此后继结点的维护是比较有难度
+			*/
+
+			//Solution1  prefer!
+			public class Solution {
+			    public List<List<String>> findLadders(String beginWord, String endWord, Set<String> wordList) {
+			        List<List<String>> res = new ArrayList<>();
+			        List<String> item = new ArrayList<String>();
+			        Map<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+			        if (wordList.size() == 0) {
+			            return res;
+			        }
+			        Queue<String> queue = new LinkedList<String>();
+			        Set<String> unvisited = new HashSet<String>(wordList);//保存所有未访问过的结点
+			        Set<String> visited = new HashSet<String>();//每一层上访问过的结点，每访问一层就清空
+			        queue.add(beginWord);
+			        unvisited.add(endWord);
+			        unvisited.remove(beginWord);
+			        int curNum = 1, nextNum = 0;
+			        while (!queue.isEmpty()) {
+			            String word = queue.poll();
+			            curNum--;
+			            for (int i = 0; i < word.length(); i++) {
+			                StringBuilder sb = new StringBuilder(word);
+			                for (char c = 'a'; c <= 'z'; c++) {
+			                    sb.setCharAt(i, c);
+			                    String newWord = sb.toString();
+			                    if (unvisited.contains(newWord)) {
+			                        //假如未访问过该结点，则该节点入队列
+			                        if (visited.add(newWord)) {
+			                            nextNum++;
+			                            queue.add(newWord);
+			                        }
+			                        if (map.containsKey(newWord)) {
+			                            map.get(newWord).add(word);
+			                        } else {
+			                            ArrayList<String> temp = new ArrayList<String>();
+			                            temp.add(word);
+			                            map.put(newWord, temp);
+			                        }
+			                    }
+			                }
+			            }
+			            if (curNum == 0) {
+			                curNum = nextNum;
+			                nextNum = 0;
+			                unvisited.removeAll(visited);//将所有一层上访问过的结点都从未访问结点中清空
+			                visited.clear();
+			            }
+			        }
+			        helper(endWord, beginWord, res, item, map);
+			        return res;
+			    }
+			    //DFS 遍历hashmap，从尾部到头部开始构建最短path，from endWord -> startWord
+			    public void helper(String word, String start, List<List<String>> res, List<String> item, Map<String, ArrayList<String>> map) {
+			        //终止返回条件， word == start， 
+			        if (word.equals(start)) {
+			            item.add(0, start);
+			            res.add(new ArrayList<String>(item));
+			            item.remove(0);//回溯
+			            return;
+			        }
+			        item.add(0, word);//每个单词都从头插入，因为HashMap中 Key是后继词， Value是前驱。 hit-->hot, hit就是前驱，hot是后继
+			        if (map.get(word) != null) {//只要前驱不为空，递归遍历前驱的前驱的前驱。。。。
+			            for (String s : map.get(word)) {
+			                helper(s, start, res, item, map);
+			            }
+			        }
+			        item.remove(0);//作用在于回溯
+			    }
+			}
 		10.3 Longest Word Chain
 			/*
 				给定一个词典， 对于里面单词删掉任何一个字母，如果新单词还在词典里，就形成一个 chain：old word -> new word, 求最长长

@@ -977,6 +977,34 @@
 				        return Integer.valueOf(s) >= 1 && Integer.valueOf(s) <= 26;
 				    }
 				}
+			4.5 Generalized Abbreviation
+				/*
+					Write a function to generate the generalized abbreviations of a word.
+					Example:
+					Given word = "word", return the following list (order does not matter):
+					["word", "1ord", "w1rd", "wo1d", "wor1", "2rd", "w2d", "wo2", "1o1d", "1or1", "w1r1", "1o2", "2r1", "3d", "w3", "4"]
+				*/
+				public class Solution {
+				    public List<String> generateAbbreviations(String word){
+				        List<String> res = new ArrayList<String>();
+				        backtracking(res, word, 0, "", 0);
+
+				        return res;
+				    }
+
+				    private void backtracking(List<String> res, String word, int pos, String item, int count){
+				       if (pos == word.length()) {
+				           if (count > 0) {
+				               item += count;
+				           }
+				           res.add(item);
+				       } else {
+				           backtracking(res, word, pos + 1, item, count + 1);
+				           backtracking(res, word, pos + 1, item + (count > 0 ? count : "") + word.charAt(pos), 0);
+				       }
+				    }
+				}
+
 		5. N-Queen, Sudo, Flip Game I & II
 			5.1 N-Queens I
 				//O(n) space, use matrix[i] to denote i row, matrix[i] col.
@@ -1185,6 +1213,68 @@
 				    }
 				}
 
+			5.6 Additive Number
+				/*
+					Additive number is a string whose digits can form additive sequence.
+
+					A valid additive sequence should contain at least three numbers. Except for the first two numbers, each subsequent number in the sequence must be the sum of the preceding two.
+
+					For example:
+					"112358" is an additive number because the digits can form an additive sequence: 1, 1, 2, 3, 5, 8.
+
+					1 + 1 = 2, 1 + 2 = 3, 2 + 3 = 5, 3 + 5 = 8
+					"199100199" is also an additive number, the additive sequence is: 1, 99, 100, 199.
+					1 + 99 = 100, 99 + 100 = 199
+					Note: Numbers in the additive sequence cannot have leading zeros, so sequence 1, 2, 03 or 1, 02, 3 is invalid.
+
+					Given a string containing only digits '0'-'9', write a function to determine if it's an additive number.
+
+					Follow up:
+					How would you handle overflow for very large input integers?
+				*/
+
+				public class Solution {
+				    public boolean isAdditiveNumber(String num) {
+				        int n = num.length();
+				        for (int i = 1; i < n; i++) {
+				            for (int j = i + 1; j < n; j++) {
+				                long a = parse(num.substring(0, i));
+				                long b = parse(num.substring(i, j));
+				                if (a == -1 || b == -1) {
+				                    continue;
+				                }
+				                if (dfs(num.substring(j), a, b)) {
+				                    return true;
+				                }
+				            }
+				        }
+				        return false;
+				    }
+				    public boolean dfs(String s, long a, long b) {
+				        if (s.length() == 0) {
+				            return true;
+				        }
+				        for (int i = 1; i <= s.length(); i++) {
+				            long c = parse(s.substring(0, i));
+				            if (c == -1) {
+				                return false;
+				            }
+				            if (c - a == b && dfs(s.substring(i), b, c)) {
+				                return true;
+				            }
+				        }
+				        return false;
+				    }
+				    
+				    public long parse(String s) {
+				        if (!s.equals("0") && s.startsWith("0")) {
+				            return -1;
+				        }
+				        long res = Long.parseLong(s);
+				        return res;
+				    }
+				}
+
 		6. Word Backtracking
 			6.1 Word Search I
 				public class Solution {
@@ -1355,6 +1445,56 @@
 				            p++;
 				        }
 				        return p == pattern.length();
+				    }
+				}
+			6.6 Word Pattern II
+				/*
+					Given a pattern and a string str, find if str follows the same pattern.
+
+					Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty substring in str.
+
+					Examples:
+					pattern = "abab", str = "redblueredblue" should return true.
+					pattern = "aaaa", str = "asdasdasdasd" should return true.
+					pattern = "aabb", str = "xyzabcxzyabc" should return false.
+					Notes:
+					You may assume both pattern and str contains only lowercase letters.
+				*/
+				public class Solution {
+				    public boolean wordPatternMatch(String pattern, String str) {
+				        Map<Character, String> map = new HashMap();
+				        Set<String> set = new HashSet<>();
+				        return isMatch(str, 0, pattern, 0, map, set);
+				    }
+				    public boolean isMatch(String str, int i, String pat, int j, Map<Character, String> map, Set<String> set) {
+				        if (i == str.length() && j == pat.length()) {
+				            return true;
+				        }
+				        if (i == str.length() || j == pat.length()) {
+				            return false;
+				        }
+				        char c = pat.charAt(j);
+				        if (map.containsKey(c)) {
+				            String s = map.get(c);
+				            if (!str.startsWith(s, i)) {
+				                return false;
+				            }
+				            return isMatch(str, i + s.length(), pat, j + 1, map, set);
+				        }
+				        for (int k = i; k < str.length(); k++) {
+				            String subStr = str.substring(i, k + 1);
+				            if (set.contains(subStr)) {
+				                continue;//subStr之前已经被用过了 这里不能再用这个匹配新的char c
+				            }
+				            map.put(c, subStr);
+				            set.add(subStr);
+				            if (isMatch(str, k + 1, pat, j + 1, map, set)) {
+				                return true;
+				            }
+				            set.remove(map.get(c));
+				            map.remove(c);
+				        }
+				        return false;
 				    }
 				}
 

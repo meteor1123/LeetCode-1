@@ -66,3 +66,37 @@ public class Solution {
         return end;
     }
 }
+
+
+//Solution3 : prefer
+public class Solution {
+    public int lengthOfLIS(int[] nums) {   
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int n = nums.length;
+        int len = 0;
+        int[] increasingSequence = new int[n];
+        increasingSequence[len++] = nums[0];
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > increasingSequence[len - 1]) {
+                increasingSequence[len++] = nums[i];
+            } else {
+                int position = binarySearch(increasingSequence, 0, len - 1, nums[i]);
+                increasingSequence[position] = nums[i];
+            }
+        }
+        return len;
+    }
+    private int binarySearch(int[] nums, int start, int end, int target) {
+        while (start < end) {
+            int mid = start + (end - start)/2;
+            if (nums[mid] >= target) {
+                end = mid;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return start;
+    }
+}

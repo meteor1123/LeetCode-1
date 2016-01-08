@@ -593,42 +593,85 @@
 
 3. Geometry
 		3.1 Rectangle Area
-		/*
-			Rectangle Area
+			/*
+				Rectangle Area
 
-			Find the total area covered by two rectilinear rectangles in a 2D plane.
-			Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
+				Find the total area covered by two rectilinear rectangles in a 2D plane.
+				Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
 
-									  |
-		 						______|________(C,D) : (3, 4)
-								|	  |       |
-								|     |       |
-								|	  |_______|_____________ (G, H) : (9, 2)
-								|	  |		  |			   |
-					____________|_____|_______|____________|_________
-				       (A, B):(-3, 0) |	O:(0,0)  		   |
-									  |____________________|
-									  |(E, F) :(0, -1)
-									  |
-									  |
-									  |
-									  |
+										  |
+			 						______|________(C,D) : (3, 4)
+									|	  |       |
+									|     |       |
+									|	  |_______|_____________ (G, H) : (9, 2)
+									|	  |		  |			   |
+						____________|_____|_______|____________|_________
+					       (A, B):(-3, 0) |	O:(0,0)  		   |
+										  |____________________|
+										  |(E, F) :(0, -1)
+										  |
+										  |
+										  |
+										  |
 
-			Assume that the total area is never beyond the maximum possible value of int.
-		*/
-		public class Solution {
-		    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
-		        int areaA = Math.abs(C - A) * Math.abs(D - B);//求出ABCD这个矩形面积
-		        int areaB = Math.abs(G - E) * Math.abs(H - F);//求出EFGH这个矩形面积
-		    
-		        if (A >= G || B >= H || C <= E || D <= F) {
-		            return areaA + areaB;//不重叠的情况
-		        }
-		        int length = Math.min(C, G) - Math.max(A, E);//C,G 决定右边界， A,E 决定左边界
-		        int height = Math.min(D, H) - Math.max(B, F);//D,H 决定上边界， B,F 决定下边界
-		        return areaA + areaB - length * height;
-		    }
-		}
+				Assume that the total area is never beyond the maximum possible value of int.
+			*/
+			public class Solution {
+			    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+			        int areaA = Math.abs(C - A) * Math.abs(D - B);//求出ABCD这个矩形面积
+			        int areaB = Math.abs(G - E) * Math.abs(H - F);//求出EFGH这个矩形面积
+			    
+			        if (A >= G || B >= H || C <= E || D <= F) {
+			            return areaA + areaB;//不重叠的情况
+			        }
+			        int length = Math.min(C, G) - Math.max(A, E);//C,G 决定右边界， A,E 决定左边界
+			        int height = Math.min(D, H) - Math.max(B, F);//D,H 决定上边界， B,F 决定下边界
+			        return areaA + areaB - length * height;
+			    }
+			}
+		3.2 Maximal Rectangle
+			/*
+				Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
+			*/
+			public class Solution {
+			    public int maximalRectangle(char[][] matrix) {
+			        if (matrix.length == 0 || matrix[0].length == 0) {
+			            return 0;
+			        }
+			        int[] height = new int[matrix[0].length];
+			        int maxArea = 0;
+			        for (int i = 0; i < matrix.length; i++) {
+			            for (int j = 0; j < matrix[0].length; j++) {
+			                if (matrix[i][j] == '1') {
+			                    height[j]++;
+			                } else if (matrix[i][j] == '0') {
+			                    height[j] = 0;
+			                }
+			            }
+			            maxArea = Math.max(maxArea, findMaxAreaInHistogram(height));
+			        }
+			        return maxArea;
+			    }
+			    
+			    public int findMaxAreaInHistogram(int[] height) {
+			        int[] h = new int[height.length + 1];
+			        h = Arrays.copyOf(height, height.length + 1);
+			        int maxArea = 0;
+			        int i = 0;
+			        Stack<Integer> stack = new Stack<>();
+			        while (i < h.length) {
+			            if (stack.isEmpty() || h[i] >= h[stack.peek()]) {
+			                stack.push(i);
+			                i++;
+			            } else {
+			                int top = stack.pop();
+			                maxArea = Math.max(maxArea, h[top] * (stack.isEmpty() ? i : i - stack.peek() - 1));
+			            }
+			        }
+			        return maxArea;
+			    }
+			}
+
 
 
 

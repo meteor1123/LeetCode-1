@@ -79,23 +79,28 @@ public class Solution {
     }
 }
 
-//Solution2
+//Solution2: prefer, 如何inplace？
+//诀窍在于更新每一个board[i][j] 的时候用新的数字2， 3进行表示， 2表示之前是1但是以后要dead的点，3表示之前是0但是以后要live的点
 public class Solution {
-	public void gameOfLife(int[][] board) {
+    public final int[] shiftX = {0, 1, 0, -1, 1, -1, 1, -1};
+    public final int[] shiftY = {1, 0, -1, 0, 1, -1, -1, 1};
+    public void gameOfLife(int[][] board) {
         if (board.length == 0 || board == null) {
             return;
         }
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
+        int m = board.length;
+        int n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 int live = 0;
-                for (int x = i - 1; x <= i + 1; x++) {
-                    for (int y = j - 1; y <= j + 1; y++) {
-                        if (!check(board, x, y) || (x == i && y == j)) {
-                            continue;
-                        }
-                        if ((board[x][y] == 1 || board[x][y] == 2)) {
-                            live++;
-                        }
+                for (int k = 0; k < shiftX.length; k++) {
+                    int x = i + shiftX[k];
+                    int y = j + shiftY[k];
+                    if (x < 0 || y < 0 || x > m - 1 || y > n - 1) {
+                        continue;
+                    }
+                    if (board[x][y] == 1 || board[x][y] == 2) {
+                        live++;
                     }
                 }
                 if (board[i][j] == 0 && live == 3) {
@@ -106,18 +111,14 @@ public class Solution {
                 }
             }
         }
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 board[i][j] %= 2;
             }
         }
     }
-    public boolean check(int[][] board, int x, int y) {
-        if (x < 0 || y < 0 || x > board.length - 1 || y > board[0].length - 1) {
-            return false;
-        } 
-        return true;
-    }
+}
 
 /*
     传统做法：
@@ -129,14 +130,15 @@ public class Solution {
 */
 //Solution3
 public class Solution {
-        public void gameOfLife(int[][] board) {
+    public final int[] shiftX = {0, 1, 0, -1, 1, -1, 1, -1};
+    public final int[] shiftY = {1, 0, -1, 0, 1, -1, -1, 1};
+    public void gameOfLife(int[][] board) {
         if (board.length == 0 || board == null) {
             return;
         }
         int[][] newBoard = new int[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                newBoard[i][j] = board[i][j];
                 setLife(board, i, j, newBoard);
                
             }
@@ -150,28 +152,25 @@ public class Solution {
     }
     public void setLife(int[][] board, int i, int j, int[][] newBoard) {
          int live = 0;
-         for (int x = i - 1; x <= i + 1; x++) {
-             for (int y = j - 1; y <= j + 1; y++) {
-                 if (!check(board, x, y) || (x == i && y == j)) {
-                     continue;
-                 }
-                 if (board[x][y] == 1) {
-                     live++;
-                 }
+         for (int k = 0; k < shiftX.length; k++) {
+             int x = i + shiftX[k];
+             int y = j + shiftY[k];
+             if (x < 0 || y < 0 || x > board.length - 1 || y > board[0].length - 1) {
+                continue;
+             } 
+             if (board[x][y] == 1) {
+                live++;
              }
          }
          if (board[i][j] == 0 && live == 3) {
              newBoard[i][j] = 1;
          }
-         if (board[i][j] == 1 && (live < 2 || live > 3)) {
-             newBoard[i][j] = 0;
+         if (board[i][j] == 1) {
+             if (live < 2 || live > 3) {
+                 newBoard[i][j] = 0;
+             } else {
+                 newBoard[i][j] = 1;
+             }
          }
-    }
-    
-    public boolean check(int[][] board, int x, int y) {
-        if (x < 0 || y < 0 || x > board.length - 1 || y > board[0].length - 1) {
-            return false;
-        } 
-        return true;
     }
 }

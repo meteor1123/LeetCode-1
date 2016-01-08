@@ -331,6 +331,97 @@
 			        return abb;
 			    }
 			}
+		1.9 Word Pattern I
+				/*
+					Word Pattern
+					Given a pattern and a string str, find if str follows the same pattern.
+
+					Examples:
+					pattern = "abba", str = "dog cat cat dog" should return true.
+					pattern = "abba", str = "dog cat cat fish" should return false.
+					pattern = "aaaa", str = "dog cat cat dog" should return false.
+					pattern = "abba", str = "dog dog dog dog" should return false.
+					Notes:
+					patterncontains only lowercase alphabetical letters, and str contains words separated by a single space. Each word in str contains only lowercase alphabetical letters.
+					Both pattern and str do not have leading or trailing spaces.
+					Each letter in pattern must map to a word with length that is at least 1
+				*/
+
+				public class Solution {
+				    //Solution2 prefer
+				    public boolean wordPattern(String pattern, String str) {
+				        String[] words = str.split(" ");
+				        if (pattern.length() != words.length) {
+				            return false;
+				        }
+				        HashMap<Character, String> map = new HashMap<>();
+				        for (int i = 0;i < pattern.length(); i++) {
+				            char c = pattern.charAt(i);
+				            String word = words[i];
+				            if (!map.containsKey(c)) {
+				                if (map.containsValue(word)) {
+				                    return false;
+				                }
+				                map.put(c, word); 
+				            } else {
+				                if (!map.get(c).equals(word)) {
+				                    return false;
+				                }
+				            } 
+				        }
+				        return true;
+				    }
+				}
+		1.10 Word Pattern II
+				/*
+					Given a pattern and a string str, find if str follows the same pattern.
+
+					Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty substring in str.
+
+					Examples:
+					pattern = "abab", str = "redblueredblue" should return true.
+					pattern = "aaaa", str = "asdasdasdasd" should return true.
+					pattern = "aabb", str = "xyzabcxzyabc" should return false.
+					Notes:
+					You may assume both pattern and str contains only lowercase letters.
+				*/
+				public class Solution {
+				    public boolean wordPatternMatch(String pattern, String str) {
+				        Map<Character, String> map = new HashMap();
+				        Set<String> set = new HashSet<>();
+				        return isMatch(str, 0, pattern, 0, map, set);
+				    }
+				    public boolean isMatch(String str, int i, String pat, int j, Map<Character, String> map, Set<String> set) {
+				        if (i == str.length() && j == pat.length()) {
+				            return true;
+				        }
+				        if (i == str.length() || j == pat.length()) {
+				            return false;
+				        }
+				        char c = pat.charAt(j);
+				        if (map.containsKey(c)) {
+				            String s = map.get(c);
+				            if (!str.startsWith(s, i)) {
+				                return false;
+				            }
+				            return isMatch(str, i + s.length(), pat, j + 1, map, set);
+				        }
+				        for (int k = i; k < str.length(); k++) {
+				            String subStr = str.substring(i, k + 1);
+				            if (set.contains(subStr)) {
+				                continue;//subStr之前已经被用过了 这里不能再用这个匹配新的char c
+				            }
+				            map.put(c, subStr);
+				            set.add(subStr);
+				            if (isMatch(str, k + 1, pat, j + 1, map, set)) {
+				                return true;
+				            }
+				            set.remove(map.get(c));
+				            map.remove(c);
+				        }
+				        return false;
+				    }
+				}
 
 2. Array Problem
 		2.1 Duplicate Problem
@@ -416,6 +507,40 @@
 				        */
 				    }
 				}
+		2.2 Maximum Size Subarray Sum Equals K
+			/*
+				Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
+				Example 1:
+				Given nums = [1, -1, 5, -2, 3], k = 3,
+				return 4. (because the subarray [1, -1, 5, -2] sums to 3 and is the longest)
+
+				Example 2:
+				Given nums = [-2, -1, 2, 1], k = 1,
+				return 2. (because the subarray [-1, 2] sums to 1 and is the longest)
+
+				Follow Up:
+				Can you do it in O(n) time?
+			*/
+			public class Solution {
+			    public int maxSubArrayLen(int[] nums, int k) {
+			        HashMap<Integer, Integer> map = new HashMap<>();
+			        int sum = 0;
+			        int maxLen = 0;
+			        for (int i = 0; i < nums.length; i++) {
+			            sum += nums[i];
+			            if (sum == k) {
+			                maxLen = i + 1;
+			            } else if (map.containsKey(sum - k)) {
+			                maxLen = Math.max(maxLen, i - map.get(sum - k));
+			            }
+			            if (!map.containsKey(sum)) {
+			                map.put(sum, i);
+			            }
+			            
+			        }
+			        return maxLen;
+			    }
+			}
 
 
 

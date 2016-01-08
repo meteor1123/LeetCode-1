@@ -155,3 +155,45 @@ public class Solution {
         return id;
     }
 }
+
+//Solution3: better name prefe
+public class Solution {
+    public final int[] shift = {0, 1, 0 , -1, 0};
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        List<Integer> res = new ArrayList<>();
+        int[] roots = new int[m * n];
+        Arrays.fill(roots, -1);
+        int count = 0;
+        for (int[] p : positions) {
+            int landRootId = p[0] * n + p[1];
+            roots[landRootId] = landRootId;
+            count++;
+            for (int i = 0; i < 4; i++) {
+                int row = p[0] + shift[i];
+                int col = p[1] + shift[i + 1];
+                int nearPos = row * n + col;
+                //roots[nearPos] == -1意味着这个位置不是1而是0，所以跳出，因为之前的岛的root肯定不为1
+                if (row < 0 || col < 0 || row > m - 1 || col > n - 1 || roots[nearPos] == -1) {
+                    continue;
+                }
+                //如果是个岛，查这个岛的root
+                int nearPosRootId = find(roots, nearPos);
+                //如果这个点的root和之前的landRootId 不相等，意味着原来不连通的两部分岛，现在联通为一体，所以count--
+                if (nearPosRootId != landRootId) {
+                    roots[nearPosRootId] = landRootId;
+                    count--;
+                }
+            }
+            res.add(count);
+        }
+        return res;
+    }
+    
+    public int find(int[] root, int id) {
+        if (root[id] == id) {
+            return id;
+        }
+        root[id] = find(root, root[id]);
+        return root[id];
+    }
+}

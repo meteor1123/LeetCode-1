@@ -68,13 +68,13 @@ public class Solution {
 
 //Solution2
 public class Solution {
+    public final int[] shift = {0, 1, 0, -1, 0};
     public void wallsAndGates(int[][] rooms) {
         if (rooms == null || rooms.length == 0) {
             return;
         }
         int m = rooms.length;
         int n = rooms[0].length;
-        int INF = Integer.MAX_VALUE;
         Queue<Integer> queue = new LinkedList<>();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -83,33 +83,21 @@ public class Solution {
                 }
             }
         }
+        
         while (!queue.isEmpty()) {
-            int code = queue.poll();
-            int x = code / n;
-            int y = code % n;
-            if (isValid(rooms, x + 1, y) && rooms[x + 1][y] == INF) {
-                rooms[x + 1][y] = rooms[x][y] + 1;
-                queue.offer((x + 1) * n + y);
-            }
-            if (isValid(rooms, x - 1, y) && rooms[x - 1][y] == INF) {
-                rooms[x - 1][y] = rooms[x][y] + 1;
-                queue.offer((x - 1) * n + y);
-            }
-            if (isValid(rooms, x, y + 1) && rooms[x][y + 1] == INF) {
-                rooms[x][y + 1] = rooms[x][y] + 1;
-                queue.offer(x * n + y + 1);
-            }
-            if (isValid(rooms, x, y - 1) && rooms[x][y - 1] == INF) {
-                rooms[x][y - 1] = rooms[x][y] + 1;
-                queue.offer(x * n + y - 1);
+            int index = queue.poll();
+            int x = index / n;
+            int y = index % n;
+            int level = rooms[x][y];
+            for (int i = 0; i < 4; i++) {
+                int row = x + shift[i];
+                int col = y + shift[i + 1];
+                if (row < 0 || col < 0 || row > m - 1 || col > n - 1 || rooms[row][col] != Integer.MAX_VALUE) {
+                    continue;
+                }
+                rooms[row][col] = level + 1;
+                queue.offer(row * n + col);
             }
         }
-    }
-    
-    public boolean isValid(int[][] rooms, int i, int j) {
-        if (i < 0 || j < 0 || i > rooms.length - 1 || j > rooms[0].length - 1) {
-            return false;
-        }
-        return true;
     }
 }

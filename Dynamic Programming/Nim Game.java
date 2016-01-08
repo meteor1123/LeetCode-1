@@ -32,7 +32,9 @@ public class Solution {
 
 
 /*
-	 If you take 1 item, there will be (i - 1) for other player. If these (i - 1) item for the other play means "win", that means "lose" for you, which in code is that if res[i - 1] is true, you take 1 item and then you lose; otherwise, you win. Same reason for 2 items and 3 items. 
+	 If you take 1 item, there will be (i - 1) for other player. If these (i - 1) item for the other play means "win", 
+     that means "lose" for you, which in code is that if res[i - 1] is true, you take 1 item and then you lose; otherwise, you win. 
+     Same reason for 2 items and 3 items. 
 */
 public boolean canWinNim(int n) {
     if(n <= 0)

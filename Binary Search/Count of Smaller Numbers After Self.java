@@ -23,13 +23,13 @@
 public class Solution {
     public List<Integer> countSmaller(int[] nums) {
         List<Integer> sorted = new ArrayList<>();
-        Integer[] res = new Integer[nums.length];
+        Integer[] indexArr = new Integer[nums.length];
         for (int i = nums.length - 1; i >= 0; i--) {
             //有序的插入位置就是要找的smaller number
-            res[i] = findIndex(sorted, nums[i]);
-            sorted.add(res[i], nums[i]);
+            indexArr[i] = findIndex(sorted, nums[i]);
+            sorted.add(indexArr[i], nums[i]);
         }
-        return Arrays.asList(res);
+        return Arrays.asList(indexArr);
     }
     
     //Binary Search 找插入位置

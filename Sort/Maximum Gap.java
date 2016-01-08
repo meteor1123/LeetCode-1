@@ -9,17 +9,11 @@
 /*
 	官方版（桶排序）：
 
-	假设有N个元素A到B。那么最大差值不会小于ceiling[(B - A) / (N - 1)]
-
-	令bucket（桶）的大小len = ceiling[(B - A) / (N - 1)]
-
-	对于数组中的任意整数K，很容易通过算式loc = (K - A) / len找出其桶的位置，然后维护每一个桶的最大值和最小值
-
+	假设有N个元素min到max。那么最大差值不会小于ceiling[(max - min) / (N - 1)], B是max value， A是min value， N是nums.length
+	令bucket（桶）的大小len = ceiling[(max - min) / (N - 1)]
+	对于数组中的任意整数K，很容易通过算式loc = (K - min) / len找出其桶的位置，然后维护每一个桶的最大值和最小值
 	由于同一个桶内的元素之间的差值至多为len - 1，因此最终答案不会从同一个桶中选择。
-
 	对于每一个非空的桶p，找出下一个非空的桶q，则q.min - p.max可能就是备选答案。返回所有这些可能值中的最大值。
-
-	 
 
 	这里A是min，B是max，桶有num.length - 1个。min, max不参与放入桶中，除了min和max之外还有N-2个数字和N-1个桶，所以一定有一个空桶。
 	因为有空桶的存在所以要用一个previous变量来代表上一个非空的桶的max。previous初始化为min，这样min就考虑了虽然min不在桶中。
@@ -51,7 +45,7 @@ public class Solution {
             max = Math.max(max, i);
         }
         //the minimum possible gap, ceiling of the integer division
-        int gap = (int)Math.ceil((double)(max - min)/(nums.length - 1));
+        int gapSize = (int)Math.ceil((double)(max - min)/(nums.length - 1));
         int[] bucketsMIN = new int[nums.length - 1];
         int[] bucketsMAX = new int[nums.length - 1];
         
@@ -59,13 +53,13 @@ public class Solution {
         Arrays.fill(bucketsMAX, Integer.MIN_VALUE);
         
         //put numbers into buckets
-        for (int i : nums) {
-            if (i == min || i == max) {
+        for (int val : nums) {
+            if (val == min || val == max) {
                 continue;
             }
-            int index = (i - min) / gap; //index of the right position in the buckets
-            bucketsMIN[index] = Math.min(i, bucketsMIN[index]);
-            bucketsMAX[index] = Math.max(i, bucketsMAX[index]);
+            int index = (val - min) / gapSize; //index of the right position in the buckets
+            bucketsMIN[index] = Math.min(val, bucketsMIN[index]);
+            bucketsMAX[index] = Math.max(val, bucketsMAX[index]);
         }
         
         //Scan the buckets for the max gap

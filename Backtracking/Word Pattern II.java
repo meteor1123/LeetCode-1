@@ -26,7 +26,8 @@
 	For example, input string is "redblueredblue", and the pattern is "abab", first let's use 'a' to match "r", 'b' to match "e", 
 	then we find that 'a' does not match "d", so we do backtracking, use 'b' to match "ed", so on and so forth ...
 
-	When we do the recursion, if the pattern character exists in the hash map already, we just have to see if we can use it to match the same length of the string. For example, let's say we have the following map:
+	When we do the recursion, if the pattern character exists in the hash map already, we just have to see if we can use it to match the same length of the string. 
+    For example, let's say we have the following map:
 	'a': "red"
 	'b': "blue"
 

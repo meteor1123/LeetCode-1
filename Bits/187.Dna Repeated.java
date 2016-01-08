@@ -80,3 +80,38 @@ public class Solution {
 }
 
 
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> res = new ArrayList<>();
+        if (s == null || s.length() <= 10) {
+            return res;
+        }
+        HashMap<Character, Integer> mapping = new HashMap<>();
+        mapping.put('A', 0);
+        mapping.put('C', 1);
+        mapping.put('G', 2);
+        mapping.put('T', 3);
+        //key是10位数字通过左移+组成的hash值， value是出现的次数,当且仅当出现次数=1的时候才将结果加入res，有效规避duplicate
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int hash = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (i < 9) {
+                hash = (hash << 2) + mapping.get(c);
+            } else {
+                hash = (hash << 2) + mapping.get(c);
+                hash &= (1 << 20) - 1;
+                // 1 << 20位代表 1后面跟着20个0，2进制，再-1，表示从 0000 0000 0001 0000 0000 0000 0000 0000 --> 0000 0000 0000 1111 1111 1111 1111 1111
+                // 为什么要用20位掩码取值？因为我们只需要 0 - 19 位 总共20位的数，而每次循环 hash都会左移 + 新的字符，所以需要规避无效位数的干扰
+                if (map.containsKey(hash) && map.get(hash) == 1) {
+                    map.put(hash, map.get(hash) + 1);
+                    res.add(s.substring(i - 9, i + 1));
+                }
+                if (!map.containsKey(hash)) {
+                    map.put(hash, 1);
+                }
+            }
+        }
+        return res;
+    }
+}

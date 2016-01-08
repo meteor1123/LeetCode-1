@@ -79,7 +79,7 @@ public class Solution {
     4. 我们用pre和cur去验证之前的最高高度pre 和加入新点以后 现在正在遍历的点的高度是否一样，
         如果不一样，有两种情况
         1）遇到之前最高点的右边界，
-        2）遇到更高的店，
+        2）遇到更高的点，
 */
 public class Solution {
     public List<int[]> getSkyline(int[][] buildings) {
@@ -88,8 +88,8 @@ public class Solution {
         
         //构建顶点列表
         for (int[] b : buildings) {
-            height.add(new int[]{b[0], -b[2]});
-            height.add(new int[]{b[1], b[2]});
+            height.add(new int[]{b[0], -b[2]}); //用负的高度表示左边界点
+            height.add(new int[]{b[1], b[2]});//正高度表示右边界点
         }
         
         Collections.sort(height, new Comparator<int[]>() {
@@ -109,17 +109,18 @@ public class Solution {
             }
         });
         pq.offer(0);
-        int pre = 0;
+        int preHeight = 0;//
         for (int[] h : height) {
-            if (h[1] < 0) {
+            if (h[1] < 0) {//假如遇到左边界点，将该范围的高度进栈
                 pq.offer(-h[1]);
             } else {
-                pq.remove(h[1]);
+                pq.remove(h[1]);//假如遇到右边界点，将该范围的高度出栈
             }
-            int cur = pq.peek();
-            if (pre != cur) {
-                res.add(new int[]{h[0], cur});
-                pre = cur;
+            int curHeight = pq.peek();//pq这里是max heap， 如果上面进栈点的高度是大于之前的pre，
+                                    //或者最高的高度点已经出栈，则会出现preHeight != curHeight的情况，这时候我们需要更新新的高度范围，h[0](遍历到的新高度范围起点)，curHeight（新高度）
+            if (preHeight != curHeight) {
+                res.add(new int[]{h[0], curHeight});
+                preHeight = curHeight;
             }
         }
         return res;

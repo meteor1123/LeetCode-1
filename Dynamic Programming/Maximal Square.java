@@ -1,4 +1,4 @@
-/*
+ /*
 	Maximal Square
 	Given a 2D binary matrix filled with 0's and 1's, find the largest square containing all 1's and return its area.
 	For example, given the following matrix:
@@ -67,7 +67,7 @@ public class Solution {
         int m = matrix.length;
         int n = matrix[0].length;
         // dp(i, j) represents the length of the square 
-        // whose lower-right corner is located at (i - 1, j - )
+        // whose lower-right corner is located at (i - 1, j - 1)
         // dp(i, j) = min{ dp(i-1, j-1), dp(i-1, j), dp(i, j-1) }
 
         // represents size of the square sub-matrix with all 1s including M[i][j] where 

@@ -181,6 +181,90 @@
 			        }
 			    }
 			};
+		1.5 The Skyline Problem
+			/*
+				A city's skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance.
+				 Now suppose you are given the locations and height of all the buildings as shown on a cityscape photo (Figure A), write a program to output the skyline formed by these buildings collectively (Figure B).
+
+				Buildings  Skyline Contour
+				The geometric information of each building is represented by a triplet of integers [Li, Ri, Hi], 
+				where Li and Ri are the x coordinates of the left and right edge of the ith building, respectively, and Hi is its height. 
+				It is guaranteed that 0 ≤ Li, Ri ≤ INT_MAX, 0 < Hi ≤ INT_MAX, and Ri - Li > 0. 
+				You may assume all buildings are perfect rectangles grounded on an absolutely flat surface at height 0.
+
+				For instance, the dimensions of all buildings in Figure A are recorded as: [ [2 9 10], [3 7 15], [5 12 12], [15 20 10], [19 24 8] ] .
+
+				The output is a list of "key points" (red dots in Figure B) in the format of [ [x1,y1], [x2, y2], [x3, y3], ... ] that uniquely defines a skyline. 
+				A key point is the left endpoint of a horizontal line segment. Note that the last key point, where the rightmost building ends, is merely used to mark the termination of the skyline, a
+				nd always has zero height. Also, the ground in between any two adjacent buildings should be considered part of the skyline contour.
+
+				For instance, the skyline in Figure B should be represented as:[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8], [24, 0] ].
+
+				Notes:
+
+				The number of buildings in any input list is guaranteed to be in the range [0, 10000].
+				The input list is already sorted in ascending order by the left x position Li.
+				The output list must be sorted by the x position.
+				There must be no consecutive horizontal lines of equal height in the output skyline. For instance, [...[2 3], [4 5], [7 5], [11 5], [12 7]...] is not acceptable; 
+				the three lines of height 5 should be merged into one in the final output as such: [...[2 3], [4 5], [12 7], ...]
+			*/
+			/*
+			    1. 先按照左边界的x坐标进行排序，小的在前, x坐标相等y坐标小的在前。
+			    2. 将边界存入heights数组，可以将左边界或者右边界的高设为负，方便确定边界，我们这里将左边界的高设为负
+			    2. 设置一个priorityQueue, 最大堆， 堆顶每次都是最大高度
+			    3. 遍历边界数组heights，
+			        1）假如遇到该点的高为负，则将高度取正加入堆
+			        2）假如遇到该点的高度为正，说明遇到右边界，这个范围已经遍历完，将该高度移出堆
+			    4. 我们用pre和cur去验证之前的最高高度pre 和加入新点以后 现在正在遍历的点的高度是否一样，
+			        如果不一样，有两种情况
+			        1）遇到之前最高点的右边界，
+			        2）遇到更高的点，
+			*/
+			public class Solution {
+			    public List<int[]> getSkyline(int[][] buildings) {
+			        List<int[]> res = new ArrayList<>();
+			        List<int[]> height = new ArrayList<>();
+			        
+			        //构建顶点列表
+			        for (int[] b : buildings) {
+			            height.add(new int[]{b[0], -b[2]}); //用负的高度表示左边界点
+			            height.add(new int[]{b[1], b[2]});//正高度表示右边界点
+			        }
+			        
+			        Collections.sort(height, new Comparator<int[]>() {
+			           @Override
+			           public int compare(int[] a, int[] b) {
+			               if (a[0] != b[0]) {
+			                   return a[0] - b[0];
+			               } else {
+			                   return a[1] - b[1];
+			               }
+			           }
+			        });
+			        
+			        Queue<Integer> pq = new PriorityQueue<Integer>(11, new Comparator<Integer>() {
+			            public int compare(Integer i1, Integer i2) {
+			                return i2 - i1;
+			            }
+			        });
+			        pq.offer(0);
+			        int preHeight = 0;//
+			        for (int[] h : height) {
+			            if (h[1] < 0) {//假如遇到左边界点，将该范围的高度进栈
+			                pq.offer(-h[1]);
+			            } else {
+			                pq.remove(h[1]);//假如遇到右边界点，将该范围的高度出栈
+			            }
+			            int curHeight = pq.peek();//pq这里是max heap， 如果上面进栈点的高度是大于之前的pre，或者最高的高度点已经出栈
+			                                      //则会出现preHeight != curHeight的情况，这时候我们需要更新新的高度范围，h[0](遍历到的新高度范围起点)，curHeight（新高度）
+			            if (preHeight != curHeight) {
+			                res.add(new int[]{h[0], curHeight});
+			                preHeight = curHeight;
+			            }
+			        }
+			        return res;
+			    }
+			}
 
 
 

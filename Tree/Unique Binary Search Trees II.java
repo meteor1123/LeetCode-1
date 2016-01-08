@@ -26,6 +26,9 @@
 */
 public class Solution {
     public List<TreeNode> generateTrees(int n) {
+        if (n == 0) {
+            return new ArrayList<>();
+        }
         return helper(1, n);
     }
     public List<TreeNode> helper (int left, int right) {

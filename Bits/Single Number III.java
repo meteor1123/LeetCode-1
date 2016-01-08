@@ -25,15 +25,15 @@ public class Solution {
         // Pass 2 :
         //
         //我们根据最右边这位数 去划分整个数组，一定会将两个single number分开
-        int[] rets = {0, 0}; // this array stores the two numbers we will return
+        int[] res = {0, 0}; // this array stores the two numbers we will return
         for (int num : nums) {
             if ((num & diff) == 0) {// the bit is not set
-                rets[0] ^= num;
+                res[0] ^= num;
             }
             else {// the bit is set
-                rets[1] ^= num;
+                res[1] ^= num;
             }
         }
-        return rets;
+        return res;
     }
 }

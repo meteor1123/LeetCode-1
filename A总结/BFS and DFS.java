@@ -255,6 +255,60 @@
 			        dfs(grid, visited, row, col - 1);
 			    }				
 			}
+		1.5 Walls And Gates
+			/*
+				You are given a m x n 2D grid initialized with these three possible values.
+				-1 - A wall or an obstacle.
+				0 - A gate.
+				INF - Infinity means an empty room. We use the value 231 - 1 = 2147483647 to represent INF as you may assume that the distance to a gate is less than 2147483647.
+				Fill each empty room with the distance to its nearest gate. If it is impossible to reach a gate, it should be filled with INF.
+
+				For example, given the 2D grid:
+				INF  -1  0  INF
+				INF INF INF  -1
+				INF  -1 INF  -1
+				  0  -1 INF INF
+				After running your function, the 2D grid should be:
+				  3  -1   0   1
+				  2   2   1  -1
+				  1  -1   2  -1
+				  0  -1   3   4
+			*/
+			//Key Point: 先把所有的门（0）点进queue， 对0的四周进行bfs，只有INF点才算距离，并进栈
+			public class Solution {
+			    public final int[] shift = {0, 1, 0, -1, 0};
+			    public void wallsAndGates(int[][] rooms) {
+			        if (rooms == null || rooms.length == 0) {
+			            return;
+			        }
+			        int m = rooms.length;
+			        int n = rooms[0].length;
+			        Queue<Integer> queue = new LinkedList<>();
+			        for (int i = 0; i < m; i++) {
+			            for (int j = 0; j < n; j++) {
+			                if (rooms[i][j] == 0) {
+			                    queue.offer(i * n + j);
+			                }
+			            }
+			        }
+			        
+			        while (!queue.isEmpty()) {
+			            int index = queue.poll();
+			            int x = index / n;
+			            int y = index % n;
+			            int level = rooms[x][y];
+			            for (int i = 0; i < 4; i++) {
+			                int row = x + shift[i];
+			                int col = y + shift[i + 1];
+			                if (row < 0 || col < 0 || row > m - 1 || col > n - 1 || rooms[row][col] != Integer.MAX_VALUE) {
+			                    continue;
+			                }
+			                rooms[row][col] = level + 1;
+			                queue.offer(row * n + col);
+			            }
+			        }
+			    }
+			}
 		1.5 Find Islands And Lakes
 		/*
 			湖的定义就是 group of 0s entirely surrounded by a single island。也就是说两个不同island包围的0不算一个湖，

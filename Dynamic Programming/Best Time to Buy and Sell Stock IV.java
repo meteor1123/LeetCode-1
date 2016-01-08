@@ -56,7 +56,8 @@ public int maxProfit(int k, int[] prices) {
             int tempMax = -prices[0];
             for (int j = 1; j < len; j++) {
                 dp[i][j] = Math.max(dp[i][j - 1], prices[j] + tempMax);
-                //tmpMax means the maximum profit of just doing at most i-1 transactions, using at most first j-1 prices, and buying the stock at price[j]  this is used for the next loop.
+                //tmpMax means the maximum profit of just doing at most i-1 transactions, 
+                //using at most first j-1 prices, and buying the stock at price[j]  this is used for the next loop.
                 tempMax = Math.max(tempMax, dp[i - 1][j - 1] - prices[j]);
             }
         }

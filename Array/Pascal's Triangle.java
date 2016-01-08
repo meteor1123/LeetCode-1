@@ -23,6 +23,8 @@
 			 2  每层设置的范围在  1 <= j <= item.size() - 2, 跳过前后两个1， 每次设置的j = 上一层的j + (j + 1)
 */
 
+
+//Solution1: concise
 public class Solution {
     public List<List<Integer>> generate(int numRows) {
     	List<List<Integer>> res = new ArrayList<>();
@@ -38,5 +40,29 @@ public class Solution {
     		res.add(new ArrayList<>(rowRes));
     	}
     	return res;
+    }
+}
+
+//Solution2: mysolution
+public class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (numRows == 0) {
+            return res;
+        }
+        List<Integer> initList = new ArrayList<>();
+        initList.add(1);
+        res.add(initList);
+        for (int i = 2; i <= numRows; i++) {
+            List<Integer> preRow = res.get(i - 2);
+            List<Integer> curRow = new ArrayList<>();
+            curRow.add(1);
+            for (int j = 1; j <= i - 2; j++) {
+               curRow.add(preRow.get(j - 1) + preRow.get(j));
+            }
+            curRow.add(1);
+            res.add(curRow);
+        }
+        return res;
     }
 }

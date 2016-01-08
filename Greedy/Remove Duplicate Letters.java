@@ -24,6 +24,11 @@
 	The runtime is O(26 * n) = O(n).
 */
 
+/*
+    核心思想： 
+            对所有的char统计出现的次数，从左边开始遍历对遍历到的字符count--，pos记录排序最小的字符出现的位置如果相同取最左边的，
+             一旦某个字符的count == 0， 则break出来将pos位置的字符加入res，并将所有的s.charAt(pos)replace成“”，并从pos + 1 开始截取字符进行下一次遍历
+*/
 public class Solution {
     public String removeDuplicateLetters(String s) {
         int[] arr = new int[26];
@@ -39,6 +44,7 @@ public class Solution {
                 break;
             }
         }
-        return s.length() == 0 ? "" : s.charAt(pos) + removeDuplicateLetters(s.substring(pos + 1).replaceAll("" + s.charAt(pos), ""));
+        return s.length() == 0 ? "" : s.charAt(pos) + 
+                removeDuplicateLetters(s.substring(pos + 1).replaceAll("" + s.charAt(pos), ""));
     }
 }

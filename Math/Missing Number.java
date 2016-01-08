@@ -26,6 +26,7 @@ public class Solution {
     }
 }
 
+//Solution2:
 public class Solution {
     public int missingNumber(int[] nums) {
         int sum = 0;

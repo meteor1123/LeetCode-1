@@ -1,0 +1,39 @@
+{
+  "title": "Less",
+  "cells": [
+    {
+      "type": "text",
+      "data": "1.Define variable, using @variable"
+    },
+    {
+      "type": "code",
+      "language": "less",
+      "data": "@test_width:300px;\n\n.box {\n\tbackground-color: blue;\n\twidth:@test_width;\n\theight: @test_width;\n}"
+    },
+    {
+      "type": "text",
+      "data": "<div><br></div><div>2.Mixed</div>"
+    },
+    {
+      "type": "code",
+      "language": "less",
+      "data": "//Mixed\n.box {\n\tbackground-color: blue;\n\twidth:@test_width;\n\theight: @test_width;\n\n\t.border;\n}\n\n.border{\n\tborder:solid 5px black;\n}\n\n\n.box2 {\n\t.box;\n\tmargin-left: 100px;\n}"
+    },
+    {
+      "type": "text",
+      "data": "3.Mixed with arg"
+    },
+    {
+      "type": "text",
+      "data": "<img src=\"quiver-image-url/72C3174B922CADA2AAFC93CD5FDFF3D5.jpg\"><br>"
+    },
+    {
+      "type": "text",
+      "data": "4. Mixed with default value<div><img src=\"quiver-image-url/4E694A9D7329FC70A9255A2AA6EA43AF.jpg\"><br></div>"
+    },
+    {
+      "type": "text",
+      "data": "5. Example<div><img src=\"quiver-image-url/AFCF443397BB215601D5E0B805919242.png\" alt=\"Screen Shot 2016-01-07 at 13.26.22.png\"><br><div><br><div><br></div></div></div>"
+    }
+  ]
+}

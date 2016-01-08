@@ -29,6 +29,8 @@
     	那么就是从j+1位置开始到第len位置的最小cut数加上[i,j] | [j+1,len - 1]中间的这一cut。
     	即，Math.min(cuts[i], cuts[j+1]+1) 最后返回cuts[0]-1。把多余加的那个对于第len位置的切割去掉，即为最终结果。
 */
+
+//Solution1: space: O(m * n)
 public class Solution {
 	public int minCut(String s) {
 		if (s == null || s.length() == 0)
@@ -63,4 +65,28 @@ public class Solution {
 		min = minCuts[0] - 1;//把多余加的那个对于第len位置的切割去掉，即为最终结果
 		return min;
 	}
+}
+
+
+
+//Solution2: space: O(n)
+public class Solution {
+    public int minCut(String s) {
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+        dp[n] = -1;// number of cuts for the first k characters
+        for (int i = n - 1; i>= 0; i--) {
+            for (int a = i, b = i; a >= 0 && b < n && s.charAt(a) == s.charAt(b); a--, b++) {
+                dp[a] = Math.min(dp[a], 1 + dp[b + 1]);// even length palindrome
+            }
+            for (int a = i, b = i + 1; a >= 0 && b < n && s.charAt(a) == s.charAt(b); a--, b++) {
+                dp[a] = Math.min(dp[a], 1 + dp[b + 1]);//odd length palindrome
+
+            }
+        }
+        return dp[0];
+    }
 }

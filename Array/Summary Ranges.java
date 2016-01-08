@@ -9,19 +9,15 @@
 public class Solution {
     public List<String> summaryRanges(int[] nums) {
         List<String> res = new ArrayList<>();
-        if (nums.length == 1) {
-            res.add(nums[0] + "");
-            return res;
-        }
         for (int i = 0; i < nums.length; i++) {
-            int number = nums[i];
+            int val = nums[i];
             while (i + 1 < nums.length && nums[i + 1] - nums[i] == 1) {
                 i++;
             }
-            if (number != nums[i]) {
-                res.add(number + "->" + nums[i]);
+            if (val != nums[i]) {
+                res.add(val + "->" + nums[i]);
             } else {
-                res.add(number + "");
+                res.add(val + "");
             }
         }
         return res;

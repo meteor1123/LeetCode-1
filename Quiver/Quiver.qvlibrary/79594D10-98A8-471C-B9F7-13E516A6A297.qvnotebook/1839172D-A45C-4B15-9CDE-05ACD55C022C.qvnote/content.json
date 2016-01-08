@@ -1,0 +1,13 @@
+{
+  "title": "XMLHttpRequest",
+  "cells": [
+    {
+      "type": "text",
+      "data": "<p style=\"margin: 0px 0px 24px; padding: 0px; border: 0px; color: rgb(77, 78, 83); font-family: 'Open Sans', Arial, sans-serif; font-size: 14px;\"><span class=\"seoSummary\" style=\"margin: 0px; padding: 0px; border: 0px;\"><code style=\"padding-top: 0px; padding-bottom: 0px; border: 0px; font-style: inherit; font-family: Consolas, 'Liberation Mono', Courier, monospace; word-wrap: break-word;\">XMLHttpRequest</code>&nbsp;is an&nbsp;API that provides client functionality for transferring data between a client and a server. It provides an easy way to retrieve data from a URL without having to do a full page refresh. This enables a Web page to update just a part of the page without disrupting what the user is doing.</span>&nbsp;<code style=\"padding-top: 0px; padding-bottom: 0px; border: 0px; font-style: inherit; font-family: Consolas, 'Liberation Mono', Courier, monospace; word-wrap: break-word;\">XMLHttpRequest</code>&nbsp;is used heavily in&nbsp;<a href=\"https://developer.mozilla.org/en-US/docs/AJAX\" style=\"margin: 0px; padding: 0px; border: 0px; color: rgb(0, 149, 221); text-decoration: none;\">AJAX</a>&nbsp;programming.</p>"
+    },
+    {
+      "type": "text",
+      "data": ""
+    }
+  ]
+}
