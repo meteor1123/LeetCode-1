@@ -25,26 +25,25 @@
                   2. reverse 后面 length - k 个数
                   3. reverse 所有数, 这样就可以得到在正数位置K逆转的数组
     */
+   
+   
 public class Solution {
     public void rotate(int[] nums, int k) {
-        // if (k == 0 || nums.length < 2)
-        //     return;
         k = k % nums.length;
-        //ths first one num is 0, (1 - 1), so the first length - k num is length - k - 1 (length - k - 1)
-        reverse(nums, 0, nums.length - k - 1);
-        //the last num(后一个数) is nums.length - 1, so the last k num (后K个数) is nums.length - k!
-        reverse(nums, nums.length - k, nums.length - 1);
         reverse(nums, 0, nums.length - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.length - 1);
     }
     
-    public static void swap(int[] nums, int a, int b) {
-        int tmp = nums[a];
-        nums[a] = nums[b];
-        nums[b] = tmp;
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
     
-    public static void reverse(int[] nums, int start, int end) {
-        for (int i = start, j = end; i < j; i++, j--)
-            swap(nums, i, j);
+    public void reverse(int[] nums, int i, int j) {
+        while (i < j) {
+            swap(nums, i++, j--);
+        }
     }
 }

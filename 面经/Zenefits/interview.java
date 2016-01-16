@@ -3,7 +3,6 @@
 */
 
 
-
 1. Binary Tree
 		1.1 Verify Preorder Sequence In Binary Search Tree
 			/*
@@ -199,6 +198,140 @@
 				        return majority;
 				    }
 				}
+		2.2 Flip 0 Or 1
+		/*
+			You are given an array a of sizeN. The elements of the array area[0], a[1], ... a[N - 1], where each a is either 0 or 1. You can perform one transformation on the array: choose any two integers L,and R, and flip all the elements between (and including) the Lth and Rth bits. In other words, Land R represent the left-most and the right-most index demarcating the boundaries of the segment whose bits you will decided to flip. ('Flipping' a bit means, that a 0 is transformed to a 1 and a 1 is transformed to a 0.)
+
+			What is the maximum number of '1'-bits (indicated by S) which you can obtain in the final bit-string?
+
+
+			Input Format:The first line has a single integerNThe next N lines contains the Nelements in the array,a[0], a[1], ... a[N - 1], one per line.
+
+			Note: Feel free to re-use the input-output code stubs provided.
+
+
+			Output format:Return a single integer that denotes the maximum number of 1-bits which can be obtained in the final bit string
+
+
+			Constraints:. 1 ≤ N ≤ 100,000d can be either 0 or 1. It cannot be any other integer.0 ≤ L ≤ R < N
+			Sample Input:
+			8
+			10010010
+			Sample Output:
+			6
+			Explanation:We can get a maximum of 6 ones in the given binary array by performing either of the following operations:Flip [1, 5] ⇒ 1 1 1 0 1 1 1 0or
+			Flip [1, 7] ⇒ 1 1 1 0 1 1 0 1
+		 */
+		public class Flip0or1 {
+			public static int flip(int[] nums) {
+				if (nums == null || nums.length == 0) {
+					return 0;
+				}
+				int curSum = 0;
+				int oneCount = 0;
+				int minSum = Integer.MAX_VALUE;
+				
+				for (int num : nums) {
+					if (num == 0) {
+						curSum--;
+					} else {
+						curSum++;
+						oneCount++;//每次遇到1时curSum都会++
+					}
+					
+					if (curSum > 0) {
+						curSum = 0;
+					} else if (curSum < minSum) {
+						minSum = curSum;
+					}
+				}
+				return oneCount - minSum;//等于原始1的总数 + 最多翻转区间中的0个数 - 最多翻转区间中的1个数）
+			}
+		}
+
+		2.3 Rotate Array
+			/*
+		        Solution for 前K: reverse the array,k mean the mostleft k elements
+		                  1. reverse 全部数
+		                  2. reverse 前面k个数，
+		                  3. reverse 后面len - k个数
+		    */ 
+			public class Solution {
+			    public void rotate(int[] nums, int k) {
+			        k = k % nums.length;
+			        reverse(nums, 0, nums.length - 1);
+			        reverse(nums, 0, k - 1);
+			        reverse(nums, k, nums.length - 1);
+			    }
+			    
+			    public void swap(int[] nums, int i, int j) {
+			        int temp = nums[i];
+			        nums[i] = nums[j];
+			        nums[j] = temp;
+			    }
+			    
+			    public void reverse(int[] nums, int i, int j) {
+			        while (i < j) {
+			            swap(nums, i++, j--);
+			        }
+			    }
+			}
+		2.4 Rotate Image
+			//核心思想，先将所有的matrix[i][j] swap matrix[j][i]
+			//其次从左至右，将 [i][j] 和 [i][n - j - 1]对称交换，奇数的中间那一列不需要swap
+			public class Solution {
+			    public void rotate(int[][] matrix) {
+			        int m = matrix.length;
+			        int n = matrix[0].length;
+			        for (int i = 0; i < m; i++) {
+			            for (int j = i + 1; j < n; j++) {
+			                int temp = matrix[i][j];
+			                matrix[i][j] = matrix[j][i];
+			                matrix[j][i] = temp;
+			            }
+			        }
+			        
+			        for (int i = 0; i < m; i++) {
+			            for (int j = 0; j < n/2; j++) {
+			                int temp = matrix[i][j] ;
+			                matrix[i][j] = matrix[i][n - j - 1];
+			                matrix[i][n - j - 1] = temp;
+			            }
+			        }
+			    }
+			}
+		2.5 Trapping Rain Water
+			/*
+				基本思路是这样的，用两个指针从两端往中间扫，在当前窗口下，如果哪一侧的高度是小的，那么从这里开始继续扫，
+				如果比它还小的，肯定装水的瓶颈就是它了，可以把装水量加入结果，如果遇到比它大的，立即停止，重新判断左右窗口的大小情况，重复上面的步骤。
+				这里能作为停下来判断的窗口，说明肯定比前面的大了，所以目前肯定装不了水（不然前面会直接扫过去）。
+				这样当左右窗口相遇时，就可以结束了，因为每个元素的装水量都已经记录过了
+			*/
+			public int trap(List<Integer> height) {
+			    if (height == null || height.size() == 0) {
+			        return 0;
+			    }
+			    int left = 0;
+			    int right = height.size() - 1;
+			    int res = 0;
+			    while (left < right) {
+			        int min = Math.min(height.get(left), height.get(right));
+			        if (height.get(left) == min) {
+			            left++;
+			            while (left < right && height.get(left) < min) {
+			                res += min - height.get(left);
+			                left++;
+			            }
+			        } else {
+			            right--;
+			            while (left < right && height.get(right) < min) {
+			                res += min - height.get(right);
+			                right--;
+			            }
+			        }
+			    }
+			    return res;
+			}
 
 
 3. Divide Conquer
@@ -625,7 +758,7 @@
 			                    int level = 1; //building附近的点level为1，再外层再+1.
 			                    while (!queue.isEmpty()) {
 			                        int size = queue.size();
-			                        //只遍历
+			                        //层序遍历
 			                        for (int q = 0; q < size; q++) {
 			                            int[] point = queue.poll();
 			                            for (int k = 0; k < 4; k++) {
@@ -927,31 +1060,30 @@
 
 		*/
 		public class Solution {
-			public int[] maxSlidingWindow(int[] nums, int k) {
-		        if (nums == null || nums.length == 0) {
-		            return new int[0];
-		        }
-		        int n = nums.length;
-		        int[] res = new int[n - k + 1];
-		        Deque<Integer> queue =  new ArrayDeque<>();
-		        int j = 0;
-		        for (int i = 0; i < n; i++) {
-		        	// remove numbers out of range k
-		            if (!queue.isEmpty() && queue.peek() < (i - k +1)) {
-		                queue.poll();
-		            }
-		            
-		            // remove smaller numbers in k range as they are useless
-		            while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i]) {
-		                queue.pollLast();
-		            }
-		            queue.offer(i);
-		            if (i >= k - 1) {
-		                res[j++] = nums[queue.peek()];//peek is the maximum value
-		            }
-		        }
-		        return res;
-		    }
+		   	public int[] maxSlidingWindow(int[] nums, int k) {
+		   		int n = nums.length;
+		   		if (nums == null || k <= 0) {
+		   			int[] res = new int[0];
+		   			return res;
+		   		}
+		   		int[] res = new int[n - k + 1];
+		   		Deque<Integer> queue = new ArrayDeque<>();
+		   		for (int i = 0; i < nums.length; i++) {
+		   			if (!queue.isEmpty() && queue.peek() < i - k + 1) {
+		   				queue.poll();
+		   			}
+
+		   			while (!queue.isEmpty() && nums[queue.peekLast()] < nums[i]) {
+		   				queue.pollLast();
+		   			}
+
+		   			queue.offer(i);
+		   			if (i >= k - 1) {
+		   				res[i - k + 1] = nums[queue.peek()];
+		   			}
+		   		}
+		   		return res;
+		   	}
 		}
 
 
@@ -1496,43 +1628,122 @@
 				    }
 				}
 			}
+		12.2 Search For The Range
+			public class Solution {
+			    public int[] searchRange(int[] nums, int target) {
+			        if (nums == null || nums.length == 0) {
+			            return new int[]{};
+			        }
+			        int[] res = new int[2];
+			        int start = 0;
+			        int end = nums.length - 1;
+			        
+			        //Find the left bound
+			        while (start + 1 < end) {
+			            int mid = start + (end - start) / 2;
+			            if (nums[mid] > target) {
+			                end = mid;
+			            } else if (nums[mid] < target) {
+			                start = mid;
+			            } else {
+			                end = mid;
+			            }
+			        }
+			        
+			        if (nums[start] == target) {
+			            res[0] = start;
+			        } else if (nums[end] == target) {
+			            res[0] = end;
+			        } else {
+			            res[0] = -1;
+			        }
+			        start = 0;
+			        end = nums.length - 1;
+			        //Find the right bound
+			        while (start + 1 < end) {
+			            int mid = start + (end - start) / 2;
+			            if (nums[mid] > target) {
+			                end = mid;
+			            } else if (nums[mid] < target) {
+			                start = mid;
+			            } else {
+			                start = mid;
+			            }
+			        }
+			        
+			        if (nums[end] == target) {
+			            res[1] = end;
+			        } else if (nums[start] == target) {
+			            res[1] = start;
+			        } else {
+			            res[1] = -1;
+			        }
+			        
+			        return res;
+			    }
+			}
 
 13. Two Pointers
 		13.1 Trapping Rain Water
-		/*
-		    1. 两个指针从两端往中间扫， 在当前窗口中，如果哪一侧高度小，则从该侧开始扫描
-		    2. 如果在扫描的过程中发现有比它还小的，就可以把leftHeight - curHeight 加入结果，为什么呢？因为另外一边的高度肯定大于左边开始的高度，
-		       所以这个装水量一定会满足
-		    3. 当左右窗口相遇结束
-		*/
-		public class Solution {
-		    public int trap(int[] height) {
-		        if (height == null || height.length == 0) {
-		            return 0;
-		        }
-		        int left = 0;
-		        int right = height.length - 1;
-		        int res = 0;
-		        
-		        while (left < right) {
-		            int minHeight = Math.min(height[left], height[right]);
-		            if (height[left] == minHeight) {
-		                left++;
-		                while (left < right && height[left] < minHeight) {
-		                    res += minHeight - height[left];
-		                    left++;
-		                }
-		            } else {
-		                right--;
-		                while (left < right && height[right] < minHeight) {
-		                    res += minHeight - height[right];
-		                    right--;
-		                }
-		            }
-		        }
-		        return res;
-		    }
-		}
+			/*
+			    1. 两个指针从两端往中间扫， 在当前窗口中，如果哪一侧高度小，则从该侧开始扫描
+			    2. 如果在扫描的过程中发现有比它还小的，就可以把leftHeight - curHeight 加入结果，为什么呢？因为另外一边的高度肯定大于左边开始的高度，
+			       所以这个装水量一定会满足
+			    3. 当左右窗口相遇结束
+			*/
+			public class Solution {
+			    public int trap(int[] height) {
+			        if (height == null || height.length == 0) {
+			            return 0;
+			        }
+			        int left = 0;
+			        int right = height.length - 1;
+			        int res = 0;
+			        
+			        while (left < right) {
+			            int minHeight = Math.min(height[left], height[right]);
+			            if (height[left] == minHeight) {
+			                left++;
+			                while (left < right && height[left] < minHeight) {
+			                    res += minHeight - height[left];
+			                    left++;
+			                }
+			            } else {
+			                right--;
+			                while (left < right && height[right] < minHeight) {
+			                    res += minHeight - height[right];
+			                    right--;
+			                }
+			            }
+			        }
+			        return res;
+			    }
+			}
+		13.2 3 Sum Smaller
+			public class Solution {
+			    public int threeSumSmaller(int[] nums, int target) {
+			        if (nums == null || nums.length == 0) {
+			            return 0;
+			        }
+			        Arrays.sort(nums);
+			        int len = nums.length;
+			        int count = 0;
+			        for (int left = 0; left < len - 2; left++) {
+			            int mid = left + 1;
+			            int right = len - 1;
+			            while (mid < right) {
+			                int sum = nums[left] + nums[mid] + nums[right];
+			                if (sum < target) {
+			                    count += right - mid;
+			                    mid++;
+			                } else {
+			                    right--;
+			                }
+			            }
+			        }
+			        return count;
+			    }
+			}
 
 14. HashTable	
 		14.1 Count Same Prefixes And Suffixes
@@ -1659,4 +1870,64 @@
 					}
 					return res;
 				}
+			}
+15. Trie
+		15.1 Implement Trie
+			class TrieNode {
+			    // Initialize your data structure here.
+			    TrieNode[] children;
+			    String word;
+			    public TrieNode() {
+			        children = new TrieNode[26];
+			        word = "";
+			    }
+			}
+
+			public class Trie {
+			    private TrieNode root;
+			    public Trie() {
+			        root = new TrieNode();
+			    }
+
+			    // Inserts a word into the trie.
+			    public void insert(String word) {
+			        TrieNode node = root;
+			        for (int i = 0; i < word.length(); i++) {
+			            char c = word.charAt(i);
+			            if (node.children[c - 'a'] == null) {
+			                node.children[c - 'a'] = new TrieNode();
+			            }
+			            node = node.children[c - 'a'];
+			        }
+			        node.word = word;
+			    }
+
+			    // Returns if the word is in the trie.
+			    public boolean search(String word) {
+			        TrieNode node = root;
+			        for (int i = 0; i < word.length(); i++) {
+			            char c = word.charAt(i);
+			            if (node.children[c - 'a'] != null) {
+			                node = node.children[c - 'a'];
+			            } else {
+			                return false;
+			            }
+			        }
+			        return node.word.equals(word);
+			    }
+
+			    // Returns if there is any word in the trie
+			    // that starts with the given prefix.
+			    public boolean startsWith(String prefix) {
+			        TrieNode node = root;
+			        for (int i = 0; i < prefix.length(); i++) {
+			            char c = prefix.charAt(i);
+			            if (node.children[c - 'a'] != null) {
+			                node = node.children[c - 'a'];
+			            } else {
+			                return false;
+			            }
+			        }
+			        return true;
+			    }
 			}

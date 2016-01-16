@@ -41,7 +41,7 @@ public class Solution {
     //注意到，每逢4就不好处理，比如IIII不可行，需要转换成IV。9也不好处理VIIII所以要转成IX，以此类推
     //40 90 400 900 也应该预先初始化，方便遍历
     public String intToRoman(int num) {
-        String str = "";
+        String res = "";
         
         //数组应该从大到小顺序排列，因为要从最大的能表示的数开始减
         int[] value = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
@@ -52,9 +52,9 @@ public class Solution {
             while (num >= value[i]) {
                 num -= value[i];
                 //and add  the symbol[i] to the according symbol.
-                str += symbol[i];
+                res += symbol[i];
             }
         }
-        return str;
+        return res;
     }
 }

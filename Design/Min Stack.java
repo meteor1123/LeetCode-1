@@ -171,3 +171,63 @@ public class MinStack {
         return min.val;
     }
 }
+
+//Solution5: Leetcode no use api
+class MinStack {
+    private ListNode head = null;
+    private ListNode min = null;
+    public void push(int x) {
+        ListNode newNode = new ListNode(x);
+        
+        if (head == null) {
+            head = newNode;
+        } else {
+            head.next = newNode;
+            newNode.pre = head;
+            head = newNode;
+        }
+        
+        if (min == null || newNode.val <= min.val) {
+            min = newNode;
+        }
+    }
+
+    public void pop() {
+        ListNode node = head;
+         head = head.pre;
+         if (head != null) {
+             head.next = null;
+         }
+         
+         if (min == node) {
+             ListNode p = head;
+             min = head;
+             while (p != null) {
+                 if (p.val < min.val) {
+                     min = p;
+                 }
+                 p = p.pre;
+             }
+         }
+         
+    }
+
+    public int top() {
+        return head.val;
+    }
+
+    public int getMin() {
+        return min.val;
+    }
+    
+    class ListNode {
+        int val;
+        ListNode pre;
+        ListNode next;
+        public ListNode(int val) {
+            this.val = val;
+        }
+    }
+}
+
+//

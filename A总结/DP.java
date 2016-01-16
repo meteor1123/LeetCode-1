@@ -89,14 +89,6 @@
 
 
 
-
-
-
-
-
-
-
-
 /*
 	Dynamic Programming Problem
 */
@@ -269,6 +261,7 @@
 			        return dp[m - 1][n - 1];
 			    }
 			}
+			///O(n) space
 			public class Solution {
 			    public int minPathSum(int[][] grid) {
 			        int m = grid.length;
@@ -324,13 +317,13 @@
 			        //isPalin[i][j], i and j are two indices of the string, 
 			        //denote whether substring from i to j is palindrome;
 			        //isPalin[i][i] is always palindrome, since s.charAt(i) == s.charAt(i)
-			        boolean[][] isPalind = new boolean[s.length()][s.length()];
+			        boolean[][] dp = new boolean[s.length()][s.length()];
 			        String res = "";
 			        int maxLen = 0;
 			        for (int i = s.length() - 1; i >= 0; i--) {
 			            for (int j = i; j < s.length(); j++) {
-			                if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || isPalind[i + 1][j - 1])) {
-			                    isPalind[i][j] = true;
+			                if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1])) {
+			                    dp[i][j] = true;
 			                    if (maxLen < j - i + 1) {
 			                        maxLen = j - i + 1;
 			                        res = s.substring(i, j + 1);

@@ -1156,6 +1156,7 @@
 			//    3   1  
 			public class Solution {
 				//DFS 
+				//规则 一个结点的左孩子的左孩子是这个结点的右孩子，一个结点的左孩子的右节点是它自己
 				public TreeNode upsideDownBinaryTree(TreeNode root) {
 					if (root == null || (root.left == null && root.right == null)) {
 						return root;
@@ -1219,8 +1220,8 @@
 		5.3 Invert Binary Tree
 			public class Solution {
 			    public TreeNode invertTree(TreeNode root) {
-			        if (root == null || (root.left == null && root.right == null)) {
-			            return root;
+			        if (root == null) {
+			            return null;
 			        }
 			        TreeNode tempLeft = root.left;
 			        root.left = invertTree(root.right);

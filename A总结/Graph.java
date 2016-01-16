@@ -36,7 +36,7 @@
 				        }
 				        return true;
 				    }
-				    public boolean dfs(int node, int[][] graph, int[] visited) {
+				public boolean dfs(int node, int[][] graph, int[] visited) {
 				        visited[node] = 1;
 				        for (int i = 0; i < graph.length; i++) {
 				            if (grap[node][i] == 1) {
@@ -563,33 +563,34 @@
 			public class Solution {
 			    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
 			        if (n <= 1) {
-			            return Collections.singletonList(0);
+			            return new ArrayList<Integer>(Arrays.asList(0));
 			        }
-			        HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+			        HashMap<Integer, HashSet<Integer>> graph = new HashMap<>();
 			        for (int i = 0; i < n; i++) {
-			            map.put(i, new HashSet<>());
+			            graph.put(i, new HashSet<Integer>());
 			        }
 			        for (int[] edge : edges) {
-			            map.get(edge[0]).add(edge[1]);
-			            map.get(edge[1]).add(edge[0]);
+			            graph.get(edge[0]).add(edge[1]);
+			            graph.get(edge[1]).add(edge[0]);
 			        }
 			        List<Integer> leaves = new ArrayList<>();
 			        for (int i = 0; i < n; i++) {
-			            if (map.get(i).size() == 1) {
+			            if (graph.get(i).size() == 1) {
 			                leaves.add(i);
 			            }
 			        }
 			        while (n > 2) {
 			            n = n - leaves.size();
 			            List<Integer> newLeaves = new ArrayList<>();
-			            for (int i : leaves) {
-			                int j = map.get(i).iterator().next();
-			                map.get(j).remove(i);
-			                if (map.get(j).size() == 1) {
-			                    newLeaves.add(j);
+			            for (int leave : leaves) {
+			                for (int nearNode : graph.get(leave)) {
+			                    graph.get(nearNode).remove(leave);
+			                    if (graph.get(nearNode).size() == 1) {
+			                        newLeaves.add(nearNode);
+			                    }
 			                }
+			                leaves = newLeaves;
 			            }
-			            leaves = newLeaves;
 			        }
 			        return leaves;
 			    }

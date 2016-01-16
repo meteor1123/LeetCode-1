@@ -1,0 +1,14 @@
+{
+  "title": "Scalability Harvard Web Development Lecture",
+  "cells": [
+    {
+      "type": "code",
+      "language": "java",
+      "data": "\nMost easiest way to scaling:\n\n(1) Vertical Scaling:(在少数几台机器上更新更好的硬件)\n    CPU: cores, L2 Cache\n    Disk: PATA, SATA, SAS, RAID\n    Ram:\n    Get more RAM or processor or more disk space\n\n(2) Horizontal Scaling:（可以不用最新的配置电脑，但是以数量取胜）\n    "
+    },
+    {
+      "type": "text",
+      "data": "<h3>Load Balancing</h3><div><img src=\"quiver-image-url/B221AF5C0D106CC97BF9C37C7F3E8013.jpg\"><br></div><div><br></div>"
+    }
+  ]
+}

@@ -135,8 +135,9 @@ public class LRUCache {
             removeNode(latest);//去除该节点
             setHead(latest);//将该节点设为头结点（最近使用）
             return latest.val;
-        } else 
+        } else {
             return -1;
+        }
     }
     public void set(int key, int value) {
         if (map.containsKey(key)) {//假如已经有了
@@ -154,8 +155,9 @@ public class LRUCache {
             } else {
                 map.remove(end.key);
                 end = end.pre;
-                if (end != null)
+                if (end != null) {
                     end.next = null;
+                }
                 setHead(newNode);
                 map.put(key, newNode);
             }
@@ -166,24 +168,28 @@ public class LRUCache {
         DoubleLinkedListNode pre = cur.pre;
         DoubleLinkedListNode post = cur.next;
         //考虑node的前后结点
-        if (pre != null)
+        if (pre != null) {
             pre.next = post;//假如post为null，则直接指向null，
                             //意味着pre已经是尾结点
-        else 
+        } else {
             head = post;
-        if (post != null) //假如pre为null,则直接为头结点了 
+        }
+        if (post != null) {//假如pre为null,则直接为头结点了 
             post.pre = pre;
-        else 
+        } else {
             end = pre;
+        }
     }
     public void setHead(DoubleLinkedListNode node) {
         node.next = head;
         node.pre = null;
-        if (head != null)
+        if (head != null) {
             head.pre = node;
+        }
         head = node;
-        if (end == null)
+        if (end == null) {
             end = node;
+        }
     }
 }
 

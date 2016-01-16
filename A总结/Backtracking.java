@@ -163,7 +163,7 @@
 												2 + (permutations of 1, 3, 4) 
 												3 + (permutations of 1, 2, 4) 
 												4 + (permutations of 1, 2, 3)，
-												后面三位组成的permutation数量= fact / n = 24 / 4;
+												后面三位组成的permutation数量= fact / n = 24 / 4 = 6 ....A33;
 												我们只需要将 k / (fact / n) ,就可以得到第一位数字的序号。
 												13 / (24 / 4) = 13 / 6 = 2, 也就是取3.
 						3. k--,是因为数组下标从0开始，方便计算。
@@ -172,8 +172,6 @@
 						    k / (fact / n) : 1 / (6 / 3) = 0, 我们要在剩余的3位permutation数字中确定首位的序号，首位取0，
 						    3，1
 						5. 如此循环直到n == 0;
-
-
 				*/
 				public class Solution {
 					public String getPermutation(int n, int k) {
@@ -186,10 +184,12 @@
 					    	fact *= i; // factorial
 					    }
 					    StringBuilder sb = new StringBuilder();
-					    for (k--; n > 0; n--) {
+					    k--;
+					    while(n > 0) {
 					        fact /= n;
 					        sb.append(list.remove(k / fact));
 					        k %= fact;
+					        n--;
 					    }
 				    	return sb.toString();
 					}
@@ -668,7 +668,7 @@
 				}
 
 		3. Subsets（子集）
-			3.1 SubsetsI
+			3.1 SubsetsI no duplicates
 				//Recursive
 				public class Solution {
 				    public List<List<Integer>> subsets(int[] nums) {
@@ -715,7 +715,7 @@
 				        return res;
 				    }
 				}
-			3.2 SubsetsII
+			3.2 SubsetsII has duplicates
 				//Recursive
 				public class Solution {
 				    public List<List<Integer>> subsetsWithDup(int[] nums) {

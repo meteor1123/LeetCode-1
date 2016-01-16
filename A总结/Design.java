@@ -303,6 +303,64 @@
 				        return min;
 				    }
 				}
+			//Solution3: Without use api
+			class MinStack {
+			    private ListNode head = null;
+			    private ListNode min = null;
+			    public void push(int x) {
+			        ListNode newNode = new ListNode(x);
+			        
+			        if (head == null) {
+			            head = newNode;
+			        } else {
+			            head.next = newNode;
+			            newNode.pre = head;
+			            head = newNode;
+			        }
+			        
+			        if (min == null || newNode.val <= min.val) {
+			            min = newNode;
+			        }
+			    }
+
+			    public void pop() {
+			         ListNode node = head;
+			         head = head.pre;
+			         if (head != null) {
+			             head.next = null;
+			         }
+			         
+			         if (min == node) {
+			             ListNode p = head;
+			             min = head;
+			             while (p != null) {
+			                 if (p.val < min.val) {
+			                     min = p;
+			                 }
+			                 p = p.pre;
+			             }
+			         }
+			         
+			    }
+
+			    public int top() {
+			        return head.val;
+			    }
+
+			    public int getMin() {
+			        return min.val;
+			    }
+			    
+			    class ListNode {
+			        int val;
+			        ListNode pre;
+			        ListNode next;
+			        public ListNode(int val) {
+			            this.val = val;
+			        }
+			    }
+			}
+
 
 
 
@@ -366,6 +424,7 @@
 		3.3 Find Median From Data Stream
 			class MedianFinder {
 			    // Adds a number into the data structure.
+			    // 最小堆里的最大值， 最大堆里的最小值
 			    PriorityQueue<Integer> min = new PriorityQueue<>();
 			    PriorityQueue<Integer> max = new PriorityQueue<>(1000, Collections.reverseOrder());
 			    public void addNum(int num) {
@@ -385,4 +444,93 @@
 			    }
 			};
 
-			
+4. New Data Structure
+		4.1 LRU Cache
+			public class LRUCache {
+			    private HashMap<Integer, DoubleLinkedListNode> map;
+			    private DoubleLinkedListNode head;
+			    private DoubleLinkedListNode end;
+			    private int capacity;
+			    private int len;
+			    public LRUCache(int capacity) {
+			        map = new HashMap<>();
+			        this.capacity = capacity;
+			        this.len = 0;
+			    }
+			    
+			    public int get(int key) {
+			        if (map.containsKey(key)) {
+			            DoubleLinkedListNode latest = map.get(key);
+			            removeNode(latest);
+			            setHead(latest);
+			            return latest.val;
+			        } else {
+			            return -1;
+			        }
+			    }
+			    
+			    public void set(int key, int value) {
+			        if (map.containsKey(key)) {
+			            DoubleLinkedListNode oldNode = map.get(key);
+			            removeNode(oldNode);
+			            oldNode.val = value;
+			            setHead(oldNode);
+			        } else {
+			            DoubleLinkedListNode newNode = new DoubleLinkedListNode(key, value);
+			            if (len >=  capacity) {
+			                map.remove(end.key);
+			                end = end.pre;
+			                if (end != null) {
+			                    end.next = null;
+			                }
+			            } else {
+			                len++;
+			            }
+			            map.put(key, newNode);
+			            setHead(newNode);
+			        }
+			    }
+			    
+			    public void removeNode(DoubleLinkedListNode node) {
+			        DoubleLinkedListNode cur = node;
+			        DoubleLinkedListNode pre = cur.pre;
+			        DoubleLinkedListNode post = cur.next;
+			        
+			        if (pre != null) {
+			            pre.next = post;//pre不空，pre指向post
+			        } else {
+			            head = post;//pre为空，next就是头结点
+			        }
+			        
+			        if (post != null) {//post不空, post前指针指向pre
+			            post.pre = pre;
+			        } else {
+			            end = pre; //post为空， pre是尾结点
+			        }
+			    }
+			    
+			    public void setHead(DoubleLinkedListNode node) {
+			        node.next = head;//node指向头结点
+			        node.pre = null;//node已经是头结点，pre所以为空
+			        if (head != null) {//如果head非空，原先head的pre指向新head（node）
+			            head.pre = node;
+			        }
+			        head = node;//新的head就是node
+			        if (end == null) {//如果end为空，意味着之前就是空链表，将头结点node同时设为end
+			            end = node;
+			        }
+			        
+			    }
+			    
+			    class DoubleLinkedListNode {
+			        int key;
+			        int val;
+			        DoubleLinkedListNode pre;
+			        DoubleLinkedListNode next;
+			        public DoubleLinkedListNode(int key, int val) {
+			            this.key = key;
+			            this.val = val;
+			        }
+			    }
+			}
+				

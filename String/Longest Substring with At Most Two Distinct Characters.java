@@ -62,6 +62,9 @@ public class Solution {
 		3）该题目有个follow-up，就是如果是k个distinct characters怎么办。这样的话就只能对所有可能的字符用一个数组去做counting，
 		   而且只能假设ASIC字符集256。Unicode太大了。
 	*/
+	/*
+		uses i and j to track the last indices of two characters. i is tracking the first character, j is tracking the second character. 
+	 */
 	public int lengthOfLongestSubstringTwoDistinct(String s) {
 		int i = 0;
 		int j = -1;

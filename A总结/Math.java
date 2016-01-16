@@ -10,12 +10,14 @@
 1. Number Problem
 	1.1 Happy Number
 		/*
-			A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits, and repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy numbers.
+			A happy number is a number defined by the following process: Starting with any positive integer, 
+			replace the number by the sum of the squares of its digits, and repeat the process until the number equals 1 (where it will stay), 
+			or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy numbers.
 			Example: 19 is a happy number
-				12 + 92 = 82
-				82 + 22 = 68
-				62 + 82 = 100
-				12 + 02 + 02 = 1
+				1^2 + 9^2 = 82
+				8^2 + 2^2 = 68
+				6^2 + 8^2 = 100
+				1^2 + 0^2 + 0^2 = 1
 		*/	
 		public class Solution {
 		    public boolean isHappy(int n) {
@@ -175,15 +177,9 @@
 				    }
 				    List<String> helper(int n, int m) {
 				        if (n == 0) {
-				            // ArrayList<String> tempRes = new ArrayList<String>();
-				            // tempRes.add("");
 				            return new ArrayList<String>(Arrays.asList(""));
 				        }
 				        if (n == 1) {
-				            // ArrayList<String> tempRes = new ArrayList<String>();
-				            // tempRes.add("0");
-				            // tempRes.add("1");
-				            // tempRes.add("8");
 				            return new ArrayList<String>(Arrays.asList("0", "1", "8"));//asList 的只能读，不能改
 				        }
 				        List<String> list = helper(n - 2, m);//why n - 2? since every time we add two number, one from head,the other from end
@@ -207,11 +203,14 @@
 				    public int strobogrammaticInRange(String low, String high) {
 				        int count = 0;
 				        List<String> res = new ArrayList<>();
-				        for (int i = low.length(); i<= high.length(); i++) {
+				        for (int i = low.length(); i <= high.length(); i++) {
 				            res.addAll(helper(i, i));
 				        }
 				        for (String num : res) {
-				            if ((num.length() == low.length() && num.compareTo(low) < 0) || (num.length() == high.length() && num.compareTo(high) > 0)) {
+				            if  (
+					            	(num.length() == low.length() && num.compareTo(low) < 0) || 
+					            	(num.length() == high.length() && num.compareTo(high) > 0)
+				            	) {
 				                continue;
 				            }
 				            count++;
@@ -225,9 +224,8 @@
 				        if (cur == 1) {
 				            return new ArrayList<String>(Arrays.asList("1", "8", "0"));
 				        }
-				        List<String> res = new ArrayList<String>();
 				        List<String> center = helper(cur - 2, max);
-				        
+				        List<String> res = new ArrayList<String>();
 				        for (int i = 0; i < center.size(); i++) {
 				            String tmp = center.get(i);
 				            if (cur != max) {
@@ -562,33 +560,174 @@
 			        num = Math.abs(num);
 			        den = Math.abs(den);
 			        
-			        long res = num / den;
-			        ans += String.valueOf(res);
+			        long tempRes = num / den;
+			        res += String.valueOf(tempRes);
 			        
 			        long rem = (num % den) * 10;
 			        if (rem == 0) {
-			            return ans;
+			            return res;
 			        }
 			        
 			        HashMap<Long, Integer> map = new HashMap<Long, Integer>();
-			        ans += ".";
+			        res += ".";
 			        while (rem != 0) {
 			            if (map.containsKey(rem)) {
-			                int begin = map.get(rem);
-			                String part1 = ans.substring(0, begin);
-			                String part2 = ans.substring(begin, ans.length());
-			                ans = part1 + "(" + part2 + ")";
-			                return ans;
+			                int start = map.get(rem);
+			                String part1 = res.substring(0, start);
+			                String part2 = res.substring(start, res.length());
+			                res = part1 + "(" + part2 + ")";
+			                return res;
 			            }
 			            
-			            map.put(rem, ans.length());
-			            res = rem / den;
-			            ans += res + "";
+			            map.put(rem, res.length());
+			            tempRes = rem / den;
+			            res += tempRes + "";
 			            rem = (rem % den) * 10;
 			        }
-			        return ans;
+			        return res;
 			    }
 			}
+		2.9 String To Integer (atoi)
+			/*
+			    1. null or empty string
+			    2. white spaces
+			    3. +/- sign
+			    4. calculate real value
+			    5. handle min & max
+			 */
+		    public int atoi(String str) {
+		        //corner case
+		        if (str == null || str.length() < 1)
+		            return 0;
+		        
+		        //remove the leading and trailing white blank
+		        str = str.trim();
+		        
+		        //determine the flag of '+' or '-'
+		        char flag = '+';
+		        int i = 0;
+		        if (str.charAt(i) == '-') {
+		            flag = '-';
+		            i++;
+		        } else if (str.charAt(i) == '+') {
+		            i++;
+		        }
+		        
+		        //Using double to store the result
+		        double result = 0;
+		        
+		        //determine every char in str
+		        //put a constraint '0' < str.charAt(i) <'9'
+		        while (i < str.length() && str.charAt(i) <= '9' && str.charAt(i) >= '0') {
+		            //example: 251 = 0*10 + 2-> 2*10 + 5-> 25*10 + 1 = 251
+		            result = result * 10 +(str.charAt(i) - '0'); 
+		            i++;
+		        }
+		        
+		        //determine the flag
+		        if (flag == '-')
+		            result = -result;
+		            
+		        //corner case of overflow
+		        if (result >= Integer.MAX_VALUE)
+		            return Integer.MAX_VALUE;
+		        if (result <= Integer.MIN_VALUE)
+		            return Integer.MIN_VALUE;
+		        
+		        //dont forget to turn to Integer
+		        return (int)result;
+		    }
+
+		2.10 Basic Calculator
+			/*
+				Implement a basic calculator to evaluate a simple expression string.
+				The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces .
+
+				You may assume that the given expression is always valid.
+
+				Some examples:
+				"1 + 1" = 2
+				" 2-1 + 2 " = 3
+				"(1+(4+5+2)-3)+(6+8)" = 23
+			 */
+			/*
+			    Principle:
+			        (Sign before '+'/'-') = (This context sign);
+			        (Sign after '+'/'-') = (This context sign) * (1 or -1);
+			    Algorithm:
+			        Start from +1 sign and scan s from left to right;
+			        if c == digit: This number = Last digit * 10 + This digit;
+			        if c == '+': Add num to result before this sign; This sign = Last context sign * 1; clear num;
+			        if c == '-': Add num to result before this sign; This sign = Last context sign * -1; clear num;
+			        if c == '(': Push this context sign to stack;
+			        if c == ')': Pop this context and we come back to last context;
+			        Add the last num. This is because we only add number after '+' / '-'.
+			*/
+			public class Solution {
+			    public int calculate(String s) {
+			        if (s == null) {
+			            return 0;
+			        }
+			        int res = 0;
+			        int sign = 1;
+			        int num = 0;
+			        Stack<Integer> stack = new Stack<Integer>();
+			        stack.push(sign);
+			        for (int i = 0; i < s.length(); i++) {
+			            char c = s.charAt(i);
+			            if (c >= '0' && c <= '9') {
+			                num = num * 10 + (c - '0');
+			            } else if (c == '+' || c == '-') {
+			                res += sign * num;
+			                sign = stack.peek() * (c == '+' ? 1 : -1);
+			                num = 0;
+			            } else if (c == '(') {
+			                stack.push(sign);
+			            } else if (c == ')') {
+			                stack.pop();
+			            }
+			        }
+			        res += sign * num;
+			        return res;
+			    }
+			}
+		2.11 Add Two Numbers
+			/*
+				You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+				Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+				Output: 7 -> 0 -> 8
+			 */
+			 public class Solution {
+			     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+			         if (l1 == null) {
+			             return l2;
+			         }
+			         if (l2 == null) {
+			             return l1;
+			         }
+			         ListNode l3 = new ListNode(0);
+			         ListNode newHead = l3;
+			         int sum = 0;
+			         while (l1 != null || l2 != null) {
+			             if (l1 != null) {
+			                 sum += l1.val;
+			                 l1 = l1.next;
+			             }
+			             if (l2 != null) {
+			                 sum += l2.val;
+			                 l2 = l2.next;
+			             }
+			             l3.next = new ListNode(sum % 10);
+			             l3 = l3.next;
+			             sum = sum / 10;
+			         }
+			         if (sum == 1) {
+			             l3.next = new ListNode(1);
+			         }
+			         return newHead.next;
+			     }
+			 }
 
 
 3. Geometry
@@ -682,6 +821,7 @@
 				char to int --> 
 					1.直接和int进行运算
 					2. c - '0' ,比如'9' - '0'
+					
 				int to char --> 
 					1.(char)
 					2. + 'a' 就是对应的1 ： a 
@@ -730,5 +870,45 @@
 			            res = 26 * res + c % 64;
 			        }
 			        return res;
+			    }
+			}
+		5.3 Max Points On A Line 
+			/*
+				Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+			 */
+			public class Solution {
+			    public int maxPoints(Point[] points) {
+			        if (points == null || points.length == 0) {
+			            return 0;
+			        }
+			        
+			        int max = 1;
+			        for (int i = 0; i < points.length; i++) {
+			            HashMap<Float, Integer> map = new HashMap<>();
+			            int samePoint = 0;
+			            int localMax = 1;
+			            for (int j = 0; j < points.length; j++) {
+			                if (i == j) {
+			                    continue;
+			                }
+			                if (points[j].x == points[i].x && points[j].y == points[i].y) {
+			                    samePoint++;
+			                    continue;
+			                }
+			                float slope = ((float)(points[i].y - points[j].y) / (points[i].x - points[j].x));
+			                if (map.containsKey(slope)) {
+			                    map.put(slope, map.get(slope) + 1);
+			                } else {
+			                    map.put(slope, 2);
+			                }
+			            }
+			            
+			            for (int count : map.values()) {
+			                localMax = Math.max(localMax, count);
+			            }
+			            localMax += samePoint;
+			            max = Math.max(localMax, max);
+			        }
+			        return max;
 			    }
 			}

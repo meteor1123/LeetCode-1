@@ -40,7 +40,7 @@ public class Solution {
 
     //time complexity: O(m * n)
     // two-dimension dp 
-    public int numDistinct(String S, String T) {
+    public int numDistinct(String  , String T) {
         if (S == null || T == null || S.length() < T.length()) {
             return 0;
         }

@@ -60,8 +60,6 @@ public class Solution {
 			return res;
 		}
 		int[] res = new int[n - k + 1];
-		int j = 0;
-
 		Deque<Integer> queue = new ArrayDeque<>();
 		for (int i = 0; i < nums.length; i++) {
 			if (!queue.isEmpty() && queue.peek() < i - k + 1) {
@@ -74,7 +72,7 @@ public class Solution {
 
 			queue.offer(i);
 			if (i >= k - 1) {
-				res[j++] = nums[queue.peek()];
+				res[i - k + 1] = nums[queue.peek()];
 			}
 		}
 		return res;
