@@ -1,0 +1,9 @@
+{
+  "title": "CSS refer link",
+  "cells": [
+    {
+      "type": "text",
+      "data": "1. Normalize CSS<div><div><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css\"&gt;</div></div><div><br></div>"
+    }
+  ]
+}
