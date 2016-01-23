@@ -143,8 +143,7 @@ public class Solution {
         for(int i = 0; i < n; i++)
             graph.add(new HashSet<Integer>());
 
-        for(int[] edge : edges)
-        {
+        for(int[] edge : edges) {
             graph.get(edge[0]).add(edge[1]);
             graph.get(edge[1]).add(edge[0]);
         }
@@ -170,6 +169,45 @@ public class Solution {
                 return false;
         }
 
+        return true;
+    }
+}
+
+
+//Solution4
+public class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        HashMap<Integer, HashSet<Integer>> graph = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new HashSet<Integer>());
+        }
+        
+        for (int[] edge : edges) {
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
+        }
+        
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[n];
+        queue.offer(0);
+        
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            if (visited[node] == true) {
+                return false;
+            }
+            visited[node] = true;
+            for (int neighbor : graph.get(node)) {
+                graph.get(neighbor).remove(node);
+                queue.offer(neighbor);
+            }
+        }
+        
+        for (boolean visit : visited) {
+            if (visit == false) {
+                return false;
+            }
+        }
         return true;
     }
 }

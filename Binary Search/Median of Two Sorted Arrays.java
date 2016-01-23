@@ -82,7 +82,7 @@ public class Solution {
 		} else if (A[aStart + partA - 1] > B[bStart + partB - 1]) {
 			return findKth(A, aStart, aEnd, B, bStart + partB, bEnd, k - partB);
 		} else {
-			return A[start + partA - 1];
+			return A[aStart + partA - 1];
 		}
 	}
 
