@@ -23,8 +23,9 @@ public class HashMap {
  
       HashMap() {
             table = new HashEntry[TABLE_SIZE];
-            for (int i = 0; i < TABLE_SIZE; i++)
+            for (int i = 0; i < TABLE_SIZE; i++) {
                   table[i] = null;
+            }
       }
  
       public int get(int key) {
@@ -35,10 +36,11 @@ public class HashMap {
                   hash = (hash + 1) % TABLE_SIZE;
             }
 
-            if (table[hash] == null)
+            if (table[hash] == null) {
                   return -1;
-            else
+            } else {
                   return table[hash].getValue();
+            }
       }
  
       public void put(int key, int value) {

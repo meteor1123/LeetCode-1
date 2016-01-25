@@ -1,9 +1,31 @@
 /*
 	Bit Manipulation
+	http://www.matrix67.com/blog/archives/263
 */
 
 
+/*
+	异或操作的一些特点：
 
+	x ^ 0 = x
+	x ^ 1s = ~x // 1s = ~0
+	x ^ (~x) = 1s
+	x ^ x = 0 // interesting and important!
+	a ^ b = c => a ^ c = b, b ^ c = a // swap
+	a ^ b ^ c = a ^ (b ^ c) = (a ^ b) ^ c // associative
+	移位操作
+
+	移位操作可近似为乘以/除以2的幂。0b0010 * 0b0110等价于0b0110 << 2. 下面是一些常见的移位组合操作。
+
+	将x最右边的n位清零 - x & (~0 << n)
+	获取x的第n位值(0或者1) - x & (1 << n)
+	获取x的第n位的幂值 - (x >> n) & 1
+	仅将第n位置为1 - x | (1 << n)
+	仅将第n位置为0 - x & (~(1 << n))
+	将x最高位至第n位(含)清零 - x & ((1 << n) - 1)
+	将第n位至第0位(含)清零 - x & (~((1 << (n + 1)) - 1))
+	仅更新第n位，写入值为v; v为1则更新为1，否则为0 - mask = ~(1 << n); x = (x & mask) | (v << i)
+ */
 
 1. Single Number Problem
 		1.1 Single Number I
@@ -126,6 +148,49 @@
 			}
 
 2. Binary Math Operation
+		2.0 A + B Problem
+			/*
+				A + B Problem
+				Write a function that add two numbers A and B. You should not use + or any arithmetic operators.
+
+				Have you met this question in a real interview? Yes
+				Example
+				Given a=1 and b=2 return 3
+			 */
+
+			/*
+				位运算实现整数加法本质就是用二进制进行运算。
+				其主要用了两个基本表达式：
+				(1) x^y //执行加法，不考虑进位。
+				(2) (x&y)<<1 //进位操作
+				令x=x^y ；y=(x&y)<<1 进行迭代，
+				每迭代一次进位操作右面就多一位0，最多需要“加数二进制位长度”次迭代就没有进位了，此时x^y的值就是结果。
+
+				我们来做个3位数的加法：101+011=1000 //正常加法
+					位运算加法：
+					（1） 101 ^ 011 = 110
+						 (101 & 011)<<1 = 010
+					（2） 110 ^ 010 = 100
+						 (110 & 010)<<1 = 100
+					（3） 100 ^ 100 = 000
+						 (100 & 100)<<1 = 1000
+				此时进行相加操作就没有进位了，即000 ^ 1000=1000即是最后结果。
+			 */
+
+
+			class Solution {
+			    public int aplusb(int a, int b) {
+			        // write your code here, try to do it without arithmetic operators.
+			        while (b != 0) {
+			            int carry = a & b;
+			            a = a ^ b;
+			            b = carry << 1;
+			        }
+			        return a;
+			    }
+			};
+
+
 		2.0 Power Of Two
 			/*
 				Given an integer, write a function to determine if it is a power of two.
@@ -315,6 +380,31 @@
 			        return res;
 			    }
 			}
+		2.5 Flip Bits
+			/*
+				Determine the number of bits required to flip if you want to convert integer n to integer m.
+
+				Example
+				Given n = 31 (11111), m = 14 (01110), return 2.
+
+				Note
+				Both n and m are 32-bit integers.
+			 */
+			public class Solution {
+			    public static int bitSwapRequired(int a, int b) {
+			        // write your code here
+			        int c = a ^ b;
+			        int res = 0;
+			        for (int i = 0; i < 32; i++) {
+			            if ((c & 1) != 0) {
+			                res++;
+			            }
+			            c = c >> 1;
+			        }
+			        return res;
+			    }
+			}
+
 
 
 3. Bits Manipulation In String Operation

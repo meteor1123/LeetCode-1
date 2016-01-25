@@ -5,7 +5,33 @@
 	~   -  bitwise not
 	<<  -  bitwise shift left
 	>>  -  bitwise shift right
+
+	http://www.matrix67.com/blog/archives/263
 */
+
+
+/*
+	异或操作的一些特点：
+
+	x ^ 0 = x
+	x ^ 1s = ~x // 1s = ~0
+	x ^ (~x) = 1s
+	x ^ x = 0 // interesting and important!
+	a ^ b = c => a ^ c = b, b ^ c = a // swap
+	a ^ b ^ c = a ^ (b ^ c) = (a ^ b) ^ c // associative
+	移位操作
+
+	移位操作可近似为乘以/除以2的幂。0b0010 * 0b0110等价于0b0110 << 2. 下面是一些常见的移位组合操作。
+
+	将x最右边的n位清零 - x & (~0 << n)
+	获取x的第n位值(0或者1) - x & (1 << n)
+	获取x的第n位的幂值 - (x >> n) & 1
+	仅将第n位置为1 - x | (1 << n)
+	仅将第n位置为0 - x & (~(1 << n))
+	将x最高位至第n位(含)清零 - x & ((1 << n) - 1)
+	将第n位至第0位(含)清零 - x & (~((1 << (n + 1)) - 1))
+	仅更新第n位，写入值为v; v为1则更新为1，否则为0 - mask = ~(1 << n); x = (x & mask) | (v << i)
+ */
 
 // Bit Hack #1. Check if the integer is even or odd
 

@@ -1,5 +1,5 @@
 /*
-	Maximum Size Subarray Sum Equals k
+	Maximum Size Subarray Sum Equals k 
 	Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
 
 	Example 1:
@@ -14,6 +14,8 @@
 	Can you do it in O(n) time?
  */
 
+
+//when k == 0 -> Subarray Sum Lintcode
 public class Solution {
     public int maxSubArrayLen(int[] nums, int k) {
         int maxLen = 0;
@@ -34,3 +36,5 @@ public class Solution {
         return maxLen;
     }
 }
+
+

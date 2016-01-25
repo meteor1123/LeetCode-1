@@ -1602,34 +1602,237 @@
 7. Backpack Problem
 			7.1 Coin Seris
 				7.1.1 Coin Change
-				/*
-					You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+					/*
+						You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
 
-					Example 1:
-					coins = [1, 2, 5], amount = 11
-					return 3 (11 = 5 + 5 + 1)
+						Example 1:
+						coins = [1, 2, 5], amount = 11
+						return 3 (11 = 5 + 5 + 1)
 
-					Example 2:
-					coins = [2], amount = 3
-					return -1.
+						Example 2:
+						coins = [2], amount = 3
+						return -1.
 
-					Note:
-					You may assume that you have an infinite number of each kind of coin.
-				*/
-				//Key Point: (1)保证硬币要比amount面额要小 （2)保证可以找回amount - coins[j]这样的面额 (3)综合以上两点求最小值
+						Note:
+						You may assume that you have an infinite number of each kind of coin.
+					*/
+					//Key Point: (1)保证硬币要比amount面额要小 （2)保证可以找回amount - coins[j]这样的面额 (3)综合以上两点求最小值
+					public class Solution {
+					    public int coinChange(int[] coins, int amount) {
+					        int[] dp = new int[amount + 1];
+					        dp[0] = 0;
+					        for (int i = 1; i <= amount; i++) {
+					            dp[i] = Integer.MAX_VALUE;
+					            for (int j = 0; j < coins.length; j++) {
+					                if (coins[j] <= i && dp[i - coins[j]] != Integer.MAX_VALUE) {
+					                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+					                }
+					            }
+					        }
+					        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+					    }
+					}
+				7.1.2  Coins In A Line I
+					/*
+						Coins in a Line
+						There are n coins in a line. Two players take turns to take one or two coins from right side until there are no more coins left. The player who take the last coin wins.
+						Could you please decide the first play will win or lose?
+
+						Example
+						n = 1, return true.
+						n = 2, return true.
+						n = 3, return false.
+						n = 4, return true.
+						n = 5, return true.
+
+						Challenge
+						O(n) time and O(1) memory
+					 */
+					/*
+						思路：一个人最多可以取2个coin，就是说如果留给对方的是3个coin, 我就能赢（对方取coin的时候剩下3个）
+						为了让对方取的时候是3个coin，策略是
+
+						1. 我首先取，并且取完后的数目时3的倍数
+						2. 然后是对方取X，接着我取的数目是3-X
+						3. 这样能保证当对方取的时候是3的倍数
+					 */
+
+					//Solution1: DP
+					public class Solution {
+					    public boolean firstWillWin(int n) {
+					        if (n == 0) {
+					            return false;
+					        }
+					        // write your code here
+					        if (n <= 2) {
+					            return true;
+					        }
+					        boolean[] dp = new boolean[n + 1];
+					        dp[1] = true;
+					        for (int i = 2; i <= n; i++) {
+					            if (dp[i - 1] == false || dp[i - 2] == false) {
+					                dp[i] = true;
+					            }
+					        }
+					        return dp[n];
+					    }
+					}
+					//Solution2: Best
+					public class Solution {
+						public boolean firstWillWin(int n) {
+						    return n % 3 != 0;
+						}
+					}
+
+				7.1.3 Coins In A Line II
+					/*
+						There are n coins with different value in a line. Two players take turns to take one or two coins from left side until there are no more coins left. The player who take the coins with the most value wins.
+
+						Could you please decide the first player will win or lose?
+						Example
+						Given values array A = [1,2,2], return true.
+
+						Given A = [1,2,4], return false.
+
+
+					 */
+
+					/*
+						state
+							DP[i]表示从i到end能取到的最大value
+						function
+							当我们走到i时，有两种选择:
+								取values[i]
+								取values[i] + values[i+1]
+							1. 我们取了values[i],对手的选择有 values[i+1]或者values[i+1] + values[i+2] 剩下的最大总value分别为DP[i+2]或DP[i+3], 
+								对手也是理性的所以要让我们得到最小value,所以 value1 = values[i] + min(DP[i+2], DP[i+3])
+							2. 我们取了values[i]和values[i+1] 同理 value2 = values[i] + values[i+1] + min(DP[i+3], DP[i+4])
+							3. 最后DP[I] = max(value1, value2)
+					 */
+
+					public class Solution {
+					    public boolean firstWillWin(int[] values) {
+					        int len = values.length;
+					        if (len <= 2) {
+					            return true;
+					        }
+					        int[] dp = new int[len];
+					        dp[len - 1] = values[len - 1];
+					        dp[len - 2] = values[len - 2] + values[len - 1];
+					        
+					        for (int i = len - 3; i >= 0; i--) {
+					            dp[i] = Math.max(values[i] - dp[i + 1], values[i] + values[i + 1] - dp[i + 2]);
+					        }
+					        return dp[0] > 0;
+					    }
+					}
+			7.2.1 Backpack I
+				//Solution1: O(n*m) memory
 				public class Solution {
-				    public int coinChange(int[] coins, int amount) {
-				        int[] dp = new int[amount + 1];
-				        dp[0] = 0;
-				        for (int i = 1; i <= amount; i++) {
-				            dp[i] = Integer.MAX_VALUE;
-				            for (int j = 0; j < coins.length; j++) {
-				                if (coins[j] <= i && dp[i - coins[j]] != Integer.MAX_VALUE) {
-				                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+				    /**
+				     * @param m: An integer m denotes the size of a backpack
+				     * @param A: Given n items with size A[i]
+				     * @return: The maximum size
+				     */
+				    public int backPack(int m, int[] A) {
+				        // write your code here
+				        if (A == null || m < 1) {
+				            return 0;
+				        }
+				        int n = A.length;
+				        //dp[i][j] 表示前i个物品是否能组合成体积和为j的背包
+				        boolean[][] dp = new boolean[n + 1][m + 1];
+				        
+				        dp[0][0] = true;
+				        for (int i = 1; i <= n; i++) {
+				            for (int j = 0; j <= m; j++) {
+				                if (j < A[i - 1]) {//假如体积和小于物品A[i - 1]则 这件物品有没有都不影响，取决于前i - 1件
+				                    dp[i][j] = dp[i - 1][j];
+				                } else {
+				                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - A[i - 1]];
 				                }
 				            }
 				        }
-				        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+				        
+				        for (int i = m; i >= 0; i--) {
+				            if (dp[n][i]) {
+				                return i;
+				            }
+				        }
+				        return 0;
+				    }
+				}
+
+				/*
+					考虑背包问题的核心——状态转移方程，如何优化此转移方程？原始方案中用到了二维矩阵来保存result，
+					注意到result的第i行仅依赖于第i-1行的结果，那么 能否用一维数组来代替这种隐含的关系呢？
+					我们在内循环j处递减即可。如此即可避免result[i][S]的值由本轮result[i][S-A[i] ]递推得到。
+				 */
+				//Solution2 : O(m) memory
+				public class Solution {
+					public int backPack(int m, int[] A) {
+					    if (A == null || m < 1) {
+					        return 0;
+					    }
+					    int n = A.length;
+					    boolean[] dp = new boolean[m + 1];
+					    dp[0] = true;
+					    for (int i = 0; i < n; i++) {
+					        for (int j = m; j >= 0; j--) {
+					            if (j >= A[i] && dp[j - A[i]]) {
+					                dp[j] = true;
+					            }
+					        }
+					    }
+					    
+					    for (int i = m; i >= 0; i--) {
+					        if (dp[i]) {
+					            return i;
+					        }
+					    }
+					    return 0;
+					}
+				}
+			7.2.2 Backpack Ii
+				/*
+				    Backpack II
+
+				    Given n items with size Ai and value Vi, and a backpack with size m. What's the maximum value can you put into the backpack?
+
+				    Example
+				    Given 4 items with size [2, 3, 5, 7] and value [1, 5, 2, 4], and a backpack with size 10. The maximum value is 9.
+
+				    Note
+				    You cannot divide item into small pieces and the total size of items you choose should smaller or equal to m.
+
+				    Challenge
+				    O(n x m) memory is acceptable, can you do it in O(m) memory?
+				 */
+				public class Solution {
+				    /**
+				     * @param m: An integer m denotes the size of a backpack
+				     * @param A & V: Given n items with size A[i] and value V[i]
+				     * @return: The maximum value
+				     */
+				    public int backPackII(int m, int[] A, int V[]) {
+				        // write your code here
+				        int n = A.length;
+				        int[][] dp = new int[n + 1][m + 1];
+				        
+				        for (int i = 0; i <= n; i++) {
+				            for (int j = 0; j <= m; j++) {
+				                if (i == 0 || j == 0) {
+				                    dp[i][j] = 0;
+				                } else {
+				                    if (A[i - 1] <= j) {
+				                        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + V[i - 1]);
+				                    } else {
+				                        dp[i][j] = dp[i - 1][j];
+				                    }
+				                }
+				            }
+				        }
+				        return dp[n][m];
 				    }
 				}
 
