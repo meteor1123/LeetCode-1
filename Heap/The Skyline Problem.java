@@ -116,8 +116,8 @@ public class Solution {
             } else {
                 pq.remove(h[1]);//假如遇到右边界点，将该范围的高度出栈
             }
-            int curHeight = pq.peek();//pq这里是max heap， 如果上面进栈点的高度是大于之前的pre，
-                                    //或者最高的高度点已经出栈，则会出现preHeight != curHeight的情况，这时候我们需要更新新的高度范围，h[0](遍历到的新高度范围起点)，curHeight（新高度）
+            int curHeight = pq.peek();//pq这里是max heap， 如果上面进栈点的高度是大于之前的pre，或者最高的高度点已经出栈，则会出现preHeight != curHeight的情况，
+                                      //这时候我们需要更新新的高度范围，h[0](遍历到的新高度范围起点)，curHeight（新高度）
             if (preHeight != curHeight) {
                 res.add(new int[]{h[0], curHeight});
                 preHeight = curHeight;
