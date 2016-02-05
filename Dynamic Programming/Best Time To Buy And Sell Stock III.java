@@ -19,6 +19,38 @@
 	4. 一次划分的最大利益为：Profit[i] = MaxProfit(区间[0,i]) + MaxProfit(区间[i,len-1]);
 	5. 最终的最大利润为：MaxProfit(Profit[0], Profit[1], Profit[2], ... , Profit[len-1])。
 */
+
+
+//Solution1:  prefer
+public class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+        int m = prices.length;
+        int[] left = new int[m];
+        int[] right = new int[m];
+        int minBuy = prices[0];
+        int profit = 0;
+        //维护一个最小买入价
+        for (int i = 1; i < m; i++) {
+            left[i] = Math.max(left[i - 1], prices[i] - minBuy);
+            minBuy = Math.min(minBuy, prices[i]);
+        }
+        int maxSell = prices[m - 1];
+        //维护一个最大卖价
+        for (int i = m - 2; i >= 0; i--) {
+            right[i] = Math.max(right[i + 1], maxSell - prices[i]);
+            maxSell = Math.max(maxSell, prices[i]);
+        }
+        for (int i = 0; i < m - 1; i++) {
+            profit = Math.max(profit, left[i] + right[i]);
+        }
+        return profit;
+    }
+}
+
+//Solution2:
 public class Solution {
     public int maxProfit(int[] prices) { 
 		if (prices.length <= 1)
@@ -49,4 +81,20 @@ public class Solution {
 			maxProfit = left[i] + right[i] > maxProfit ? left[i] + right[i] : maxProfit;
 		return maxProfit;	
 	}
+}
+
+//Solution3: space:O(1)
+public int maxProfit(int[] prices) {
+    int oneBuy = Integer.MIN_VALUE;
+    int oneBuyOneSell = 0;
+    int twoBuy = Integer.MIN_VALUE;
+    int twoBuyTwoSell = 0;
+    for(int i = 0; i < prices.length; i++){
+        oneBuy = Math.max(oneBuy, -prices[i]);//we set prices to negative, so the calculation of profit will be convenient
+        oneBuyOneSell = Math.max(oneBuyOneSell, prices[i] + oneBuy);
+        twoBuy = Math.max(twoBuy, oneBuyOneSell - prices[i]);//we can buy the second only after first is sold
+        twoBuyTwoSell = Math.max(twoBuyTwoSell, twoBuy + prices[i]);
+    }
+
+    return Math.max(oneBuyOneSell, twoBuyTwoSell);
 }

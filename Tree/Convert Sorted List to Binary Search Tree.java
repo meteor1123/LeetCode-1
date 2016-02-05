@@ -4,6 +4,7 @@
 	convert it to a height balanced BST.
 */
 
+//Prefer
 public class Solution {
 	//solution3 小丸子，最容易理解
 	static ListNode h;
@@ -35,6 +36,12 @@ public class Solution {
         root.right = right;
         return root;
     }
+
+
+
+
+
+    
 	//static ListNode head;
 	public TreeNode sortedListToBST(ListNode head) {
 		//this.head = head;

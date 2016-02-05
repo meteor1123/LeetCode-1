@@ -14,9 +14,9 @@
 
 public class Solution {
     public boolean canWin(String s) {
-        if (s == null || s.length() < 2) {
-            return false;
-        }
+        // if (s == null || s.length() < 2) {
+        //     return false;
+        // }
         for (int i = 0; i < s.length(); i++) {
             if (s.startsWith("++", i)) {
             	//按照每一段 符合的 “++”，替换为“--”以后，

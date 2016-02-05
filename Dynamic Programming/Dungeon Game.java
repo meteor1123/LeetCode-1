@@ -32,8 +32,8 @@
     动规方程：如果当前位置魔力正且大于等于右边/下边需要的魔力，则该处不需要额外的魔力，否则，勇士到达该处时需有一定的魔力来满足该处和右边/下边需要的魔力。
 */
 
+//Solution 1
 public class Solution {
-    //Solution 1
     public int calculateMinimumHP(int[][] dungeon) {
     	if (dungeon == null || dungeon.length == 0)
     		return 0;

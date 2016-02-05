@@ -18,11 +18,12 @@ public class Solution {
         List<String> res = new ArrayList<>();
         //通过判断pre 和 after的关系，检查mssing的 rang
         int pre = lower - 1;
+        int after = 0;
         for (int i = 0; i <= nums.length; i++) {
             if (i == nums.length) {
-                int after = upper + 1;
+                after = upper + 1;
             } else {
-                int after = nums[i];
+                after = nums[i];
             }
             //pre + 1 = after, 则没有缺失， 如果 pre + 2 = after，则只缺失1个, pre + 1
             if (pre + 2 == after) {

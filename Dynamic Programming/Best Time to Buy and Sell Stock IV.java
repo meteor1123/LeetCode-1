@@ -32,11 +32,13 @@ public class Solution {
             }
             return maxPro;
         }
-    
+      
         int[][] dp = new int[k + 1][n];
         for (int i = 1; i <= k; i++) {
             int localMax = dp[i - 1][0] - prices[0];
             for (int j = 1; j < n; j++) {
+                //localMax means the maximum profit of just doing at most i-1 transactions, 
+                //using at most first j-1 prices, and buying the stock at price[j]  this is used for the next loop. 
                 dp[i][j] = Math.max(dp[i][j - 1],  prices[j] + localMax);
                 localMax = Math.max(localMax, dp[i - 1][j] - prices[j]);
             }
@@ -74,7 +76,7 @@ public int maxProfit(int k, int[] prices) {
         }
         return profit;
     }
-
+}
 
 /*
 	The basic idea is to create two tables. hold and unhold.

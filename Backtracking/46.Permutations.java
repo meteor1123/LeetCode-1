@@ -96,10 +96,10 @@ public class Solution {
             //下一层要放入的数字4 可以放在下标0， 1， 2， 3
             for (int j = 0; j <= i; j++) {//遍历插入位置
                 //新加入的数字 组成的新list，放入新res
-                for (List<Integer> l : res) {//遍历res里的 list，取出来插入
-                    List<Integer> new_l = new ArrayList<>(l);//这样是copy的用法，如果直接把new_l = l,将会导致错误
-                    new_l.add(j, nums[i]);
-                    tempRes.add(new_l);
+                for (List<Integer> list : res) {//遍历res里的 list，取出来插入
+                    List<Integer> newList = new ArrayList<>(list);//这样是copy的用法，如果直接把newList = list,将会导致错误
+                    newList.add(j, nums[i]);
+                    tempRes.add(newList);
                 }
             }
             res = tempRes;

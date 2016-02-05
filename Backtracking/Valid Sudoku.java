@@ -15,21 +15,17 @@ public class Solution {
 	//no use hash
     public boolean isValidSudoku(char[][] board) {
         if (board == null || board.length == 0) {
-            return false;
+            return true;
         }
-        return dfs(board);
-    }
-    public boolean dfs(char[][] board) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-               if (board[i][j] != '.') {
-                   if (!isValid(board, i, j, board[i][j])){
-                       return false;
-                   }
-               }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] != '.' && !isValid(board, i, j)) {
+                    return false;
+                }
             }
         }
         return true;
+        
     }
     public boolean isValid (char[][] board, int row, int col, char c) {
     	//check whole row

@@ -5,7 +5,7 @@
 	Note: You can only move either down or right at any point in time.
 */
 
-
+//Solution1:
 public class Solution {
 	//two dimension dp
 	 public int minPathSum(int[][] grid) {
@@ -30,7 +30,10 @@ public class Solution {
 	 	}
 	 	return dp[m - 1][n - 1];
 	 }
+}
 
+//Solution2
+public class Solution {
 	 //one dimension dp
 	public int minPathSum(int[][] grid) {
 	    if(grid == null || grid.length==0 || grid[0].length==0)
@@ -52,6 +55,8 @@ public class Solution {
 	}
 
 
+//Solution3: prefer
+public class Solution {
 	//Prefer one dimension
 	public int minPathSum(int[][] grid) {
         if (grid == null || grid.length == 0) {

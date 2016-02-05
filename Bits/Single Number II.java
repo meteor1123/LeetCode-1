@@ -22,7 +22,7 @@ public class Solution {
 	    return result;
 	}
 
-	//Solution2
+	//Solution2: Prefer
 	/*
 		Solution: 
 			1. 核心思想，一个int有32位bit，计算每个bit上1出现的次数，因为除了一个数出现一次，其他所有数都出现3次
@@ -46,9 +46,9 @@ public class Solution {
                 bits[i] += ((A[j] >> i) & 1); //把输入数字的第i位加起来。这里的1是按位与， 只有第1位才有1！
                 //and plus the previous sum of i th bit position, 
                 //if divide three and the remainder equals 0, means, has 3 or 3's  multiple bits,
-                bits[i] %= 3; //然后求它们除以3的余数。  
+                  
             }
-
+			bits[i] %= 3; //然后求它们除以3的余数。
             //after every bit position's traversal, we use or operation to save the i th bits position's value
             //and use left shift to stroe the value.
             result |= (bits[i] << i);//把二进制表示的结果转化为十进制表示的结果  

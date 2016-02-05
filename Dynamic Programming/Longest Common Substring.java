@@ -21,19 +21,15 @@
 public class Solution {
 	public int longestCommonSubstring(String A, String B) {
 		int[][] dp = new int[A.length() + 1][B.length() + 1];
-		int result = 0;
+		int res = 0;
 		for (int i = 0; i <= A.length(); i++) {
 			for (int j = 0; j <= B.length(); j++) {
-				if (i == 0 || j == 0) {
-					res[i][j] = 0;
-					continue;
-				}
 				if (A.charAt(i - 1) != B.charAt(j - 1)) {
-					dp[i][j] = 0;
+					dp[i][j] = 0;//可以省略
 				} else {
 					dp[i][j] = dp[i - 1][j - 1] + 1;
 				}
-				result = Math.max(result, res[i][j]);
+				res = Math.max(result, res[i][j]);
 			}
 		}
 		return result;

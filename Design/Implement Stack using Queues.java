@@ -46,3 +46,46 @@ class MyStack {
         return queue.isEmpty();
     }
 }
+
+//Solution2: implement Stack by using ListNode, no api
+class MyStack {
+    private ListNode head = null;
+    public void push(int x) {
+        ListNode newNode = new ListNode(x);
+        if (head == null) {
+            head = newNode;
+        } else {
+            head.next = newNode;
+            newNode.pre = head;
+            head = newNode;
+        }
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        ListNode node = head;
+        if (head != null) {
+            head.next = null;
+            head = head.pre;
+        }
+    }
+
+    // Get the top element.
+    public int top() {
+        return head.val;
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return head == null;
+    }
+}
+
+class ListNode {
+    int val;
+    ListNode pre;
+    ListNode next;
+    public ListNode(int val) {
+        this.val = val;
+    }
+}

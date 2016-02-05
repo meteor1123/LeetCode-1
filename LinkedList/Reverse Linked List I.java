@@ -23,14 +23,14 @@ public class Solution {
     //Iterative
     public ListNode reverse(ListNode head) {
 
-        ListNode pre = null;
+        ListNode newhead = null;
         while (head != null) {
             ListNode next = head.next;
-            head.next = pre;
-            pre = head;
+            head.next = newhead;
+            newhead = head;
             head = next;
         }
-        return pre;
+        return newhead;
     }
 
     //Recursive

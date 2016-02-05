@@ -28,7 +28,8 @@ public class Solution {
         for (int i = 0; i < words.length; i++) {
             preprocess[i] = 0;
             for (int j = 0; j < words[i].length(); j++) {
-                //核心思想，因为一个单词就26个字母，我们将一个单词出现的字母将它出现的bit位置1。下次只需要比较两个字母的bit &是否等于0，如果等于0就是没有重叠的字符
+                //核心思想，因为一个单词就26个字母，我们将一个单词出现的字母将它出现的bit位置1。
+                //下次只需要比较两个字母的bit &是否等于0，如果等于0就是没有重叠的字符
                 preprocess[i] |= (1 << words[i].charAt(j) - 'a');
             }
         }

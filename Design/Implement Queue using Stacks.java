@@ -17,6 +17,7 @@
     Each element only ever gets moved like that once, though, and only after we already spent time pushing it, 
     so the overall amortized cost for each operation is O(1).
 */
+//Solution1: two stack implement
 class MyQueue {
     Stack<Integer> input = new Stack();
     Stack<Integer> output = new Stack();
@@ -43,5 +44,51 @@ class MyQueue {
     // Return whether the queue is empty.
     public boolean empty() {
         return input.isEmpty() && output.isEmpty();
+    }
+}
+
+//Solution2:
+class MyQueue {
+    // Push element x to the back of queue.
+    ListNode head;
+    ListNode end;
+    public void push(int x) {
+        if (head == null) {
+            head = new ListNode(x);
+            end = head;
+        } else {
+            ListNode newNode = new ListNode(x);
+            newNode.next = end;
+            end.pre = newNode;
+            end = newNode;
+        }
+    }
+
+    // Removes the element from in front of queue.
+    public void pop() {
+        if (head != null) {
+            ListNode temp = head.pre;
+            head = null;
+            head = temp;
+        } 
+    }
+
+    // Get the front element.
+    public int peek() {
+        return head.val;
+    }
+
+    // Return whether the queue is empty.
+    public boolean empty() {
+        return head == null;
+    }
+}
+
+class ListNode {
+    int val;
+    ListNode pre;
+    ListNode next;
+    public ListNode(int val) {
+        this.val = val;
     }
 }

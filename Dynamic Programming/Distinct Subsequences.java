@@ -50,7 +50,7 @@ public class Solution {
         for (int i = 1; i <= S.length(); i++) {
             for (int j = 1; j <= T.length(); j++) {
                 if (s.charAt(i - 1) == t.charAt(j - 1)) {//means this character can be retained or drop
-                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];//so the convert amount equals retain the character plus do not retain this character.
+                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1];//so the convert amount equals retain the character plus do not retain this character.
                 } else {
                     dp[i][j] = dp[i - 1][j];//no matter the char i and char j equals or not, at least has dp[i - 1][j]
                 }

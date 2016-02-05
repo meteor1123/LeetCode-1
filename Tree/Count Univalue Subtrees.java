@@ -13,8 +13,14 @@
 	           / \   \
 	          5   5   5
 	return 4.
+
 */
 
+/*
+    就是对一个树找子树值和root相同的个数, 对于例子中 三个叶节点5都算, 另外一个是root的右儿子 
+    因为它left child为空 right child值跟本身相等
+
+ */
 
 //Solution1
 public class Solution {
