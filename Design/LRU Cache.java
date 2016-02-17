@@ -212,7 +212,7 @@ public class LRUCache {
     private int capacity;
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        map = new LinkedHashMap<Integer, Integer>(capacity + 1);
+        map = new LinkedHashMap<Integer, Integer>();
     }
     
     public int get(int key) {
@@ -229,8 +229,7 @@ public class LRUCache {
         map.remove(key);
         map.put(key, value);
         if (map.size() > capacity) {
-            map.remove(map.entrySet().iterator().next().getKey());
-        }
+            map.remove(map.keySet().iterator().next());
         }
     }
 }

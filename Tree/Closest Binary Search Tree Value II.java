@@ -71,6 +71,7 @@ public class Solution {
 
 }
 
+//O(nlogk)
 public class Solution {
 	//用最小堆，首先用任意的遍历算法去遍历树，再将最小堆的堆顶依次poll加入res list
 	public List<Integer> closestKValues(TreeNode root, double target, int k) {

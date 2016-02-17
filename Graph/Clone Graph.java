@@ -48,9 +48,9 @@ public class Solution {
         //new a hashmap to store the old graph node and copy graph node, avoid the duplicate enqueue
         HashMap<UndirectedGraphNode, UndirectedGraphNode> hm = new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
         //clone graph's head node
-        UndirectedGraphNode head = new UndirectedGraphNode(node.label);
+        UndirectedGraphNode newhead = new UndirectedGraphNode(node.label);
         LinkedList<UndirectedGraphNode> queue = new LinkedList<UndirectedGraphNode>();
-        hm.put(node, head);
+        hm.put(node, newhead);
         queue.offer(node);
         while (!queue.isEmpty()) {
             UndirectedGraphNode curNode = queue.poll();
@@ -67,7 +67,7 @@ public class Solution {
                 hm.get(curNode).neighbors.add(hm.get(oldneighbor));
             }
         }
-        return head;
+        return newhead;
     }
 
     //DFS

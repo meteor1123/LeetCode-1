@@ -623,10 +623,11 @@
 			        return globalMax;
 			    }
 			}
-		2.3.1
+		2.3.1 Continuous Subarray Sum
 			/*
 				Continuous Subarray Sum
-				Given an integer array, find a continuous subarray where the sum of numbers is the biggest. Your code should return the index of the first number and the index of the last number. (If their are duplicate answer, return anyone)
+				Given an integer array, find a continuous subarray where the sum of numbers is the biggest.
+				 Your code should return the index of the first number and the index of the last number. (If their are duplicate answer, return anyone)
 
 				Example
 				Give [-3, 1, 3, -3, 4], return [1,4].
@@ -853,6 +854,50 @@
 			            }
 			        }
 			        return celebrity;
+			    }
+			}
+
+		2.9 Increasing Triplet Subsequence
+			/*
+				Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
+
+				Formally the function should:
+				Return true if there exists i, j, k 
+				such that arr[i] < arr[j] < arr[k] given 0 ≤ i < j < k ≤ n-1 else return false.
+				Your algorithm should run in O(n) time complexity and O(1) space complexity.
+
+				Examples:
+				Given [1, 2, 3, 4, 5],
+				return true.
+
+				Given [5, 4, 3, 2, 1],
+				return false.
+			 */
+			/*
+				核心思想：
+					用三个pointer，min就是第一个，max是第二个，i是第三个，
+					如果当前的i比max还大，那就是已经找到满足符合三个条件的数返回true，
+					每一次只要nums[i] < min, 就jiang
+			 */
+			public class Solution {
+			    public boolean increasingTriplet(int[] nums) {
+			        if (nums == null || nums.length < 3) {
+			            return false;
+			        }
+			        int min = Integer.MAX_VALUE; 
+			        int max = Integer.MAX_VALUE;
+			        int i = 0;
+			        while (i < nums.length) {
+			            if (nums[i] > max) {
+			                return true;
+			            } else if (nums[i] > min) {
+			                max = nums[i];
+			            } else {
+			                min = nums[i];
+			            }
+			            i++;
+			        }
+			        return false;
 			    }
 			}
 

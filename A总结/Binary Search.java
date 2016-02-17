@@ -301,21 +301,24 @@
 			    If num[i-1] > num[i] < num[i+1], then both sides have peak (n is num.length)
 			    Here is the code
 			*/
-				public class Solution {
-				    public int findPeakElement(int[] nums) {
-				        int start = 0;
-				        int end = nums.length - 1;
-				        while (start + 1 < end) {
-				            int mid = start + (end - start) / 2;
-				            if (nums[mid] > nums[mid - 1]) {
-				                start = mid;
-				            } else if (nums[mid] < nums[mid - 1]){
-				                end = mid - 1;
-				            }
-				        }
-				        return nums[start] > nums[end] ? start : end;
-				    }
-				}
+			public class Solution {
+			    public int findPeakElement(int[] nums) {
+			        if (nums == null || nums.length == 0) {
+			            return 0;
+			        }
+			        int start = 0;
+			        int end = nums.length - 1;
+			        while (start + 1 < end) {
+			            int mid = start + (end - start) / 2;
+			            if (nums[mid] > nums[mid - 1]) {
+			                start = mid;
+			            } else {
+			                end = mid;
+			            }
+			        }
+			        return nums[start] > nums[end] ? start : end;
+			    }
+			}
 		1.9 Longest Increasing Subsequence
 			/*
 				Given an unsorted array of integers, find the length of longest increasing subsequence.

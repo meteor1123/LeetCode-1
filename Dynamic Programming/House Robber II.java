@@ -20,9 +20,6 @@ public class Solution {
         if (nums.length == 1){
             return nums[0];
         }
-        if (nums.length == 2) {
-            return Math.max(nums[0], nums[1]);
-        }
         int[] dp = new int[nums.length];
         //store the maximun profit
         int maxProfit = 0;

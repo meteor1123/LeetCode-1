@@ -45,3 +45,63 @@ public class Solution {
 		}
 	}
 }
+
+
+//my solution, prefer
+public class Solution {
+    public void reverseWords(char[] s) {
+        if (s == null || s.length <= 1) {
+            return;
+        }
+        reverse(s, 0, s.length - 1);
+        int start = 0;
+        for (int i = 0; i < s.length; i++) {
+            if (s[i] == ' ') {
+                reverse(s, start, i - 1);
+                start = i + 1;
+            }
+        }
+        reverse(s, start, s.length - 1);
+    }
+    
+    public void reverse(char[] arr, int i, int j) {
+        while (i < j) {
+            swap(arr, i++, j--);
+        }
+    }
+    
+    public void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+
+//Solution3:
+public class Solution {
+	public class Solution {
+	    public void reverseWords(char[] s) {
+	        reverse(s, 0, s.length - 1);
+	        for (int i = 0, j = 0; j < s.length; j++) {
+	            if (s[j] == ' ') {
+	                reverse(s, i, j - 1);
+	                i = j + 1;
+	            }
+	            if (j == s.length - 1) {
+	                reverse(s, i, j);
+	            }
+	        }
+	    }
+	    public void reverse(char[] s, int start, int end) {
+	        while (start < end) {
+	            swap(s, start++, end--);
+	        }
+	    }
+	    public void swap(char[] s, int i, int j) {
+	        char temp = s[i];
+	        s[i] = s[j];
+	        s[j] = temp;
+	    }
+	}
+}

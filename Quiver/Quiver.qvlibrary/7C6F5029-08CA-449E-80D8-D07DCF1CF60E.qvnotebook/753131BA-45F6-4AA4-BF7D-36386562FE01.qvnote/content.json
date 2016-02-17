@@ -1,0 +1,9 @@
+{
+  "title": "HTML interviews problems",
+  "cells": [
+    {
+      "type": "text",
+      "data": "1. New element in HTML5,&nbsp;<div>2. Web Storage, difference between sessionStorage and localStorage</div><div><span style=\"color: rgb(85, 85, 85); font-family: Tahoma, 'Microsoft Yahei', STXihei, Simsun; font-size: 14px; background-color: rgb(255, 255, 255);\">他们的存储形式是什么啊（string!!!）怎么存array啊 obj啊（JSON.stringify, JSON.parse）还有个XX问我知不知道polling啊 long polling啊。当时真不知道。。。。后来知道了。</span><br></div><div><span style=\"color: rgb(85, 85, 85); font-family: Tahoma, 'Microsoft Yahei', STXihei, Simsun; font-size: 14px; background-color: rgb(255, 255, 255);\">3. doctype</span></div><div><span style=\"color: rgb(85, 85, 85); font-family: Tahoma, 'Microsoft Yahei', STXihei, Simsun; font-size: 14px; background-color: rgb(255, 255, 255);\">4. 能不能用 nest &lt;a&gt;</span></div><div><span style=\"color: rgb(85, 85, 85); font-family: Tahoma, 'Microsoft Yahei', STXihei, Simsun; font-size: 14px; background-color: rgb(255, 255, 255);\">5. data attribute</span></div>"
+    }
+  ]
+}

@@ -25,28 +25,32 @@
 			public class HashMap {
 			      private final static int TABLE_SIZE = 128;
 			 
-			      HashEntry[] table;
+			      private HashEntry[] table;
 			 
-			      HashMap() {
+			      public HashMap() {
 			            table = new HashEntry[TABLE_SIZE];
-			            for (int i = 0; i < TABLE_SIZE; i++)
+			            for (int i = 0; i < TABLE_SIZE; i++) {
 			                  table[i] = null;
+			            }
 			      }
 			 
 			      public int get(int key) {
 			            int hash = (key % TABLE_SIZE);
-			            while (table[hash] != null && table[hash].getKey() != key)
+			            while (table[hash] != null && table[hash].getKey() != key) {
 			                  hash = (hash + 1) % TABLE_SIZE;
-			            if (table[hash] == null)
+			            }
+			            if (table[hash] == null) {
 			                  return -1;
-			            else
+			            } else {
 			                  return table[hash].getValue();
+			            }
 			      }
 			 
 			      public void put(int key, int value) {
 			            int hash = (key % TABLE_SIZE);
-			            while (table[hash] != null && table[hash].getKey() != key)
+			            while (table[hash] != null && table[hash].getKey() != key) {
 			                  hash = (hash + 1) % TABLE_SIZE;
+			            }
 			            table[hash] = new HashEntry(key, value);
 			      }
 			}
@@ -924,6 +928,205 @@
 
 
 
+
+
+5.1 HashTable Implement
+	5.1 Chainning
+		public class LinkedHashEntry {
+		      private int key;
+		      private int value;
+		      private LinkedHashEntry next;
+		 
+		      LinkedHashEntry(int key, int value) {
+		            this.key = key;
+		            this.value = value;
+		            this.next = null;
+		      }
+		 
+		      public int getValue() {
+		            return value;
+		      }
+		 
+		      public void setValue(int value) {
+		            this.value = value;
+		      }
+		 
+		      public int getKey() {
+		            return key;
+		      }
+		 
+		      public LinkedHashEntry getNext() {
+		            return next;
+		      }
+		 
+		      public void setNext(LinkedHashEntry next) {
+		            this.next = next;
+		      }
+		}
+		 
+		public class HashMap {
+		      private final static int TABLE_SIZE = 128;
+		 
+		      LinkedHashEntry[] table;
+		 
+		      HashMap() {
+		            table = new LinkedHashEntry[TABLE_SIZE];
+		            for (int i = 0; i < TABLE_SIZE; i++)
+		                  table[i] = null;
+		      }
+		 
+		      public int get(int key) {
+		            int hash = (key % TABLE_SIZE);
+		            if (table[hash] == null)
+		                  return -1;
+		            else {
+		                  LinkedHashEntry entry = table[hash];
+		                  while (entry != null && entry.getKey() != key)
+		                        entry = entry.getNext();
+		                  if (entry == null)
+		                        return -1;
+		                  else
+		                        return entry.getValue();
+		            }
+		      }
+		 
+		      public void put(int key, int value) {
+		            int hash = (key % TABLE_SIZE);
+		            if (table[hash] == null)
+		                  table[hash] = new LinkedHashEntry(key, value);
+		            else {
+		                  LinkedHashEntry entry = table[hash];
+		                  while (entry.getNext() != null && entry.getKey() != key)
+		                        entry = entry.getNext();
+		                  if (entry.getKey() == key)
+		                        entry.setValue(value);
+		                  else
+		                        entry.setNext(new LinkedHashEntry(key, value));
+		            }
+		      }
+		 
+		      public void remove(int key) {
+		            int hash = (key % TABLE_SIZE);
+		            if (table[hash] != null) {
+		                  LinkedHashEntry prevEntry = null;
+		                  LinkedHashEntry entry = table[hash];
+		                  while (entry.getNext() != null && entry.getKey() != key) {
+		                        prevEntry = entry;
+		                        entry = entry.getNext();
+		                  }
+		                  if (entry.getKey() == key) {
+		                        if (prevEntry == null)
+		                             table[hash] = entry.getNext();
+		                        else
+		                             prevEntry.setNext(entry.getNext());
+		                  }
+		            }
+		      }
+		}
+
+
+	5.2 Open Addressing
+		public class HashEntry {
+		      private int key;
+		      private int value;
+		 
+		      HashEntry(int key, int value) {
+		            this.key = key;
+		            this.value = value;
+		      }
+		 
+		      public int getValue() {
+		            return value;
+		      }
+		 
+		      public void setValue(int value) {
+		            this.value = value;
+		      }
+		 
+		      public int getKey() {
+		            return key;
+		      }
+		}
+		 
+		public class DeletedEntry extends HashEntry {
+		      private static DeletedEntry entry = null;
+		 
+		      private DeletedEntry() {
+		            super(-1, -1);
+		      }
+		 
+		      public static DeletedEntry getUniqueDeletedEntry() {
+		            if (entry == null)
+		                  entry = new DeletedEntry();
+		            return entry;
+		      }
+		}
+		 
+		public class HashMap {
+		      private final static int TABLE_SIZE = 128;
+		 
+		      HashEntry[] table;
+		 
+		      HashMap() {
+		            table = new HashEntry[TABLE_SIZE];
+		            for (int i = 0; i < TABLE_SIZE; i++)
+		                  table[i] = null;
+		      }
+		 
+		      public int get(int key) {
+		            int hash = (key % TABLE_SIZE);
+		            int initialHash = -1;
+		            while (hash != initialHash
+		                        && (table[hash] == DeletedEntry.getUniqueDeletedEntry() || table[hash] != null
+		                                   && table[hash].getKey() != key)) {
+		                  if (initialHash == -1)
+		                        initialHash = hash;
+		                  hash = (hash + 1) % TABLE_SIZE;
+		            }
+		            if (table[hash] == null || hash == initialHash)
+		                  return -1;
+		            else
+		                  return table[hash].getValue();
+		      }
+		 
+		      public void put(int key, int value) {
+		            int hash = (key % TABLE_SIZE);
+		            int initialHash = -1;
+		            int indexOfDeletedEntry = -1;
+		            while (hash != initialHash
+		                        && (table[hash] == DeletedEntry.getUniqueDeletedEntry() || table[hash] != null
+		                                   && table[hash].getKey() != key)) {
+		                  if (initialHash == -1)
+		                        initialHash = hash;
+		                  if (table[hash] == DeletedEntry.getUniqueDeletedEntry())
+		                        indexOfDeletedEntry = hash;
+		                  hash = (hash + 1) % TABLE_SIZE;
+		            }
+		            if ((table[hash] == null || hash == initialHash)
+		                        && indexOfDeletedEntry != -1)
+		                  table[indexOfDeletedEntry] = new HashEntry(key, value);
+		            else if (initialHash != hash)
+		                  if (table[hash] != DeletedEntry.getUniqueDeletedEntry()
+		                             && table[hash] != null && table[hash].getKey() == key)
+		                        table[hash].setValue(value);
+		                  else
+		                        table[hash] = new HashEntry(key, value);
+		      }
+		 
+		      public void remove(int key) {
+		            int hash = (key % TABLE_SIZE);
+		            int initialHash = -1;
+		            while (hash != initialHash
+		                        && (table[hash] == DeletedEntry.getUniqueDeletedEntry() || table[hash] != null
+		                                   && table[hash].getKey() != key)) {
+		                  if (initialHash == -1)
+		                        initialHash = hash;
+		                  hash = (hash + 1) % TABLE_SIZE;
+		            }
+		            if (hash != initialHash && table[hash] != null)
+		                  table[hash] = DeletedEntry.getUniqueDeletedEntry();
+		      }
+		}
 
 
 

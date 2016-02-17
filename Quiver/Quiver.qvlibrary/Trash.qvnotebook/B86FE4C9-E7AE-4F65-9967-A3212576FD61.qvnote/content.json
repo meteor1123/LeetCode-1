@@ -1,0 +1,13 @@
+{
+  "title": "Referral Letter",
+  "cells": [
+    {
+      "type": "text",
+      "data": "<h2 style=\"color: rgb(0, 0, 0); font-family: Helvetica; font-size: 13px;\"><br></h2>"
+    },
+    {
+      "type": "text",
+      "data": ""
+    }
+  ]
+}
