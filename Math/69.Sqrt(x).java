@@ -5,6 +5,7 @@
 */
 
 
+//Solution1
 public class Solution {
 	/*    
         因为是求数x（x>=0) 的平方根， 因此，结果一定是小于等于x且大于等于0，所以用二分查找法肯定能搜到结果。
@@ -35,3 +36,26 @@ public class Solution {
     }
 }
 
+
+//Solution2 prefer
+public class Solution {
+    public int mySqrt(int x) {
+         if (x == 0) {
+            return 0;
+         }
+        int left = 1;
+        int right = Integer.MAX_VALUE;
+        while (true) {
+            int mid = left + (right - left) / 2;
+            if (mid > (x / mid)) {
+                right = mid - 1;
+            } else {
+                if (mid + 1 > x / (mid + 1)) {
+                    return mid;
+                }
+                left = mid + 1;
+            }
+        }
+    }
+   
+}

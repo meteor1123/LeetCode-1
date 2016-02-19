@@ -56,7 +56,7 @@ public class Solution {
         if (!s.equals("0") && s.startsWith("0")) {
             return -1;
         }
-        long res = Long.parseLong(s);
+        long res = Long.valueOf(s);
         return res;
     }
 }

@@ -60,6 +60,10 @@ public class Solution {
     }
 
 	//DFS : find cycle by using dfs
+    //visited array has 3 different number,
+    //0 : not visited
+    //1 : visiting
+    //2 : visited
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         //construct graph matrix, this is a adjecnt matrix of directed graph
         // first index is outgoing vertex, second index is incoming vertex
@@ -68,12 +72,8 @@ public class Solution {
         // }
         int[][] directedGraph = new int[numCourses][numCourses];
         for (int i = 0; i < prerequisites.length; i++) {
-            directedGraph[ prerequisites[i][1] ][ prerequisites[i][0] ] = 1; 
+            directedGraph[prerequisites[i][1]][prerequisites[i][0]] = 1; 
         }
-        //visited array has 3 different number,
-        //0 : not visited
-        //1 : visiting
-        //2 : visited
         int[] visited = new int[numCourses];
         for (int node = 0; node < numCourses; node++) {
             if (visited[node] == 0) {
