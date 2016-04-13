@@ -24,7 +24,7 @@
 	Tags: Segment Tree Binary Indexed Tree
 */
 
-
+//Solution1
 public class NumMatrix {
     private int[][] colSums;
     private int[][] matrix;
@@ -60,3 +60,70 @@ public class NumMatrix {
         return res;
     }
 }
+
+//Solution2
+public class NumMatrix {
+    int m, n;
+    int[][] nums;
+    int[][] BIT;
+    public NumMatrix(int[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            return;
+        }
+        m = matrix.length;
+        n = matrix[0].length;
+        nums = new int[m][n];
+        BIT = new int[m + 1][n + 1];
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                init(i, j, matrix[i][j]);
+                nums[i][j] = matrix[i][j];
+            }
+        }
+    }
+
+    public void init(int i, int j, int val) {
+        i++;
+        j++;
+        while (i <= m) {
+            int k = j;
+            while (k <= n) {
+                BIT[i][k] += val;
+                k += k & (-k);
+            }
+            i += i & (-i);
+        }
+    }
+    public void update(int i, int j, int val) {
+        int diff = val - nums[i][j];
+        nums[i][j] = val;
+        init(i, j, diff);
+    }
+    
+    public int getSum(int i, int j) {
+        int sum = 0;
+        i++;
+        j++;
+        while (i > 0) {
+            int k = j;
+            while (k > 0) {
+                sum += BIT[i][k];
+                k -= k & (-k);
+            }
+            i -= i & (-i);
+        }
+        return sum;
+    }
+    
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        return getSum(row2, col2) - getSum(row1 - 1, col2) - getSum(row2, col1 - 1) + getSum(row1 - 1, col1 - 1);
+    }
+}
+
+
+// Your NumMatrix object will be instantiated and called as such:
+// NumMatrix numMatrix = new NumMatrix(matrix);
+// numMatrix.sumRegion(0, 1, 2, 3);
+// numMatrix.update(1, 1, 10);
+// numMatrix.sumRegion(1, 2, 3, 4);

@@ -52,8 +52,10 @@ public class Solution {
         res.add(new Interval(start, end));
         return res;
     }
+}
 
-    //Solution2
+//Solution2
+public class Solution {
     public ArrayList<Interval> merge(ArrayList<Interval> intervals) {
         ArrayList<Interval> res = new ArrayList<Interval>();
         if (intervals == null || intervals.size() <= 1)
@@ -74,6 +76,33 @@ public class Solution {
                 res.get(res.size() - 1).end = Math.max(res.get(res.size() - 1).end, intervals.get(i).end);  
             } else 
                 res.add(intervals.get(i));  
+        }
+        return res;
+    }
+}
+
+//Solution3: prefer
+public class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> res = new ArrayList<>();
+        if (intervals == null || intervals.size() == 0) {
+            return res;
+        }
+        Collections.sort(intervals, new Comparator<Interval>(){
+            @Override
+            public int compare(Interval i1, Interval i2) {
+                return i1.start - i2.start;
+            }
+        });
+        res.add(intervals.get(0));
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval pre = res.get(res.size() - 1);
+            Interval cur = intervals.get(i);
+            if (pre.end >= cur.start) {
+                pre.end = Math.max(cur.end, pre.end);
+            } else {
+                res.add(cur);
+            }
         }
         return res;
     }

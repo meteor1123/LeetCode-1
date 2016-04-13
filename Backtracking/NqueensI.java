@@ -17,6 +17,53 @@
 		]
 */
 
+//Solution0 prefer
+public class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<>();
+        if (n == 0) {
+            return res;
+        }
+        int[] matrix = new int[n];
+        dfs(res, matrix, n, 0);
+        return res;
+    }
+    
+    public void dfs(List<List<String>> res, int[] matrix, int n, int row) {
+        if (row == n) {
+            List<String> item = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < n; j++) {
+                    if (j == matrix[i]) {
+                        sb.append("Q");
+                    } else {
+                        sb.append(".");
+                    }
+                }
+                item.add(sb.toString());
+            }
+            res.add(item);
+            return ;
+        }
+        for (int i = 0; i < n; i++) {
+            matrix[row] = i;
+            if (isValid(matrix, row, matrix[row])) {
+                dfs(res, matrix, n, row + 1);
+            }
+        }
+    }
+    
+    public boolean isValid(int[] matrix, int row, int colValue) {
+        for (int i = 0; i < row; i++) {
+            if (matrix[i] == matrix[row] || Math.abs(i - row) == Math.abs(matrix[i] - colValue) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
 
 public class Solution {
     public ArrayList<String[]> solveNQueens(int n) {

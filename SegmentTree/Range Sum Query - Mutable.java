@@ -92,7 +92,67 @@ public class NumArray {
     }
 }
 
-//Solution2 Binary Indexed Tree
+//Solution2 Binary Indexed Tree Prefer!
+/*
+        Using Binary Indexed Tree, we can do both tasks in O(Logn) time. 
+        The advantages of Binary Indexed Tree over Segment are, requires less space and very easy to implement..
+
+
+        How does Binary Indexed Tree work?
+
+        The idea is based on the fact that all positive integers can be represented as sum of powers of 2. 
+        For example 19 can be represented as 16 + 2 + 1. Every node of BI Tree stores sum of n elements where n is a power of 2. 
+        For example, in the above first diagram for getSum(), sum of first 12 elements can be obtained by sum of last 4 elements (from 9 to 12) plus sum of 8 elements (from 1 to 8). 
+        The number of set bits in binary representation of a number n is O(Logn). Therefore, we traverse at-most O(Logn) nodes in both getSum() and update() operations. 
+        Time complexity of construction is O(nLogn) as it calls update() for all n elements.
+
+        https://leetcode.com/discuss/74222/java-using-binary-indexed-tree-with-clear-explanation
+ */
+public class NumArray {
+    int[] nums;
+    int[] BIT;
+    int n;
+    public NumArray(int[] nums) {
+        this.nums = nums;
+        n = nums.length; 
+        BIT = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            init(i, nums[i]);
+        }
+    }
+    
+    public void init(int i, int val) {
+        i++;
+        while (i <= n) {
+            BIT[i] += val;
+            i += (i & -i); //创建的时候 不停的找右边的父节点   i & -i:返回i最右边的1的值
+        }
+    }
+
+    void update(int i, int val) {
+        int diff = val - nums[i];
+        nums[i] = val;
+        init(i, diff);
+    }
+
+    public int getSum(int i) {
+        int sum = 0;
+        i++;
+        while (i > 0) {
+            sum += BIT[i];
+            i -= (i & -i);//取sum的时候，不停的找左边的父节点
+        }
+        return sum;
+    }
+
+    public int sumRange(int i, int j) {//因为getSum(k) 时 是取从0 ~ K的和，所以 取i ~ j时，如果是getSum(j) - getSum(i)会将i的值删除，因此取i - 1
+        return getSum(j) - getSum(i - 1);
+    }
+}
+
+
+
+//Solution3 Binary Indexed Tree
 public class NumArray {
     int[] tree;
     int[] nums;

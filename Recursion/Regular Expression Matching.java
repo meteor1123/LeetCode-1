@@ -16,7 +16,7 @@
 	isMatch("aaa","aa") → false
 	isMatch("aa", "a*") → true
 	isMatch("aa", ".*") → true
-	isMatch("ab", ".*") → true
+	isMatch("ab", ".*") → true  //".*" means we can have zero or more of the '.'
 	isMatch("aab", "c*a*b") → true
 */
 

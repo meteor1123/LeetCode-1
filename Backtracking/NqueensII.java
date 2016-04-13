@@ -42,3 +42,39 @@ public class Solution {
     }
 }
 
+
+//Solution2 
+public class Solution {
+    int count;
+    public int totalNQueens(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        count = 0;
+        int[] arr = new int[n];
+        dfs(arr, 0, n);
+        return count;
+    }
+    
+    public void dfs(int[] arr, int row, int n) {
+        if (row == n) {
+            count++;
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            arr[row] = i;
+            if (isValid(arr, row)) {
+                dfs(arr, row + 1, n);
+            }
+        }
+    }
+    
+    public boolean isValid(int[] arr, int row) {
+        for (int i = 0; i < row; i++) {
+            if (arr[row] == arr[i] || Math.abs(arr[row] - arr[i]) == (row - i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

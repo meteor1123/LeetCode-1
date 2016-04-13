@@ -44,6 +44,7 @@
 	   将这个匹配的最长前后缀截取丢掉，使用其余的部分reverse(s) + s,
 	  （注意要将s的最长匹配前后缀丢掉！之后reverse，再加上s，便是shortest palindrome!)
 */
+//Solution1
 public class Solution {
 	public String shortestPalindrome(String s) {
         if (s.length() <=1 ) {
@@ -67,6 +68,7 @@ public class Solution {
 
 //传统的 next数组求法，注意这里的next[i] 并不是在这个charAt(i)上的最大匹配长度，而是i之前的子串的最长匹配
 //因此在最后的时候，需要将next[i] + 1
+//Solution2
 public class Solution {
     public String shortestPalindrome(String s) {
         if (s.length() <= 1) {
@@ -87,5 +89,23 @@ public class Solution {
         }
         
         return new StringBuilder(s.substring(next[cur.length() - 1] + 1)).reverse().toString() + s;
+    }
+}
+
+
+//Solution3
+public class Solution {
+    public String shortestPalindrome(String s) {
+        int j = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == s.charAt(j)) {
+                j += 1;
+            }
+        }
+        if (j == s.length()) {
+            return s;
+        }
+        String suffix = s.substring(j);
+        return new StringBuffer(suffix).reverse().toString() + shortestPalindrome(s.substring(0, j)) + suffix;
     }
 }

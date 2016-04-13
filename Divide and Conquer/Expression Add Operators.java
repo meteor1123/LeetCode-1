@@ -45,11 +45,11 @@ public class Solution {
     }
     
     //eval用来记录此次操作以后的总值，multed仅记录这步运算符后的值， 
-    //比如 2 + 3 * 5, eval = 2 + 3 * 5= 17, multed = 3 * 5=15
-    public void helper(List<String> res, String path, String num, int target, int index, long eval, long multed) {
+    //比如 2 + 3 * 5, sum = 2 + 3 * 5= 17, multed = 3 * 5=15
+    public void helper(List<String> res, String item, String num, int target, int index, long sum, long multed) {
         if (index == num.length()) {
-            if (target == eval) {
-                res.add(path);
+            if (target == sum) {
+                res.add(item);
             }
             return;
         }
@@ -58,14 +58,14 @@ public class Solution {
             if (i != index && num.charAt(index) == '0') {//滤掉有0开头的字符串，我们只要判断长度大于1且首字符是‘0’的字符串，将其滤去即可
                 break;
             }
-            long cur = Long.parseLong(num.substring(index, i + 1));
+            long cur = Long.valueOf(num.substring(index, i + 1));
             if (index == 0) {
-                helper(res, path + cur, num, target, i + 1, cur, cur);//处理首位数字
+                helper(res, item + cur, num, target, i + 1, cur, cur);//处理首位数字
             } else {
-                helper(res, path + "+" + cur, num, target, i + 1, eval + cur, cur);
-                helper(res, path + "-" + cur, num, target, i + 1, eval - cur, -cur);
+                helper(res, item + "+" + cur, num, target, i + 1, sum + cur, cur);
+                helper(res, item + "-" + cur, num, target, i + 1, sum - cur, -cur);
 
-                helper(res, path + "*" + cur, num, target, i + 1, eval - multed + multed * cur, multed * cur);
+                helper(res, item + "*" + cur, num, target, i + 1, sum - multed + multed * cur, multed * cur);
                 //比如 2 + 5 * 3的时候，要将原来的eval = 2 + 5 = 7 减去5， 再乘以3，
             }
         }

@@ -26,12 +26,14 @@
            so the h[top] is the smallest bottle neck height, and just mutiply the width i or i - stack.peek() - 1;
 */
 
+
+//Solution1
 public class Solution {
     public int largestRectangleArea(int[] height) {
         //the stack only store the index of height,not the value
     	Stack<Integer> stack = new Stack<Integer>();
     	int i = 0 ;
-    	int maxArea = 0;
+    	int res = 0;
         //We need to copy the array[] height,and generate a new array h[],the length is large more than 1 
     	int[] h = new int[height.length + 1];//h[height.length]存放的是人为假尾结点0，使其可以终止
     	h = Arrays.copyOf(height, height.length + 1);
@@ -45,7 +47,7 @@ public class Solution {
     		} else {
 
     			int top = stack.pop();//一遇到小的数就栈顶元素出栈
-    			maxArea = Math.max(maxArea, h[top] * (stack.isEmpty() ? i: i - stack.peek() - 1)); //peek()是已经出栈之后的前一个数的position
+    			res = Math.max(res, h[top] * (stack.isEmpty() ? i: i - stack.peek() - 1)); //peek()是已经出栈之后的前一个数的position
                 // top is the largest number's position , 
                 // h[top] is the largest number's value;
                 // h[top] * i ,only when the stack is empty
@@ -54,7 +56,34 @@ public class Solution {
                 //假如栈顶元素非空，则宽度等于 i - stack.peek() - 1
     		}
     	}
-    	return maxArea;
+    	return res;
+    }
+}
+
+//Solution2
+public class Solution {
+    public int largestRectangleArea(int[] heights) {
+        Stack<Integer> stack = new Stack<Integer>();
+        int i = 0;
+        int res = 0;
+        int len = heights.length;
+        int[] h = new int[len + 1];
+        h = Arrays.copyOf(heights, len + 1);
+        
+        while (i < h.length) {
+            if (stack.isEmpty() || h[stack.peek()] <= h[i]) {
+                stack.push(i);
+                i++;
+            } else {
+                int top = stack.pop();
+                if (stack.isEmpty()) {
+                    res = Math.max(res, h[top] * i);
+                } else {
+                    res = Math.max(res, h[top] * (i - stack.peek() - 1));
+                }
+            }
+        }
+        return res;
     }
 }
 

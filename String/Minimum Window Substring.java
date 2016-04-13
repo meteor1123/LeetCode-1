@@ -27,6 +27,44 @@
 这道题的代码也参考了code ganker的。 
 */
 
+
+//Solution1:
+public class Solution {
+    public String minWindow(String s, String t) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        int[] m = new int[256];
+        for (char c : t.toCharArray()) {
+            m[c]++;
+        }
+        int start = 0, end = 0;
+        int count = t.length();
+        int minStart = 0, minLen = Integer.MAX_VALUE;
+        while (end < s.length()) {
+            if (m[s.charAt(end)]-- > 0) {
+                count--;
+            }
+            end++;
+            while (count == 0) {
+                if (end - start < minLen) {
+                    minStart = start;
+                    minLen = end - start;
+                }
+                if (++m[s.charAt(start)] > 0) {
+                    count++;
+                }
+                start++;
+            }
+        }
+        if (minLen != Integer.MAX_VALUE) {
+            return s.substring(minStart, minStart + minLen);
+        }
+        return "";
+    }
+}
+
+//Solution2:
 public class Solution {
 	public String minWindow(String S, String T) {
         String res = "";
@@ -84,5 +122,56 @@ public class Solution {
         if (minLen > S.length())
             return "";
         return S.substring(minStart, minStart + minLen);
+    }
+}
+
+
+//Solution3
+public class Solution {
+	public String minWindow(String s, String t) {
+        String res = "";
+        if (s == null || s.length() == 0 || t == null || t.length() == 0) {
+            return res;
+        }
+        HashMap<Character, Integer> dict = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            if (!dict.containsKey(t.charAt(i))) {
+                dict.put(t.charAt(i), 1);
+            } else {
+                dict.put(t.charAt(i), dict.get(t.charAt(i)) + 1);
+            }
+        }
+        
+        int count = 0, start = 0, end = 0, minStart = 0;
+        int minLen = s.length() + 1;
+        while (end < s.length()) {
+            char c = s.charAt(end);
+            if (dict.containsKey(c)) {
+                dict.put(c, dict.get(c) - 1);
+                if (dict.get(c) >= 0) {
+                    count++;
+                }
+                while (count == t.length()) {
+                    if (end - start + 1 < minLen) {
+                        minLen = end - start + 1;
+                        minStart = start;
+                    }
+                    char leftChar = s.charAt(start);
+                    if (dict.containsKey(leftChar)) {
+                        dict.put(leftChar, dict.get(leftChar) + 1);
+                        if (dict.get(leftChar) > 0) {
+                            count--;
+                        }
+                    }
+                    start++;
+                }
+            }
+            end++;
+        }
+        if (minLen > s.length()) {
+            return "";
+        } else {
+            return s.substring(minStart, minStart + minLen);        
+        }
     }
 }
