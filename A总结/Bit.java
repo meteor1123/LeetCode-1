@@ -191,7 +191,7 @@
 			};
 
 
-		2.0 Power Of Two
+		2.0.1 Power Of Two
 			/*
 				Given an integer, write a function to determine if it is a power of two.
 			*/
@@ -231,6 +231,28 @@
 			public class Solution {
 			    public boolean isPowerOfTwo(int n) {
 			        return n > 0 && (n & (n - 1)) == 0;
+			    }
+			}
+		2.0.2 Power Of Three
+			//Solution1
+			public boolean isPowerOfThree(int n) {
+			    return (Math.log10(n) / Math.log10(3)) % 1 == 0;
+			}
+			//Solution2
+			public class Solution {
+			    public boolean isPowerOfThree(int n) {
+			        return n > 0 && (Math.pow(3, 19) % n == 0);
+			    }
+			}
+		2.0.3 Power Of Four 
+			/*
+				我们知道
+				(1)num & (num - 1)可以用来判断一个数是否为2的次方数，更进一步说，就是二进制表示下，只有最高位是1，那么由于是2的次方数，不一定是4的次方数，比如8，所以我们还要其他的限定条件，
+				(2)我们仔细观察可以发现，4的次方数的最高位的1都是计数位，那么我们只需与上一个数(0x55555555) <==> 1010101010101010101010101010101，如果得到的数还是其本身，则可以肯定其为4的次方数：
+			 */
+			public class Solution {
+			    public boolean isPowerOfFour(int num) {
+			        return num > 0 && (num & (num - 1 )) == 0 && (num & 0x55555555) != 0;
 			    }
 			}
 		2.1 Number Of 1 Bits
