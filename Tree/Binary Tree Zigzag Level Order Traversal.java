@@ -59,7 +59,7 @@ public class Solution {
 			TreeNode cur = queue.poll();
 			curNum--;
 			item.add(cur.val);
-            if (cur.left != null) {
+      if (cur.left != null) {
 				queue.add(cur.left);
 				nextNum++;
 			}

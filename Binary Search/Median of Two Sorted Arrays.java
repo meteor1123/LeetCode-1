@@ -45,6 +45,47 @@
 */
 public class Solution {
 
+	//Solution0:
+	public class Solution {
+	    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+	        int m = nums1.length;
+	        int n = nums2.length;
+	        int total = m + n;
+	        if (total % 2 != 0) {
+	            return findMedianSortedArrays(nums1, 0, m - 1, nums2, 0, n - 1, total / 2 + 1);
+	        } else {
+	            double x = findMedianSortedArrays(nums1, 0, m - 1, nums2, 0, n - 1, total / 2);
+	            double y = findMedianSortedArrays(nums1, 0, m - 1, nums2, 0, n - 1, total / 2 + 1);
+	            return (double)(x + y) / 2;
+	        }
+	    }
+	    
+	    public static int findMedianSortedArrays(int[] nums1, int aStart, int aEnd, int[] nums2, int bStart, int bEnd, int k) {
+	        int m = aEnd - aStart + 1;
+	        int n = bEnd - bStart + 1;
+	        
+	        if (m > n) {
+	            return findMedianSortedArrays(nums2, bStart, bEnd, nums1, aStart, aEnd, k);
+	        }
+	        if (m == 0) {
+	            return nums2[k - 1];
+	        }
+	        if (k == 1) {
+	            return Math.min(nums1[aStart], nums2[bStart]);
+	        }
+	        
+	        int partA = Math.min(k / 2, m);
+	        int partB = k - partA;
+	        if (nums1[aStart + partA - 1] < nums2[bStart + partB - 1]) {
+	            return findMedianSortedArrays(nums1, aStart + partA, aEnd, nums2, bStart, bEnd, partB);
+	        } else if (nums1[aStart + partA - 1] > nums2[bStart + partB - 1]) {
+	            return findMedianSortedArrays(nums1, aStart, aEnd, nums2, bStart + partB, bEnd, k - partB);
+	        } else {
+	            return nums1[aStart + partA - 1];
+	        }
+	    }
+	}
+
 	//Solution1:
 	public double findMedianSortedArrays(int A[], int B[]) {
 		int m = A.length;

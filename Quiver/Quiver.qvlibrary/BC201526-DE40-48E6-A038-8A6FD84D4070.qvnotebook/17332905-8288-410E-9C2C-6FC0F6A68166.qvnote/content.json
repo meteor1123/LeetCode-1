@@ -1,9 +1,0 @@
-{
-  "title": "Enum",
-  "cells": [
-    {
-      "type": "text",
-      "data": "<span style=\"color: rgb(34, 36, 38); font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 15px; background-color: rgb(255, 255, 255);\">You should always use enums when a variable (especially a method parameter) can only take one out of a small set of possible values.&nbsp;</span><div><span style=\"background-color: rgb(255, 255, 255);\"><font color=\"#222426\" face=\"Arial, Helvetica Neue, Helvetica, sans-serif\"><span style=\"font-size: 15px;\">Examples would be things like type constants (contract status: \"permanent\", \"temp\", \"apprentice”),</span></font></span></div><div><span style=\"background-color: rgb(255, 255, 255);\"><font color=\"#222426\" face=\"Arial, Helvetica Neue, Helvetica, sans-serif\"><span style=\"font-size: 15px;\">&nbsp;or flags (\"execute now\", \"defer execution”).</span></font></span></div><div><span style=\"color: rgb(34, 36, 38); font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 15px; background-color: rgb(255, 255, 255);\"><br></span></div><div><p style=\"margin: 0px 0px 1em; padding: 0px; border: 0px; font-size: 15px; clear: both; color: rgb(34, 36, 38); font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;\">If you use enums instead of integers (or String codes), you increase compile-time checking and avoid errors from passing in invalid constants, and you document which values are legal to use.</p><p style=\"margin: 0px 0px 1em; padding: 0px; border: 0px; font-size: 15px; clear: both; color: rgb(34, 36, 38); font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;\">BTW, overuse of enums might mean that your methods do too much (it's often better to have several separate methods, rather than one method that takes several flags which modify what it does), but if you have to use flags or type codes, enums are the way to go.</p></div><div><br></div>"
-    }
-  ]
-}

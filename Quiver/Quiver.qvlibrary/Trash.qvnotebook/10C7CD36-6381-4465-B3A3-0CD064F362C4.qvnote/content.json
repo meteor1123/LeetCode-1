@@ -1,9 +1,0 @@
-{
-  "title": "draft",
-  "cells": [
-    {
-      "type": "text",
-      "data": "<div><br></div>1. Using HashMap&lt;String, List&lt;Request&gt;&gt; to store every valid Ad in specify location.<div>2. The question is some Ads may be have mutiple locations to show</div><div>3. Key point:</div><div>&nbsp; &nbsp; 3.1 Sort List&lt;Request&gt; by start time at every location.</div><div>&nbsp; &nbsp; 3.2 if one ad show in one location, put it into HashSet, so that we can avoid the duplicate release</div><div>&nbsp; &nbsp;</div>"
-    }
-  ]
-}

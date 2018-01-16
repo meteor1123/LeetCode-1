@@ -266,7 +266,7 @@
 		            }
 		            swap(nums, i, j);
 		        }
-		        swap(nums, l, end);
+		        swap(nums, i, end);
 		        return i;
 		    }
 		2.1 Quick Select 

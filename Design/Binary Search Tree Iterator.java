@@ -23,6 +23,67 @@
         we can use remove the head of queue, that is the smallest number in the array.
 */
 
+//Solution0: prefer
+public class BSTIterator {
+    Stack<TreeNode> stack;
+    public BSTIterator(TreeNode root) {
+        stack = new Stack();
+        pushAll(root);
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        TreeNode tmpNode = stack.pop();
+        pushAll(tmpNode.right);
+        return tmpNode.val;
+    }
+    
+    public void pushAll(TreeNode root) {
+        while(root != null) {
+            stack.push(root);
+            root = root.left;
+        }
+    }
+}
+
+
+//Solution2 by myself
+public class BSTIterator {
+    Queue<TreeNode> queue;
+    public BSTIterator(TreeNode root) {
+        queue = new LinkedList();
+        this.inOrder(root);
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return !queue.isEmpty();
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        if (hasNext()) {
+            return queue.pop().val;
+        }
+        return -1;
+    }
+    
+    public void inOrder(TreeNode root) {
+        if (root == null) {
+            return ;
+        }
+        inOrder(root.left);
+        queue.offer(root);
+        inOrder(root.right);
+    }
+}
+
+
 //Solution1
 public class BSTIterator {
     private Queue<Integer> queueOfInOrder = new LinkedList<Integer>();
@@ -51,43 +112,6 @@ public class BSTIterator {
         }
     }
 }
-
-//Solution2 by myself
-public class BSTIterator {
-    LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-    public BSTIterator(TreeNode root) {
-        this.inOrder(root);
-    }
-
-    /** @return whether we have a next smallest number */
-    public boolean hasNext() {
-        if (queue.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /** @return the next smallest number */
-    public int next() {
-        if (hasNext()) {
-            return queue.pop().val;
-        } else {
-            return -1;
-        }
-    }
-    
-    public void inOrder(TreeNode root) {
-        if (root == null) {
-            return ;
-        }
-        inOrder(root.left);
-        queue.offer(root);
-        inOrder(root.right);
-    }
-}
-
-
 
 /**
  * Your BSTIterator will be called like this:

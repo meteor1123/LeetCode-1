@@ -32,30 +32,66 @@
  *     public List<NestedInteger> getList();
  * }
  */
+
+//Solution1: prefer
+/*
+    while (i.hasNext()) v[f()] = i.next();
+    每次要测hasNext()后才用next();
+ */
 public class NestedIterator implements Iterator<Integer> {
-    private Stack<ListIterator<NestedInteger>> lists;
+    private Stack<NestedInteger> stack;
     public NestedIterator(List<NestedInteger> nestedList) {
-        lists = new Stack<>();
-        lists.push(nestedList.listIterator());
+        stack = new Stack<>();
+        for (int i = nestedList.size() - 1; i >= 0; i--) {
+            stack.push(nestedList.get(i));
+        }
+    }
+
+    @Override
+    public Integer next() {
+        return stack.pop().getInteger();
+    }
+
+    @Override
+    public boolean hasNext() {
+        while (!stack.isEmpty()) {
+            NestedInteger cur = stack.peek();
+            if (cur.isInteger()) {
+                return true;
+            }
+            stack.pop();
+            for (int i = cur.getList().size() - 1; i >= 0; i--) {
+                stack.push(cur.getList().get(i));
+            }
+        }
+        return false;
+    }
+}
+//Solution2: ListIterator Solution, no easy to understand
+public class NestedIterator implements Iterator<Integer> {
+    private Stack<ListIterator<NestedInteger>> stack;
+    public NestedIterator(List<NestedInteger> nestedList) {
+        stack = new Stack<>();
+        stack.push(nestedList.listIterator());
     }
     
     @Override
     public Integer next() {
         hasNext();
-        return lists.peek().next().getInteger();
+        return stack.peek().next().getInteger();
     }
 
     @Override
     public boolean hasNext() {
-       while (!lists.empty()) {
-           if (!lists.peek().hasNext()) {
-               lists.pop();
+       while (!stack.empty()) {
+           if (!stack.peek().hasNext()) {
+               stack.pop();
            } else {
-               NestedInteger num = lists.peek().next();
-               if (num.isInteger()) {
-                   return lists.peek().previous() == num;
+               NestedInteger cur = stack.peek().next();
+               if (cur.isInteger()) {
+                   return stack.peek().previous() == cur;
                }
-               lists.push(num.getList().listIterator());
+               stack.push(cur.getList().listIterator());
            }
        }
        return false;

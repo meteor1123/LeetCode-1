@@ -43,7 +43,7 @@ public class Solution {
         }
         
         for (int index = 1; index < sb.length; index++) {
-            sb[0].append(sb[index]);
+            sb[0].append(sb[index]);//拼接所有行
         }
         return sb[0].toString();
     }

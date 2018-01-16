@@ -16,6 +16,40 @@
  *     Interval(int s, int e) { start = s; end = e; }
  * }
  */
+
+
+// lambda sort prefer
+class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> res = new ArrayList();
+        
+        if (intervals == null || intervals.size() == 0)
+            return res;
+        
+        intervals.sort((Interval a, Interval b) -> {
+            if (a.start == b.start) 
+                return b.end - b.end;
+            else 
+                return a.start - b.start;
+        });
+  
+        res.add(intervals.get(0));
+        
+        for (int i = 1; i < intervals.size(); i++) {
+            Interval pre = res.get(res.size() - 1);
+            Interval cur = intervals.get(i);
+            if (pre.end >= cur.start) {
+                pre.end = Math.max(pre.end, cur.end);
+            } else {
+                res.add(cur);
+            }
+        }
+        
+        return res;
+    }
+}
+
+
 public class Solution {
     //Solution1
     public List<Interval> merge(List<Interval> intervals) {

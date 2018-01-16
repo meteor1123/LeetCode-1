@@ -49,3 +49,39 @@ public class Solution {
         return root[i];
     }
 }
+
+public class Solution {
+    public int findCircleNum(int[][] M) {
+        int n = M.length;
+        int count = 0;
+        int[] root = new int[n];
+        for (int i = 0; i < n; i++) {
+            root[i] = i;
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (M[i][j] == 1) {
+                    int x = find(root, i);
+                    int y = find(root, j);
+                    if (x != y) {
+                        root[x] = y;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (root[i] == i) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public int find(int[] root, int i) {
+        if (root[i] == i) {
+            return i;
+        }
+        root[i] = find(root, root[i]);
+        return root[i];
+    }
+}

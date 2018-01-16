@@ -37,7 +37,8 @@
 		就要减少查找的时间复杂度，所以这里利用HashMap来做，这样时间苏咋读就是O(1)。
 */
 
-//Solution1 头尾结点都用pseudo结点，便于reduce the boundary checking
+//Solution1 头尾结点都用pseudo结点，便于reduce the boundary checking, 注意head和tail在插入node之后没有环！
+// head -> 1 -> 2-> 3-> 4-> 5 -> tail    -> next / <- pre                                              
 public class LRUCache {
     private HashMap<Integer, DoubleLinkedList> cache = new HashMap<Integer, DoubleLinkedList>();
     private int count;
@@ -52,22 +53,22 @@ public class LRUCache {
         head.pre = null;
         
         tail = new DoubleLinkedList();
-        tail.post = null;
+        tail.next = null;
         
-        head.post = tail;
+        head.next = tail;
         tail.pre = head;
     }
     public void addNode(DoubleLinkedList node) {
         node.pre = head;
-        node.post = head.post;
-        head.post.pre = node;
-        head.post = node;
+        node.next = head.next;
+        head.next.pre = node;
+        head.next = node;
     }
     public void removeNode(DoubleLinkedList node) {
         DoubleLinkedList pre = node.pre;
-        DoubleLinkedList post = node.post;
-        pre.post = post;
-        post.pre = pre;
+        DoubleLinkedList next = node.next;
+        pre.next = next;
+        next.pre = pre;
         
     }
     public void moveToHead(DoubleLinkedList node) {
@@ -112,7 +113,7 @@ public class LRUCache {
         int key;
         int value;
         DoubleLinkedList pre;
-        DoubleLinkedList post;
+        DoubleLinkedList next;
     }
 }
 
