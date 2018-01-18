@@ -10,83 +10,57 @@
 	Special thanks to @Freezen for adding this problem and creating all test cases
 */
 
-
-//Solution1; Spance O(n)
-public class Solution {
+//Solution1: Space O(1) prefer, use the House Robber as max function.
+class Solution {
     public int rob(int[] nums) {
-        if (nums == null || nums.length == 0) {
+        if (nums == null || nums.length == 0)
             return 0;
-        }
-        if (nums.length == 1){
+        if (nums.length == 1)
             return nums[0];
-        }
-        int[] dp = new int[nums.length];
-        //store the maximun profit
-        int maxProfit = 0;
-        dp[0] = nums[0];
-        dp[1] = Math.max(nums[0], nums[1]);
-        //in the first loop, we calculate the first house, and just ignore the last house.
-        for (int i = 2; i < nums.length - 1; i++) {
-            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
-        }
-        maxProfit = dp[nums.length - 2];
+        return Math.max(rob(nums, 0, nums.length - 1), rob(nums, 1, nums.length));
+    }
+    
+    public int rob(int[] nums, int start, int end) {
+        int robbedPre = 0;
+        int notRobbedPre = 0;
         
-        //in the second loop, we calculate the last house, and just ignore the first house.
-        dp[0] = 0;
-        dp[1] = nums[1];
-        for (int i = 2; i < nums.length; i++) {
-            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+        for (int i = start; i < end; i++) {
+            int curRobbed = notRobbedPre + nums[i];
+            
+            int curNotRobbed = Math.max(notRobbedPre, robbedPre);
+            notRobbedPre = curNotRobbed;
+            robbedPre = curRobbed;
         }
-        maxProfit = Math.max(maxProfit, dp[nums.length - 1]);
-        return maxProfit;
+        return Math.max(notRobbedPre, robbedPre);
     }
 }
 
 
-//Solution3: prefer Space O(1)
-public class Solution {
+//Solution2: space O(n) myself
+
+class Solution {
     public int rob(int[] nums) {
-        if (nums == null || nums.length == 0) {
+        if (nums == null || nums.length == 0)
             return 0;
-        }
-        if (nums.length == 1) {
+        if (nums.length == 1)
             return nums[0];
+        int[] dp = new int[nums.length + 1];
+        
+        dp[0] = 0;
+        dp[1] = nums[0];
+        
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i - 1]);
         }
-        return Math.max(rob(nums, 0, nums.length - 2), rob(nums, 1, nums.length - 1));
-    }
-    
-    public int rob(int[] nums, int low, int high) {
-       int preRob = 0;
-       int preNoRob = 0;
-       for (int i = low; i <= high; i++) {
-           int curRob = preNoRob + nums[i];
-           int curNoRob = Math.max(preRob, preNoRob);
-           
-           preRob = curRob;
-           preNoRob = curNoRob;
-       }
-       return Math.max(preRob, preNoRob);
-    }
-}
+        
+        int res = dp[nums.length - 1];
+        
+        dp[1] = 0;
 
-
-//Solution2: Space O(1)
-public class Solution {
-    public int rob(int[] nums) {
-        if (nums.length == 1) {
-            return nums[0];
+        for (int i = 2; i <= nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i - 1]);
         }
-        return Math.max(rob(nums, 0, nums.length - 2), rob(nums, 1, nums.length - 1));
-    }
-    
-    public int rob(int[] nums, int low, int high) {
-        int include = 0, exclude = 0;
-        for (int j = low; j <= high; j++) {
-            int i = include;
-            int e = exclude;
-            include = e + nums[j];
-            exclude = Math.max(e, i);
-        }
-        return Math.max(include, exclude);
+        return Math.max(res, dp[nums.length]);
+        
     }
 }

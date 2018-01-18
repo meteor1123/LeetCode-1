@@ -47,27 +47,27 @@ public class Solution {
 		return nums[k];
 	}
 
-	private int partition(int[] a, int low, int high) {
-		int i = low;
-		int j = high + 1;
-		while (true) {
-			while (i < high && a[++i] < a[low]);//以 A[low] 为pivot， i从左走， j从右走，假如A[i] 小于pivot 则一直往后走，会停到第一个比pivot大的位置
-			while (j > low && a[low] < a[--j]);//假如A[j] 大于pivot，则一直往前走，会停到第一个比pivot小的位置， 然后交换，则最后low 一定是 第j + 1小的元素
-			if (i >= j) {
-				break;
-			}
-			swap(a, i, j);
-		}
-		swap(a, low, j);
-		return j;
-	}
+	// private int partition(int[] a, int low, int high) {
+	// 	int i = low;
+	// 	int j = high + 1;
+	// 	while (true) {
+	// 		while (i < high && a[++i] < a[low]);//以 A[low] 为pivot， i从左走， j从右走，假如A[i] 小于pivot 则一直往后走，会停到第一个比pivot大的位置
+	// 		while (j > low && a[low] < a[--j]);//假如A[j] 大于pivot，则一直往前走，会停到第一个比pivot小的位置， 然后交换，则最后low 一定是 第j + 1小的元素
+	// 		if (i >= j) {
+	// 			break;
+	// 		}
+	// 		swap(a, i, j);
+	// 	}
+	// 	swap(a, low, j);
+	// 	return j;
+	// }
 
 	//easy understand
 	public int partition(int[] a, int low, int high) {
        int i = low;
        int j = high;
        while (true) {
-           while (i < j && a[i] < a[high]) {
+           while (i < j && a[i] < a[high]) { //以 A[high] 为pivot， i从左走， j从右走，假如A[i] 小于pivot 则一直往后走，会停到第一个比pivot大的位置
                i++;
            }
            while (i < j && a[j] >= a[high]) {

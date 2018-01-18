@@ -33,13 +33,13 @@
 //Iterative
 public class Solution {
 	public int closestValue(TreeNode root, double target) {
-        int closet = root.val;
+        int closest = root.val;
         while (root != null) {
-            if (Math.abs(closet - target) >= Math.abs(root.val - target)) {
-                closet = root.val;
+            if (Math.abs(closest - target) >= Math.abs(root.val - target)) {
+                closest = root.val;
             }
             root = target < root.val ? root.left : root.right;
         }
-        return closet;
+        return closest;
     }
 }

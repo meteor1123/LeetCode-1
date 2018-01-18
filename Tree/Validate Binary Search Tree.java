@@ -17,17 +17,19 @@ public class Solution {
     }  
       
     public boolean isBST(TreeNode node, long low, long high){  
-        if(node == null)  
+        if (node == null)  
             return true;  
             
-        if(low < node.val && node.val < high)
+        if (low < node.val && node.val < high)
             return isBST(node.left, low, node.val) && isBST(node.right, node.val, high);  
         else  
             return false;  
     }
 
 
-    //Recursive
+
+
+    //Recursive prefer
     public boolean isValidBST(TreeNode root) {
         return validate(root, null, null);
     }
@@ -36,15 +38,12 @@ public class Solution {
         if (node == null) {
             return true;
         }
-        
         if (min != null && node.val <= min) {
             return false;
         }
-        
         if (max != null && node.val >= max) {
             return false;
         }
-        
         if (!validate(node.left, min, node.val) || !validate(node.right, node.val, max)) {
             return false;
         }

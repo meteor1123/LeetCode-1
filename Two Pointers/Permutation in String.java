@@ -16,6 +16,17 @@
 	The length of both given strings is in range [1, 10,000].
 */
 
+/*
+    Solution: 
+    We just need to create a sliding window with length of s1, move from beginning to the end of s2.
+
+    When a character moves in from right of the window, we subtract 1 to that character count from the map. 
+
+    When a character moves out from left of the window, we add 1 to that character count. 
+
+    So once we see all zeros in the map, meaning equal numbers of every characters between s1 and the substring in the sliding window, we know the answer is true.
+*/
+
 
 class Solution {
     public boolean checkInclusion(String s1, String s2) {

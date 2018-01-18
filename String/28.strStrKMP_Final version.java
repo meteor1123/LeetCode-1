@@ -24,7 +24,7 @@
                     j = next[j];
                 }
                 if (j == needle.length())
-                    return i - needle.length();
+                    return i - j;
             }
             return -1;
         }

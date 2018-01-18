@@ -68,7 +68,7 @@ public class Solution {
         if (root == null) {
             return 0;
         }
-        int left = Math.max(0, findmax(root.left));
+        int left = Math.max(0, findmax(root.left)); 
         int right = Math.max(0, findmax(root.right));
         maxValue = Math.max(maxValue, left + right + root.val);
         return Math.max(left, right) + node.val;

@@ -42,7 +42,7 @@ public class Solution {
 		}
 
 		//save the realright treenode
-		TreeNode realright = root.right;
+		TreeNode realright = root.right; //
 		//if last node isn't null , let the last node'e right point to the root,
 		if (lastvisited != null) {
 			lastvisited.left = null;

@@ -55,7 +55,7 @@ public class Solution {
     }
 
     //no use lower
-        public boolean isPalindrome(String s) {
+    public boolean isPalindrome(String s) {
         if (s == null || s.length() == 0)
             return true;
         int l = 0;

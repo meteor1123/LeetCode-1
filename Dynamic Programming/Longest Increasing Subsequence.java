@@ -100,3 +100,20 @@ public class Solution {
         return start;
     }
 }
+
+//Solution4: leetcode solution
+public int lengthOfLIS(int[] nums) {
+    int[] dp = new int[nums.length];
+    int len = 0;
+    for (int num : nums) {
+        int i = Arrays.binarySearch(dp, 0, len, num);
+        if (i < 0) {
+            i = -(i + 1); //index of the search key, if it is contained in the array; otherwise, (-(insertion point) – 1).
+        }
+        dp[i] = num;
+        if (i == len) {
+            len++;
+        }
+    }
+    return len;
+}

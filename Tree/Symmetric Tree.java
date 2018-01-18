@@ -28,7 +28,7 @@ public class Solution {
 	//DFS
     public boolean isSymmetric(TreeNode root) {
     	if (root == null) {
-    		return false;
+    		return true;
     	}
     	return isSymmetric(root.left, root.right);
     }
