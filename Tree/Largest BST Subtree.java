@@ -21,13 +21,14 @@
 	Can you figure out ways to solve it with O(n) time complexity?
  */
 
+// Solution 1
 public class Solution {
-    class Result {
+    class Node {
         int size;
         int lower;
         int upper;
         
-        Result(int size, int lower, int upper) {
+        Node(int size, int lower, int upper) {
             this.size = size;
             this.lower = lower;
             this.upper = upper;
@@ -41,23 +42,20 @@ public class Solution {
         traverse(root);
         return max;
     }
-    private Result traverse(TreeNode root) {
+    private Node traverse(TreeNode root) {
         if (root == null) {
-            return new Result(0, Integer.MAX_VALUE, Integer.MIN_VALUE);
+            return new Node(0, Integer.MAX_VALUE, Integer.MIN_VALUE);
         }
-        Result left = traverse(root.left);
-        Result right = traverse(root.right);
+        Node left = traverse(root.left);
+        Node right = traverse(root.right);
         if (left.size == -1 || right.size == -1 || root.val <= left.upper || root.val >= right.lower) {
-            return new Result(-1, 0, 0);
+            return new Node(-1, 0, 0);
         }
         int size = left.size + 1 + right.size;
         max = Math.max(size, max);
-        return new Result(size, Math.min(left.lower, root.val), Math.max(right.upper, root.val));
+        return new Node(size, Math.min(left.lower, root.val), Math.max(right.upper, root.val));
     }
-    
-    
 }
-
 
 // Solution 2
 public int largestBSTSubtree(TreeNode root) {

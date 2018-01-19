@@ -46,6 +46,7 @@ class Solution {
         return z % gcd(x, y) == 0;
     }
     
+    //1: Iterative
     public int gcd(int a, int b) {
         while (b != 0) {
             int temp = b;
@@ -55,6 +56,7 @@ class Solution {
         return a;
     }
 
+    //2: recursive
     public int gcd(int a, int b){
       if (b == 0) return a;
       return gcd(b, a % b);

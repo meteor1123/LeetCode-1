@@ -85,6 +85,8 @@
 	The cdata should be valid.
 
 	All the tags should be closed. i.e. each start-tag should have a corresponding end-tag and vice-versa and the order of the tags should be correct as well.
+
+	1. 先check "<![CDATA[" 再到 "</" 再到 ">" 是关键
 */
 
 
@@ -109,7 +111,7 @@ class Solution {
             } else if (code.startsWith("<", i)) {
                 int j = i + 1;
                 i = code.indexOf(">", j);
-                if (i < 0 || i == j || i - j > 9) 
+                if (i < 0 || i == j || i - j > 9)  // i == j is for the case "<>""
                     return false;
                 for (int k = j; k < i; k++) {
                     if(!Character.isUpperCase(code.charAt(k)))

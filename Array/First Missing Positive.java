@@ -34,7 +34,7 @@
 */
 
 public class Solution {
-    //Solution1: 
+    //Solution1:  prefer
     public int firstMissingPositive(int[] A) {
         int len = A.length;
         for (int i = 0; i < len; i++) {
@@ -57,12 +57,6 @@ public class Solution {
         A[j] = temp;
     }
 
-
-
-
-
-
-    
     //Solution2: Using quick partition method, a little bit complicate
     public int firstMissingPositive(int[] A) {
         int n = A.length;
