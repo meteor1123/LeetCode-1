@@ -47,9 +47,7 @@ public class PriorityQueueExample {
 
 
 //1 
-PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a, b) -> {
-    return b - a;
-});
+PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a, b) -> b - a);
 
 
 //2
@@ -63,6 +61,4 @@ Collections.sort(heights, new Comparator<int[]>(){
     }
 });
 
-PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
-      return a[2] - b[2];
-  });
+PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);

@@ -22,32 +22,30 @@
 	Could you solve it in linear time?
 */
 
-//Solution2
-public class Solution {
+//Solution 0 pre, myself:  sliding window + priorityQueue, 
+class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
-        int len = nums.length;
-        int[] res = new int[len - k + 1];
-        if (nums.length == 0) {
-            return new int[0];
-        }
-        //maxHeap
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer i1, Integer i2) {
-                return i2 - i1;
-            }
-        });
+        if (nums == null || nums.length == 0 || k > nums.length)
+            return new int[]{};
+        int m = nums.length;
+        int[] res = new int[m - k + 1];
         
-        for (int i = 0; i < k; i++) {
-            pq.add(nums[i]);
+        // max heap
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a, b) -> b - a);
+        
+        int start = 0;
+        int end = 0;
+        
+        while (end < nums.length) {
+            pq.offer(nums[end]);
+            if (pq.size() == k) {
+                res[start] = pq.peek();
+                pq.remove(nums[start]);
+                start++;
+            } 
+            end++;
         }
         
-        res[0] = pq.peek();
-        for (int i = k; i < len; i++) {
-            pq.remove(nums[i - k]);
-            pq.add(nums[i]);
-            res[i - k + 1] = pq.peek();
-        }
         return res;
     }
 }

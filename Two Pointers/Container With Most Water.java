@@ -39,8 +39,6 @@
     4. 所以，我们从两头向中间靠拢，同时更新候选值；在收缩区间的时候优先从 x, y中较小的边开始收缩（这点很重要，若是从较大的开始收缩会越来越小）。
 */
 public class Solution {
-
-
     //prefer
     public int maxArea(int[] height) {
         int maxWater = 0;
@@ -57,49 +55,26 @@ public class Solution {
         }
         return maxWater;
     }
-    //the input is Array
-    public int maxArea(int[] height) {
-        if (height.length == 0)
-            return 0;
-        if (height.length == 1)
-            return 0;
-        int left = 0;
-        int right = height.length - 1;
-        int max = Math.min(height[left],height[right]) *Math.abs(left-right);
-        while (left < right){
-            max = Math.max(Math.min(height[left], height[right]) * Math.abs(left - right), max);
-            if (height[right] > height[left]){
-                left = left + 1;
-
-            }
-            else if (height[right] <= height[left]){
-                right = right - 1;
-
-            }
-        }
-        return max;
-    }
-
-    //the input is list
-    public int maxArea(List<Integer> height) {
-        if (height.size() == 0)
-            return 0;
-        if (height.size() == 1)
-            return 0;
-        int left = 0;
-        int right = height.size() - 1;
-        //initialize the maximum value,which equals the minimum
-        int max = Math.min(height.get(left), height.get(right)) * Math.abs(left - right);
-        while (left < right) {
-            max = Math.max(Math.min(height.get(left), height.get(right)) * Math.abs(left - right), max);
-            if (height.get(right) > height.get(left)){
-                left = left + 1;
-            }
-            else {
-                right = right - 1;
-            }
-        }
-        return max;
-    }
 }
+
+//
+class Solution {
+    public int maxArea(int[] height) {
+        if (height == null || height.length == 0)
+            return 0;
+        int start = 0;
+        int end = height.length - 1;
+        int max = Integer.MIN_VALUE;
+        while (start < end) {
+            //短板原理，选两边高度最小的
+            max = Math.max(max, Math.min(height[start], height[end]) * (end - start));
+            if (height[start] < height[end]) {
+                start++;
+            } else {
+                end--;
+            }
+        }
+        
+        return max;
+    }
 }

@@ -28,6 +28,32 @@
     8. 在过程中求得当前最长路径时比较一下是不是目前最长的，如果是则更新。算法的本质还是一次树的遍历，所以复杂度是O(n)。而空间上仍然是栈大小O(logn)。
 */
 
+
+
+//Solution2
+//maxValue 是要计算每一个结点的 左右路线和结点值的最大值， left right是为了求左边路线最大和右边路线最大，所以findMax就是遍历所有结点，返回最大的路线
+public class Solution {
+    int maxValue;
+    public int maxPathSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        maxValue = Integer.MIN_VALUE;
+        findmax(root);
+        return maxValue;
+    }
+    
+    public int findmax(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = Math.max(0, findmax(root.left)); 
+        int right = Math.max(0, findmax(root.right));
+        maxValue = Math.max(maxValue, left + right + root.val);
+        return Math.max(left, right) + node.val;
+    }
+}
+
 public class Solution {
     //solution 1
     public int maxPathSum(TreeNode root) {
@@ -49,48 +75,5 @@ public class Solution {
     	//the maximum value of whole level
     	max[0] = Math.max(max[0], Math.max(current, root.val + left + right));
     	return current;
-    }
-
-    //Solution2
-    //maxValue 是要计算每一个结点的 左右路线和结点值的最大值， left right是为了求左边路线最大和右边路线最大，所以findMax就是遍历所有结点，返回最大的路线
-    public class Solution {
-    int maxValue;
-    public int maxPathSum(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        maxValue = Integer.MIN_VALUE;
-        findmax(root);
-        return maxValue;
-    }
-    
-    public int findmax(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int left = Math.max(0, findmax(root.left)); 
-        int right = Math.max(0, findmax(root.right));
-        maxValue = Math.max(maxValue, left + right + root.val);
-        return Math.max(left, right) + node.val;
-    }
-}
-    //solution 3
-    public int maxPathSum(TreeNode root) {
-        if (root==null)
-            return 0;
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        res.add(Integer.MIN_VALUE);
-        helper(root,res);
-        return res.get(0);
-    }
-    private int helper(TreeNode root, ArrayList<Integer> res){
-        if (root == null)
-            return 0;
-        int left = helper(root.left, res);
-        int right = helper(root.right, res);
-        int cur = root.val + (left > 0 ? left : 0) + (right > 0 ? right : 0);
-        if (cur > res.get(0))
-            res.set(0,cur);
-        return root.val + Math.max(left, Math.max(right, 0));
     }
 }   

@@ -382,7 +382,7 @@ public class Solution {
 			            int x = find(root, edges[i][0]);
 			            int y = find(root, edges[i][1]);
 			            if (x != y) {
-			                root[x] = y;
+			                root[x] = y; //union
 			            }
 			        }
 			        int count = 0;
@@ -401,4 +401,12 @@ public class Solution {
 			        root[i] = find(root, root[i]); //Path compression
 			        return root[i];
 			    }
+
+			    public int find(int[] roots, int id) {
+					    while(roots[id] != id) {
+					        roots[id] = roots[roots[id]];  // optional: path compression
+					        id = roots[id];
+					    }
+					    return id;
+					}
 			}

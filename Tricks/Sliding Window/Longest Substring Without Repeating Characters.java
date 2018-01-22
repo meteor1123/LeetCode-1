@@ -15,6 +15,34 @@
 		step4: 每一次left前进只在 找到重复字符时才++，
 			   相反right只在没找到重复字符时才++.
 */
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0 || s == null)
+            return 0;
+        int max = 0;
+        int left = 0;
+        int right = 0;
+        HashSet<Character> hs = new HashSet<Character>();
+        while (right < s.length()) {
+            if (hs.contains(s.charAt(right))) {
+            	//当遇到重复的值的时候，才计算从left - right的距离，并与max进行比较
+                if (max < right - left)
+                    max = right - left;
+                while (s.charAt(left) != s.charAt(right)) {
+                    hs.remove(s.charAt(left));
+                    left++;
+                }
+                left++;//因为上面的left 前进到和right相等的那个字符时就停止，也就是在right的左边，
+                       //而下一次的查找left应该从right位置开始，所以这里要在外面left++
+            } else {
+                hs.add(s.charAt(right));
+            }
+            right++;
+        }
+        max = Math.max(max, right - left);
+        return max;
+    }
+}
 
 //Prefer
 public class Solution {
@@ -43,34 +71,3 @@ public class Solution {
         return maxLen;
     }
 }
-
-
-public class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        if (s.length() == 0 || s == null)
-            return 0;
-        int max = 0;
-        int left = 0;
-        int right = 0;
-        HashSet<Character> hs = new HashSet<Character>();
-        while (right < s.length()) {
-            if (hs.contains(s.charAt(right))) {
-            	//当遇到重复的值的时候，才计算从left - right的距离，并与max进行比较
-                if (max < right - left)
-                    max = right - left;
-                while (s.charAt(left) != s.charAt(right)) {
-                    hs.remove(s.charAt(left));
-                    left++;
-                }
-                left++;//因为上面的left 前进到和right相等的那个字符时就停止，也就是在right的左边，
-                       //而下一次的查找left应该从right位置开始，所以这里要在外面left++
-            } else {
-                hs.add(s.charAt(right));
-            }
-            right++;
-        }
-        max = Math.max(max, right - left); // right最后会=s.length(), 所以 right - lft 就是 最长index - left + 1
-        return max;
-    }
-}
-

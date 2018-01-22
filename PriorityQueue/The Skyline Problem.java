@@ -126,3 +126,50 @@ public class Solution {
         return res;
     }
 }
+
+
+// Solution3
+class Solution {
+    public List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> res = new ArrayList();
+        List<int[]> heights = new ArrayList();
+        
+        for (int[] build : buildings) {
+            heights.add(new int[]{build[0], -build[2]});
+            heights.add(new int[]{build[1], build[2]});
+        }
+        
+        Collections.sort(heights, new Comparator<int[]>(){
+            public int compare(int[] a, int[] b) {
+                if (a[0] != b[0]) {
+                    return a[0] - b[0];
+                } else {
+                    return a[1] - b[1];
+                }
+            }
+        });
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a, b) -> {
+            return b - a;
+        });
+        
+        pq.offer(0);
+        int preHeight = 0;
+        
+        for (int[] h : heights) {
+            if (h[1] < 0) {
+                pq.offer(-h[1]);
+            } else {
+                pq.remove(h[1]);
+            }
+            int curHeight = pq.peek();
+            
+            if (curHeight != preHeight) {
+                res.add(new int[]{h[0], curHeight});
+                preHeight = curHeight;
+            }
+        }
+        
+        return res;
+    }
+}

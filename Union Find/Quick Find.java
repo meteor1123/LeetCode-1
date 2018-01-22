@@ -140,8 +140,7 @@
 		相应的实现如下，实际上只需要添加一行代码
 	*/
 	private int find(int p) {
-		while (p != id[p])
-		{
+		while (p != id[p]) {
 			// 将p节点的父节点设置为它的爷爷节点
 			id[p] = id[id[p]];
 			p = id[p];

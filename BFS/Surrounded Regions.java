@@ -26,167 +26,24 @@
 
 	关键思路，从四周开始bfs所有的O点 以及和O点连接的O，并标记为#，因此所有没有被标为#的O点就一定是四周被X围绕
 */
-public class Solution {
+
+//Solution1: by my self prefer
+class Solution {
+    int[] shift = {0, -1, 0, 1, 0};
     public void solve(char[][] board) {
-    	if (board == null || board.length <= 1 || board[0].length <= 1)
-    		return ;
-
-        //check the first and last row whether has 0,by using fill algorithm
-    	for (int i = 0 ; i < board[0].length; i++) {
-    		fill(board, 0, i);
-    		fill(board, board.length - 1, i);
-    	}
-
-        //check the first and last column whether has 0,by using fill algorithm
-    	for (int i = 0; i < board.length; i++) {
-    		fill(board, i, 0);
-    		fill(board, i, board[0].length - 1);
-    	}
-
-
-        //check the matrix value, if  equals 'O' that can be set to 1
-        // if equals '#' that can not be setted.        
-    	for (int i = 0; i < board.length; i++) {
-    		for (int j = 0; j < board[0].length; j++) {
-    			if (board[i][j] == 'O')
-    				board[i][j] = 'X';
-    			else if (board[i][j] == '#')
-    				board[i][j] = 'O';
-    		}
-    	}
-    }
-
-    public void fill(char[][] board, int i, int j) {
-    	if (board[i][j] != 'O')
-    		return ;
-    	board[i][j] = '#';
-    	LinkedList<Integer> queue = new LinkedList<Integer>();
-    	int code = i * board[0].length + j;
-    	queue.offer(code);
-    	while (!queue.isEmpty()) {
-    		code = queue.poll();
-    		int row = code / board[0].length;
-    		int col = code % board[0].length;
-
-            //从最后一行开始往前行查找
-    		if (row > 0 && board[row - 1][col] == 'O') {
-    			queue.offer((row - 1) * board[0].length + col);
-    			board[row - 1][col] = '#';
-    		}
-
-            //从第一行开始往后行查找
-    		if (row < board.length - 1 && board[row + 1][col] == 'O') {
-    			queue.offer((row + 1) * board[0].length + col);
-    			board[row + 1][col] = '#';
-    		}
-
-            //从最后一列开始往前列查找
-    		if (col > 0 && board[row][col - 1] == 'O') {
-    			queue.offer(row * board[0].length + col - 1);
-    			board[row][col - 1] = '#';
-    		}
-
-            //从第一列开始往后列查找
-    		if (col < board[0].length - 1 && board[row][col + 1] == 'O') {
-    			queue.offer(row * board[0].length + col + 1);
-    			board[row][col + 1] = '#';
-    		}
-    	}
-    }
-}
-
-//Solution by my self prefer
-public class Solution {
-    public void solve(char[][] board) {
-        if (board == null || board.length == 0) {
+        if (board == null || board.length == 0)
             return;
-        }
         int m = board.length;
         int n = board[0].length;
+        
         for (int i = 0; i < n; i++) {
-            fill(board, 0, i);
-            fill(board, m - 1, i);
+            fill(board, 0, i, m, n);
+            fill(board, m - 1, i, m, n);
         }
         
         for (int i = 0; i < m; i++) {
-            fill(board, i, 0);
-            fill(board, i, n - 1);
-        }
-        
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] == 'O') {
-                    board[i][j] = 'X';
-                } else if (board[i][j] == '*') {
-                    board[i][j] = 'O';
-                } 
-            }
-        }
-    }
-    
-    public void fill(char[][] board, int i, int j) {
-        if (board[i][j] == 'X') {
-            return ;
-        }
-        board[i][j] = '*';
-        Queue<Integer> queue = new LinkedList<>();
-        int m = board.length;
-        int n = board[0].length;
-        int index = i * n + j;
-        queue.offer(index);
-        while (!queue.isEmpty()) {
-            int code = queue.poll();
-            int x = code / n;
-            int y = code % n;
-            
-            if (isValid(board, x + 1, y) && board[x + 1][y] == 'O') {
-                board[x + 1][y] = '*';
-                queue.offer((x + 1) * n + y);
-            }
-            
-            if (isValid(board, x - 1, y) && board[x - 1][y] == 'O') {
-                board[x - 1][y] = '*';
-                queue.offer((x - 1) * n + y);
-            }
-            
-            if (isValid(board, x, y + 1) && board[x][y + 1] == 'O') {
-                board[x][y + 1] = '*';
-                queue.offer(x * n + y + 1);
-            }
-            
-            if (isValid(board, x, y - 1) && board[x][y - 1] == 'O') {
-                board[x][y - 1] = '*';
-                queue.offer(x * n + y - 1);
-            }
-        }
-    }
-    
-    public boolean isValid(char[][] board, int x, int y) {
-        if (x < 0 || y < 0 || x > board.length - 1 || y > board[0].length - 1) {
-            return false;
-        }
-        return true;
-    }
-}
-
-
-//Concise prefer
-public class Solution {
-    public void solve(char[][] board) {
-        int[] shift = {0, 1, 0, -1, 0};
-        if (board == null || board.length == 0) {
-            return;
-        }
-        int m = board.length;
-        int n = board[0].length;
-        for (int i = 0; i < n; i++) {
-            fill(board, 0, i, shift);
-            fill(board, m - 1, i, shift);
-        }
-        
-        for (int i = 0; i < m; i++) {
-            fill(board, i, 0, shift);
-            fill(board, i, n - 1, shift);
+            fill(board, i, 0, m, n);
+            fill(board, i, n - 1, m, n);
         }
         
         for (int i = 0; i < m; i++) {
@@ -198,28 +55,23 @@ public class Solution {
                 }
             }
         }
+        
     }
     
-    public void fill(char[][] board, int i, int j, int[] shift) {
-        if (board[i][j] == 'X') {
+    public void fill(char[][] board, int i, int j, int m, int n) {
+        if (board[i][j] == 'X')
             return;
-        }
         board[i][j] = '*';
-        Queue<Integer> queue = new LinkedList<>();
-        int m = board.length;
-        int n = board[0].length;
-        int index = i * n + j;
-        queue.offer(index);
+        Queue<Integer> queue = new LinkedList();
+        queue.offer(i * n + j);
         while (!queue.isEmpty()) {
             int code = queue.poll();
-            int x = code / n;
-            int y = code % n;
-            for (int k = 0; k < 4; k++) {
-                int nextRow = x + shift[k];
-                int nextCol = y + shift[k + 1];
-                if (nextRow >= 0 && nextCol >= 0 && nextRow < m && nextCol < n && board[nextRow][nextCol] == 'O') {
-                    board[nextRow][nextCol] = '*';
-                    queue.offer(nextRow * n + nextCol);
+            for (int k = 0; k < shift.length - 1; k++) {
+                int x = code / n + shift[k];
+                int y = code % n + shift[k + 1];
+                if (x >= 0 && y >= 0 && x < m && y < n && board[x][y] == 'O') {
+                    board[x][y] = '*';
+                    queue.offer(x * n + y);
                 }
             }
         }
@@ -242,7 +94,7 @@ public class Solution {
         for(int i = 0; i < unionSet.length; i++) {
             unionSet[i] = i;
         }
-        for(int i = 0;i < hasEdgeO.length; i++){
+        for(int i = 0; i < hasEdgeO.length; i++){
             int x = i / width;
             int y = i % width;
             hasEdgeO[i] = (board[x][y] == 'O' && (x == 0 || x == height - 1 || y == 0 || y == width - 1));
@@ -272,7 +124,7 @@ public class Solution {
         }
     }
 
-    private void union(int x,int y){
+    private void union(int x, int y){
         int rootX = findSet(x);
         int rootY = findSet(y);
         // if there is an union has an 'edge O',the union after merge should be marked too
