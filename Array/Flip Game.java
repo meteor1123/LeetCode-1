@@ -21,6 +21,14 @@
 		 如果没有连续的两个“++”，则no valid
 */
 //Solution1
+
+/*
+    For the time complexity, here is what I thought, let's say the length of the input string s is n, 
+    there are at most n - 1 ways to replace "++" to "--" (imagine s is all "+++..."), once we replace one "++", 
+    there are at most (n - 2) - 1 ways to do the replacement, it's a little bit like solving the N-Queens problem, 
+
+    the time complexity is (n - 1) x (n - 3) x (n - 5) x ..., so it's O(n!!)
+*/
 public class Solution {
     public List<String> generatePossibleNextMoves(String s) {
         List<String> res = new ArrayList<>();

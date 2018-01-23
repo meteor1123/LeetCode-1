@@ -18,9 +18,36 @@
     输出
 	P   A   H   N
 	A P L S I I G
-	Y   I   R 
+	Y   I   R     
 	输出是按照上面这个zigzag排列之后每行相加的字符串 PAHNAPLSIIGYIR
+
+    2 * numRows - 2 就是PAYP, ALIS, HIRI 这样的格式分组 组成一个V字形
 */
+
+
+//Prefer, time O(n), space O(n)
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows <= 1)
+            return s;
+
+        StringBuilder[] sb = new StringBuilder[numRows];
+        for (int i = 0; i < sb.length; i++)
+            sb[i] = new StringBuilder();
+        
+        for (int i = 0; i < s.length(); i++) {
+            int index =  i % (2 * numRows - 2);
+            index = index < numRows ? index : 2 * numRows - 2 - index;
+            sb[index].append(s.charAt(i));
+        }
+        
+        for (int i = 1; i < sb.length; i++)
+            sb[0].append(sb[i]);
+        return sb[0].toString();
+    }
+}
+
+
 public class Solution {
     public String convert(String s, int numRows) {
         char[] c = s.toCharArray();

@@ -21,6 +21,35 @@
 	所以构建当前行的字符串要依据上一行的字符串。“小陷阱就是跑完循环之后记得把最后一个字符也加上，因为之前只是计数而已。”
 */
 
+// Prefer
+class Solution {
+    public String countAndSay(int n) {
+        if (n == 0) {
+            return "";
+        } 
+        StringBuilder res = new StringBuilder("1");
+
+        for (int i = 1; i < n; i++) {
+            StringBuilder curRes = new StringBuilder();
+            int count = 1;
+            for (int j = 0; j <= res.length() - 1; j++) {
+                if (res.charAt(j) == res.charAt(j + 1)) {
+                    count++;
+                } else {
+                    curRes.append(count);
+                    curRes.append(res.charAt(j));
+                    count = 1;
+                }
+            }
+            curRes.append(count);
+            curRes.append(res.charAt(res.length() - 1));
+            res = curRes;
+        }
+        return res.toString();
+    }        
+}
+
+
 public class Solution {
     public String countAndSay(int n) {
         //When the n equals zero just return empty string
@@ -61,32 +90,5 @@ public class Solution {
         }
         return curRes;
     }
-
-
-    //Solution2  change the curRes and res
-    public String countAndSay(int n) {
-        if (n <= 0) {
-            return "";
-        }
-        String res = "1";
-        int start = 1;
-        while (start < n) {
-            StringBuilder curRes = new StringBuilder();
-            int count = 1;
-            for (int i = 1; i < res.length(); i++) {
-                if (res.charAt(i) == res.charAt(i - 1)) {
-                    count++;
-                } else {
-                    curRes.append(count);
-                    curRes.append(res.charAt(i - 1));
-                    count = 1;
-                }
-            }
-            curRes.append(count);
-            curRes.append(res.charAt(res.length() - 1));
-            res = curRes.toString();
-            start++;
-        }
-        return res;
-    }
 }
+

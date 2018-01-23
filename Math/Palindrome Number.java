@@ -27,7 +27,7 @@ public class solution {
 				return false;
 			x = (x % div) / 10; // x % div 得到去掉头的数字，除以10得到去掉尾的数字
 
-			div = div / 100; div//因为x已经减少2位，所以div也要减少2位就是/100
+			div = div / 100; //因为x已经减少2位，所以div也要减少2位就是/100
 		}
 		return true;
 	}

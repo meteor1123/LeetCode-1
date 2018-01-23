@@ -29,6 +29,14 @@ class Solution {
 
 
 //Solution2: 时间换空间 time: O(n), space O(20001) => O(1)
+/*
+	1. Sort 然后每两个数加第一个数
+	2. 注意到n在 [1, 10000], integers的范围是[-10000, 10000];
+	    我们可以建一个 length 为20001的数组，
+			shift 10000 用[0, 20000] -> [-10000, 10000];
+			遍历这个数组将出现的数字和频率++，
+			再次遍历从0开始加奇数次出现的数字
+*/
 class Solution {
     public int arrayPairSum(int[] nums) {
         int[] exist = new int[20001];
