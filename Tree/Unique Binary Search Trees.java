@@ -77,3 +77,18 @@ public class Solution {
         return uniqueBST[n];
     }
 }
+
+// prefer
+class Solution {
+    public int numTrees(int n) {
+        int[] res = new int[n + 1];
+        res[0] = 1;
+        // f(n) == f(0)*f(n - 1) + f(1)*f(n - 2) + ... + f(n - 2)*f(1) + f(n - 1)*f(0)
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                res[i] += res[j] * res[i - j - 1];  //总共有i个节点，res[j]是左节点， res[i - j - 1]是右节点， 因为root占用1个节点
+            }
+        }
+        return res[n];
+    }
+}

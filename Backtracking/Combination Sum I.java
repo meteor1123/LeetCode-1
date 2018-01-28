@@ -26,28 +26,28 @@
 public class Solution {
 
     //DFS1 prefer
-    public ArrayList<ArrayList<Integer>> combinationSum(int[] scores, int total){
-        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
-        if (scores.length == 0 || scores == null) {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList();
+        if (candidates == null || candidates.length == 0)
             return res;
-        }
-        ArrayList<Integer> item = new ArrayList<Integer>();
-        Arrays.sort(scores);
-        dfs(scores, total, 0, item, res);
+        Arrays.sort(candidates);
+        List<Integer> item = new ArrayList();
+        dfs(res, item, candidates, target, 0);
         return res;
     }
-    public void dfs(int[] scores, int total, int start, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res) {
-        if (total < 0) {
+    
+    public void dfs(List<List<Integer>> res, List<Integer> item, int[] candidates, int sum, int index) {
+        if (sum < 0)
+            return;
+        if (sum == 0) {
+            res.add(new ArrayList(item));
             return;
         }
-        if (total == 0) {
-            res.add(new ArrayList<Integer>(item));
-            return;
-        }
-        for (int i = start; i < scores.length; i++) {
-            item.add(scores[i]);
-            int newTotal = total - scores[i];
-            dfs(scores, newTotal, i, item, res);
+        
+        for (int i = index; i < candidates.length; i++) {
+            int newSum = sum - candidates[i];
+            item.add(candidates[i]);
+            dfs(res, item, candidates, newSum, i);
             item.remove(item.size() - 1);
         }
     }

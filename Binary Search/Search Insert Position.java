@@ -47,32 +47,28 @@ public class Solution {
         // (3) Following from (2), the index is between [low, high+1] = [low, low], which means that low is the desired index
         //     Therefore, we return low as the answer. You can also return high+1 as the result, since low == high+1
     }
+}
 
-    // Solution1: find first position >= target
-    // You may assume no duplicates in the array.
-    public int searchInsert(int[] A, int target) {
-        if (A.length == 0)
-            return -1;
+// Solution1: find first position >= target
+class Solution {
+    public int searchInsert(int[] nums, int target) {
         int start = 0;
-        int end = A.length - 1;
+        int end = nums.length - 1;
         while (start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (A[mid] == target) {
-                return mid;
-            } else if (A[mid] > target) {
+            if (nums[mid] > target) {
                 end = mid;
-            } else if (A[mid] < target) {
+            } else {
                 start = mid;
             }
         }
-
-        if (A[start] >= target) {
+        
+        if (nums[start] >= target) {
             return start;
-        } else if (A[end] >= target) {
+        } else if (nums[end] >= target) {
             return end;
-        } else {
-            return end + 1; 
         }
+        return end + 1;
     }
-    
 }
+    

@@ -62,3 +62,12 @@ Collections.sort(heights, new Comparator<int[]>(){
 });
 
 PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+
+PriorityQueue<Turple> pq = new PriorityQueue<Turple>(new Comparator<Turple>(){
+    public int compare(Turple a, Turple b) {
+        if (a.count == b.count)
+            return a.word.compareTo(b.word);
+        return b.count - a.count;
+    }
+});
+

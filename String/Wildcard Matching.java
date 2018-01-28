@@ -26,6 +26,7 @@
  
 //如果p[i]！='*'，dp[i][j] == true 当 dp[i-1][j-1]==true &&（p[i]==s[j]||p[i]='?'）
 //如果p[i]=='*'，dp[i][j]== true 当 其中一个m使得 dp[i-1][m]==true，where 0 <= m < j.
+class Solution {    
 	public boolean isMatch(String s, String p) {
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
         dp[0][0] = true;
@@ -50,33 +51,7 @@
         }
         return dp[s.length()][p.length()];
     }
-	// public boolean isMatch(String s , String p){
- //        if( s.length()>300 && p.charAt(0) == '*'&& p.charAt(p.length()-1)=='*')
- //            return false;
-	// 	int len1 = s.length();
-	// 	int len2 = p.length();
-	// 	boolean[][] dp = new boolean[len1 + 1][len2 + 1];
-	// 	dp[0][0] = true;
-	// 	for (int i = 0; i < len2; i++) {
-	// 		dp[0][i + 1] = p.charAt(i) == '*' ? dp[0][i] :false;
-	// 	}
-
-	// 	for (int i = 0; i < len1; i++) {
-	// 		for (int j = 0; j < len2; j++) {
-	// 			if (p.charAt(j) == '*') {
-	// 			    //dp[i + 1][j] 为true，自然*也可以匹配j + 1
-	//  				//dp[i][j + 1] 为true，自然+上*也可以匹配j + 1(empty)
-	//  				///dp[i][j] 为true，自然*和j+1 也匹配
-	// 				dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j] || dp[i][j];
-	// 			} else if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '?') {
-	// 				dp[i + 1][j + 1] = dp[i][j];
-	// 			} else {
-	// 				dp[i + 1][j + 1] = false;
-	// 			}
-	// 		}
-	// 	}
-	// 	return dp[len1][len2];
-	// }
+}
 
 //Greedy solution
 /*
@@ -89,22 +64,23 @@
 
 
 */
-	public boolean isMatch(String str, String pattern) {
+class Solution {
+    public boolean isMatch(String str, String pattern) {
         int s = 0;
         int p = 0;
         int starMatch = 0;
-        int starIdx = -1;
+        int starIndex = -1;
         while (s < str.length()){
             // advancing both pointers
             if (p < pattern.length()  && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))){
                 s++;
                 p++;
             } else if (p < pattern.length() && pattern.charAt(p) == '*'){// * found, only advancing pattern pointer
-                starIdx = p;
+                starIndex = p;
                 starMatch = s;
                 p++;
-            } else if (starIdx != -1){ // last pattern pointer was *, advancing string pointer
-                p = starIdx + 1;
+            } else if (starIndex != -1){ // last pattern pointer was *, advancing string pointer
+                p = starIndex + 1;
                 starMatch++;
                 s = starMatch;
                 
@@ -123,4 +99,5 @@
 
         return p == pattern.length();
     }
+}
 

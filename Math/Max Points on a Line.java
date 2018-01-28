@@ -27,42 +27,37 @@
 			and plus the amount of same point
 		5. finally update the max with localmax.
 */	
-
 public class Solution {
     public int maxPoints(Point[] points) {
-        if (points.length == 0 || points == null)
+        if(points.length <= 0) 
             return 0;
-        if (points.length == 1)
-            return 1;
-        int max = 1; //the final max;
-        //从第一个点开始循环
-        for (int i = 0; i < points.length; i++) {
-            HashMap<Float, Integer> hm = new HashMap<Float, Integer>();
-            int samepoint = 0;
-            int localmax = 1;
-            
-            //将剩余的所有点与上一个循环里的那个点做斜率，放入hashtable中计算，哪个斜率最多，相同的情况维护一个same，之后+上
-            for (int j = 0; j < points.length; j++) {
-                //在数组里下标相同的数跳过此回合判断
-                if (i == j)
-                    continue;
-                //Same point,jump and continue next loop
-                if (points[i].x == points[j].x && points[i].y == points[j].y) {
-                    samepoint++;
-                    continue;
+        if(points.length <= 2) 
+            return points.length;
+        int res = 0;
+        for(int i = 0; i < points.length; i++){
+            HashMap<Double, Integer> map = new HashMap<Double, Integer>();
+            int samex = 1;
+            int samep = 0;
+            for(int j = 0; j < points.length; j++){
+                if(j != i){
+                    if((points[j].x == points[i].x) && (points[j].y == points[i].y)){
+                        samep++;
+                    }
+                    if(points[j].x == points[i].x){
+                        samex++;
+                        continue;
+                    }
+                    double k = 10.0 * (points[j].y - points[i].y) / (double)(points[j].x - points[i].x); //防止leetcode的 corner case
+                    if(map.containsKey(k)){
+                        map.put(k,map.get(k) + 1);
+                    }else{
+                        mapm.put(k, 2);
+                    }
+                    res = Math.max(res, map.get(k) + samep);
                 }
-                float slope = ((float)(points[i].y - points[j].y)/(points[i].x - points[j].x));
-                if (hm.containsKey(slope))
-                    hm.put(slope, hm.get(slope) + 1);
-                else 
-                    hm.put(slope, 2);//find two points;
             }
-            
-            for (Integer value : hm.values())
-                localmax = Math.max(localmax, value);
-            localmax += samepoint;
-            max = Math.max(max,localmax);
+            res = Math.max(res, samex);
         }
-        return max;
+        return res;
     }
 }

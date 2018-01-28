@@ -18,46 +18,48 @@
     Time complexity: O(n3)
 */
 
-public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
-        //result array
-        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
-
-        //corner case
-        if (num.length < 4 || num == null)
-            return res;
-
-        //avoid replicate
-        HashSet<ArrayList<Integer>> hs = new HashSet<ArrayList<Integer>>();
-
-        //sort in advance
-        Arrays.sort(num);
-
-        //notice the length of i and j;
-        for (int i = 0; i <= num.length - 4; i++) {
-            for (int j = i + 1; j <= num.length - 3; j++) {
-                int low = j + 1;
-                int high = num.length - 1;
-                while (low < high) {
-                    int sum = num[i] + num[j] + num[low] + num[high];
-                    if (sum == target) {
-                        ArrayList<Integer> item = new ArrayList<Integer>();
-                        item.add(num[i]);
-                        item.add(num[j]);
-                        item.add(num[low]);
-                        item.add(num[high]);
-                        if (!hs.contains(item)) {
-                            hs.add(item);
-                            res.add(item);
-                        }
-                        low++;
-                        high--;
-                    } else if (sum > target) {
-                        high--;
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList();
+        HashSet<List<Integer>> set = new HashSet();
+        
+        Arrays.sort(nums);
+        
+        for (int i = 0; i < nums.length - 3; i++) {
+            for (int j = i + 1; j < nums.length - 2; j++) {
+                int left = j + 1;
+                int right = nums.length - 1;
+                
+                while (left < right) {
+                    int sum = nums[i] + nums[j] + nums[left] + nums[right];
+                   if (sum == target) {
+                       List<Integer> item = new ArrayList();
+                       item.add(nums[i]);
+                       item.add(nums[j]);
+                       item.add(nums[left]);
+                       item.add(nums[right]);
+                       if (!set.contains(item)) {
+                          res.add(item);
+                          set.add(item);
+                       }
+                       left++;
+                       right--;
+                    } else if (sum < target) {
+                       left++;
+                       // 剪枝加速
+                       while (left < right && nums[left] == nums[left - 1]) {
+                           left++;
+                       }
                     } else {
-                        low++;
-                    }
+                       right--;
+                       // 剪枝加速
+                       while (right > left && nums[right] == nums[right + 1]) {
+                           right--;
+                     }
+                   }
                 }
             }
         }
         return res;
     }
+}

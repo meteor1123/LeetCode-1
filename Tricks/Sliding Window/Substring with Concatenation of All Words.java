@@ -42,15 +42,10 @@
         //将需要匹配的字典里的单词以及对应的个数存入hashmap
         HashMap<String, Integer> map = new HashMap<String, Integer>();
 
-        for (int i = 0; i < L.length; i++) {
-        	//一个单词出现多次的情况
-            if (map.containsKey(L[i]))
-                map.put(L[i], map.get(L[i]) + 1);
-            else 
-                map.put(L[i], 1);
+        for (String word : L) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
         }
         
-
         /*
             for example:
             abc def ghi:
@@ -77,10 +72,7 @@
                 //map中已拥有此单词
                 if (map.containsKey(str)) {
                 	//假如curMap中也有，则+1
-                    if (curMap.containsKey(str))
-                        curMap.put(str, curMap.get(str) + 1);
-                    else 
-                        curMap.put(str, 1);
+                    curMap.put(str, curMap.getOrDefault(word, 0) + 1);
 
                     //str这个单词出现的次数如果小于字典的次数，则count++
                     if (curMap.get(str) <= map.get(str))
@@ -176,29 +168,30 @@ public class Solution {
 
 
 //Solution3:no comment
-public class Solution {
+class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> res = new ArrayList<>();
-        if (s == null || s.length() == 0 || words == null || words.length == 0) {
+        List<Integer> res = new ArrayList();
+        
+        if (s == null || s.length() == 0 || words == null || words.length == 0)
             return res;
+    
+        HashMap<String, Integer> map = new HashMap();
+        
+        for (String word : words) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
         }
+        
         int wordLen = words[0].length();
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        for (int i = 0; i < words.length; i++) {
-            map.put(words[i], map.containsKey(words[i]) == false ? 1 : map.get(words[i]) + 1);
-        }
+        
         for (int i = 0; i < wordLen; i++) {
-            HashMap<String, Integer> curMap = new HashMap<>();
+            HashMap<String, Integer> curMap = new HashMap();
             int count = 0;
             int left = i;
-            for (int j = i; j <= s.length() - wordLen; j += wordLen) {
-                String word = s.substring(j, j + wordLen);
+            
+            for (int right = i; right <= s.length() - wordLen; right += wordLen) {
+                String word = s.substring(right, right + wordLen);
                 if (map.containsKey(word)) {
-                    if (curMap.containsKey(word)) {
-                        curMap.put(word, curMap.get(word) + 1);
-                    } else {
-                        curMap.put(word, 1);
-                    }
+                    curMap.put(word, curMap.getOrDefault(word, 0) + 1);
                     
                     if (curMap.get(word) <= map.get(word)) {
                         count++;
@@ -226,7 +219,7 @@ public class Solution {
                 } else {
                     curMap.clear();
                     count = 0;
-                    left = j + wordLen;
+                    left = wordLen + right;
                 }
             }
         }

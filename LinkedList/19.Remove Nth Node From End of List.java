@@ -31,6 +31,7 @@
  *     }
  * }
  */
+// prefer one pass
 public class Solution {
 	public ListNode removeNthFromEnd(ListNode head, int n) {
 		ListNode fast = head;
@@ -56,33 +57,30 @@ public class Solution {
 	}
 }
 
-//Solution2 by myself
-public class Solution {
+//Solution2: two pass
+class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        if (head == null) {
+        if (head == null || (head.next == null && n == 1))
+            return null;
+        int len = 1;
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode cur = dummy.next;
+        
+        while (cur != null) {
+            cur = cur.next;
+            len++;
+        }
+        cur = dummy;
+        
+        for (int i = 1; i < len - n; i++) {
+            cur = cur.next;
+        }
+        if (cur.next == null)
             return head;
-        }
-        if (head.next == null) {
-            return n == 1 ? null : head;
-        }
-        ListNode newhead = new ListNode(0);
-        newhead.next = head;
-        int count = 0;
-        ListNode fast = newhead;
-        ListNode slow = newhead;
-        while (fast.next != null) {
-            fast = fast.next;
-            count++;
-        }
-        for (int i = 0; i < count - n; i++) {
-            slow = slow.next;
-        }
-        if (slow.next == null) {
-            return head;
-        }
-        slow.next = slow.next.next;
-        return newhead.next;
+        cur.next = cur.next.next;
+        return dummy.next;
     }
 }
-
 

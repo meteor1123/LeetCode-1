@@ -50,10 +50,10 @@ public class Solution {
     			lastCover = maxCover;
     		}
 
-            //maxCover = Math.max(maxCover, A[i] + i);
-    		if (A[i] + i > maxCover) {
-    			maxCover = A[i] + i;
-    		}
+            maxCover = Math.max(maxCover, A[i] + i);
+    		// if (A[i] + i > maxCover) {
+    		// 	maxCover = A[i] + i;
+    		// }
     	}
     	if (maxCover < A.length - 1) {
     		return 0;
