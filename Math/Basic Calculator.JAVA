@@ -41,6 +41,7 @@
         if c == ')': Pop this context and we come back to last context;
         Add the last num. This is because we only add number after '+' / '-'.
 */
+// Stack 只用来存sign
 public class Solution {
     public int calculate(String s) {
         if (s == null) {
@@ -53,7 +54,7 @@ public class Solution {
         stack.push(sign);
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (c >= '0' && c <= '9') {
+            if (Character.isDigit(c)) {
                 num = num * 10 + (c - '0');
             } else if (c == '+' || c == '-') {
                 res += sign * num;

@@ -20,8 +20,8 @@
 
 /*	
     binary search: 就是当循环结束时，如果没有找到目标元素，
-    				那么start一定停在恰好比目标大的index上，
-    				end一定停在恰好比目标小的index上
+    			   那么start一定停在恰好比目标大的index上，
+    			   end一定停在恰好比目标小的index上
 */
 
 public class Solution {
@@ -71,4 +71,3 @@ class Solution {
         return end + 1;
     }
 }
-    

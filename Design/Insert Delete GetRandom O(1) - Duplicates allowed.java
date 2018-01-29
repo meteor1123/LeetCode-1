@@ -31,10 +31,9 @@
 	collection.getRandom();
 */
 
-
-
+// 
 public class RandomizedCollection {
-    ArrayList<Integer> nums;
+	ArrayList<Integer> nums;
 	HashMap<Integer, Set<Integer>> map;
 	Random rand = new java.util.Random();
     /** Initialize your data structure here. */
@@ -45,9 +44,9 @@ public class RandomizedCollection {
     
     /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     public boolean insert(int val) {
-        boolean contain = map.containsKey(val);
+       boolean contain = map.containsKey(val);
 	    if (!contain) 
-            map.put( val, new LinkedHashSet<Integer>() ); 
+  			map.put( val, new LinkedHashSet<Integer>()); 
 	    map.get(val).add(nums.size());        
 	    nums.add(val);
 	    return ! contain ;
@@ -55,9 +54,9 @@ public class RandomizedCollection {
     
     /** Removes a value from the collection. Returns true if the collection contained the specified element. */
     public boolean remove(int val) {
-        boolean contain = map.containsKey(val);
+      boolean contain = map.containsKey(val);
 	    if (!contain) 
-            return false;
+	    	return false;
 	    int last = map.get(val).iterator().next();
         
 	    map.get(val).remove(last);
@@ -71,13 +70,13 @@ public class RandomizedCollection {
 	    nums.remove(nums.size() - 1);
 	   
 	    if (map.get(val).isEmpty()) 
-            map.remove(val);
+        map.remove(val);
 	    return true;
     }
     
     /** Get a random element from the collection. */
     public int getRandom() {
-        return nums.get(rand.nextInt(nums.size()));
+       return nums.get(rand.nextInt(nums.size()));
     }
 }
 

@@ -34,6 +34,10 @@
 */
 
 
+["RandomizedCollection","insert","insert","remove","insert","remove","getRandom"]
+[[],[0],[1],[0],[2],[1],[]]
+
+
 Key Point: 
 	1. map用来存放value和value在list中的位置
 	2. 用java的random函数在arraylist中根据size 随机选取数据

@@ -14,7 +14,7 @@
 	example:
 		[2,1,3] serialize -> 2!1!#!#!3!#!#!  split("!) -> [2, 1, #, #, 3, #, #]
 
-		再用queue去 建BST
+		再用queue去 建BST 遇到#就返回null
 */
 public class Codec {
     // Encodes a tree to a single string.

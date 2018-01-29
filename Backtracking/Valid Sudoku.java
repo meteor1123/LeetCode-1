@@ -26,6 +26,7 @@ class Solution {
                     return false;
                 int rowIndex = 3 * (i / 3);
                 int colIndex = 3 * (i % 3);
+                // 小的九宫格
                 if (board[rowIndex + j / 3][colIndex + j % 3] != '.' && !cube.add(board[rowIndex + j / 3][colIndex + j % 3]))
                     return false;
             }

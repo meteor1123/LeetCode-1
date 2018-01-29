@@ -66,8 +66,20 @@ PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
 PriorityQueue<Turple> pq = new PriorityQueue<Turple>(new Comparator<Turple>(){
     public int compare(Turple a, Turple b) {
         if (a.count == b.count)
-            return a.word.compareTo(b.word);
+            return a.word.compareTo(b.word); // 按从小到大排序
         return b.count - a.count;
     }
 });
 
+PriorityQueue<String> heap = new PriorityQueue<String>(
+		(w1, w2) -> count.get(w1) != count.get(w2) ?
+  	count.get(w1) - count.get(w2) : w2.compareTo(w1) 
+);
+
+PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(
+     (a,b) -> a.getValue()==b.getValue() ? b.getKey().compareTo(a.getKey()) : a.getValue()-b.getValue()
+);
+
+
+Collections.sort(candidates, (w1, w2) -> count.get(w1) != count.get(w2) ?
+      count.get(w2) - count.get(w1) : w1.compareTo(w2));

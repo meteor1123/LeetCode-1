@@ -17,7 +17,8 @@
 		]
 */
 
-//Solution0 prefer
+ 
+//Solution0 prefer, time: O(n^n) space: O(n)
 public class Solution {
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> res = new ArrayList<>();
@@ -64,55 +65,57 @@ public class Solution {
     }
 }
 
-
+//Solution2: dfs by row prefer
 public class Solution {
-    public ArrayList<String[]> solveNQueens(int n) {
-        	ArrayList<String[]> res = new ArrayList<String[]>();
-        	if (n < 0)
-        		return res;
-        	int[] columnVal = new int[n];
-        	dfs(n, res, 0, columnVal);
-       		return res;
+        public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<>();
+        if (n < 0) {
+            return res;
+        }
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = '.';
+            }
+        }
+        dfs(n, 0, board, res);
+        return res;
+        
     }
-
-    public void dfs(int nQueens, ArrayList<String[]> res, int row, int[] columnVal) {
-    	if (row == nQueens) {
-    		String[] unit = new String[nQueens];
-    		for (int i = 0; i < nQueens; i++) {
-    			StringBuilder sb = new StringBuilder();
-    			for (int j = 0; j < nQueens; j++) {
-    				if (j == columnVal[i])
-    					sb.append("Q");
-    				else 
-    					sb.append(".");
-    			}
-    			unit[i] =sb.toString();
-    		}
-    		res.add(unit);
-    		return ;
-    	}
-
-    	for (int i = 0; i < nQueens; i++) {
-    		columnVal[row] = i;
-    		if (isValid(row, columnVal)) {
-    			dfs(nQueens, res, row + 1, columnVal);
-    		}
-    	} 
+    public void dfs(int n, int row, char[][] board, List<List<String>> res) {
+        if (row == n) {
+            List<String> item = new ArrayList<>();
+            for (char[] rowRes : board) {
+                item.add(new String(rowRes));
+            }
+            res.add(item);
+            return;
+        }
+        
+        for (int i = 0; i < n; i++) {
+            if (isValid(board, row, i)) {
+                 board[row][i] = 'Q';
+                 dfs(n, row + 1, board, res);
+                 board[row][i] = '.';
+            }
+        }
     }
-
-
-    public boolean isValid(int row, int[] columnVal) {
-    	for (int i = 0; i < row; i++) {
-    		if (columnVal[row] == columnVal[i] || Math.abs(columnVal[row] -columnVal[i]) == row - i)
-    			return false;
-    	}
-    	return true;
+    
+    public boolean isValid(char[][] board, int row, int col) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (board[i][j] == 'Q' && (i == row || j == col || Math.abs(row - i) == Math.abs(col - j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
 
 
-//Solution2 dfs by col
-public class Solution {
+//Solution3: dfs by col
+class Solution {
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> res = new ArrayList<>();
         if (n < 0) {
@@ -153,53 +156,6 @@ public class Solution {
             for(int j = 0;j < col; j++){
                 if(board[i][j] == 'Q'&& (i == row || row + col == i + j || row - col == i - j)) //Return false if a quuen is already present in another row for same col, or in any diagnal passing through board[row][col]
                     return false;
-            }
-        }
-        return true;
-    }
-
-    //Solution3 no col prefer,dfs by row
-        public List<List<String>> solveNQueens(int n) {
-        List<List<String>> res = new ArrayList<>();
-        if (n < 0) {
-            return res;
-        }
-        char[][] board = new char[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                board[i][j] = '.';
-            }
-        }
-        dfs(n, 0, board, res);
-        return res;
-        
-    }
-    
-    public void dfs(int n, int row, char[][] board, List<List<String>> res) {
-        if (row == n) {
-            List<String> item = new ArrayList<>();
-            for (char[] rowRes : board) {
-                item.add(new String(rowRes));
-            }
-            res.add(item);
-            return;
-        }
-        
-        for (int i = 0; i < n; i++) {
-            if (isValid(board, row, i)) {
-                 board[row][i] = 'Q';
-                 dfs(n, row + 1, board, res);
-                 board[row][i] = '.';
-            }
-        }
-    }
-    
-    public boolean isValid(char[][] board, int row, int col) {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                if (board[i][j] == 'Q' && (i == row || j == col || Math.abs(row - i) == Math.abs(col - j))) {
-                    return false;
-                }
             }
         }
         return true;

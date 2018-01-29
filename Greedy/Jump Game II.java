@@ -11,6 +11,26 @@
 	The minimum number of jumps to reach the last index is 2. (Jump 1 step from index 0 to 1, then 3 steps to the last index.)
 */
 
+// Prefer
+class Solution {
+    public int jump(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        int res = 0;
+        int curMax = 0; //当前能cover的步数
+        int maxCover = 0; //在当前cover的步数中更新全局最大的cover
+        for (int i = 0; i < nums.length - 1; i++) { // 为什么只能到length - 1, 因为当到了最后一步的时候 不需要再计算步数
+            maxCover = Math.max(maxCover, nums[i] + i);
+            if (i == curMax) {
+                res++;
+                curMax = maxCover;
+            }
+        }
+        return res;
+    }
+}
+
+
 public class Solution {
 	//DP 
 	//steps mean the minimum step from 0 to i
