@@ -58,21 +58,21 @@ public class Solution {
     }
 
     public TreeNode buildTree(int[] pre, int preStart, int preEnd, int[] in, int inStart, int inEnd) {
-    	if (inStart > inEnd || preStart > preEnd)
+    	if (preStart > preEnd)
     		return null;
-    	int rootVal = pre[preStart];
-    	int rootIndex = 0;
-    	for (int i = inStart; i <= inEnd; i++) {
-    		if (in[i] == rootVal) {
-    			rootIndex = i;
-    			break;
-    		}
-    	}
+				TreeNode root = new TreeNode(pre[preStart]);
+        int rootIndex = 0;
+        for (int i = 0; i < in.length; i++) {
+            if (in[i] == root.val) {
+                rootIndex = i;
+                break;
+            }
+        }
 
-    	int len = rootIndex - inStart;
-    	TreeNode root = new TreeNode(rootVal);
-    	root.left = buildTree(pre, preStart + 1, preStart + len, in, inStart, rootIndex - 1);
-    	root.right = buildTree(pre, preStart + len + 1, preEnd, in, rootIndex + 1, inEnd);
-    	return root;
+		  	int len = rootIndex - inStart;
+		  	TreeNode root = new TreeNode(rootVal);
+		  	root.left = buildTree(pre, preStart + 1, preStart + len, in, inStart, rootIndex - 1);
+		  	root.right = buildTree(pre, preStart + len + 1, preEnd, in, rootIndex + 1, inEnd);
+		  	return root;
     }
 }

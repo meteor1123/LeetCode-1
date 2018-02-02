@@ -24,24 +24,21 @@
                     if yes return ""
                     if no return substring(0, size() - 1), since we need to remove the last blank space;
 */
-public class Solution { 
-    //Solution Chapter 9
+public class Solution {
     public String reverseWords(String s) {
-        if (s == null || s.length() == 0) {
+        if (s == null || s.length() == 0)
+            return s;
+        
+        String[] words = s.split(" ");
+        if (words.length == 0)
             return "";
-        }
-        String[] strArr = s.split(" ");
-        if (strArr.length == 0){
-            return "";
-        }
+        
         StringBuilder sb = new StringBuilder();
-        for (int i = strArr.length - 1; i >= 0; i--) {
-            if (!strArr[i].equals("")){
-                sb.append(strArr[i]).append(" ");
-            }
+        for (int i = words.length - 1; i >= 0; i--) {
+            if (!words[i].equals(""))
+                sb.append(words[i]).append(" ");
         }
-        //remove the last blank space(空格)
-        return sb.substring(0, sb.length() - 1);
+        return sb.toString().trim();
     }
 }
 

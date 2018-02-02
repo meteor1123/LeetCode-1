@@ -16,3 +16,35 @@ public class BubbleSort {
 		}
 	}
 }
+
+
+// Bubble Sort O(n*n), Microsoft interview question
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        int len = 0;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode cur = dummy.next;
+        while (cur != null) {
+            cur = cur.next;
+            len++;
+        }
+        
+        for (int i = 0 ; i < len; i++) {
+            cur = head;
+            ListNode next = cur.next;
+            for (int j = 0; j < len - 1; j++) {
+                if (cur.val > next.val) {
+                    int temp = cur.val;
+                    cur.val = next.val;
+                    next.val = temp;
+                }
+                cur = next;
+                next = next.next;
+            }
+        }
+        return dummy.next;
+    }
+}

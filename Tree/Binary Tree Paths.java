@@ -12,27 +12,22 @@
 	["1->2->5", "1->3"]
 */
 
-
-
-public class Solution {
+class Solution {
     public List<String> binaryTreePaths(TreeNode root) {
-        List<String> res = new ArrayList<String>();
-        if (root != null) {
-            dfs(root, "", res);
-        }
+        List<String> res = new ArrayList();
+        dfs(root, res, "");
         return res;
     }
     
-    public void dfs(TreeNode root, String path, List<String> res) {
+    public void dfs(TreeNode root, List<String> res, String item) {
+        if (root == null)
+           return;
         if (root.left == null && root.right == null) {
-            res.add(path + root.val);
+            res.add(item + root.val);
             return;
         }
-        if (root.left != null) {
-            dfs(root.left, path + root.val + "->", res);
-        }
-        if (root.right != null) {
-            dfs(root.right, path + root.val + "->", res);
-        }
+        dfs(root.left, res, item + root.val + "->");
+        dfs(root.right, res, item + root.val + "->");
+        
     }
 }

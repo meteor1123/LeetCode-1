@@ -17,7 +17,7 @@
     4.重复步骤3直到某一指针到达序列尾
     5.将另一序列剩下的所有元素直接复制到合并序列尾
 */
-*/
+
 public class Solution {
     //in place 的方法
     public void merge(int A[], int m, int B[], int n) {
@@ -38,36 +38,21 @@ public class Solution {
             n--;
         }
     }
+}
 
-    //ArrayList method
-    public ArrayList<Integer> mergeSortedArray(ArrayList<Integer> A, ArrayList<Integer> B) {
-        // write your code here
-        if (A==null || A.size()==0) {
-            return B;
+
+// index from 0 ~ m - 1, 0 ~ n - 1
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1;
+        int j = n - 1;
+        while (i >= 0 && j >= 0) {   
+            nums1[i + j + 1] = nums1[i] > nums2[j] ? nums1[i--] : nums2[j--];
         }
-        if (B==null || B.size()==0) {
-            return A;
+        
+        while (j >= 0) {
+            nums1[i + j + 1] = nums2[j]; // 如果j >= 0存在， i 一定= -1, i + j + 1就可以达到0
+            j--;
         }
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        int i = 0, j = 0;
-        for (int k = 0; k < A.size() + B.size(); k++) {
-            if (i < A.size() && j < B.size() && A.get(i) < B.get(j)) {
-                res.add(A.get(i));
-                i++;
-            }
-            else if (i < A.size() && j < B.size() && A.get(i) >= B.get(j)){
-                res.add(B.get(j));
-                j++;
-            }
-            else if (i < A.size()) {
-                res.add(A.get(i));
-                i++;
-            }
-            else {
-                res.add(B.get(j));
-                j++;
-            }
-        }
-        return res;
     }
 }

@@ -149,9 +149,7 @@ class Solution {
             }
         });
         
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a, b) -> {
-            return b - a;
-        });
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a, b) -> b - a);
         
         pq.offer(0);
         int preHeight = 0;

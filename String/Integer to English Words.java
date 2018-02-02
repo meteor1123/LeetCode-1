@@ -17,26 +17,26 @@ public class Solution {
         if (num == 0)
             return "Zero";
         int i = 0;
-        String words = "";
+        String res = "";
     
         while (num > 0) {
             if (num % 1000 != 0)
-                words = helper(num % 1000) + thousands[i] + " " + words;
+                res = helper(num % 1000) + thousands[i] + " " + res;
             num /= 1000;
             i++;
         }
     
-        return words.trim();
+        return res.trim();
     }
     
     private String helper(int num) {
         if (num == 0)
             return "";
-        else if (num < 20)
+        else if (num < 20) 
             return lessThan20[num] + " ";
-        else if (num < 100)
+        else if (num < 100) 
             return tens[num / 10] + " " + helper(num % 10);
-        else
+        else 
             return lessThan20[num / 100] + " Hundred " + helper(num % 100);
     }
 }

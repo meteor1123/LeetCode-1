@@ -109,15 +109,10 @@ public class Codec {
         String val = queue.poll();
         if (val.equals("#")) {
             return null;
-        } else {
-            TreeNode node = new TreeNode(Integer.valueOf(val));
-            node.left = buildTree(queue);
-            node.right = buildTree(queue);
-            return node;
-        }
+        } 
+        TreeNode node = new TreeNode(Integer.valueOf(val));
+        node.left = buildTree(queue);
+        node.right = buildTree(queue);
+        return node;
     }
 }
-
-// Your Codec object will be instantiated and called as such:
-// Codec codec = new Codec();
-// codec.deserialize(codec.serialize(root));
