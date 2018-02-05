@@ -77,9 +77,9 @@ public class Solution {
         }
         return id;
     }
-}Thank you again, Mrs. Mellish, for offering me this wonderful opportunity
+}
 
-//Solution2: better name prefe
+//Solution2: better name prefer
 public class Solution {
     public final int[] shift = {0, 1, 0 , -1, 0};
     public List<Integer> numIslands2(int m, int n, int[][] positions) {

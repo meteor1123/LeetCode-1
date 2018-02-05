@@ -30,19 +30,23 @@ public class Solution {
         int m = prices.length;
         int[] left = new int[m];
         int[] right = new int[m];
-        int minBuy = prices[0];
-        int profit = 0;
+        
         //维护一个最小买入价
+        int minBuy = prices[0];
         for (int i = 1; i < m; i++) {
             left[i] = Math.max(left[i - 1], prices[i] - minBuy);
             minBuy = Math.min(minBuy, prices[i]);
         }
-        int maxSell = prices[m - 1];
+        
         //维护一个最大卖价
+        int maxSell = prices[m - 1];
         for (int i = m - 2; i >= 0; i--) {
             right[i] = Math.max(right[i + 1], maxSell - prices[i]);
             maxSell = Math.max(maxSell, prices[i]);
         }
+
+        // 算最大profit
+        int profit = 0;
         for (int i = 0; i < m - 1; i++) {
             profit = Math.max(profit, left[i] + right[i]);
         }
@@ -72,7 +76,7 @@ public class Solution {
 		int maxSellPrice = prices[len - 1];
 		for (int i = len - 2; i > 0; i--) {
 		    maxSellPrice = prices[i] > maxSellPrice ? prices[i] : maxSellPrice;
-			right[i] = maxSellPrice - prices[i] > right[i + 1] ? maxSellPrice - prices[i] : right[i + 1];
+			 right[i] = maxSellPrice - prices[i] > right[i + 1] ? maxSellPrice - prices[i] : right[i + 1];
 			
 		}
 

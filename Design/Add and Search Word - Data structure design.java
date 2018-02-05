@@ -17,56 +17,56 @@
 	search("b..") -> true
 	You may assume that all words are consist of lowercase letters a-z.
 */
-
-
-public class WordDictionary {
-    public class TrieNode {
-        public TrieNode[] children = new TrieNode[26];
-        public String item = "";
+class WordDictionary {
+    class Trie {
+        Trie[] children;
+        String item;
+        public Trie() {
+            children = new Trie[26];
+            item = "";
+        }
     }
-
-    private TrieNode root = new TrieNode();
+    private Trie dict;
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        dict = new Trie();
+    }
     
-    
-    // Adds a word into the data structure.
+    /** Adds a word into the data structure. */
     public void addWord(String word) {
-        TrieNode cur = root;
-        for (char c : word.toCharArray()) {
+        Trie cur = dict;
+        char[] chars = word.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
             if (cur.children[c - 'a'] == null) {
-                cur.children[c - 'a'] = new TrieNode();
+                cur.children[c - 'a'] = new Trie();
             }
             cur = cur.children[c - 'a'];
         }
         cur.item = word;
     }
-
-    // Returns if the word is in the data structure. A word could
-    // contain the dot character '.' to represent any one letter.
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
     public boolean search(String word) {
-        return match(word.toCharArray(), 0, root);
+        return match(word.toCharArray(), 0, dict);
     }
     
-    private boolean match(char[] word, int k, TrieNode node) {
-    	//match to the last character, so k == word.length;
-        if (k == word.length) {
-            return !node.item.equals("");//in here, we don't need to compare the node.item with word.
-            //since if k == word.length, which mean has right matched, just check the node.item whether is not
+    public boolean match(char[] word, int index, Trie node) {
+        if (index == word.length) {
+            return !node.item.equals("");
         }
-
-        //if isn't '.', just recursive check the next character of word.
-        if (word[k] != '.') {
-            return node.children[word[k] - 'a'] != null && match(word, k + 1, node.children[word[k] - 'a']);
+        
+        if (word[index] != '.') {
+            return node.children[word[index] - 'a'] != null && match(word, index + 1, node.children[word[index] - 'a']);
         } else {
-        	//if is '.',  check every children with the node, since '.' match every single character.
-            for (int i = 0; i < node.children.length; i++) { //node.children.length == 26, we can replace with 26
-            	//
+            for (int i = 0; i < 26; i++) {
                 if (node.children[i] != null) {
-                    if (match(word, k + 1, node.children[i])) {
+                    if (match(word, index + 1, node.children[i])) {
                         return true;
                     }
                 }
             }
-        } 
+        }
         return false;
     }
 }

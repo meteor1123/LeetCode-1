@@ -30,12 +30,12 @@ public class Solution {
         res.add(new ArrayList<Integer>());
         Arrays.sort(num);
         boolean[] visited = new boolean[num.length];
-        subsetsWithDupHelper(num, 0, item, res, visited);
+        helper(num, 0, item, res, visited);
         return res;
         
     }
     
-    public void subsetsWithDupHelper(int[] num, int index, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res, boolean[] visited) {
+    public void helper(int[] num, int index, ArrayList<Integer> item, ArrayList<ArrayList<Integer>> res, boolean[] visited) {
        
        for (int i = index; i < num.length; i++) {
        		// this if statament is to skip the duplicate value
@@ -45,7 +45,7 @@ public class Solution {
            visited[i] = true;
            item.add(num[i]);
            res.add(new ArrayList<Integer>(item));
-           subsetsWithDupHelper(num, i + 1, item, res, visited);
+           helper(num, i + 1, item, res, visited);
            visited[i] = false;
            item.remove(item.size() - 1);
        } 

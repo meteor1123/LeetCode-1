@@ -64,7 +64,7 @@ public class Solution {
         /*
 
         	case 1: Node has right, but the next point is nnull,like point 3
-        			             1  -> NULL
+        			            1  -> NULL
 						       /  \
 						      2 -> 3 -> NULL
 						     / \  / \
@@ -107,35 +107,10 @@ public class Solution {
     			cur.right.next = cur.next.left;
     			cur = cur.next;
     		} else {
-    			root = root.left;
+    			root = root.left; //当前层设置完毕，移到下一层
     			cur = root;
     		}
     	}
 
     }
-
-
-    // //we can also use Populating Next Right Pointers in each node II Solution
-    // public void connect(TreeLinkNode root) {
-    //     //tempChild 是每层的头结点（dummy node） tempChild.next是每层最左边的结点
-    //     TreeLinkNode tempChild = new TreeLinkNode(0);
-    //     while (root != null) {
-    //         TreeLinkNode curChild = tempChild;//用curChild 来遍历root下的left和right child 并设置next
-    //         while (root != null) {
-    //             if (root.left != null) {
-    //                 curChild.next = root.left;
-    //                 curChild = curChild.next;
-    //             }
-    //             if (root.right != null) {
-    //                 curChild.next = root.right;
-    //                 curChild = curChild.next;
-    //             }
-    //             //root的左右儿子都设置完后，root向右前进.
-    //             root = root.next;
-    //         }
-    //         //遍历完一层的root，也就是设置完root这一层的结点的儿子们的next指针后， 将tempChild 赋值给root，因为tempChild是root下面那一层的最左边的孩子
-    //         root = tempChild.next;
-    //         tempChild.next = null;
-    //     }
-    // }
 }

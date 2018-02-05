@@ -127,51 +127,41 @@ public class Solution {
 
 
 //Solution3
-public class Solution {
-	public String minWindow(String s, String t) {
+class Solution {
+    public String minWindow(String s, String t) {
         String res = "";
-        if (s == null || s.length() == 0 || t == null || t.length() == 0) {
+        if (s == null || s.length() == 0 || s.length() < t.length())
             return res;
-        }
-        HashMap<Character, Integer> dict = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            if (!dict.containsKey(t.charAt(i))) {
-                dict.put(t.charAt(i), 1);
-            } else {
-                dict.put(t.charAt(i), dict.get(t.charAt(i)) + 1);
-            }
-        }
-        
-        int count = 0, start = 0, end = 0, minStart = 0;
-        int minLen = s.length() + 1;
+        HashMap<Character, Integer> map = new HashMap();
+        for (char c : t.toCharArray())
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        int start = 0;
+        int end = 0;
+        int count = 0;
+        int min = Integer.MAX_VALUE;
         while (end < s.length()) {
             char c = s.charAt(end);
-            if (dict.containsKey(c)) {
-                dict.put(c, dict.get(c) - 1);
-                if (dict.get(c) >= 0) {
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c) - 1);
+                if (map.get(c) >= 0) {
                     count++;
-                }
+                } 
                 while (count == t.length()) {
-                    if (end - start + 1 < minLen) {
-                        minLen = end - start + 1;
-                        minStart = start;
+                    if (end - start + 1 < min) {
+                        min = end - start + 1;
+                        res = s.substring(start, end + 1);
                     }
                     char leftChar = s.charAt(start);
-                    if (dict.containsKey(leftChar)) {
-                        dict.put(leftChar, dict.get(leftChar) + 1);
-                        if (dict.get(leftChar) > 0) {
+                    if (map.containsKey(leftChar)) {
+                        map.put(leftChar, map.get(leftChar) + 1);
+                        if (map.get(leftChar) > 0)
                             count--;
-                        }
                     }
                     start++;
                 }
             }
             end++;
         }
-        if (minLen > s.length()) {
-            return "";
-        } else {
-            return s.substring(minStart, minStart + minLen);        
-        }
+        return res;
     }
 }

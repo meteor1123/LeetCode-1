@@ -15,94 +15,61 @@
 */
 
 
-    //BFS 
-    public ArrayList<Integer> rightSideView(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        if (root == null) {
-            return res;
-        }
-        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-        int curNum = 1;
-        int nextNum = 0;
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode curNode = queue.poll();
-            curNum--;
-            if (curNum == 0) {
-                res.add(curNode.val);
-            }
-            if (curNode.left != null) {
-                queue.offer(curNode.left);
-                nextNum++;
-            }
-            if (curNode.right != null) {
-                queue.offer(curNode.right);
-                nextNum++;
-            }
-            
-            if (curNum == 0) {
-                curNum = nextNum;
-                nextNum = 0;
-            }
-        }
+//BFS 
+public ArrayList<Integer> rightSideView(TreeNode root) {
+    ArrayList<Integer> res = new ArrayList<Integer>();
+    if (root == null) {
         return res;
     }
-    
-    //DFS 
-    public ArrayList<Integer> rightSideView(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        if (root == null) {
-            return res;
+    LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+    int curNum = 1;
+    int nextNum = 0;
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+        TreeNode curNode = queue.poll();
+        curNum--;
+        if (curNum == 0) {
+            res.add(curNode.val);
         }
-        res.add(root.val);
-        int level = 1;
-        rightSideViewHelper(res, root, level);
-        return res;
-    }
-    
-    public void rightSideViewHelper(ArrayList<Integer> res, TreeNode root, int curLevel) {
-        if (root == null) {
-            return;
+        if (curNode.left != null) {
+            queue.offer(curNode.left);
+            nextNum++;
         }
-
-        if (curLevel > res.size()) {
-            res.add(root.val);
+        if (curNode.right != null) {
+            queue.offer(curNode.right);
+            nextNum++;
         }
         
-        rightSideViewHelper(res, root.right, curLevel + 1);
-        rightSideViewHelper(res, root.left, curLevel + 1 );
+        if (curNum == 0) {
+            curNum = nextNum;
+            nextNum = 0;
+        }
     }
+    return res;
+}
 
-    //BFS left side view
-    public ArrayList<Integer> rightSideView(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        if (root == null) {
-            return res;
-        }
-        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-        int curNum = 1;
-        int nextNum = 0;
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode curNode = queue.poll();
-            curNum--;
-            if (nextNum == 0) {//only different with the right side
-                res.add(curNode.val);
-            }
-            if (curNode.left != null) {
-                queue.offer(curNode.left);
-                nextNum++;
-            }
-            if (curNode.right != null) {
-                queue.offer(curNode.right);
-                nextNum++;
-            }
-            
-            if (curNum == 0) {
-                curNum = nextNum;
-                nextNum = 0;
-            }
-        }
+//DFS 
+public ArrayList<Integer> rightSideView(TreeNode root) {
+    ArrayList<Integer> res = new ArrayList<Integer>();
+    if (root == null) {
         return res;
     }
+    res.add(root.val);
+    int level = 1;
+    helper(res, root, level);
+    return res;
+}
+
+public void helper(ArrayList<Integer> res, TreeNode root, int curLevel) {
+    if (root == null) {
+        return;
+    }
+
+    if (curLevel > res.size()) {
+        res.add(root.val);
+    }
+    
+    helper(res, root.right, curLevel + 1);
+    helper(res, root.left, curLevel + 1 );
+}
 

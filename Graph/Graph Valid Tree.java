@@ -61,30 +61,36 @@
 //Solution1: Union Find
 public class Solution {
     public boolean validTree(int n, int[][] edges) {
-        int[] parent = new int[n];
-        Arrays.fill(parent, -1);
+        int[] root = new int[n];
+        Arrays.fill(root, -1);
         for (int i = 0; i < edges.length; i++) {
-            int x = find(parent, edges[i][0]);
-            int y = find(parent, edges[i][1]);
+            int x = find(root, edges[i][0]);
+            int y = find(root, edges[i][1]);
             
             if (x == y) {
                 return false;
             }
             
             //Union
-            parent[x] = y;
+            root[x] = y;
         }
         
         return edges.length == n - 1;
     }
     
     //Find
-    public int find(int[] parent, int i) {
-        if (parent[i] == -1) {
+    public int find(int[] root, int i) {
+        if (root[i] == -1) {
             return i;
-        } else {
-            return find(parent, parent[i]);
         }
+        root[i] = find(root, root[i]);
+        return root[i];
+    }
+
+    public int find(int[] root, int i) {
+        while (root[i] != -1)
+            i = root[i];
+        return i;
     }
 }
 

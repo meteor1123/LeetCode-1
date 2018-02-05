@@ -34,6 +34,14 @@
     	我们可以看到错误的结果中有0开头的字符串出现，明显这不是数字，所以我们要去掉这些情况，过滤方法也很简单，
     	我们只要判断长度大于1且首字符是‘0’的字符串，将其滤去即可，参见代码如下：
 */
+
+/*
+    This problem has a lot of edge cases to be considered:
+
+    1. overflow: we use a long type once it is larger than Integer.MAX_VALUE or minimum, we get over it.
+    2. 0 sequence: because we can’t have numbers with multiple digits started with zero, we have to deal with it too.
+    3. a little trick is that we should save the value that is to be multiplied in the next recursion.
+*/
 public class Solution {
     public List<String> addOperators(String num, int target) {
         List<String> res = new ArrayList<>();
