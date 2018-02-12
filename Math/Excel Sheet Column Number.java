@@ -32,18 +32,6 @@ public class Solution {
         }
         return res;
     }
-
-
-    //2
-    public int titleToNumber(String s) {
-    	//The ascii of A is 65
-        char[] charArr = s.toCharArray();
-        int res = 0;
-        for (int i = 0; i < charArr.length; i++) {
-        	res = 26 * res + charArr[i] % 64;
-        }
-        return res;
-    }
 }
 
 class Solution {

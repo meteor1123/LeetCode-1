@@ -41,19 +41,14 @@
 // head -> 1 -> 2-> 3-> 4-> 5 -> tail    -> next / <- pre                                              
 public class LRUCache {
     private HashMap<Integer, DoubleLinkedList> cache = new HashMap<Integer, DoubleLinkedList>();
-    private int count;
     private int capacity;
     private DoubleLinkedList head;
     private DoubleLinkedList tail;
     public LRUCache(int capacity) {
-        this.count = 0;
         this.capacity = capacity;
         
         head = new DoubleLinkedList();
-        head.pre = null;
-        
         tail = new DoubleLinkedList();
-        tail.next = null;
         
         head.next = tail;
         tail.pre = head;
@@ -77,14 +72,14 @@ public class LRUCache {
     
     // 4. create moveToHead function
     public void moveToHead(DoubleLinkedList node) {
-        this.removeNode(node);
-        this.addNode(node);
+        removeNode(node);
+        addNode(node);
     }
     
     // 5. create popTail function
     public DoubleLinkedList popTail() {
         DoubleLinkedList res = tail.pre;
-        this.removeNode(res);
+        removeNode(res);
         return res;
     }
     
@@ -94,7 +89,7 @@ public class LRUCache {
         if (node == null) {
             return -1;
         }
-        this.moveToHead(node);
+        moveToHead(node);
         return node.value;
     }
     
@@ -105,20 +100,28 @@ public class LRUCache {
             DoubleLinkedList newNode = new DoubleLinkedList();
             newNode.key = key;
             newNode.value = value;
-            this.cache.put(key, newNode);
-            this.addNode(newNode);
-            count++;
-            if (count > this.capacity) {
-                DoubleLinkedList tail = this.popTail();
-                this.cache.remove(tail.key);
-                count--;
+            cache.put(key, newNode);
+            addNode(newNode);
+
+            if (cache.size() > capacity) {
+                DoubleLinkedList tail = popTail();
+                cache.remove(tail.key);
             }
         } else {
             node.value = value;
-            this.moveToHead(node);
+            moveToHead(node);
         }
         
     }
+    
+    // step1: creat double linkedlist 
+    class DoubleLinkedList {
+        int key;
+        int value;
+        DoubleLinkedList pre;
+        DoubleLinkedList next;
+    }
+}
     
     // step1: creat double linkedlist 
     class DoubleLinkedList {

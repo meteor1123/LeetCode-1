@@ -18,10 +18,12 @@ public class Solution {
     public int missingNumber(int[] nums) {
         int xor = 0;
         int i = 0;
-        for (; i < nums.length; i++) {
+        while (i < nums.length) {
             xor = xor ^ i ^ nums[i];
-         //                    nums[0]=0 nums[1]=2  nums[2]=3    i=3
-        }// 形如 0 ，2 ， 3 = 0 ^ (0 ^ 0) ^ (1 ^ 2) ^ (2 ^ 3)   ^  3
+            i++;
+        }
+        // nums[0]=0 nums[1]=2  nums[2]=3    i=3
+        // 形如 0 ，2 ， 3 = 0 ^ (0 ^ 0) ^ (1 ^ 2) ^ (2 ^ 3)   ^  3
         return xor ^ i;
     }
 }
@@ -33,6 +35,6 @@ public class Solution {
         for(int num: nums)
             sum += num;
 
-        return (nums.length * (nums.length + 1) )/ 2 - sum;
+        return (nums.length * (nums.length + 1) )/ 2 - sum; //等差数列-和=所缺数字
     }
 }

@@ -5,10 +5,17 @@
 	For example,
 	s = "anagram", t = "nagaram", return true.
 	s = "rat", t = "car", return false.
-
-
 */
 
+
+/*
+    Follow up:
+        What if the inputs contain unicode characters? How would you adapt your solution to such case?
+
+    Answer:
+        Use a hash table instead of a fixed size counter. Imagine allocating a large size array to fit the entire range of unicode characters, 
+        which could go up to more than 1 million. A hash table is a more generic solution and could adapt to any range of characters.
+*/
 public class Solution {
 
 	//O(n) time complexity, O(1) space
@@ -48,36 +55,4 @@ public class Solution {
         }
         return true;
     }
-
-    //HashMap
-    public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length()) {
-            return false;
-        }
-        
-        HashMap<Character, Integer> hm = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (hm.containsKey(s.charAt(i))) {
-                hm.put(s.charAt(i), hm.get(s.charAt(i)) + 1);
-            } else {
-                hm.put(s.charAt(i), 1);
-            }
-        }
-        
-        for (int i = 0; i < t.length(); i++) {
-            if (hm.containsKey(t.charAt(i))) {
-                hm.put(t.charAt(i), hm.get(t.charAt(i)) - 1);
-            } else {
-                return false;
-            }
-        }
-        
-        for (Integer val : hm.values()) {
-            if (val > 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }

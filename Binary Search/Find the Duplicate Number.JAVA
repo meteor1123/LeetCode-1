@@ -60,7 +60,7 @@ public class Solution {
     }
 }
 
-//Solution2
+//Solution2: time O(n) space O(1)
 //用linkedlist cycle II 的算法
 class Solution {
     public int findDuplicate(int[] nums) {

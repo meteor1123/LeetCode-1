@@ -6,16 +6,6 @@
 	return "blue is sky the".
 */
 
-
-/*
-	solution:
-		step1: 检查输入s是否为空
-		step2: 使用split按照空格 分隔生成字符数组res[],check该字符数组是否为空
-		step3: 构造一个ArrayList,存放res[i]如果非空。
-		step4: 用Collections.reverse方法逆置arraylist 
-		step5: 构造string ans，将list里的字符串按照顺序加入
-*/
-
 /*
         Solution from chapter 9 :
                 1. split the original string s by " "(blank space), and generate a new String[] array

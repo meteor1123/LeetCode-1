@@ -53,12 +53,12 @@ public class Solution {
         String cur = s + " " + new StringBuilder(s).reverse().toString();
         int[] next = new int[cur.length()];
         for (int i = 1; i < cur.length(); i++) {
-            int curindex = next[i - 1];
-            while (curindex > 0 && cur.charAt(curindex) != cur.charAt(i)) {
-                curindex = next[curindex - 1];
+            int curIndex = next[i - 1];
+            while (curIndex > 0 && cur.charAt(curIndex) != cur.charAt(i)) {
+                curIndex = next[curIndex - 1];
             }
-            if (cur.charAt(curindex) == cur.charAt(i)) {
-                next[i] = curindex + 1;
+            if (cur.charAt(curIndex) == cur.charAt(i)) {
+                next[i] = curIndex + 1;
             }
         }
         return new StringBuilder(s.substring(next[cur.length() -1])).reverse().toString() + s;
@@ -93,13 +93,13 @@ public class Solution {
 }
 
 
-//Solution3
+//Solution3: recursive
 public class Solution {
     public String shortestPalindrome(String s) {
         int j = 0;
         for (int i = s.length() - 1; i >= 0; i--) {
             if (s.charAt(i) == s.charAt(j)) {
-                j += 1;
+                j += 1;  //从尾一直比较到头
             }
         }
         if (j == s.length()) {
@@ -107,5 +107,25 @@ public class Solution {
         }
         String suffix = s.substring(j);
         return new StringBuffer(suffix).reverse().toString() + shortestPalindrome(s.substring(0, j)) + suffix;
+    }
+}
+
+//Solution4: iterative
+class Solution {
+    public String shortestPalindrome(String s) {
+        int i = 0;
+        int j = s.length() - 1;
+        int end = j;
+        while (i < j) {
+            if (s.charAt(i) == s.charAt(j)) {
+                i++;
+                j--;
+            } else {
+                i = 0;
+                end--;
+                j = end; // end 是最后一个匹配的palindrome 字符， end + 1 开始需要copy reverse
+            }
+        }
+        return new StringBuilder(s.substring(end + 1)).reverse().toString() + s;
     }
 }

@@ -20,29 +20,28 @@
 
 
 //Solution1: Two Hash Table
-public class Solution {
+class Solution {
     public boolean isIsomorphic(String s, String t) {
-        int len = s.length();
-        HashMap<Character, Character> hm = new HashMap<Character, Character>();
-        HashSet<Character> used = new HashSet<Character>();
-        for (int i = 0; i < len; i++) {
-            char sChar = s.charAt(i);
-            char tChar = t.charAt(i);
-            if (!hm.containsKey(sChar)) {
-                if (used.contains(tChar)) {
+        HashMap<Character, Character> map = new HashMap();
+        HashSet<Character> set = new HashSet();
+        for (int i = 0; i < s.length(); i++) {
+            char c1 = s.charAt(i);
+            char c2 = t.charAt(i);
+            
+            if (map.get(c1) == null) {
+                if (set.contains(c2)) {
                     return false;
                 }
-                hm.put(sChar, tChar);
-                used.add(tChar);
-            } else {
-                if (hm.get(sChar) != tChar) {
-                    return false;
-                }
-            }
+                set.add(c2);
+                map.put(c1, c2);
+            } else if (map.get(c1) != c2) {
+                return false;
+            } 
         }
         return true;
     }
 }
+
 //Solution2: use map.containsValue method
 public class Solution {
     public boolean isIsomorphic(String s, String t) {

@@ -7,34 +7,6 @@
 */
 
 public class Solution {
-
-	//solution 1
-	public boolean isBalanced(TreeNode root) {
-		if (checkBalanced(root) == -1)
-			return false;
-		else 
-			return true;
-	}
-
-	public int checkBalanced(TreeNode root) {
-		if (root == null)
-			return 0;
-		int leftDepth = checkBalanced(root.left);
-		int rightDepth = checkBalanced(root.right);
-
-		if (leftDepth == -1)
-			return -1;
-		if (rightDepth == -1)
-			return -1;
-
-		if (Math.abs(leftDepth - rightDepth) > 1)
-			return -1;
-		else 
-			Math.max(leftDepth, rightDepth) + 1;
-	}
-
-
-	
 	//solution 2 更容易理解
 	public boolean isBalanced(TreeNode root) {
 		//递归终止条件
@@ -57,6 +29,20 @@ public class Solution {
 		return Math.max(leftMaxDepth, rightMaxDepth) + 1;
 
 	}
+}
 
+// my solution prefer:
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if (root == null)
+            return true;
+        return Math.abs(maxDepth(root.left) - maxDepth(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+    
+    public int maxDepth(TreeNode root) {
+        if (root == null)
+            return 0;
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
 }
 

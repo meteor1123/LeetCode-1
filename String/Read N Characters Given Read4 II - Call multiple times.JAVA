@@ -64,8 +64,8 @@ public class Solution extends Reader4 {
 
 // Solution2: prefer
 public class Solution extends Reader4 {
-    private int count = 0;
-    private int pointer = 0;
+    private int count = 0; //最多等于4 记录每次从read4 读取的字节数量
+    private int pointer = 0; // 指向从read4读到的字节的位 (0 ~ 4)
     private char[] temp = new char[4];
     /**
      * @param buf Destination buffer
@@ -75,11 +75,11 @@ public class Solution extends Reader4 {
     public int read(char[] buf, int n) {
         int index = 0;
         while (index < n) {
-            if (pointer == 0)
+            if (pointer == 0) //初始化
                 count = read4(temp);
-            if (count == 0)
+            if (count == 0) // read4已经读不到东西了
                 break;
-            while (index < n && pointer < count)
+            while (index < n && pointer < count) // 读到index要比所需的n小 && pointer必须要比4小
                 buf[index++] = temp[pointer++];
             if (pointer == count)
                 pointer = 0;

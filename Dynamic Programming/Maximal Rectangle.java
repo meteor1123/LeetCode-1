@@ -26,21 +26,19 @@ public class Solution {
             }
             return max;
     }
-    public int largestRectangleArea(int[] height) {
-        Stack<Integer> stack = new Stack<Integer>();
-        int i = 0; 
-        int maxArea = 0;
-        int[] h = new int[height.length + 1];
-        h = Arrays.copyOf(height, height.length + 1);
-        while(i < h.length) {
-            if(stack.isEmpty() || h[stack.peek()] <= h[i]) {
-                stack.push(i++);
-            } else {
-                int top = stack.pop();
-                maxArea = Math.max(maxArea, h[top] * (stack.isEmpty() ? i: i - stack.peek() - 1));
-            }
+    public int largestRectangleArea(int[] heights) {
+        Stack < Integer > stack = new Stack < > ();
+        stack.push(-1);
+        int res = 0;
+        for (int i = 0; i < heights.length; ++i) {
+            while (stack.peek() != -1 && heights[stack.peek()] >= heights[i])
+                res = Math.max(res, heights[stack.pop()] * (i - stack.peek() - 1));
+            stack.push(i);
         }
-        return maxArea;
+        // if we reach the end of the array, we pop all the elements of the stack and at every pop
+        while (stack.peek() != -1)
+            res = Math.max(res, heights[stack.pop()] * (heights.length - stack.peek() -1));
+        return res;
     }
 }
 

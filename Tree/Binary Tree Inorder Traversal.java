@@ -89,22 +89,23 @@ public class Solution {
         3. 重复以上1、2直到当前节点为空。
     */
     public List<Integer> inorderTraversal(TreeNode root) {
-        if(root == null) return new ArrayList<Integer>();
-        List<Integer> res = new ArrayList<Integer>();
+        if(root == null)
+         return Collections.emptyList();
+        List<Integer> res = new ArrayList();
         TreeNode pre = null;
-        while(root != null){
-            if(root.left == null){
+        while (root != null){
+            if (root.left == null){
                 res.add(root.val);
                 root = root.right;
             } else{
                 pre = root.left;
-                while(pre.right != null && pre.right != root){
+                while (pre.right != null && pre.right != root){
                     pre = pre.right;
                 }
-                if(pre.right == null){
+                if (pre.right == null) {
                     pre.right = root;
                     root = root.left;
-                }else{
+                } else{
                     pre.right = null;
                     res.add(root.val);
                     root = root.right;//当pre遍历输出过后，才回溯将root遍历输出

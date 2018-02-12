@@ -17,33 +17,35 @@
 */
 
 /*
-    就是对一个树找子树值和root相同的个数, 对于例子中 三个叶节点5都算, 另外一个是root的右儿子 
-    因为它left child为空 right child值跟本身相等
-
+    1. 就是对一个树找所有的子树，并且子树中所有的value都相同, 对于例子中 三个叶节点5都算, 另外一个是root的右儿子
+    2. 并不需要和root的value相等
  */
 
 //Solution1
-public class Solution {
+class Solution {
+    int res = 0;
     public int countUnivalSubtrees(TreeNode root) {
-        int[] count = new int[1];
-        helper(root, count);
-        return count[0];
+        if (root == null)
+            return 0;
+        helper(root);
+        return res;
     }
-
-    private boolean helper(TreeNode node, int[] count) {
-        if (node == null) {
+    
+    public boolean helper(TreeNode root) {
+        if (root == null)
             return true;
-        }
-        boolean left = helper(node.left, count);
-        boolean right = helper(node.right, count);
+        // use post order traverse, compare left and right children, and then compare whether same with the parent.
+        boolean left = helper(root.left);
+        boolean right = helper(root.right);
+        
         if (left && right) {
-            if (node.left != null && node.val != node.left.val) {
+            if (root.left != null && root.val != root.left.val) {
                 return false;
             }
-            if (node.right != null && node.val != node.right.val) {
+            if (root.right != null && root.val != root.right.val) {
                 return false;
             }
-            count[0]++;
+            res++;
             return true;
         }
         return false;

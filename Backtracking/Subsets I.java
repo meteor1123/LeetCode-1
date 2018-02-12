@@ -137,25 +137,4 @@ public class Solution {
             item.remove(item.size() - 1);
         }
     }
-
-    //Solution2: from 小莹子
-        public ArrayList<ArrayList<Integer>> subsets(int[] S) {
-        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
-        if (S == null || S.length == 0)
-            return res;
-        ArrayList<Integer> item = new ArrayList<Integer>();
-        Arrays.sort(S);
-        dfs(res, item, S, 0);
-        res.add(new ArrayList<Integer>());//空集
-        return res;
-    }
-    
-    public void dfs ( ArrayList<ArrayList<Integer>> res, ArrayList<Integer> item, int[] S, int pos) {
-        for (int i = pos; i < S.length; i++) {
-            item.add(S[i]);
-            res.add(new ArrayList<Integer>(item));
-            dfs(res, item, S, i + 1);
-            item.remove(item.size() -1);
-        }
-    }
 }

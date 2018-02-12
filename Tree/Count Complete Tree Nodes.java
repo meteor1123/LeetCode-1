@@ -42,10 +42,9 @@
 public class Solution {
     //Easy to understand solution prefer
     public int countNodes(TreeNode root) {
-        int rootHeight = height(root);
-        if (rootHeight < 0) {
+        if (root == null)
             return 0;
-        } 
+        int rootHeight = height(root);
         if (height(root.right) == rootHeight - 1) {
             return (1 << (rootHeight - 1)) - 1 + countNodes(root.right) + 1;// 2^(h - 1)(左子树) - 1 + count(root.right) + 1(root);
             /*
@@ -60,8 +59,8 @@ public class Solution {
                      1
                    /  \
                   2    3
-                 / \
-                4   5
+                 / 
+                4   
             */
             return (1 << (rootHeight - 2)) - 1 + countNodes(root.left) + 1;// 2^(h - 2)（右子树） - 1 + cout(root.left) + 1(root);
         }
@@ -73,36 +72,24 @@ public class Solution {
         }
         return 1 + height(root.left);
     }
+}
 
-
-
-    //Solution2:
+// prefer
+class Solution {
     public int countNodes(TreeNode root) {
-    	if (root == null) {
-    		return 0;
-    	}
-    	if (root.right == null && root.left == null) {
-    		return 1;
-    	} else if (root.right == null && root.left != null) {
-    		return 2;
-    	}
-
-    	int right = findHeight(root.right);
-    	int left = findHeight(root.left);
-    	int res = 0;
-    	if (right == left) {
-    		res = (int)Math.pow(2, left + 1) - 1 + countNodes(root.right);
-    	} else {
-    		res = (int)Math.pow(2, right + 1) - 1 + countNodes(root.left);
-    	}
-    	return res + 1;
+        if (root == null)
+            return 0;
+        int height = height(root);
+        int rightHeight = height(root.right);
+        if (rightHeight == height - 1) {
+            return (1 << (height - 1)) - 1 + countNodes(root.right) + 1;
+        }
+        return (1 << (height - 2)) - 1 + countNodes(root.left) + 1;
     }
-    public int findHeight(TreeNode root) {
-    	int count = 0;
-    	while (root != null) {
-    		count++;
-    		root = root.left;
-    	}
-    	return count - 1;
+    
+    public int height(TreeNode root) {
+        if (root == null)
+            return 0;
+        return height(root.left) + 1;
     }
 }

@@ -29,42 +29,29 @@
             3.2 如果now.start比pre.end要小，意味着时间重叠，两个都要加入最小堆
             注意最小堆每次取出的end都是堆顶最小，所以不可能出现 pre（10, 20)  now(22,25) (after20,23  这样忽略的时间段
 */
-public class Solution {
+class Solution {
     public int minMeetingRooms(Interval[] intervals) {
-        if (intervals == null || intervals.length == 0) {
+        if (intervals == null || intervals.length == 0)
             return 0;
-        }
-        // Sort the intervals by start time
-        Comparator<Interval> comp = new Comparator<Interval>() {
-            @Override
-            public int compare(Interval interval1, Interval interval2) {
-                return interval1.start - interval2.start;
-            }
-        };
-        Arrays.sort(intervals, comp);
-        // Use a min heap to track the minimum end time of merged intervals
-        PriorityQueue<Interval> minHeap = new PriorityQueue<Interval>(intervals.length, new Comparator<Interval>() {
-            public int compare(Interval a, Interval b) {
-                return a.end - b.end;
+        Arrays.sort(intervals, new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2) {
+                return i1.start - i2.start;
             }
         });
-        // start with the first meeting, put it to a meeting room
-        minHeap.offer(intervals[0]);
+        
+        PriorityQueue<Interval> pq = new PriorityQueue<>((a, b) -> a.end - b.end);
+        
+        pq.offer(intervals[0]);
+        
         for (int i = 1; i < intervals.length; i++) {
-            // get the meeting room that finishes earliest
-            Interval interval = minHeap.poll();
-            
-            // if the current meeting starts right after 
-            // there's no need for a new room, merge the interval
-            if (intervals[i].start >= interval.end) {
-                interval.end = intervals[i].end;
+            Interval pre = pq.poll();
+            if (intervals[i].start >= pre.end) {
+                pre.end = intervals[i].end;
             } else {
-                // otherwise, this meeting needs a new room
-                minHeap.offer(intervals[i]);
+                pq.offer(intervals[i]);
             }
-            //don't forget to put the meeting room back
-            minHeap.offer(interval);
+            pq.offer(pre);
         }
-        return minHeap.size();
+        return pq.size();
     }
 }

@@ -18,34 +18,34 @@
 */
 
 //BFS
-public ArrayList<ArrayList<Integer>> levelOrderBottom(TreeNode root) {
-        ArrayList<ArrayList<Integer>> res =  new ArrayList<ArrayList<Integer>>();
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> res = new ArrayList();
         if (root == null)
             return res;
-        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.add(root);
+        Queue<TreeNode> queue = new ArrayDeque();
+        queue.offer(root);
         int curNum = 1;
         int nextNum = 0;
-        ArrayList<Integer> levelres = new ArrayList<Integer>();
-        
+        List<Integer> subList = new ArrayList();
         while (!queue.isEmpty()) {
-            TreeNode cur = queue.poll();
+            TreeNode node = queue.poll();
             curNum--;
-            levelres.add(cur.val);
-            if (cur.left != null) {
-                queue.add(cur.left);
+            subList.add(node.val);
+            if (node.left != null) {
                 nextNum++;
+                queue.offer(node.left);
             }
-            if (cur.right != null) {
-                queue.add(cur.right);
+            if (node.right != null) {
                 nextNum++;
+                queue.offer(node.right);
             }
             
             if (curNum == 0) {
                 curNum = nextNum;
                 nextNum = 0;
-                res.add(0, levelres); //和1最关键的区别之处！
-                levelres = new ArrayList<Integer>();
+                res.add(0, subList);
+                subList = new ArrayList();
             }
         }
         return res;

@@ -97,67 +97,27 @@ public class Solution {
     }
 }
 
+/*
+    Solution2
+    Let s be the input string, i and j are two indices of the string.
 
-//Solution2:
-//Brute force by xiaoyingzi, easy to finish
-//time complexity
-public class Solution {
-     
-    public String longestPalindrome(String s) {
-        if (s == null || s.length() <= 1) {
-            return s;
-        }
-        int maxLen = 0;
-        String res = null;
-        int len = s.length();
-        
-        for (int i = 0; i < len; i++) {
-            for (int j = i + 1; j < len; j++) {
-                int curLen = j - i;
-                String cur = s.substring(i, j + 1);
-                if (isPalindromic(cur)){
-                	if (curLen > maxLen) {
-                		maxLen = Math.max(maxLen, curLen);
-                        res = cur;
-                	}
-                }
-            }
-        }
-        return res;
-    }
-	
-	public boolean isPalindromic(String s) {
-        for (int i = 0; i < s.length() - 1; i++) {
-            if (s.charAt(i) != s.charAt(s.length() - 1 - i)) {
-                return false;
-            }
-        }
-        return true;
-    }
+    Define a 2-dimension array "table" and 
+    let table[i][j] denote whether substring from i to j is palindrome.
+
+    Start condition:
+    table[i][i] == true;
+    table[i][i+1] == true  => s.charAt(i) == s.charAt(i+1) 
 
 
+    Changing condition:
+    table[i][j] == true => table[i+1][j-1] == true && s.charAt(i) == s.charAt(j)
+*/
 
-    /*
-        Solution3
-        Let s be the input string, i and j are two indices of the string.
-
-        Define a 2-dimension array "table" and 
-        let table[i][j] denote whether substring from i to j is palindrome.
-
-        Start condition:
-        table[i][i] == true;
-        table[i][i+1] == true  => s.charAt(i) == s.charAt(i+1) 
-
-
-        Changing condition:
-        table[i][j] == true => table[i+1][j-1] == true && s.charAt(i) == s.charAt(j)
-    */
-
-    /*
-        dp[i][j] 表示substring(i, j + 1) 是否为palindrome ，----> 0....i....j....s.length() - 1
-        因此我们可以很明显的看出来，i从末尾开始往前递进， j从i往后开始递进， 到最后就是 0 = i .....j = s.length() - 1 这个区间段是否
-    */
-
+/*
+    dp[i][j] 表示substring(i, j + 1) 是否为palindrome ，----> 0....i....j....s.length() - 1
+    因此我们可以很明显的看出来，i从末尾开始往前递进， j从i往后开始递进， 到最后就是 0 = i .....j = s.length() - 1 这个区间段是否
+*/
+class Solution {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) {
             return "";
@@ -182,9 +142,9 @@ public class Solution {
         }
         return res;
     }
-
+}
     
-//Solution5:Brute Force by myself
+//Solution3: Brute Force by myself
 public class Solution {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) {

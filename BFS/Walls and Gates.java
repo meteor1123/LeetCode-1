@@ -23,51 +23,6 @@
 	Solution: 只需要进行一次bfs即可，因为每次会更新的结点的层数必定是最短的距离！
 */
 public class Solution {
-    public void wallsAndGates(int[][] rooms) {
-        if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
-            return;
-        }
-        int m = rooms.length;
-        int n = rooms[0].length;
-        int INF = Integer.MAX_VALUE;
-        Queue<int[]> queue = new LinkedList<>();
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (rooms[i][j] == 0) {
-                    queue.add(new int[]{i, j});
-                }
-            }
-        }
-        while (!queue.isEmpty()) {
-            int[] point = queue.remove();
-            int row = point[0];
-            int col = point[1];
-            if (row > 0 && rooms[row - 1][col] == INF) {
-                rooms[row - 1][col] = rooms[row][col] + 1;
-                queue.add(new int[]{row - 1, col});
-            }
-            
-            if (row < m - 1 && rooms[row + 1][col] == INF) {
-                rooms[row + 1][col] = rooms[row][col] + 1;
-                queue.add(new int[]{row + 1, col});
-            }
-            
-            if (col > 0 && rooms[row][col - 1] == INF) {
-                rooms[row][col - 1] = rooms[row][col] + 1;
-                queue.add(new int[]{row, col - 1});
-            }
-            
-            if (col < n - 1 && rooms[row][col + 1] == INF) {
-                rooms[row][col + 1] = rooms[row][col] + 1;
-                queue.add(new int[]{row, col + 1});
-            }
-        }
-       
-    }
-}
-
-//Solution2
-public class Solution {
     public final int[] shift = {0, 1, 0, -1, 0};
     public void wallsAndGates(int[][] rooms) {
         if (rooms == null || rooms.length == 0) {

@@ -61,23 +61,6 @@
   https://leetcode.com/discuss/24282/dp-solution-in-6-lines-with-explanation-f-i-n-g-i-1-g-n-i
   非常好的讲解！！！
 */
-public class Solution {
-    public int numTrees(int n) {
-        if (n == 0 || n == 1) {
-        	return n;
-        }
-        int[] uniqueBST = new int[n + 1];
-        uniqueBST[0] = 1;
-        uniqueBST[1] = 1;
-        for (int i = 2; i <= n; i++) {
-        	for (int j = 0; j < i; j++) {
-        		uniqueBST[i] += uniqueBST[j] * uniqueBST[i - j - 1];
-        	}
-        }
-        return uniqueBST[n];
-    }
-}
-
 // prefer
 class Solution {
     public int numTrees(int n) {
