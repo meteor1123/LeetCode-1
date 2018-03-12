@@ -29,27 +29,45 @@
  *     public List<NestedInteger> getList();
  * }
  */
-public class Solution {
-    public int depthSum(List<NestedInteger> nestedList) {
-        if (nestedList == null || nestedList.size() == 0) {
-            return 0;
-        }
-        return dfs(nestedList, 1);
 
+// DFS The algorithm takes O(N) time, where N is the total number of nested elements in the input list.
+class Solution {
+    public int depthSum(List<NestedInteger> nestedList) {
+        return helper(nestedList, 1);
     }
     
-    public int dfs(List<NestedInteger> nestedList, int level) {
-        if (nestedList == null || nestedList.size() == 0) {
-            return 0;
-        }
+    public int helper(List<NestedInteger> nestedList, int level) {
         int res = 0;
-        for (NestedInteger i1 : nestedList) {
-            if (i1.isInteger()) {
-                res += i1.getInteger() * level;
-            } else {
-                res += dfs(i1.getList(), level + 1);
+        for (NestedInteger num : nestedList) {
+            res += num.isInteger() ? num.getInteger() * level : helper(num.getList(), level + 1);
+        }
+        return res;
+    }
+}
+
+
+// BFS
+class Solution {
+    public int depthSum(List<NestedInteger> nestedList) {
+        if (nestedList == null || nestedList.size() == 0)
+            return 0;
+        int res = 0;
+        int level = 1;
+        Queue<NestedInteger> queue = new ArrayDeque(nestedList);
+        
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            
+            for (int i = 0; i < size; i++) {
+                NestedInteger num = queue.poll();
+                if (num.isInteger()) {
+                    res += num.getInteger() * level;
+                } else {
+                    queue.addAll(num.getList());
+                }
             }
-        } 
+            level++;
+        }
         return res;
     }
 }

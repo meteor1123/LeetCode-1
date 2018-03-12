@@ -23,43 +23,47 @@
 			  instead of that, we use boolean[][] to represent the graph matrix!
 */
 
-//Solution1
-public class Solution {
+//Solution1: prefer. toplogical sort(bfs)
+class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         int[] res = new int[numCourses];
-        ArrayList<Integer> item = new ArrayList<>();
-        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+        Map<Integer, List<Integer>> graph = new HashMap();
         int[] indegree = new int[numCourses];
-        int count = 0;
-        Queue<Integer> queue = new LinkedList<>();
-        //初始化graph
+        
+        // init graph
         for (int i = 0; i < numCourses; i++) {
-            map.put(i, new ArrayList<>());
+            graph.put(i, new ArrayList());
         }
-        //构建graph。 [1,0]代表 0 -> 1 ,要修课程1之前需要修课程0， 1的入度为1， 0的入度为0
-        for (int i = 0; i < prerequisites.length; i++) {
-            map.get(prerequisites[i][1]).add(prerequisites[i][0);
-            indegree[prerequisites[i][0]]++;
+        
+        for (int[] course : prerequisites) {
+            int pre = course[1];
+            int cur = course[0];
+            // if (!graph.containsKey(pre)) {
+            //     graph.put(i, new ArrayList());   -- 必须要在上面建图，如果这样初始化会与null pointer error
+            // }
+            graph.get(pre).add(cur);
+            indegree[cur]++;
         }
-        //首先将入度为0的点入队列
+        
+        Queue<Integer> queue = new ArrayDeque();
+        
         for (int i = 0; i < indegree.length; i++) {
             if (indegree[i] == 0) {
                 queue.offer(i);
             }
         }
-
-        //遍历队列里的点
+        
+        int count = 0;
         while (!queue.isEmpty()) {
             int course = queue.poll();
             res[count++] = course;
-            for (int i : map.get(course)) {
-                if (--indegree[i] == 0) {
-                    queue.offer(i);
+            for (int nextCourse : graph.get(course)) {
+                if (--indegree[nextCourse] == 0) {
+                    queue.offer(nextCourse);
                 }
             }
         }
-        return count == numCourses ? res : new int[0];
-
+        return count == numCourses ? res : new int[0]; // must compare the count exactly equals course number otherwise invalid
     }
 }
 
@@ -107,13 +111,16 @@ public class Solution {
 //Solution3: dfs
 public class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> adj = new ArrayList<>(numCourses);
-        for (int i = 0; i < numCourses; i++) adj.add(i, new ArrayList<>());
-        for (int i = 0; i < prerequisites.length; i++) adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
+        List<List<Integer>> adj = new ArrayList(numCourses);
+        for (int i = 0; i < numCourses; i++) 
+            adj.add(i, new ArrayList());
+        for (int i = 0; i < prerequisites.length; i++)
+            adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
         boolean[] visited = new boolean[numCourses];
-        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> stack = new Stack();
         for (int i = 0; i < numCourses; i++) {
-            if (!topologicalSort(adj, i, stack, visited, new boolean[numCourses])) return new int[0];
+            if (!topologicalSort(adj, i, stack, visited, new boolean[numCourses])) 
+                return new int[0];
         }
         int i = 0;
         int[] result = new int[numCourses];
@@ -124,14 +131,58 @@ public class Solution {
     }
 
     private boolean topologicalSort(List<List<Integer>> adj, int v, Stack<Integer> stack, boolean[] visited, boolean[] isLoop) {
-        if (visited[v]) return true;
-        if (isLoop[v]) return false;
+        if (visited[v]) 
+            return true;
+        if (isLoop[v]) r
+            return false;
         isLoop[v] = true;
         for (Integer u : adj.get(v)) {
-            if (!topologicalSort(adj, u, stack, visited, isLoop)) return false;
+            if (!topologicalSort(adj, u, stack, visited, isLoop)) 
+                return false;
         }
         visited[v] = true;
         stack.push(v);
         return true;
+    }
+}
+
+// Solution4: 
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] res = new int[numCourses];
+        Map<Integer, List<Integer>> graph = new HashMap();
+        Map<Integer, Integer> indegree = new HashMap();
+        
+        for (int i = 0; i < numCourses; i++) {
+            graph.put(i, new ArrayList());
+        }
+        
+        for (int[] course : prerequisites) {
+            int pre = course[1];
+            int cur = course[0];
+            graph.get(pre).add(cur);
+            indegree.put(cur, indegree.getOrDefault(cur, 0) + 1);
+        }
+        
+        Queue<Integer> queue = new ArrayDeque();
+        
+        for (int i = 0; i < numCourses; i++) {
+            if (!indegree.containsKey(i)) {
+                queue.offer(i);
+            }
+        }
+        
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            res[count++] = course;
+            for (int nextCourse : graph.get(course)) {
+                indegree.put(nextCourse, indegree.get(nextCourse) - 1);
+                if (indegree.get(nextCourse) == 0) {
+                    queue.offer(nextCourse);
+                }
+            }
+        }
+        return count == numCourses ? res : new int[0];
     }
 }

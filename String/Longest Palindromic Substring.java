@@ -8,7 +8,7 @@
 
 
 //Best manacher's Algorithm   O(n) O(n)
-//http://www.felix021.com/blog/read.php?2040
+//https://www.felix021.com/blog/read.php?2040
 //http://articles.leetcode.com/2011/11/longest-palindromic-substring-part-ii.html
 public class Solution {
     public String longestPalindrome(String s) {
@@ -72,7 +72,7 @@ public class Solution {
     注意跳出循环的时候 j 和 i都处于失配的位置，因此应该 len = j - i + 1 - 2 = j - i - 1
 */
 public class Solution {
-    private int low, maxLen;
+    private int left, maxLen;
     public String longestPalindrome(String s) {
         int len = s.length();
         if (len < 2) {
@@ -83,7 +83,7 @@ public class Solution {
             extendPalindrome(s, i, i);
             extendPalindrome(s, i, i + 1);
         }
-        return s.substring(low, low + maxLen);
+        return s.substring(left, left + maxLen);
     }
     public void extendPalindrome(String s, int i, int j) {
         while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
@@ -91,7 +91,7 @@ public class Solution {
             j++;
         }
         if (maxLen < j - i - 1) { 
-            low = i + 1;
+            left = i + 1;
             maxLen = j - i - 1;
         }
     }

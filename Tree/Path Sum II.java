@@ -20,28 +20,27 @@
 	]
 */
 
-
-public class Solution {
-public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        List<List<Integer>> res = new ArrayList<>();
-        if (root == null) {
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> res = new ArrayList();
+        if (root == null)
             return res;
-        }
-        List<Integer> item = new ArrayList<>();
-        dfs(root, sum, res, item);
+        List<Integer> item = new ArrayList();
+        helper(root, item, sum, res);
         return res;
     }
-    public void dfs(TreeNode root, int sum, List<List<Integer>> res, List<Integer> item) {
-        if (root == null) {
+    
+    public void helper(TreeNode root, List<Integer> item, int sum, List<List<Integer>> res) {
+        if (root == null)
             return;
-        }
         item.add(root.val);
         if (root.left == null && root.right == null && root.val == sum) {
-            res.add(new ArrayList<>(item));
+            res.add(new ArrayList(item));
         } else {
-            dfs(root.left, sum - root.val, res, item);
-            dfs(root.right, sum - root.val, res, item);
+            helper(root.left, item, sum - root.val, res);
+            helper(root.right, item, sum - root.val, res); 
         }
+        
         item.remove(item.size() - 1);
     }
 }

@@ -63,4 +63,21 @@ class Solution {
     }
 }
 
+
+class Solution {
+	public boolean repeatedSubstringPattern(string str) {
+        int len = str.length(), i = 0, j = 1;
+        int[] p = new int[len];
+        while (j < len)
+            if (str.charAt(i) == str.charAt(j))
+                p[j++] = ++i;
+            else {
+                if (i == 0) 
+                    p[j++] = 0;
+                else
+                    i = p[i - 1];
+            }
+        return p[len - 1] > 0 && len % (len - p[len - 1]) == 0;
+    }
+}
 		

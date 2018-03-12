@@ -97,12 +97,9 @@ public class LRUCache {
     public void put(int key, int value) {
         DoubleLinkedList node = cache.get(key);
         if (node == null) {
-            DoubleLinkedList newNode = new DoubleLinkedList();
-            newNode.key = key;
-            newNode.value = value;
-            cache.put(key, newNode);
-            addNode(newNode);
-
+            node = new DoubleLinkedList(key, value);
+            cache.put(key, node);
+            addNode(node);
             if (cache.size() > capacity) {
                 DoubleLinkedList tail = popTail();
                 cache.remove(tail.key);
@@ -120,15 +117,12 @@ public class LRUCache {
         int value;
         DoubleLinkedList pre;
         DoubleLinkedList next;
-    }
-}
-    
-    // step1: creat double linkedlist 
-    class DoubleLinkedList {
-        int key;
-        int value;
-        DoubleLinkedList pre;
-        DoubleLinkedList next;
+        public DoubleLinkedList(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+        public DoubleLinkedList() {
+        }
     }
 }
 

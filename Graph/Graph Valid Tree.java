@@ -180,7 +180,7 @@ public class Solution {
 }
 
 
-//Solution4
+//Solution4: prefer
 public class Solution {
     public boolean validTree(int n, int[][] edges) {
         HashMap<Integer, HashSet<Integer>> graph = new HashMap<>();

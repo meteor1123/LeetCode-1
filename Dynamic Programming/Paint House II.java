@@ -15,13 +15,6 @@
 /*
 	方法是用DP做，维护一个n*m的数组res，res[i][j]表示刷到第i个房子时，用第j种颜料的话的最低cost。
 	因为对于每一种颜色，都要逐一查看上一个房子里除这个颜色外的所有颜色花费，选出最低，时间O(m^2*n)，空间O(n*m)
-
-Follow up自然是改进，使用O(m)的空间和O(nm)的时间。
-	提高空间很简单，可以注意到只需要上个房子的结果，因此可以只用一维数组。
-	提高时间的方法是这样的：
-		在计算n-1个房子的所有颜色cost时，就维护记录cost最小的前两种颜色。
-		这样针对第n个房子的每个颜色，不用观察n-1的m-1个颜色，而是只要基于n-1时cost最小的那种颜色计算新的cost就行。
-		如果是同一种颜色，就基于cost第二小的颜色。
 */
 
 //Solution1
@@ -38,10 +31,7 @@ public class Solution {
         int m = costs.length;
         int n = costs[0].length;
         int[][] dp = new int[m + 1][n];
-        //since the house amount is zero, so all the cost equals zero
-        // for (int i = 0; i < m; i++) {
-        //     dp[0][i] = 0;
-        // }
+  
         //initialize the minimum cost to MAX_VALUE
         for (int i = 1; i <= m; i++) {
             for (int j = 0; j < n; j++) {
@@ -68,8 +58,15 @@ public class Solution {
 }
 
 
-
-//Solution2 
+/*
+    Follow up自然是改进，使用O(m)的空间和O(nm)的时间。
+    提高空间很简单，可以注意到只需要上个房子的结果，因此可以只用一维数组。
+    提高时间的方法是这样的：
+        在计算n-1个房子的所有颜色cost时，就维护记录cost最小的前两种颜色。
+        这样针对第n个房子的每个颜色，不用观察n-1的m-1个颜色，而是只要基于n-1时cost最小的那种颜色计算新的cost就行。
+        如果是同一种颜色，就基于cost第二小的颜色。
+*/
+//Solution2, O(n) space
 public class Solution {
     public int minCostII(int[][] costs) {
         if (costs.length == 0 || costs[0].length == 0) {
@@ -96,5 +93,42 @@ public class Solution {
         }
         
         return min1;
+    }
+}
+
+//Solution3, O(1) space, best
+public class Solution {
+    public int minCostII(int[][] costs) {
+        if (costs == null || costs.length == 0)
+            return 0;
+    
+        int n = costs.length;
+        int k = costs[0].length;
+        
+        int min1 = -1;
+        int min2 = -1;
+        
+        for (int i = 0; i < n; i++) {
+            int last1 = min1;
+            int last2 = min2;
+            min1 = -1;
+            min2 = -1;
+            
+            for (int j = 0; j < k; j++) {
+                if (j != last1) {
+                    costs[i][j] += last1 < 0 ? 0 : costs[i - 1][last1];
+                } else {
+                    costs[i][j] += last2 < 0 ? 0 : costs[i - 1][last2];
+                }
+                
+                if (min1 < 0 || costs[i][j] < costs[i][min1]) {
+                    min2 = min1;
+                    min1 = j;
+                } else if (min2 < 0 || costs[i][j] < costs[i][min2]) {
+                    min2 = j;
+                }
+            }
+        }
+        return costs[n - 1][min1];
     }
 }

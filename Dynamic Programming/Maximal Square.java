@@ -55,10 +55,7 @@
 	we have the following (unoptimized) solution.
 */
 public class Solution {
-
-	
-
-    //Solution3: prefer
+    //Solution1: prefer
     public int maximalSquare(char[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return 0;
@@ -66,14 +63,10 @@ public class Solution {
         
         int m = matrix.length;
         int n = matrix[0].length;
-        // dp(i, j) represents the length of the square 
-        // whose lower-right corner is located at (i - 1, j - 1)
-        // dp(i, j) = min{ dp(i-1, j-1), dp(i-1, j), dp(i, j-1) }
-
-        // represents size of the square sub-matrix with all 1s including M[i][j] where 
-        // M[i][j] is the rightmost and bottommost entry in sub-matrix.
-
-        //dp[i][j] 指的是以matrix[i - 1][j - 1]为右下角的正方形的边长长度
+        /*
+            dp[i][j] 代表在以i, j这一格为右下角的正方形边长。
+            如果这一格的值也是1，那这个正方形的边长就是他的上面，左边，和斜上的值的最小边长 +1。因为如果有一边短了缺了，都构成不了正方形。
+        */
         int[][] dp = new int[m + 1][n + 1]; 
         
         int maxArea = dp[0][0];
@@ -81,8 +74,6 @@ public class Solution {
             for (int j = 1; j <= n; j++) {
                 if (matrix[i - 1][j - 1] == '1') {
                     dp[i][j] = Math.min(dp[i - 1][j], Math.min(dp[i][j - 1], dp[i - 1][j - 1])) + 1;
-                } else {
-                    dp[i][j] = 0;
                 }
                 
                 maxArea = Math.max(maxArea, dp[i][j] * dp[i][j]);
@@ -90,47 +81,7 @@ public class Solution {
         }
         return maxArea;
     }
-    /*
-        Solution1: space complexity == O(m * n);
-    */
-    public int maximalSquare(char[][] matrix) {
-        if (matrix == null || matrix.length == 0) {
-            return 0;
-        }
-        
-        //dp[i][j] means the maximal size of the square that can be achieved at point (i, j), 
-        int[][] dp = new int[matrix.length][matrix[0].length];
-        //use maxsize to record the maximum length of square edge 
-        int maxsize = 0;
-        
-        //initialize the first row
-        for (int i = 0; i < matrix.length; i++) {
-            //if matrix[i][0] equals 0 which mean dp[i][0] only can be zero
-            dp[i][0] = matrix[i][0] - '0';
-            if (matrix[i][0] == '1') {
-                maxsize = 1;
-            }
-        }
-        //initialize the first column
-        for (int j = 1; j < matrix[0].length; j++) {
-            //if matrix[0][j] equals 0 which mean dp[0][j] only can be zero
-            dp[0][j] = matrix[0][j] - '0';
-            if (matrix[0][j] == '1') {
-                maxsize = 1;
-            }
-        }
-        
-        //once the value of matrix[i][j] == 0, which mean dp[i][j] == 0;
-        for (int i = 1; i < matrix.length; i++) {
-            for (int j = 1; j < matrix[0].length; j++) {
-                if (matrix[i][j] == '1') {
-                    dp[i][j] = Math.min(dp[i - 1][j - 1], Math.min(dp[i][j - 1], dp[i - 1][j])) + 1;
-                    maxsize = Math.max(maxsize, dp[i][j]);
-                }
-            }
-        }
-        return maxsize * maxsize;
-    }
+
     /*
     	Solution2: only use one array
     */

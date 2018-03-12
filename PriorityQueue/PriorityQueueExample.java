@@ -83,3 +83,14 @@ PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(
 
 Collections.sort(candidates, (w1, w2) -> count.get(w1) != count.get(w2) ?
       count.get(w2) - count.get(w1) : w1.compareTo(w2));
+
+
+Arrays.sort(pairs, (a, b) -> (a[1] - b[1]));
+
+Arrays.sort(pairs, (a, b) -> {
+   if (a[0] == b[0]) {
+       return a[1] - b[1];
+   } else {
+       return a[0] - b[0];
+   }
+});

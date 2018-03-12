@@ -67,9 +67,8 @@
             return -1;
         if (needle.length() == 0)
             return 0;
-        int i, j;
-        for (i = 0; i < haystack.length() - needle.length () + 1; i++) {
-            for (j = 0; j < needle.length(); j++) {
+        for (int i = 0; i <= haystack.length() - needle.length (); i++) {
+            for (int j = 0; j < needle.length(); j++) {
                 if (haystack.charAt(i + j) != needle.charAt(j)) {
                     break;
                 }

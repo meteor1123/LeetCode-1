@@ -21,13 +21,6 @@
 	Maximum amount of money the thief can rob = 4 + 5 = 9.
  */
 
-/*
-	树形动规。设状态 f(root) 表示抢劫root为根节点的二叉树，root可抢也可能不抢，能得到的最大金钱，g(root)表示抢劫root为根节点的二叉树，但不抢root，能得到的最大金钱，
-	则状态转移方程为:
-		f(root) = max{f(root.left) + f(root.right), g(root.left) + g(root.right) + root.val}
-		g(root) = f(root.left) + f(root.right)
-*/
-
 //Solution1
 public class Solution {
 	public int rob(TreeNode root) {

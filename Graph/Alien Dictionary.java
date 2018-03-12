@@ -21,6 +21,82 @@
 	Tags: Graph, Topological Sort
 */
 
+
+//prefer
+class Solution {
+    public String alienOrder(String[] words) {
+        Map<Character, Set<Character>> graph = new HashMap();
+        //建图,每一个字符为一个顶点，邻接的两个字符视为有一条边连接
+        for (int i = 0; i < words.length; i++) {
+            for (int j = 0; j < words[i].length(); j++) {
+                char ch = words[i].charAt(j);
+                if (!graph.containsKey(ch)) {
+                    graph.put(ch, new HashSet());
+                }
+            }
+            if (i > 0)
+                // getOrder from words array中相邻的两个字符串
+                getOrder(words[i - 1], words[i], graph);
+        }
+        return topSort(graph);
+    }
+    
+    //check two adjencent strings, 
+    //e.g. : "wer" and "wet", then 'r' is absolutely before 't'
+    public void getOrder(String s1, String s2, Map<Character, Set<Character>> graph) {
+        for (int i = 0; i < Math.min(s1.length(), s2.length()); i++) {
+            char c1 = s1.charAt(i);
+            char c2 = s2.charAt(i);
+            
+            //只能判断两个字符串中第一个不等的字符的order，后面的无法判断
+            if (c1 != c2) {
+                if (!graph.get(c1).contains(c2)) {
+                    graph.get(c1).add(c2);
+                }
+                break;
+            } 
+        }
+    }
+    
+    // 开始拓扑排序
+    public String topSort(Map<Character, Set<Character>> graph) {
+        StringBuilder sb = new StringBuilder();
+        // 入度map
+        Map<Character, Integer> indegree = new HashMap();
+        Queue<Character> queue = new ArrayDeque();
+        
+        // 通过getOrder方法建立字符之间的顺序，也就是边，c1 -> c2, 则c2的入度++， 建立入度map
+        for (char c1 : graph.keySet()) {
+            for (char c2 : graph.get(c1)) {
+                indegree.put(c2, indegree.getOrDefault(c2, 0) + 1);
+            }
+        }
+        
+        // 将入度为0的顶点加入队列
+        for (char c : graph.keySet()) {
+            if (!indegree.containsKey(c)) {
+                queue.offer(c);
+            }
+        }
+        
+        while (!queue.isEmpty()) {
+            char c = queue.poll();
+            sb.append(c);
+            for (char neighbor : graph.get(c)) {
+                indegree.put(neighbor, indegree.get(neighbor) - 1);
+                if (indegree.get(neighbor) == 0)
+                    queue.offer(neighbor);
+            }
+        }
+        for (int count : indegree.values()) {
+            if (count != 0)
+                return "";
+        }
+        return sb.toString();
+    }
+}
+
+
 public class Solution {
     public static int N = 26;
     public String alienOrder(String[] words) {
@@ -118,80 +194,4 @@ public class Solution {
             }
         }
     }
-}
-
-
-//Prefer
-public class Solution {
-         public String alienOrder(String[] words) {
-         //key 是起点， value是终点集合，wr, <w, r> 
-         Map<Character, Set<Character>> graph = new HashMap<>();    
-         //初始化图
-         for (int i = 0; i < words.length; i++) {
-             for (int j = 0; j < words[i].length(); j++) {
-                 if (!graph.containsKey(words[i].charAt(j))) {
-                     graph.put(words[i].charAt(j), new HashSet<Character>());
-                 }
-             }
-             if (i > 0) {
-                //确定相邻字符的字符顺序
-                 getOrder(words[i - 1], words[i], graph);
-             }
-         }
-         return topSort(graph);
-     }
-     
-     public String topSort(Map<Character, Set<Character>> graph) {
-         StringBuilder sb = new StringBuilder();
-         Map<Character, Integer> indegree = new HashMap<>();
-         Queue<Character> queue = new LinkedList<>();
-         for (char c : graph.keySet()) {
-             for (char a : graph.get(c)) {
-                 if (indegree.containsKey(a)) {
-                     indegree.put(a, indegree.get(a) + 1);
-                 } else {
-                     indegree.put(a, 1);
-                 }
-             }
-         }
-         //遍历所有点，将所有入度为0的点加入队列，入度为0则indegree map中不会存在该字符
-         for (char c : graph.keySet()) {
-             if (!indegree.containsKey(c)) {
-                 queue.offer(c);
-             }
-         }
-         
-         while (!queue.isEmpty()) {
-             char c = queue.poll();
-             sb.append(c);
-             for (char a : graph.get(c)) {
-                 indegree.put(a, indegree.get(a) - 1);
-                 if (indegree.get(a) == 0) {
-                     queue.offer(a);
-                 }
-             }
-         }
-         for (int a : indegree.values()) {
-             if (a != 0) {
-                 return "";
-             }
-         }
-         return sb.toString();
-     }
-
-     //check two adjencent strings, 
-     //e.g. : "wer" and "wet", then 'r' is absolutely before 't'
-     private void getOrder(String s, String t, Map<Character, Set<Character>> graph) {
-         for (int i = 0; i < Math.min(s.length(), t.length()); i++) {
-             char c1 = s.charAt(i);
-             char c2 = t.charAt(i);
-             
-             if (c1 != c2) {
-                 if (!graph.get(c1).contains(c2)) {
-                     graph.get(c1).add(c2);
-                 }
-                 break;
-             }
-         }
-     }
 }

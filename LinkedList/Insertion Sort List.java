@@ -56,7 +56,7 @@ public class Solution {
 	public ListNode insertionSortList(ListNode head) {
 		if (head == null || head.next == null)
 			return head;
-		//很奇怪为什么这里 newhead 没有指向head对吧？实际上在 pre = newhead以后， pre.next = cur,就将newhead指向了第一个head
+		
 		ListNode newhead = new ListNode(0);//dummy head for the result sorted LinkedList
 		
 		ListNode cur = head;//cur is current node, the node to be plugged in the sorted list
@@ -82,4 +82,35 @@ public class Solution {
 		}
 		return newhead.next;
 	}
+}
+
+// Bubble Sort O(n*n), Microsoft interview question
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        int len = 0;
+        ListNode newhead = new ListNode(-1);
+        newhead.next = head;
+        ListNode cur = newhead.next;
+        while (cur != null) {
+            cur = cur.next;
+            len++;
+        }
+        
+        for (int i = 0 ; i < len; i++) {
+            cur = head;
+            ListNode next = cur.next;
+            for (int j = 0; j < len - 1; j++) {
+                if (cur.val > next.val) {
+                    int temp = cur.val;
+                    cur.val = next.val;
+                    next.val = temp;
+                }
+                cur = next;
+                next = next.next;
+            }
+        }
+        return newhead.next;
+    }
 }

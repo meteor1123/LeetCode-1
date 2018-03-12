@@ -58,3 +58,45 @@ class Solution {
         preorder(root.right, map);
     }
 }
+
+// time: O(n) space: O(1), 第一遍记录mode的数量，第二遍赋值mode
+class Solution {
+    private int curVal;
+    private int curCount = 0;
+    private int maxCount = 0;
+    private int modeCount = 0;
+    private int[] modes;
+    
+    public int[] findMode(TreeNode root) {
+        inorder(root);
+        modes = new int[modeCount];
+        curCount = 0;
+        modeCount = 0;
+        inorder(root);
+        return modes;
+    }
+    
+    private void handleValue(int val) {
+        if (val != curVal) {
+            curVal = val;
+            curCount = 0;
+        }
+        curCount++;
+        if (curCount > maxCount) {
+            maxCount = curCount;
+            modeCount = 1;
+        } else if (curCount == maxCount) {
+            if (modes != null)
+                modes[modeCount] = curVal;
+            modeCount++;
+        }
+    }
+    
+    private void inorder(TreeNode root) {
+        if (root == null)
+            return;
+        inorder(root.left);
+        handleValue(root.val);
+        inorder(root.right);
+    }
+}

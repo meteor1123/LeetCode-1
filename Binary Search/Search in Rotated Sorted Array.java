@@ -8,21 +8,21 @@
 
 //solution 1: prefer
 public class Solution {
-    public int search(int[] A, int target) {
+    public int search(int[] nums, int target) {
         int start = 0;
-        int end = A.length - 1;
+        int end = nums.length - 1;
         int mid;
 
         //为什么用这种方式？满足binary search的第一个规则，要可以逐步逼近边界跳出。
         while (start + 1 < end) {
             mid = start + (end - start) / 2;
             //denote we find the target
-            if (A[mid] == target) {
+            if (nums[mid] == target) {
                 return mid;
             }
-            if (A[start] < A[mid]) {
+            if (nums[start] < nums[mid]) {
                 // if the first half is in-order, 
-                if (A[start] <= target && target <= A[mid]) {
+                if (nums[start] <= target && target <= nums[mid]) {
                     end = mid; // if target is in the range of the first half
                 } else {
                     start = mid;
@@ -30,16 +30,16 @@ public class Solution {
             //this situation means the array had already rotated
             } else {
                 // if the second half is in order
-                if (A[mid] <= target && target <= A[end]) { // target is in the range of the second half
+                if (nums[mid] <= target && target <= nums[end]) { // target is in the range of the second half
                     start = mid;
                 } else {
                     end = mid;
                 }
             }
         }
-        if (A[start] == target) 
+        if (nums[start] == target) 
             return start;
-        if (A[end] == target) 
+        if (nums[end] == target) 
             return end;
         return -1;
     }

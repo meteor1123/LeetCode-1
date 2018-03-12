@@ -14,6 +14,8 @@
 
 /*
 
+    有N篇文章至少引用N次， 求最大的N
+
     给定一个代表一位研究人员论文的引用次数的数组，计算对应的H-Index。
     H-Index的定义可以抽象地描述成这样：一个数组中有N个元素，如果其中至少有H个数的值不小于H，
     剩下N-H个数不大于H，那么这个数组的H-Index的值就是H了。H的值可能有多个，题目要求找出其中最大的作为H-Index。
@@ -42,7 +44,7 @@ public class Solution {
         return h;
     }
 
-    //2
+    //2: prefer
     public int hIndex(int[] citations) {
         if (citations == null || citations.length == 0) {
             return 0;
@@ -58,7 +60,7 @@ public class Solution {
     }
 }
 /*
-    思路： 
+    思路：类似bucket sort， 
     建立一个记录。记录的是这个被引用文章出现的次数。因为最大的H值就是文章数。对于引用次数超过文章数的文章按照引用次数为文章数记录。 
     当遍历到某一个H值的时候，对应的sums数组里面存储的就是超过这个引用次数的文章数。如果这个h满足题意。那么就返回
 */
@@ -75,11 +77,11 @@ public class Solution {
             }
         }
         
-        int total = 0;
+        int sum = 0;
         for (int i = len; i >= 0; i--) {
-            //total记录大于count[i]的次数
-            total += count[i];
-            if (total >= i) {
+            // sum记录大于count[i]的次数
+            sum += count[i];
+            if (sum >= i) {
                 return i;
             }
         }

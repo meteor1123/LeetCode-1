@@ -23,21 +23,6 @@
 
  public class Solution {
  	//O(n)解法
- 	public ListNode deleteDuplicates(ListNode head) {
- 		if (head == null || head.next == null)
- 			return head;
- 		LinkedList cur = new LinkedList(-1);
- 		cur = head;
- 		while (head != null) {
- 			while (cur.next != null && cur.next.next != null) {}
- 				if (cur.val = cur.next.val) {
- 					cur.next = cur.next.next;
- 				}
- 				cur = cur.next;
- 			}
- 		}
- 		return head;
- 	}
  	//Solution3 chapter9
  	public ListNode deleteDuplicates(ListNode head) {
         if (head == null) {

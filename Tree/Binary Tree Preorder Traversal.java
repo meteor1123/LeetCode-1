@@ -76,7 +76,7 @@ public class Solution {
                     pre.right = root;
                     res.add(root.val);//关键步骤，在这里将当前的root结点输出到结果，先将root输出，再遍历下面的叶子节点输出，这是前序遍历
                     root = root.left;
-                }  else { //假如
+                }  else {
                     pre.right = null;
                     root = root.right;
                 }

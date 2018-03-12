@@ -136,3 +136,84 @@ class AutocompleteSystem {
         return res;
     }
 }
+
+
+
+
+// Solution2: use array instead of hashmap but got TLE
+class AutocompleteSystem {
+    TrieNode root;
+    String prefix;
+    
+    class TrieNode {
+        TrieNode[] children;
+        Map<String, Integer> counts;
+        boolean isWord;
+        public TrieNode() {
+            children = new TrieNode[27];
+            counts = new HashMap();
+            isWord = false;
+        }
+    }
+    
+    class Pair {
+        String word;
+        int count;
+        public Pair(String word, int count) {
+            this.word = word;
+            this.count = count;
+        }
+    }
+    
+    private void add(String s, int count) {
+        TrieNode cur = root;
+        for (char c : s.toCharArray()) {
+            int index = (c == ' ') ? 26 : c - 'a';
+            if (cur.children[index] == null) {
+                cur.children[index] = new TrieNode();
+            }
+            cur = cur.children[index];
+            cur.counts.put(s, cur.counts.getOrDefault(s, 0) + count);
+        }
+        cur.isWord = true;
+    }
+    
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        root = new TrieNode();
+        prefix = "";
+        for (int i = 0; i < sentences.length; i++) {
+            add(sentences[i], times[i]);
+        }
+    }
+    
+    public List<String> input(char c) {
+        if (c == '#') {
+            add(prefix, 1);
+            prefix = "";
+            return new ArrayList();
+        }
+        
+        prefix = prefix + c;
+        TrieNode cur = root;
+        
+        for (char ch : prefix.toCharArray()) {
+            int index = ch == ' ' ? 26 : ch - 'a';
+            TrieNode next = cur.children[index];
+            if (next == null)
+                return new ArrayList();
+            cur = next;
+        }
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.count == b.count ? a.word.compareTo(b.word) : b.count - a.count);
+        
+        for (String word : cur.counts.keySet()) {
+            pq.add(new Pair(word, cur.counts.get(word)));
+        }
+        
+        List<String> res = new ArrayList();
+        
+        for (int i = 0; i < 3 && !pq.isEmpty(); i++) 
+            res.add(pq.poll().word);
+        return res;
+    }
+}

@@ -33,6 +33,7 @@ public class Solution {
          if (s.length() == 0 || s == null || s == "0")
             return 0;
          int[] dp = new int[s.length() + 1];
+         // dp[0] means an empty string will have one way to decode
          dp[0] = 1;
          //dp[i] mean the string has how many decode amount of s.substring(0, i) == 前i个字符串
         if (isValid(s.substring(0, 1))){
@@ -51,13 +52,35 @@ public class Solution {
          return dp[s.length()];
      }
      
-     public boolean isValid(String s) {
-        if (s.charAt(0) == '0') {
+    public boolean isValid(String num) {
+        if (num.charAt(0) == '0')
             return false;
+        return Integer.valueOf(num) >= 1 && Integer.valueOf(num) <= 26;
+    }
+}
+
+// O(1) space
+class Solution {
+    public int numDecodings(String s) {
+        if (s == null || s.length() == 0 || s.charAt(0) == '0')
+            return 0;
+        
+        int pre1 = 1;
+        int pre2 = 1;
+        int cur = 0;
+        
+        for (int i = 2; i <= s.length(); i++) {
+            cur = 0;
+            if (s.charAt(i - 1) != '0')
+                cur = pre2;
+            int num = Integer.valueOf(s.substring(i - 2, i));
+            if (num >= 10 && num <= 26)
+                cur += pre1;
+            pre1 = pre2;
+            pre2 = cur;
         }
-        int code = Integer.parseInt(s);
-        return code >= 1 && code <= 26;
-     }
+        return pre2;
+    }
 }
 
 //Recursive
@@ -83,11 +106,9 @@ public class Solution {
         }
     }
     
-    public boolean isValid(String s){
-        if (s.charAt(0) == '0') {
+    public boolean isValid(String num) {
+        if (num.charAt(0) == '0')
             return false;
-        }
-        int code = Integer.parseInt(s);
-        return code >= 1 && code <= 26;
+        return Integer.valueOf(num) >= 1 && Integer.valueOf(num) <= 26;
     }
 }

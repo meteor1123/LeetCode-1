@@ -92,32 +92,31 @@
 
 class Solution {
     public boolean isValid(String code) {
-        Stack<String> stack = new Stack();
+        Stack<String> stack = new Stack(); // stack 只储存 < 的 tag name
         for (int i = 0; i < code.length(); ) {
             if (i > 0 && stack.isEmpty())
                 return false;
             if (code.startsWith("<![CDATA[", i)) {
-                int j = i + 9;
-                i = code.indexOf("]]>", j);
-                if (i < 0) 
-                    return false;
-                i += 3;
+                i = code.indexOf("]]>", i + 9); // close ]]> 的index
+                if (i < 0)
+                    return false; //无close，返回false
+                i += 3; //跳过close的index
             } else if (code.startsWith("</", i)) {
-                int j = i + 2;
-                i = code.indexOf('>', j);
-                String s = code.substring(j, i++);
-                if (stack.isEmpty() || !stack.pop().equals(s))
-                    return false;                
-            } else if (code.startsWith("<", i)) {
-                int j = i + 1;
+                int j = i + 2; // 从 </ 的下一个character开始找 close >
                 i = code.indexOf(">", j);
-                if (i < 0 || i == j || i - j > 9)  // i == j is for the case "<>""
+                String s = code.substring(j, i++); // </ 和 > 之间的tag
+                if (stack.isEmpty() || !stack.pop().equals(s)) // 假如没有tag string对应 返回false
+                    return false;
+            } else if (code.startsWith("<", i)) {
+                int j = i + 1; // 从<的下一个index开始，也就是tag string的 起始位置
+                i = code.indexOf(">", j); // close > 的 index
+                if (i < 0 || i == j || i - j > 9)  // 找不到 or <> or tag length大于9 return false
                     return false;
                 for (int k = j; k < i; k++) {
-                    if(!Character.isUpperCase(code.charAt(k)))
+                    if (!Character.isUpperCase(code.charAt(k))) // 确保都是upper char
                         return false;
                 }
-                String s = code.substring(j, i++);
+                String s = code.substring(j, i++); //把tag string push 进stack， 下次到</ 时要比较匹配tag name
                 stack.push(s);
             } else {
                 i++;

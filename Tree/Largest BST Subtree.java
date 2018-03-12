@@ -21,7 +21,7 @@
 	Can you figure out ways to solve it with O(n) time complexity?
  */
 
-// Solution 1
+// Solution 1 prefer
 public class Solution {
     class Node {
         int size;

@@ -15,59 +15,43 @@
 	Tags: Dynamic Programming
 */
 
-
+//Solution1: O(n) space
 public class Solution {
-
-	//Solution1 这其实是Paint HouseII的解法，
     public int minCost(int[][] costs) {
-        if (costs == null || costs.length == 0) {
+        if (costs == null || costs.length == 0)
             return 0;
-        }
-
-        if (costs.length == 1 && costs[0].length == 1) { //加上这一句就可以用于
-            return costs[0][0];
-        }
-        int m = costs.length;
-        int n = costs[0].length;
-        int[][] dp = new int[m + 1][n];
-
-
-        for (int i = 1; i <= m; i++) {
-            for (int j = 0; j < n; j++) {
-                dp[i][j] = Integer.MAX_VALUE;
-            }
+        int n = costs.length;
+        int[][] dp = new int[n + 1][3];
+        
+        for (int i = 1; i <= n; i++) {
+            dp[i][0] = Math.min(dp[i - 1][1], dp[i - 1][2]) + costs[i - 1][0];
+            dp[i][1] = Math.min(dp[i - 1][0], dp[i - 1][2]) + costs[i - 1][1];
+            dp[i][2] = Math.min(dp[i - 1][0], dp[i - 1][1]) + costs[i - 1][2];
         }
         
-        for (int i = 1; i <= m; i++) {
-            for (int j = 0; j < n; j++) {
-                for (int k = 0; k < n; k++) {
-                    if (k != j) {
-                        dp[i][j] = Math.min(dp[i][j], dp[i - 1][k] + costs[i - 1][j]);
-                    }
-                }
-            }
-        }
-        int res = Integer.MAX_VALUE;
-        for (int i = 0; i < n; i++) {
-            res = Math.min(res, dp[m][i]);
-        }
-        return res;
+        return Math.min(Math.min(dp[n][0], dp[n][1]), dp[n][2]);
     }
-    
+}
 
-    //Solution2
+
+//Solution2: O(1) space, prefer
+public class Solution {
     public int minCost(int[][] costs) {
-        if (costs == null || costs.length == 0) {
+        if (costs == null || costs.length == 0)
             return 0;
+
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        
+        for (int i = 0; i < costs.length; i++) {
+            int preRed = red;
+            int preGreen = green;
+            red = Math.min(green, blue) + costs[i][0];
+            green = Math.min(preRed, blue) + costs[i][1];
+            blue = Math.min(preRed, preGreen) + costs[i][2];
         }
-        int m = costs.length;
-        int r = 0, g = 0, b = 0;
-        for (int i = 0; i < m; i++) {
-           int preRed = r, preBlue = b, preGreen = g;
-           r = costs[i][0] + Math.min(preBlue, preGreen);
-           b = costs[i][1] + Math.min(preRed, preGreen);
-           g = costs[i][2] + Math.min(preBlue, preRed);
-        }
-        return Math.min(r, Math.min(b, g));
+        
+        return Math.min(Math.min(red, green), blue);
     }
 }

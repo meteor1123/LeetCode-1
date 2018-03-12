@@ -10,39 +10,45 @@
 	Tags: Array, Two Pointers
 */
 
+
+// prefer
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums == null)
+            return 0;
+        if (nums.length <= 2)
+            return nums.length;
+        int count = 2;
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i] != nums[count - 2])
+                nums[count++] = nums[i];
+        }
+        return count;
+    }
+}
+
 public class Solution {
     //1 StefanPochmann
     public int removeDuplicates(int[] A) {
         int index = 0;
         for (int num : nums) {
-            if (index < 2 || num > nums[index - 2]) {
+            if (index < 2 || num != nums[index - 2]) {
                 nums[index++] = num;
             }
         }
         return index;
     }
+}
 
-    //2
+// at most K duplicates
+public class Solution {
+    //1 StefanPochmann
     public int removeDuplicates(int[] A) {
-        if (A == null || A.length == 0) {
-        	return 0;
-        }
-        //index 记录满足条件的数组长度
         int index = 0;
-        //count 记录相等的数的个数
-        int count = 0;
-        for (int i = 0; i < A.length; i++) {
-            if (i > 0 && A[i] == A[i - 1]) {
-                count++;
-                if (count >= 3) {
-                    continue;
-                }
-            } else {
-                count = 1;
+        for (int num : nums) {
+            if (index < k || num > nums[index - k]) {
+                nums[index++] = num;
             }
-
-            
-            A[index++] = A[i];
         }
         return index;
     }

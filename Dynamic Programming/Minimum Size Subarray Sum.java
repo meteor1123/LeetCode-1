@@ -13,49 +13,23 @@
 	If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).
 */
 
-
-public class Solution {
-    //Solution1
+// O(n): sliding window solution
+class Solution {
     public int minSubArrayLen(int s, int[] nums) {
-        if (nums == null || nums.length == 0) {
+        if (nums == null || nums.length == 0)
             return 0;
-        }
-
         int left = 0;
-        int minLen = Integer.MAX_VALUE;
         int sum = 0;
+        int res = Integer.MAX_VALUE;
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
             while (sum >= s) {
-                if (i - left + 1 < minLen) {
-                    minLen = i - left + 1;
-                }
+                res = Math.min(res, i - left + 1);
                 sum -= nums[left++];
             }
         }
-        return minLen == Integer.MAX_VALUE ? 0 : minLen;
-    }
-
-    //Solution2
-    public int minSubArrayLen(int s, int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-
-        int left = 0;
-        int minLen = Integer.MAX_VALUE;
-        int sum = 0;
-        int i = 0;
-        while (i < nums.length) {
-            sum += nums[i];
-            while (sum >= s) {
-                if (i - left + 1 < minLen) {
-                    minLen = i - left + 1;
-                }
-                sum -= nums[left++];
-            }
-            i++;
-        }
-        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+        return res == Integer.MAX_VALUE ? 0 : res;
     }
 }
+
+// O(nlogn)

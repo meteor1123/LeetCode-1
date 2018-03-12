@@ -79,7 +79,7 @@ public class Solution {
                 if (nums[i - 1] > nums[i]) {
                     swap(nums, i);
                 } 
-            } else if (i != 0 && nums[i - 1] < nums[i]) {
+            } else if(nums[i - 1] < nums[i]) {
                 swap(nums, i);
             }
         }
