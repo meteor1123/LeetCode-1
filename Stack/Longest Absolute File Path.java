@@ -34,6 +34,13 @@
 	Notice that a/aa/aaa/file1.txt is not the longest file path, if there is another path aaaaaaaaaaaaaaaaaaaaa/sth.png.
 */
 
+/*
+  题意找出最长的绝对路径的长度
+	\n 回车
+	\t 空格
+
+	\t 只代表一个字符！
+*/
 // \t = 1个字符  \t\tsubdirs.lastIndexOf("\t") = 1
 class Solution {
     public int lengthLongestPath(String input) {
@@ -42,11 +49,11 @@ class Solution {
         int res = 0;
         
         for (String s : input.split("\n")) {
-            int level = s.lastIndexOf("\t") + 1;
-            while (level + 1 < stack.size()) { // 需要把同level的给pop出去
+            int level = s.lastIndexOf("\t") + 1; // number of "\t"
+            while (level + 1 < stack.size()) { // 需要把同level的给pop出去, 因为当前的subdir只需要和parent的长度相加
                 stack.pop();
             }
-            int len = stack.peek() + s.length() - level + 1;
+            int len = stack.peek() + s.length() - level + 1; //remove  -level表示 移除"/t"的长度, +1 表示添加一个"/"前缀
             stack.push(len);
             if (s.contains(".")) {
                 res = Math.max(res, len - 1);

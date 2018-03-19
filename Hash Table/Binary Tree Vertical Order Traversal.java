@@ -51,7 +51,7 @@ public class Solution {
         if (root == null) {
             return res;
         }
-        HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+        HashMap<Integer, List<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
         Queue<TreeNode> queue = new LinkedList<>();
         HashMap<TreeNode, Integer> weight = new HashMap<TreeNode, Integer>();
         queue.offer(root);
@@ -61,7 +61,7 @@ public class Solution {
             TreeNode node = queue.poll();
             int w = weight.get(node);
             if (!map.containsKey(w)) {
-                map.put(w, new ArrayList<>());
+                map.put(w, new ArrayList());
             }
             map.get(w).add(node.val);
             if (node.left != null) {

@@ -5,8 +5,8 @@
 	start and end are both integers, they should be assigned in following rules:
 
 	The root's start and end is given by build method.
-	The left child of node A has start=A.left, end=(A.left + A.right) / 2.
-	The right child of node A has start=(A.left + A.right) / 2 + 1, end=A.right.
+	The left child of node A  has start = A.left, end = (A.left + A.right) / 2.
+	The right child of node A has start =(A.left + A.right) / 2 + 1, end = A.right.
 	if start equals to end, there will be no children for this node.
 	Implement a build method with two parameters start and end, so that we can create a corresponding segment tree with every node has the correct start and end value, return the root of this segment tree.
 

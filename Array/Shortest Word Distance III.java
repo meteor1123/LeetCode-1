@@ -13,76 +13,57 @@
 	Given word1 = "makes", word2 = "makes", return 3.
 */
 
-
-//Solution1 prefer
-public class Solution {
-	public int shortestWordDistance(String[] words, String word1, String word2) {
-        long dist = Integer.MAX_VALUE, index1 = dist, index2 = -dist;
-        boolean same = word1.equals(word2);
-        for (int i = 0; i < words.length; i++) {
-            if (words[i].equals(word1)) {
-                if (same) {
-                    index1 = index2;
-                    index2 = i;
-                } else {
-                    index1 = i;
-                }
-            } else if (words[i].equals(word2)) {
-                index2 = i;
-            }
-            dist = Math.min(dist, Math.abs(index1 - index2));
-        }
-        return (int)dist;
-    }
-}
-
-//Solution2 by Myself
-public class Solution {
+//Solution1 by Myself
+class Solution {
     public int shortestWordDistance(String[] words, String word1, String word2) {
-        if (words == null || words.length == 0) {
-            return 0;
-        }
         int index1 = -1;
         int index2 = -1;
         int minLen = words.length;
+        boolean same = word1.equals(word2);
+        
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
-            if (!word1.equals(word2)) {
+            if (same) {
+                if (word.equals(word1)) {
+                    if (index1 != -1) {
+                        minLen = Math.min(minLen, i - index1);
+                    } 
+                    index1 = i;
+                }
+            } else {
                 if (word.equals(word1)) {
                     index1 = i;
                 } else if (word.equals(word2)) {
                     index2 = i;
                 }
-                if (index1 != -1 && index2 != -1) {
-                    minLen = Math.min(Math.abs(index1 - index2), minLen);
-                }
-            } else {
-                if (word.equals(word1)) {
-                    if (index1 != -1) {
-                        minLen = Math.min(i - index1, minLen);
-                    }
-                    index1 = i;
-                }
-            }
+
+                if (index1 != -1 && index2 != -1)
+                    minLen = Math.min(minLen, Math.abs(index1 - index2));
+            } 
         }
         return minLen;
     }
 }
 
-//Solution short solution
-public int shortestWordDistance(String[] words, String word1, String word2) {
-    long dist = Integer.MAX_VALUE;
-    long i1 = dist;
-    long i2 = -dist;
-    for (int i = 0; i < words.length; i++) {
-        if (words[i].equals(word1))
-            i1 = i;
-        if (words[i].equals(word2)) {
-            if (word1.equals(word2))
-                i1 = i2;
-            i2 = i;
+//Solution2: concise, still use two index to record
+class Solution {
+    public int shortestWordDistance(String[] words, String word1, String word2) {
+        int minLen = words.length;
+        int index1 = minLen;
+        int index2 = -minLen;
+        boolean isSame = word1.equals(word2);
+        
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (word.equals(word1))
+                index1 = i;
+            if (word.equals(word2)) {
+                if (isSame)
+                    index1 = index2;
+                index2 = i;
+            }
+            minLen = Math.min(minLen, Math.abs(index1 - index2));
         }
-        dist = Math.min(dist, Math.abs(i1 - i2));
+        return minLen;
     }
-    return (int) dist;
 }

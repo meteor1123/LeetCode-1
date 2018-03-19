@@ -23,13 +23,14 @@ class Solution {
     public int findMaxLength(int[] nums) {
         if (nums == null || nums.length <= 1)
             return 0;
+        // key: count of 1 and 0, value: array index 
         HashMap<Integer, Integer> map = new HashMap();
-        map.put(0, -1);
+        map.put(0, -1); // very important init condition
         int maxLen = 0;
         int count = 0;
         for (int i = 0; i < nums.length; i++) {
-            count += nums[i] == 1 ? 1 : -1;
-            if (map.containsKey(count)) {
+            count += nums[i] == 1 ? 1 : -1; // when count equals 0, which means number of 1 = number of 0
+            if (map.containsKey(count)) { // if find same count, which means
                 maxLen = Math.max(maxLen, i - map.get(count));
             } else {
                 map.put(count, i);

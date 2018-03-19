@@ -16,79 +16,85 @@
 */
 
 /*
+    需要求任意段的和，且会随机修改元素，用线段树(Segment Tree)再合适不过了
+    
 	http://bookshadow.com/weblog/2015/08/13/segment-tree-set-1-sum-of-given-range/
 */
 //Solution1 Segment Tree
-public class NumArray {
-    class SegmentTreeNode {
-        int start;
-        int end;
-        int sum;
-        SegmentTreeNode left;
-        SegmentTreeNode right;
-     
-        public SegmentTreeNode (int start, int end) {
-            this.start = start;
-            this.end = end;
-            this.left = null;
-            this.right = null;
-            this.sum = 0;
-        }
-    }
-    SegmentTreeNode root = null;
+class NumArray {
+    SegmentTreeNode root;
     public NumArray(int[] nums) {
+        if (nums == null || nums.length == 0)
+            root = null;
         root = buildTree(nums, 0, nums.length - 1);
     }
-    private SegmentTreeNode buildTree(int[] nums, int start, int end) {
-        if (start > end) {
-            return null;
-        } 
-        SegmentTreeNode res = new SegmentTreeNode(start, end);
-        if (start == end) {
-            res.sum = nums[start];
-        } else {
-            int mid = start + (end - start) / 2;
-            res.left = buildTree(nums, start, mid);
-            res.right = buildTree(nums, mid + 1, end);
-            res.sum = res.left.sum + res.right.sum;
-        }
-        return res;
-    }
-    void update(int i, int val) {
-        update(root, i, val);
+    
+    public void update(int i, int val) {
+        updateTree(root, i, val);
     }
     
-    void update(SegmentTreeNode root, int pos, int val) {
+    public int sumRange(int i, int j) {
+        return getSum(root, i, j);
+    }
+    
+    public void updateTree(SegmentTreeNode root, int pos, int val) {
+        // which mean we find the postion to update the value;
         if (root.start == root.end) {
             root.sum = val;
-        } else {
-            int mid = root.start + (root.end - root.start) / 2;
-            if (pos <= mid) {
-                update(root.left, pos, val);
-            } else {
-                update(root.right, pos, val);
-            }
-            root.sum = root.left.sum + root.right.sum;
+            return;
         }
-    }
-
-    public int sumRange(int i, int j) {
-        return sumRange(root, i, j);
+        // dfs to find the postion
+        int mid = root.start + (root.end  - root.start) / 2;
+        updateTree((pos <= mid ? root.left : root.right), pos, val);
+        root.sum = root.left.sum + root.right.sum; // update all the sum.
     }
     
-    public int sumRange(SegmentTreeNode root, int start, int end) {
+        
+    public int getSum(SegmentTreeNode root, int start, int end) {
         if (root.end == end && root.start == start) {
             return root.sum;
-        } else {
-            int mid = root.start + (root.end - root.start) / 2;
-            if (end <= mid) { 
-                return sumRange(root.left, start, end);
-            } else if (start >= mid + 1) {
-                return sumRange(root.right, start, end);
-            } else {
-                return sumRange(root.right, mid + 1, end) + sumRange(root.left, start, mid);
-            }
         }
+        int mid = root.start + (root.end - root.start) / 2;
+        if (start > mid) {
+            return getSum(root.right, start, end);
+        }
+        
+        if (end <= mid) {
+            return getSum(root.left, start, end);
+        }
+        
+        //  start <= mid < end
+        return getSum(root.left, start, mid) + getSum(root.right, mid + 1, end);
+    }
+    
+    public SegmentTreeNode buildTree(int[] nums, int start, int end) {
+        if (start > end)
+            return null;
+        SegmentTreeNode root = new SegmentTreeNode(start, end);
+        if (start == end) {
+            root.sum = nums[start];
+        } else {
+            int mid = start + (end - start) / 2;
+            root.left = buildTree(nums, start, mid);
+            root.right = buildTree(nums, mid + 1, end);
+            root.sum = root.left.sum + root.right.sum;
+        }
+        return root;
+    }
+}
+
+class SegmentTreeNode {
+    int start;
+    int end;
+    int sum;
+    SegmentTreeNode left;
+    SegmentTreeNode right;
+    
+    public SegmentTreeNode(int start, int end) {
+        this.start = start;
+        this.end = end;
+        this.sum = 0;
+        this.left = this.right = null;
     }
 }
 

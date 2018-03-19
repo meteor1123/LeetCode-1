@@ -43,6 +43,11 @@
 	The number of 1s in the grid will be at most 6000.
 */
 
+/*
+	Solution: 
+		两行同时遍历，如果两行中相同列位置的值都为1，则计数器COUNT自增1，那么最后就相当于有了count - 1个相邻的格子，问题就转化为了求count - 1个相邻的格子能组成多少个矩形，就变成了初中数学问题了，共有count*(count-1)/2个
+*/
+
 // time: O(m^2 * n)
 class Solution {
     public int countCornerRectangles(int[][] grid) {

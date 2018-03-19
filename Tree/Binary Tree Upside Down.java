@@ -27,23 +27,21 @@
  * }
  */
 
+//对于一个根节点来说，我们的目标是将其左子节点变为根节点，右子节点变为左子节点，原根节点变为右子节点，那么我们首先判断这个根节点是否存在，且其有没有左子节点，如果不满足这两个条件的话，直接返回即可，不需要翻转操作。
 public class Solution {
-	public TreeNode upsideDownBinaryTree(TreeNode root) {
-		if (root == null || root.left == null && root.right == null) {
-			return root;
-		}
-
-		//每次返回的newRoot 
-		TreeNode newRoot = upsideDownBinaryTree(root.left);
-		//每次迭代的将当前root的right结点 赋值给下面left孩子的 right节点，
-		//将root赋值给下面left孩子的left结点，然后设置root.left , root.right
-		root.left.left = root.right;//该节点的父亲节点的右节点为该节点的左孩子
-		root.left.right = root;//该节点的父亲节点为该节点的右孩子
-		root.left = null;//父节点的左右孩子设空
-		root.right = null;//父节点的左右孩子设空
-		//依然返回root结点
-		return newRoot;
-	}
+    public TreeNode upsideDownBinaryTree(TreeNode root) {
+        if (root == null || root.left == null)
+            return root;
+        // inorder traverse
+        TreeNode newRoot = upsideDownBinaryTree(root.left);
+        
+        root.left.left = root.right;
+        root.left.right = root;
+        
+        root.left = null;
+        root.right = null;
+        return newRoot;
+    }
 }
 
 //iterative

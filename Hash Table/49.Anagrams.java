@@ -7,7 +7,6 @@
 
 
 public class Solution {
-
         //返回一个arraylist
 	    public ArrayList<String> anagrams(String[] strs) {
         ArrayList<String> result = new ArrayList<String>();

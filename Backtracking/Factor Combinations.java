@@ -43,34 +43,54 @@
 */
 
 
-public class Solution {
-	public List<List<Integer>> getFactors(int n) {
-		List<List<Integer>> res = new ArrayList<>();
-		if (n <= 1) {
-			return res;
-		}
-		List<Integer> item = new List<Integer>();
-		dfs(res, item, n, 2);
-		return res;
-	}
-
-	public void dfs(List<List<Integer>> res, List<Integer> item, int n, int start) {
-		//size 
-		if (n <= 1) {
-			if (item.size() > 1) {
-				res.add(new ArrayList<>(item));
-			}
-			return;
-		}
-		for (int i = start; i <= n; i++) {
-			if (n % i == 0) {
-				item.add(i);
-				dfs(res, item, n / i, i);
-				item.remove(item.size() - 1);
-			}
-		}
-
-	}
+// Solution1:
+class Solution {
+    public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> res = new ArrayList();
+        if (n <= 1)
+            return res;
+        helper(res, new ArrayList(), n, 2);
+        return res;
+    }
+    
+    public void helper(List<List<Integer>> res, List<Integer> item, int n, int start) {
+        if (n == 1 && item.size() > 1) {
+            res.add(new ArrayList(item));
+            return;
+        }
+        for (int i = start; i <= n; i++) {
+            if (n % i == 0) {
+                item.add(i);
+                helper(res, item, n / i, i);
+                item.remove(item.size() - 1);
+            }
+        }
+    }
 }
 
-
+// Solution2: 剪枝，如果i已经大于upper 则直接赋值n， 我们注意到 由于因子是从小到大排序， 所以因子的大小肯定不超过n的平方根
+class Solution {
+    public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> res = new ArrayList();
+        if (n <= 1)
+            return res;
+        helper(res, new ArrayList(), n, 2, (int)Math.sqrt(n));
+        return res;
+    }
+    
+    public void helper(List<List<Integer>> res, List<Integer> item, int n, int start, int upper) {
+        if (n == 1 && item.size() > 1) {
+            res.add(new ArrayList(item));
+            return;
+        }
+        for (int i = start; i <= n; i++) {
+            if (i > upper)
+                i = n;
+            if (n % i == 0) {
+                item.add(i);
+                helper(res, item, n / i, i, (int)Math.sqrt(n / i));
+                item.remove(item.size() - 1);
+            }
+        }
+    }
+}

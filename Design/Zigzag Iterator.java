@@ -42,42 +42,28 @@ public class ZigzagIterator {
     }
 }
 
-/**
- * Your ZigzagIterator object will be instantiated and called as such:
- * ZigzagIterator i = new ZigzagIterator(v1, v2);
- * while (i.hasNext()) v[f()] = i.next();
- */
-
-//Solution2
+//Solution2: prefer, 用一个queue去存list的iterator，每次要取next的时候就poll一个iterator出来， 当前iterator的next()就是所求的next， 再判断当前iterator是否有hasNext 如果有的话才重新offer进队列
 public class ZigzagIterator {
-    Iterator<Integer>[] its;
-    int pos;
+    Queue<Iterator> queue;
     public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
-        its = new Iterator[]{v1.iterator(), v2.iterator()};
-        pos = 0;
+        queue = new ArrayDeque();
+        if (!v1.isEmpty()) {
+            queue.offer(v1.iterator());
+        } 
+        if (!v2.isEmpty()) {
+            queue.offer(v2.iterator());
+        }
     }
+
     public int next() {
-        int next = its[pos].next();
-        pos = (pos == its.length - 1) ? 0 : pos + 1;
-        return next;
+        Iterator iter = queue.poll();
+        int res = (int)iter.next();
+        if (iter.hasNext())
+            queue.offer(iter);
+        return res;
     }
+
     public boolean hasNext() {
-        if (its[pos].hasNext()) {
-            return true;
-        }
-        for (int i = pos + 1; i < its.length; i++) {
-            if (its[i].hasNext()) {
-                pos = i;
-                return true;
-            }
-        }
-        
-        for (int i = 0; i < pos; i++) {
-            if (its[i].hasNext()) {
-                pos = i;
-                return true;
-            }
-        }
-        return false;
+        return !queue.isEmpty();
     }
 }

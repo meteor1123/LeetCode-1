@@ -33,51 +33,41 @@
 */
 
 
-//Solution1: start: window的 start pointer， end：window的 end pointer
+
+// Solution1: prefer O(n)， sliding window
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new ArrayList();
-        if (p.length() > s.length())
+        if (s == null || s.length() == 0 || p.length() > s.length())
             return res;
-        HashMap<Character, Integer> map = new HashMap();
-        
+        int[] hash = new int[26];
         for (char c : p.toCharArray()) {
-            map.put(c, map.getOrDefault(c, 0) + 1);
+            hash[c - 'a']++;
         }
-        
-        int start = 0;
-        int end = 0;
-        int count = map.size();
-        
-        while (end < s.length()) {
-            char c = s.charAt(end);
-            if (map.containsKey(c)) {
-                map.put(c, map.get(c) - 1);
-                if (map.get(c) == 0)
-                    count--;
-            }
+        int count = p.length();
+        int left = 0;
+        int right = 0;
+        while (right < s.length()) {
+            if (hash[s.charAt(right) - 'a'] >= 1)
+                count--;
+            hash[s.charAt(right) - 'a']--;
+            right++;
             
-            while (count == 0) {
-                char ch = s.charAt(start);
-                if (map.containsKey(ch)) {
-                    map.put(ch, map.get(ch) + 1);
-                    if (map.get(ch) > 0)
-                        count++;
-                }
-                // 右窗口index - 左窗口index = 窗口len - 1 ->   0, 1, [2, 3, 4, 5], 6 -> 5 - 2 = 4 - 1;
-                if (end - start == p.length() - 1) {
-                    res.add(start);
-                }
-                start++;
-            }
+            if (count == 0)
+                res.add(left);
             
-            end++;
+            if (right - left == p.length()) {
+                if (hash[s.charAt(left) - 'a'] >= 0) 
+                    count++;
+                hash[s.charAt(left) - 'a']++;
+                left++;
+            }
         }
         return res;
     }
 }
 
-//Solution2: myself
+//Solution2: myself, O(mn)
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new ArrayList();
@@ -96,6 +86,7 @@ class Solution {
                 chars[s.charAt(start) - 'a']++; 
                 start++;
             }
+
             if (isZero(chars)) {
                 res.add(start);
             }
