@@ -30,7 +30,7 @@ public class Solution {
         Comparator<Interval> comp = new Comparator<Interval>(){
             @Override
             public int compare(Interval interval1, Interval interval2) {
-                return interval1.end - interval2.end;//这样的排序结果是 end 小的在数组前面，同时会自动排序start，小的也在前面
+                return interval1.end - interval2.end;//end 小的在数组前面
             }
         };
         Arrays.sort(intervals, comp);

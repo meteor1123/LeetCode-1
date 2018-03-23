@@ -28,6 +28,8 @@
 			  3. 遍历所有坐标值为0的点的reach 和dist值，找reach等于所有1的数量，并且dist的值
 
 */
+
+// Solution1:
 public class Solution {
     public int shortestDistance(int[][] grid) {
         if (grid == null || grid.length == 0) {
@@ -78,5 +80,55 @@ public class Solution {
             }
         }
         return minDist == Integer.MAX_VALUE ? -1 : minDist;
+    }
+}
+
+// Solution2: prefer, 一定要记住要从建筑点1 开始进行BFS, 遍历每一个0点，这样每个从1 -> 0的距离就是这个建筑到这个0点的最短距离， 累加完所有的dist之后 求出dist和为最小的0点
+// Time: O(kmn)
+class Solution {
+    private final int[] shift = new int[] {0, 1, 0, -1, 0};
+    int min = Integer.MAX_VALUE;
+    public int shortestDistance(int[][] grid) {
+        if (grid == null || grid.length == 0)
+            return -1;
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dist = new int[m][n];
+
+        int start = 1;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    computeDistance(grid, i, j, m, n, dist, --start);
+                }
+            }
+        }
+        return min == Integer.MAX_VALUE ? -1 : min;
+    }
+
+    public void computeDistance(int[][] grid, int x, int y, int m, int n, int[][] dist, int start) {
+        Queue<int[]> queue = new ArrayDeque();
+        queue.offer(new int[]{x, y});
+        int level = 0;
+        min = Integer.MAX_VALUE;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            level++;
+            for (int i = 0; i < size; i++) {
+                int[] point = queue.poll();
+                for (int j = 0; j < 4; j++) {
+                    int row = point[0] + shift[j];
+                    int col = point[1] + shift[j + 1];
+                    if (row < 0 || col < 0 || row > m - 1 || col > n - 1)
+                        continue;
+                    if (grid[row][col] == start) {
+                        queue.offer(new int[]{row, col});
+                        dist[row][col] += level;
+                        min = Math.min(min, dist[row][col]);
+                        grid[row][col]--;
+                    }
+                }
+            }
+        }
     }
 }

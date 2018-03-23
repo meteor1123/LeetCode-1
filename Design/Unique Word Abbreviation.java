@@ -25,6 +25,9 @@
 	isUnique("cane") -> false
 	isUnique("make") -> true
 */
+
+
+// Solution1
 public class ValidWordAbbr {
     HashMap<String, String> map;
     public ValidWordAbbr(String[] dictionary) {
@@ -55,8 +58,31 @@ public class ValidWordAbbr {
     }
 }
 
+// Solution2: my solution, prefer
+// 什么时候才是有效的abbreviation？ 1. dictionary里没有这个abb 2.dictionary里有但是abb的原型word必须要等于你要查的word.  如果一个abb对应超过1个word 则永远不会unique
+class ValidWordAbbr {
+    Map<String, HashSet<String>> map;
+    public ValidWordAbbr(String[] dictionary) {
+        map = new HashMap();
+        for (String word : dictionary) {
+            String abb = generateAbb(word);
+            if (map.get(abb) == null)
+                map.put(abb, new HashSet());
+            map.get(abb).add(word);
+        }
+    }
 
-// Your ValidWordAbbr object will be instantiated and called as such:
-// ValidWordAbbr vwa = new ValidWordAbbr(dictionary);
-// vwa.isUnique("Word");
-// vwa.isUnique("anotherWord");
+    public boolean isUnique(String word) {
+        String abb = generateAbb(word);
+        return map.get(abb) == null || (map.get(abb).contains(word) && map.get(abb).size() == 1);
+    }
+
+    public String generateAbb(String s) {
+        if (s.length() <= 2)
+            return s;
+        int len = s.length();
+        StringBuilder sb = new StringBuilder();
+        sb.append(s.charAt(0)).append(len).append(s.charAt(len - 1));
+        return sb.toString();
+    }
+}

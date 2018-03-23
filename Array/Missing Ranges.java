@@ -38,7 +38,24 @@ public class Solution {
     }
 }
 
-//Solution2: My solution
+// Solution2: take care of the overflow version
+public class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> res = new ArrayList<>();
+        for (int num : nums) {
+            if (num > lower)
+                res.add(lower + (num - 1 > lower ? "->" + (num - 1) : ""));
+            if (num == upper)
+                return res; // Avoid overflow
+            lower = num + 1;
+        }
+        if (lower <= upper)
+            res.add(lower + (upper > lower ? "->" + upper : ""));
+        return res;
+    }
+}
+
+//Solution3: My solution
 public class Solution {
     public List<String> findMissingRanges(int[] nums, int lower, int upper) {
         List<String> res = new ArrayList<>();

@@ -40,13 +40,13 @@
 //Solution1 头尾结点都用pseudo结点，便于reduce the boundary checking, 注意head和tail在插入node之后没有环！
 // head -> 1 -> 2-> 3-> 4-> 5 -> tail    -> next / <- pre                                              
 public class LRUCache {
-    private HashMap<Integer, DoubleLinkedList> cache = new HashMap<Integer, DoubleLinkedList>();
+    private HashMap<Integer, DoubleLinkedList> cache;
     private int capacity;
     private DoubleLinkedList head;
     private DoubleLinkedList tail;
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        
+        cache = new HashMap<Integer, DoubleLinkedList>();
         head = new DoubleLinkedList();
         tail = new DoubleLinkedList();
         

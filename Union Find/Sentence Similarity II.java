@@ -21,6 +21,41 @@
 	The length of each words[i] and pairs[i][j] will be in the range [1, 20].
 */
 
+// Solution1: Union Find
+// 1.将pairs里的所有单词union 2.再union find 两个数组里的单词是否有相同的parent
+class Solution {
+    public boolean areSentencesSimilarTwo(String[] words1, String[] words2, String[][] pairs) {
+        if (words1.length != words2.length)
+            return false;
+        Map<String, String> map = new HashMap();
+        for (String[] pair : pairs) {
+            String parent1 = find(map, pair[0]);
+            String parent2 = find(map, pair[1]);
+            
+            if (!parent1.equals(parent2)) {
+                map.put(parent1, parent2);
+            }
+        }
+        int len = words1.length;
+        for (int i = 0; i < len; i++) {
+            String word1 = words1[i];
+            String word2 = words2[i];
+            
+            if (word1.equals(word2))
+                continue;
+            
+            if (!find(map, word1).equals(find(map, word2)))
+                return false;
+        }
+        return true;
+    }
+    
+    public String find(Map<String, String> map, String s) {
+        if (!map.containsKey(s))
+            map.put(s, s);
+        return s.equals(map.get(s)) ? s : find(map, map.get(s));
+    }
+}
 
 // Solution2: DFS
 class Solution {

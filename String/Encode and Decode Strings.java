@@ -37,6 +37,8 @@
 			  	 second, get the size, s.substring(i, slash);
 			  	 third, add the substring(slash + 1, slash + 1 + size);
 			  	 i = slash + size + 1, next loop
+
+    记住不要试图把每个字符用某个特殊字符分隔开的方式去encode/decode， 比如 abc, def, ghi -> abc#def#ghi
 */
 public class Codec {
 
@@ -54,7 +56,7 @@ public class Codec {
 		while (i < s.length()) {
 			//Returns the index within this string of the first occurrence of the specified character, 
 			//starting the search at the specified index.
-			int slash = s.indexOf('/', i);//indexOf(int ch, int fromIndex)
+			int slash = s.indexOf('/', i);
 			int size = Integer.valueOf(s.substring(i, slash));
 			res.add(s.substring(slash + 1, slash + size + 1));
 			i = slash + size + 1;
