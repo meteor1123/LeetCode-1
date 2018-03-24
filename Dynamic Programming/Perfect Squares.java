@@ -17,15 +17,16 @@
     
     dp[i] = dp[i - j * j] + 1;
 */
+
+//Solution1: dp, Prefer
 public class Solution {
-	//Solution1
     public int numSquares(int n) {
         int[] dp = new int[n + 1];
         dp[1] = 1;
         for(int i = 2; i <= n; i++) {
             dp[i] = Integer.MAX_VALUE;
-            for (int j = 1; j*j <= i; j++) {
-                dp[i] = Math.min(dp[i], dp[i - j*j] + 1);
+            for (int j = 1; j * j <= i; j++) {
+                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
             }
         }
         return dp[n];
@@ -33,18 +34,22 @@ public class Solution {
 
 }
 
-public class Solution {
-    //Solution1 prefer
-    public int numSquares(int n) {
-        int[] dp = new int[n + 1];
-        dp[1] = 1;
-        for(int i = 2; i <= n; i++) {
-            dp[i] = Integer.MAX_VALUE;
-            for (int j = 1; j<= Math.sqrt(i); j++) {
-                dp[i] = Math.min(dp[i], dp[i - j*j] + 1);
-            }
-        }
-        return dp[n];
-    }
 
+//Solution2: A Static DP solution
+public class Solution {
+    static List<Integer> result = new ArrayList<>();
+    public int numSquares(int n) {
+        if (result.size() == 0) {
+            result.add(0);
+        }
+        while (result.size() <= n) {
+            int m = result.size();
+            int tempMin = Integer.MAX_VALUE;
+            for (int j = 1; j * j <= m; j++) {
+                tempMin = Math.min(tempMin, result.get(m - j * j) + 1);
+            }
+            result.add(tempMin);
+        }
+        return result.get(n);
+    }
 }

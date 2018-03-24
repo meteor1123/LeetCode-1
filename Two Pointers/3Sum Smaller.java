@@ -39,9 +39,6 @@ public class Solution {
     }
 }
 
-
-
-
 //Solution2:
 public class Solution {
     public int threeSumSmaller(int[] nums, int target) {
