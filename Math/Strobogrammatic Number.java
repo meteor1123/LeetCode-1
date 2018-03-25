@@ -9,73 +9,49 @@
 	Tags: HashMap
 */
 
-//Solution1 HashMap solution
-public class Solution {
+//Solution1: my solution
+class Solution {
     public boolean isStrobogrammatic(String num) {
-        HashMap<Character, Character> map = new HashMap<>();
+        HashMap<Character, Character> map = new HashMap();
         map.put('0', '0');
         map.put('1', '1');
         map.put('8', '8');
-        map.put('9', '6');
         map.put('6', '9');
-        int start = 0;
-        int end = num.length() - 1;
-        while (start <= end) {
-            char c1 = num.charAt(start);
-            char c2 = num.charAt(end);
-            if (!map.containsKey(c1) || !map.containsKey(c2)) {
+        map.put('9', '6');
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : num.toCharArray()) {
+            if (!map.containsKey(c))
                 return false;
-            } else if (map.get(c1) == c2) {
-                start++;
-                end--;
-            } else {
-                return false;
-            }
+            sb.insert(0, map.get(c));
         }
-        
-        return true;
+
+        return num.equals(sb.toString());
     }
 }
 
-
-//Solution2 my solution
-public class Solution {
+//Solution2: Two Pointer + HashMap
+class Solution {
     public boolean isStrobogrammatic(String num) {
-        if (!checkValidNum(num)) {
-            return false;
-        }
+        HashMap<Character, Character> map = new HashMap();
+        map.put('0', '0');
+        map.put('1', '1');
+        map.put('8', '8');
+        map.put('6', '9');
+        map.put('9', '6');
 
         int start = 0;
         int end = num.length() - 1;
+
         while (start <= end) {
-            char left = num.charAt(start);
-            char right = num.charAt(end);
-            if (left != right) {
-                if ((left == '6' && right == '9') || (left == '9' && right == '6')) {
-                    start++;
-                    end--;
-                } else {
-                    return false;
-                }
-            } else {
-                if (left == '6' || left == '9') {
-                    return false;
-                }
-                start++;
-                end--;
-            }
-        }
-        return true;
-    }
-    
-    public boolean checkValidNum(String num) {
-        for (char c : num.toCharArray()) {
-            if (c == '2' || c == '3' || c == '4' || c == '5' || c == '7') {
+            if (!map.containsKey(num.charAt(start)) || !map.containsKey(num.charAt(end))) {
+                return false;
+            } else if (map.get(num.charAt(start)) != num.charAt(end)) {
                 return false;
             }
+            start++;
+            end--;
         }
         return true;
     }
-    
-
 }

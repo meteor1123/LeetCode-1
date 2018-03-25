@@ -28,8 +28,9 @@
 /*
     Key point: 用一个state数组来存储每一位上的最长路径数，set the larger number to 1， if find smaller near the larger one just add 1  to the smaller one
  */
+// Solution1: DFS, time: O(mn), space: O(mn)
 public class Solution {
-    int[] shift = {0, 1, 0, -1, 0};
+    private static final int[] shift = {0, 1, 0, -1, 0}; // private static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
     public int longestIncreasingPath(int[][] matrix) {
         if (matrix == null || matrix.length == 0) {
             return 0;
@@ -61,5 +62,72 @@ public class Solution {
         }
         state[x][y] = 1 + max;
         return state[x][y];
+    }
+
+    //dfs solution2
+    private int dfs(int[][] matrix, int x, int y, int m, int n, int[][] state) {
+        if (state[x][y] > 0)
+            return state[x][y];
+        for (int i = 0; i < 4; i++) {
+            int row = x + shift[i];
+            int col = y + shift[i + 1];
+            if (row < 0 || col < 0 || row > m - 1 || col > n - 1 || matrix[row][col] <= matrix[x][y])
+                continue;
+            state[x][y] = Math.max(state[x][y], dfs(matrix, row, col, m, n, state));
+        }
+        return ++state[x][y];
+    }
+}
+
+
+// Solution2: BFS + Topological sort,  time: O(mn), space: O(mn)
+class Solution {
+    private static final int[] shift = {0, 1, 0, -1, 0};
+    private int m, n;
+    public int longestIncreasingPath(int[][] matrix) {
+        if (matrix == null || matrix.length == 0)
+            return 0;
+        m = matrix.length;
+        n = matrix[0].length;
+        // calculate outdegrees
+        int[][] outdegree = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < 4; k++) {
+                    int x = i + shift[k];
+                    int y = j + shift[k + 1];
+                    if (x >= 0 && y >= 0 && x < m && y < n && matrix[i][j] < matrix[x][y])
+                        outdegree[i][j]++;
+                }
+            }
+        }
+
+        // find leaves who have zero out degree as the initial level
+        List<int[]> leaves = new ArrayList();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (outdegree[i][j] == 0)
+                    leaves.add(new int[]{i, j});
+            }
+        }
+
+        // remove leaves level by level in topological order
+        int height = 0;
+        while (!leaves.isEmpty()) {
+            height++;
+            List<int[]> newLeaves = new ArrayList();
+            for (int[] node : leaves) {
+                for (int i = 0; i < 4; i++) {
+                    int x = node[0] + shift[i];
+                    int y = node[1] + shift[i + 1];
+                    if (x < 0 || y < 0 || x >= m || y >= n || (matrix[node[0]][node[1]] <= matrix[x][y])
+                        continue;
+                    if (--outdegree[x][y] == 0)
+                        newLeaves.add(new int[]{x, y});
+                }
+            }
+            leaves = newLeaves;
+        }
+        return height;
     }
 }

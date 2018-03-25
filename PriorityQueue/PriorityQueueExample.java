@@ -94,3 +94,5 @@ Arrays.sort(pairs, (a, b) -> {
        return a[0] - b[0];
    }
 });
+
+Arrays.sort(people, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);

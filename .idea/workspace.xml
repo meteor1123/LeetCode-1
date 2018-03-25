@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12ad4c44-6cca-4e1c-8058-763edf74b181" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dynamic Programming/Perfect Squares.java" afterPath="$PROJECT_DIR$/Dynamic Programming/Perfect Squares.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/String/Group Shifted Strings.java" afterPath="$PROJECT_DIR$/String/Group Shifted Strings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/String/Reverse Vowels of a String.java" afterPath="$PROJECT_DIR$/String/Reverse Vowels of a String.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Two Pointers/3Sum Smaller.java" afterPath="$PROJECT_DIR$/Two Pointers/3Sum Smaller.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFS/Longest Increasing Path in a Matrix.java" afterPath="$PROJECT_DIR$/DFS/Longest Increasing Path in a Matrix.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Math/Strobogrammatic Number II.java" afterPath="$PROJECT_DIR$/Math/Strobogrammatic Number II.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Math/Strobogrammatic Number.java" afterPath="$PROJECT_DIR$/Math/Strobogrammatic Number.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PriorityQueue/PriorityQueueExample.java" afterPath="$PROJECT_DIR$/PriorityQueue/PriorityQueueExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Recursion/Strobogrammatic Number III.java" afterPath="$PROJECT_DIR$/Recursion/Strobogrammatic Number III.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,76 +32,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Intersection of Two Linked Lists.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinkedList/Intersection of Two Linked Lists.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="454">
-              <caret line="60" column="9" lean-forward="true" selection-start-line="60" selection-start-column="9" selection-end-line="60" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="3Sum Smaller.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Two Pointers/3Sum Smaller.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="26" lean-forward="true" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#1909#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Add Bold Tag in String.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/String/Add Bold Tag in String.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="37" column="13" lean-forward="true" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-              <folding>
-                <element signature="e#0#1878#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Evaluate Division.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Union Find/Evaluate Division.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
-              <caret line="97" column="0" lean-forward="true" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#4839#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Reverse Vowels of a String.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/String/Reverse Vowels of a String.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="80" column="21" lean-forward="false" selection-start-line="80" selection-start-column="21" selection-end-line="80" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#3140#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Group Shifted Strings.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/String/Group Shifted Strings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="50" column="43" lean-forward="true" selection-start-line="50" selection-start-column="43" selection-end-line="50" selection-end-column="43" />
-              <folding>
-                <element signature="e#0#1712#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Perfect Squares.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Math/Perfect Squares.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -123,24 +54,96 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Longest Increasing Path in a Matrix.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Longest Increasing Path in a Matrix.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFS/Longest Increasing Path in a Matrix.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="64" selection-end-column="1" />
+            <state relative-caret-position="410">
+              <caret line="99" column="42" lean-forward="true" selection-start-line="99" selection-start-column="42" selection-end-line="99" selection-end-column="42" />
               <folding>
-                <element signature="e#0#1814#0" expanded="true" />
+                <element signature="e#0#4346#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Group Shifted Strings.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Hash Table/Group Shifted Strings.java">
+      <file leaf-file-name="Surrounded Regions.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/BFS/Surrounded Regions.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-810">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="570">
+              <caret line="38" column="37" lean-forward="true" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+              <folding>
+                <element signature="e#0#4347#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Pacific Atlantic Water Flow.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFS/Pacific Atlantic Water Flow.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="411">
+              <caret line="96" column="42" lean-forward="true" selection-start-line="96" selection-start-column="42" selection-end-line="96" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#4663#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PriorityQueueExample.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PriorityQueue/PriorityQueueExample.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="935">
+              <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Queue Reconstruction by Height.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Greedy/Queue Reconstruction by Height.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="28" column="1" lean-forward="true" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
+              <folding>
+                <element signature="e#0#985#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Strobogrammatic Number II.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Math/Strobogrammatic Number II.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="545">
+              <caret line="46" column="5" lean-forward="true" selection-start-line="24" selection-start-column="4" selection-end-line="46" selection-end-column="5" />
+              <folding>
+                <element signature="e#0#2049#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Strobogrammatic Number III.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Recursion/Strobogrammatic Number III.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="635">
+              <caret line="69" column="36" lean-forward="false" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#2917#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Strobogrammatic Number.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Math/Strobogrammatic Number.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="750">
+              <caret line="50" column="13" lean-forward="true" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+              <folding>
+                <element signature="e#0#1584#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -180,6 +183,13 @@
         <option value="$PROJECT_DIR$/String/Reverse Vowels of a String.java" />
         <option value="$PROJECT_DIR$/String/Group Shifted Strings.java" />
         <option value="$PROJECT_DIR$/Dynamic Programming/Perfect Squares.java" />
+        <option value="$PROJECT_DIR$/DFS/Longest Increasing Path in a Matrix.java" />
+        <option value="$PROJECT_DIR$/DFS/Pacific Atlantic Water Flow.java" />
+        <option value="$PROJECT_DIR$/PriorityQueue/PriorityQueueExample.java" />
+        <option value="$PROJECT_DIR$/Greedy/Queue Reconstruction by Height.java" />
+        <option value="$PROJECT_DIR$/Math/Strobogrammatic Number.java" />
+        <option value="$PROJECT_DIR$/Math/Strobogrammatic Number II.java" />
+        <option value="$PROJECT_DIR$/Recursion/Strobogrammatic Number III.java" />
       </list>
     </option>
   </component>
@@ -190,10 +200,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1227" />
-    <option name="y" value="-1197" />
-    <option name="width" value="1753" />
-    <option name="height" value="1096" />
+    <option name="x" value="777" />
+    <option name="y" value="-1239" />
+    <option name="width" value="1920" />
+    <option name="height" value="1131" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -237,7 +247,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Union Find" />
+              <option name="myItemId" value="Greedy" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -655,12 +665,12 @@
       <updated>1521581501985</updated>
       <workItem from="1521581503283" duration="422000" />
       <workItem from="1521582038881" duration="796000" />
-      <workItem from="1521588284859" duration="20185000" />
+      <workItem from="1521588284859" duration="28428000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21403000" />
+    <option name="totallyTimeSpent" value="29646000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -672,7 +682,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1227" y="-1197" width="1753" height="1096" extended-state="0" />
+    <frame x="777" y="-1239" width="1920" height="1131" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -689,7 +699,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14432402" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15208334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937366" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -959,10 +969,78 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DFS/Longest Increasing Path in a Matrix.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="64" selection-end-column="1" />
+        <state relative-caret-position="410">
+          <caret line="99" column="42" lean-forward="true" selection-start-line="99" selection-start-column="42" selection-end-line="99" selection-end-column="42" />
           <folding>
-            <element signature="e#0#1814#0" expanded="true" />
+            <element signature="e#0#4346#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BFS/Surrounded Regions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="37" lean-forward="true" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#4347#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFS/Pacific Atlantic Water Flow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="96" column="42" lean-forward="true" selection-start-line="96" selection-start-column="42" selection-end-line="96" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#4663#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PriorityQueue/PriorityQueueExample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Greedy/Queue Reconstruction by Height.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="1" lean-forward="true" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#985#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Math/Strobogrammatic Number.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="50" column="13" lean-forward="true" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#1584#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Math/Strobogrammatic Number II.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="46" column="5" lean-forward="true" selection-start-line="24" selection-start-column="4" selection-end-line="46" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#2049#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Recursion/Strobogrammatic Number III.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="635">
+          <caret line="69" column="36" lean-forward="false" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#2917#0" expanded="true" />
           </folding>
         </state>
       </provider>
